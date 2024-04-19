@@ -1,161 +1,255 @@
 ---
-title: A Super Cool Study - Take 2
-author:
-  - name: Josephine Student 
-    orcid: 0000-0002-7859-8394
-    corresponding: false
-    roles: []
-    affiliations:
-      - Department of Psychology, University of Wisconsin-Madison
-  - name: John J. Curtin 
-    orcid: 0000-0002-3286-938X
-    corresponding: true
-    email: jjcurtin@wisc.edu
-    roles:
-      - Investigation
-      - Project administration
-      - Software
-      - Visualization
-    affiliations:
-      - Department of Psychology, University of Wisconsin-Madison 
-keywords:
-  - Substance use disorders
-  - Precision mental health 
-abstract: |
-  This study found some pretty cool results that have both high impact and important clinical implications.  For example ...
-plain-language-summary: |
-  The ARC produces some of the best science around! ...
-key-points:
-  - Take away point 1 
-  - Take away point 2
-date: last-modified
-bibliography: references.bib
-citation:
-  container-title: Journal of Important Findings 
-number-sections: false 
-editor_options: 
-  chunk_output_type: console
+format: 
+  pdf: 
+    include-in-header: 
+    # edit these paths depending on your QMD's location relative to lab_support
+      - ../../../../lab_support/templates/latex/define_headers_arc.tex 
+      - ../../../../lab_support/templates/latex/includes.tex
+geometry: margin=.5in
+mainfont: TimesNewRomanPSMT #ArialMT
+sansfont: TimesNewRomanPSMT #ArialMT
+fontsize: 12pt
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/national-library-of-medicine-grant-proposals.csl # NIH grants
+# csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl # APA format
+bibliography: paper_messages.bib
 ---
 
-## Introduction
+```{=html}
+<!--
+1.  DTx address treatment access problems and are somewhat effective.  
+2.  Smart dtx (sensing and algorithms) can improve effectiveness by anticipating lapses and personalizing interventions
+3.  There has been some progress building algorithms  using EMA but these are limited by burden, sustainatiblity, temporal precision, and by the limits of our  understanding of lapse causes
+4.  Text message sensing may address all of these limitations
+5.  We now have methods to engineer features from text.  They may differ in predictive performance and interpretabilty.  
 
-You can write your text using markdown.  
-
-- Top level section headings use ## because # is reserved for the manuscript title. 
-- APA (and other?) formats support ##, ###, and #### at least.
-
-
-### Sub-heading - level 3
-
-This is the ### level
-
-
-#### Sub-heading - level 4
-
-This is the #### level
-
-
-##### Sub-heading - level 5
-
-This is the ##### level
-
-
-### Symbols and Equations
-
-You can use quarto inline or display math equations as needed.  Quarto provides [details](https://quarto.org/docs/authoring/markdown-basics.html#equations) on the use of these equations.
-
-For example $x$ and $y$ are two variables. And here is an important formula:
-
-$$
-p(x) = \frac{e^{-\lambda} \lambda^{x}}{x !}
-$$ 
-
-
-### Citations & References
-
-We can use cite relevant research in multiple formats.  The two most common are: 
-
-- @knuth84 concluded something.  
-- These are the conclusions[@knuth84].
-
-Article references are stored in a .bib file using betterbibtex (BBT) format.  We create these references in Zotero collections.
-
-Although we don't do this regularly I think, if needed you can reference figures elsewhere using the @ symbol.   Here is a reference to @fig-1
-
-
-## Methods
-
-This is the methods section.
-
-
-## Results
-
-Results include
-
-- Markdown text
-- Figures from data
-- Figures from images (maybe included table images)
-- Analysis output (i.e. statistics)
-
-We demonstrate each (other than markdown text, which you should know!) below
-
-
-### Data Figures
-
-Figures are also generally created in separate notebooks and embedded into your manuscript.
-
-{{< embed notebooks/fig1.qmd#fig-1 >}}
-
-### Figures from images
-
-Images from figures can be included using the standard code to insert image files.  These images should generally be saved in the image folder at the root of the study template by convention.  The quarto website provides [additional details](https://quarto.org/docs/authoring/figures.html)
-
-![ARC Logo](images/arc_logo.png){#fig-2}
-
-### Tables
-
-We create tables using the kableExtra package.  We are working on the optimal method to embed these from notebooks.  It may be to save the tables as high res image files and then embed those images.  Stay tuned.
-
-Alternatively, this is an example of a simple table that is hard-coded using markdown table format.  We don't recommend this for tables built from data. Tables values should come directly from data so they don't need to be typed in and will update if your data change.  However, you may have other uses for simple tables where this method is helpful.
-
-| Name                | Year |
-|---------------------|------|
-| Current             | 2021 |
-| Teneguía            | 1971 |
-| Nambroque           | 1949 |
-| El Charco           | 1712 |
-| Volcán San Antonio  | 1677 |
-| Volcán San Martin   | 1646 |
-| Tajuya near El Paso | 1585 |
-| Montaña Quemada     | 1492 |
-
-: Recent historic eruptions on La Palma {#tbl-history}
-
-### Analysis Results
-
-To add results that are not figures or tables, you will need to open the objects you saved from these analyses.  See lm.qmd as an example. Generally you will open csv files that contain tidied results. For example
-```{r}
-library(tidyverse)
-
-coeffs <- read_csv(here::here("objects/coeff_table.csv"),
-                   col_types = cols())
+so our aims are....
+-->
 ```
 
-A significant effect of speed was observed ($\beta$ = `r sprintf("%1.1f", coeffs |> filter(term == "speed") |> pull(estimate))`, t = `r sprintf("%1.2f", coeffs |> filter(term == "speed") |> pull(statistic))`, p = `r sprintf("%1.3f", coeffs |> filter(term == "speed") |> pull(p.value))`).
+# Specific Aims
 
-NOTES: 
+## Background
 
-- We should write a function that works with tidied coeffs tables and takes the row, column, and number of decimal  places to make this code simpler.
-- This table doesnt contain df.  Need to add that to table when saving in lm
+According to National Survey on Drug Use and Health (NSDUH), 29.5 million people age 12 and older had alcohol use disorder (AUD) in the past year, whereas only 2.2 million (less than 10%) in this age group received alcohol treatment [@nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023; @nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023]. Provider availability in rural areas, fear of stigma, and economic hardship contribute to racial, gender and age disparities in treatment seeking [@abrahamAvailabilityMedicationsTreatment2020; @dibartoloAlcoholUseDisorder2017; @youngDifferencesPerceptionsPractices2018; @kaufmannTreatmentSeekingBarriers2014; @schulerPerceivedBarriersTreatment2015; @verissimoInfluenceGenderRace2017]. The emergence of digital therapeutics (DTx) has provided new opportunities to address such health disparity in underprivileged groups with its higher accessibility, acceptability and at least modest efficacy [@beukenhorstUsingSmartphonesReduce2022a; @jacobsonUsingDigitalTherapeutics2023; @mckayEfficacyComparativeEffectiveness2022a; @perskiAcceptabilityDigitalHealth2021]. With combination of personal sensing technology and algorithms to predict dynamic alcohol relapse risks, DTx might have more refined capacities in anticipating lapses and recommending optimal treatment selection that meets individuals' momentary needs [@baeMobilePhoneSensors2018a; @leeDataDrivenDigitalTherapeutics2023; @carreiroMHealthDetectionIntervention2018a].
 
+<!--maybe modify this last sentence to say the broad goal this program of research  is to inprove the effectiveness of DTx by adding sensing technology and algorithms.....  -->
 
+<!-- these next two paragraphs can be condensed in the aims but then expanded like this in the signficance section.  In the aims, I think you need to quickly acknowledge that EMA has been used for prediction but it has limitations that you list quickly so that you can then move on to describing how messages can resolve those limitation.    You can go into more detail on the limitations in the sig section -->
+Machine learning models leveraging ecological momentary assessment (EMA) measures have performed relatively well to predict alcohol relapse risks, yet this active, self-reported methodology might not be sustainably feasible. Most EMA relevant mental health research time windows last from two weeks to three months [@porras-segoviaSmartphonebasedEcologicalMomentary2020; @czyzEcologicalAssessmentDaily2018; @vangenugtenExperiencedBurdenAdherence2020a; @mackesy-amitiFeasibilityEcologicalMomentary2018; @hungSmartphonebasedEcologicalMomentary2016], which is insufficient for real-world DTx use. As extended period of time of app use is anticipated, users' perceived burden of answering surveys is presumably larger [@mogkImplementationWorkflowStrategies2023]. Reducing sampling rates and number of survey items might partially relieve this burden but at the cost of impairing prediction precision and temporal specificity.
 
-## Discussion
+EMA models <!-- its not really the models per se.  Decisions regarding what constructs to assess and what items to  include to assess these constructs relies on theory and past data.   And again, you wont describe this in detail here.  Find a way to acknowledge this limitation in a few words or a sentence at most in the aims -->rely on a top-down, theory-driven approach and are thus constrained to the scope of predictor selection and subject to limitations of previous findings. Under an EMA framework, we feed algorithms with well-established alcohol use precursors extracted from previous findings. This approach is restrained by our knowledge of alcohol relapse risk factors and might exclude important predictors. Inclusion of a bottom-up methodology might expand our insights of previously unexamined alcohol relapse antecedents. Further, models built upon results from decades of research on White, male-dominant samples might even exacerbate inequity when they are applied to DTx.
 
-## References
+Passive sensing using text message monitoring represents new opportunities to address the above issues while still retaining some benefits of EMA. As text sensing collects data continuously and automatically, it imposes lower burden on users. Research has found that users report more willingness to use passive sensing measures for a longer period of time [@wyantAcceptabilityPersonalSensing2023a]. Feature engineering techniques allow researchers to mine underlying word embeddings, semantic and syntactic structures of participants' texts. These features are unconstrained and are thus <!-- less not un! :-) -->unsusceptible to gaps in theories and homogeneity in previous research samples. In the meantime, we can still seize benefits of a theory-driven approach that feeds algorithms with well-established risk factors resembling EMA models. <!--I don't get what you mean by this  -->For example, a customized dictionary approach can be used to gauge alcohol-related content which might reveal participants' exposure to alcohol-related cues and levels of cravings. Benefits of assessing text messages also overlap with EMA in a way that texts reflect subjective feelings and social interactions, which allows researchers to mine indicators of emotional state and social connection from users.
 
-::: {#refs}
+DTx leveraging text messaging analysis can be informative of both *who* are at risks of relapses and *why* they relapse. Text analysis has high potentials in predicting alcohol-related outcomes. Indeed, natural language processing (NLP) techniques on electronic health records and clinical notes have demonstrated moderate performance in predicting alcohol misuse, risky alcohol use and alcohol use status [@afsharNaturalLanguageProcessing2019; @vydiswaranAutomateddetectionRiskyAlcohol2024; @toValidationAlcoholMisuse2020; @topazExtractingAlcoholSubstance2019; @alzoubiAutomatedSystemIdentifying2018]. Some NLP methods might even be interpretable such that they have potentials in unraveling unrecognized causes of relapses and optimizing DTx design to customize recommended treatment at the moment. For example, LIWC (see *Section Customized Dictionary*) might deepen our understanding of psycholinguistic risk factors [@tausczikPsychologicalMeaningWords2010a] and sentimental analysis weighing emotional tone might have implications for emotion-focused therapy. Topic modeling that examines hidden semantic patterns and identifies clusters of topics might reveal cautionary topics that trigger alcohol use.
+
+<!--develop the tension between  needed models that predict well but are also intepretable.  dictionary approaches are likely interpretable.  Its less certain if some of the bottom up approaches will be interpretable (see aim 2).-->
+
+## Current Study
+
+In the current study, I will use NLP approaches to analyze participants' SMS messages aiming to predict their relapse risks. Followings are the more specific aims:
+
+**Aim 1: Train and evaluate predictive performance of machine learning models built upon language features derived from different NLP techniques to predict alcohol relapse risks.** We will conduct feature engineering through topic modeling, sentiment analysis, <!-- bag of words and n-grams rather than tf-idf --> tf-idf, word embeddings and customized dictionary. For each distinct feature set derived from these natural language processing techniques, we will build machine learning models and assess their predictability of alcohol lapse risks.<!-- also consider several statistical algorithms that.... -->
+
+**Aim 2: Identify important features and evaluate their interpretability with respect to recommending interventions.** Model interpretation is key to providing treatment recommendations and uncovering potential relapse causes. We will interpret top-performing machine learning models by calculating feature importance. <!-- how?  are you intersted in learning about lapse causes or determine which feature engineering approaches yield more interpretable models.  Will you consider trade-off between performance vs. interpretability? -->
+
+<!--evaluate model intpretability across the techniques b.c. key to making tx recommendations-->
+
+**Aim 3: Examine model fairness in historically underprivileged subgroup populations.** We will evaluate model performance across racial, age, sex, and income subgroups. <!-- why these groups in particular? Maybe a bit more detail about why and how -->The performance metrics we choose are area under the receiver operating characteristic (auROC), area under the precision-recall curve (auPRC), positive predictive value (PPV), true positive rate (sensitivity), and true negative rate (specificity).
+
+\newpage
+
+# Significance
+
+## Lapse Risks
+<!--too narrow of a start to sig section. Start broader like in aims.  You will need to justify predicting lapse vs relapse but much later in the sig section  -->
+<!-- lapses are more clearly defined, more temporally precise, early warning for relapse, and clinically meaningful in their own right as a target for intervention -->
+A universally accepted formal operational definition of alcohol relapse has not yet been established due to the multidimensional nature of relapses [@millerWhatRelapseFifty1996]. Relapse usually refers to the return of a symptomatic behavior. Current perspectives on conceptualization of alcohol relapse can encompass: 1) the level of alcohol consumed; 2) time of abstinence or reduced use; and 3) negative consequences related to use. In this study, our primary outcome is focused on lapse, defined as a single episode of alcohol use. Lapses can serve as an early warning sign of failure to sustain a desired behavioral change [@chungRelapseAlcoholOther2006a; @marlattRelapsePreventionMaintenance2005a]. Research has shown that initial lapse and frequent lapses are the associated with enhanced risks of relapses [@witkiewitzRelapsePreventionAlcohol2004b; @hogstrombrandtPredictionSingleEpisodes1999a].
+
+AUD is a chronic disease where patients face constant challenges of relapsing after abstinence [@scottPathwaysRelapseTreatment2005; @anderssonRelapseInpatientSubstance2019]. Indeed, current work has expanded the relapse prevention model to reflect the temporal, multifaceted, and dynamic process of alcohol relapse [@witkiewitzModelingComplexityPosttreatment2007a]. The model now categorizes alcohol relapse precursors into two classes -- distal factors and proximal factors [@witkiewitzModelingComplexityPosttreatment2007a; @mckayConceptualMethodologicalAnalytical2006b; @feingoldProximalVsDistal2015]. Distal factors refers to stable individual traits such as socioeconomic status and education background. Proximal factors (e.g., drinking partner, drinking behavior) are situated and can be fluctuating over time. Proximal factors usually occurs before an episode of alcohol use [@chihPredictiveModelingAddiction2014a]. They can be elusive to therapists' attention due to infrequent visits, highlighting importance of sustained monitoring to prevent lapses. As such, implementation of relapse prevention in DTx dictates that it is not only important to identify *who* will relapse but also *when*.
+
+[expand] Alcohol relapse risk factors are also multifaceted and might involve affect state, social interactions, and alcohol-related factors. For instance, the majority of an inpatient teen sample reported initial relapse to alcohol when offered alcohol, when in negative state, and when in interpersonal conflicts [@brownCharacteristicsRelapseFollowing1989]. Other commonly found risk factors include alcohol craving [@mckayStudiesFactorsRelapse1999a; @korlakuntaReasonsRelapsePatients2012], negative affect state [@mckayStudiesFactorsRelapse1999a], cognitive factors [@mckayStudiesFactorsRelapse1999a], and interpersonal problem [@mckayStudiesFactorsRelapse1999a].
+<!-- is your study going to contribute to a better understand of relapse?   Some maybe but likely not the primary focus. -->
+Unfortunately, our current understanding of alcohol relapse precursors is not comprehensive, especially for proximal factors. For example, Marlatt's proposed taxonomy characterizes high-risk situational precursors to alcohol relapse such as social pressure and positive/negative emotional state [@marlattTaxonomyHighriskSituations1996a]. Nonetheless, replication studies have found this theoretical framework to be somewhat unreliable and have low predictive validity of post-treatment outcomes [@lowmanReplicationExtensionMarlatt1996a; @stoutPredictiveValidityMarlatt1996; @kaddenMarlattRelapseTaxonomy1996]. Further, while there is a growing recognition of the intricate interplay between distal and proximal factors in the relapse process, more evidence is needed to support this theoretical construct. A review study has also identified methodological constraints in aggregated alcohol research, highlight that there was a dearth of "near real-time" data capturing proximal factors in alcohol relapses [@mckayConceptualMethodologicalAnalytical2006b].
+
+As such, this study seeks to build prediction models from text sensing to identify temporal risk of alcohol lapses. The algorithms will base on an expansion of current alcohol relapse risk factor literature by combining a top-down (e.g., sentiment analysis, customized dictionary; see *Section Feature Engineering*) and bottom-up approach (e.g., topic modeling, tf-idf, word embeddings; see *Section Feature Engineering*) to do feature engineering.
+
+## Machine Learning
+
+Psychology research has witnessed a replication crisis over the past decades, where significant findings drawn from inferential statistics (e.g., p-value at .05) cannot be found in new studies or new participants as expected [@shroutPsychologyScienceKnowledge2018; @wigginsReplicationCrisisPsychology2019; @maxwellPsychologySufferingReplication2015; @amrheinInferentialStatisticsDescriptive2019; @tackettPsychologyReplicationCrisis2019a]. Amrhein et al. argues that inferential statistics only describe local relationships between variables and thus should not be treated as generalizable inferences [@amrheinInferentialStatisticsDescriptive2019]. One of the most prominent hypothesized reasons for replication crisis is the frequently used statistical method -- the frequentist approach, or the Null Hypothesis Significance Testing approach [@tackettPsychologyReplicationCrisis2019a; @collingStatisticalInferenceReplication2021; @huangStatisticsReformPractitioner2023]. The replication crisis has propelled a statistical reform to adopt alternative analytical methods such as Bayesian statistics [@collingStatisticalInferenceReplication2021; @romeroScientificSelfcorrectionBayesian2021]. 
+<!-- dont focus on things that arent primary to  your study.  The above paragraph isnt really the key to why we use machine learning.   And bayesian stats isnt central to what you do.    You CAN focus on the value of prediction generally, the need to  predict using high dimensional features measured longitudinally, and the need to evaluate explicitly the generaliziability of predictions to new people -->
+
+Machine learning algorithms are well suited to build prediction models for new individuals. Unlike traditional statistical approaches, they have the advantage of allowing us to predict outcomes for new individuals outside the research sample. This can be particularly useful as this enhanced external validity of study results is warranted in real-world DTx application where we care about whether the algorithms will be applicable to new users. Machine learning models are also capable of handling large dataset with innumerable number of features. As alcohol relapse risk factors are dynamic and multifaceted, machine learning models are opportune to incorporate a wide range of potential predictors. Although this might raise problems of over-fitting due to high model flexibility and model complexity, we can potentially address this issue by adopting penalty methods. For examples, algorithms like LASSO can penalize the model by removing predictors that have near-zero variance which minimizes overfitting.
+<!-- don;t get too into  the "weeds" regarding details like overfitting and specific algorithms addressing this -->
+
+Like traditional statistical approaches, some machine learning models allow us to draw inferences from the algorithms. We can potentially draw conclusions of the robustness and direction of effects of each risk factor. For example, a simple decision tree allows us to understand factors contributing to prediction by examining its structure. However, it is important to note that some methods are not as interpretable compared to others. For instance, random forest can uninterpretable due to its over-complicated structure when the number of trees is large. Interpreting a neural network model can also be challenging and this algorithm is notorious for its "black-box" nature. Luckily, techniques such as SHapley Additive exPlanations (SHAP) values can somewhat increase model interpretability by assessing feature importance (see *Section Model Performance Evaluation and Feature Importance*).
+<!-- not sure that the key to interpretation is the algorithm.  We have methods like SHAP that work with even "black box" algorithms.  Key is that the features are interpretable.  You can focus on that latter issue but not in a general section about machine learning.    I think you might want to first talk about feature engineering though and then once it is clear that you will have a lot of features, you can then talk about the need to use machine learning -->
+
+## SMS Sensing and Language Analysis
+
+Passive sensing methods in DTx such as text sensing are feasible and sustainable. As AUD is a chronic disease that demands consistent risk monitoring over a long period of time, DTx can benefit from SMS sensing due to its low burden on users.
+
+Risk monitoring using SMS sensing is temporally sensitive to fluctuating risks as it can detect potential triggers in messages in time without actively prompting users to reflect on their feelings at the moment or report their environment.
+
+With the burgeoning of NLP techniques, language analysis is well-equipped to achieve multiple tasks including prediction of alcohol-related outcomes.
+
+Some feature engineering methods might allow researchers to mine previously established robust construct of alcohol lapse precursors from SMS messages and incorporate them in training algorithms.
+
+Language analysis also has the potential of uncovering previously overlooked risk factors for lapses.
+<!-- this past section need to be elaborated a bunch.   Here you can talk about (some detail but not very deep) about the array of different approaches to extract signal from natural  language.  You can then raise the tension between preditive power vs. interpratbility that will be key to your second aim-->
+
+## Algorithmic Bias
+<!-- very abrubt transition and you didnt have much about the use of these algorithms in the sig section which makes it hard to transistion to how the use could harm some groups -->
+Individuals from unprivileged groups (e.g., females, racial minorities) face increased barriers to access mental healthcare. 
+
+DTx represent new opportunities to address mental health inequity with their high accessibility and lower costs. 
+
+Nonetheless, implemented algorithms should be carefully examined to ensure that they do not alternatively exacerbate health inequity.
+
+Differential performance across subgroups might stem from the under-representation of unprivileged groups in the dataset.
+
+Another explanation of divergent model performance between subgroups might owe to the predictors we feed the algorithms.
+
+\newpage
+
+# Approach
+
+## Overview
+
+This study will analyze a subset of data from a larger grant funded by National Institute of Alcohol Abuse and Alcoholism (R01 AA024391). It is important to note that additional measures were collected from the participants that are not directly related to this study.
+<!-- Not sure what you mean about subset.  You are using all (essentially) participants.  You are not using all measures though.  You might mention when the data were collected.-->
+<!-- You can say that you focus on the methods and measures relavant to this study but that all measures are described elsewhere (and point to materials that Kendra shared on OSF I believe) -->
+
+## Participants
+
+Individuals at early stages of recovery from AUD were recruited from Madison and surrounding area via social media platforms (e.g., Facebook), referrals from clinics, and television and radio advertisements. After initial phone screen, interested individuals came in-person to complete a more in-depth screening to determine their eligibility. We documented their demographic information. Inclusion criteria include that participants: 1) must be at least aged 18 or older; 2) must meet criteria for AUD with at least moderate severity (\>four DSM-5 criteria); 3) must be abstinent from alcohol for at least one week and fewer than two months at time of intake; 4) must be able to read and write in English; 5) must be willing to use smartphone and their smartphone is compatible with our study technology. Participants were excluded if they have a lifetime history of severe and persistent mental illness. Of the 216 interested participants, 199 met eligibility and enrolled in the study. \[final sample size for text analysis?\]
+<!-- are those numbers from burden paper? The first number sould low to me and the second sounds high -->
+## Procedures
+<!-- need a bit more structure to the flow.   5 visits.  What was done at each visit.  Separate section for the EMA, which is important because your label comes from that measure -->
+The study lasted up to three months with five in-person visits (see *Figure 1*). Participants completed a semi-structured interview at intake and each of the three one-month apart follow-up visits about their frequently communicated contacts. Interview questions include contextual information about each contact person (e.g., past-drinking history with this individual) and risk-related information (e.g., pleasantness or unpleasantness of interacting with this individual). At intake, participants reported contact information retrospectively. At each follow-up visit, the researchers directly backed up participants' text messages and asked contact information on newly-identified people. Participants were instructed on how to delete text messages that they did not want to share with the resesarch team. Apart from these in-person visits, participants also reported their alcohol use when completing daily surveys prompted up to four times per day. These surveys also included measures of alcohol craving, risky situations, stressful events, and pleasant events. We further passively collected participants' geolocation data and asked contextual information about their frequently visited places (not relevant to this study).
+
+<!-- add time to diagram -->
+
+::: {#fig-simp}
+```{dot}
+digraph {
+
+  graph [layout = dot, rankdir = LR];
+  node [shape = rectangle];
+  
+  a[label = "Screening"]
+  b[label = "Intake"]
+  c [label = "Follow-up 1"]
+  d [label = "Follow-up 2"]
+  e [label = "Follow-up 3"]
+  
+  a -> b -> c -> d -> e
+
+}
+```
+
+Flowchart of in-person visits. We obtained participant demographics and alcohol use history from the screening session. Measures related to frequent contacts were reported at intake and the three follow-up visits. SMS messages were downloaded from participant phones at each of the follow-up visit.
 :::
 
+## Measures
 
+### Individual Characteristics
 
+We collected participants' individual characteristics including their demographics and their past drinking history during the screening session (see *Table 1*). It is important to note that those measures will be included as predictors of relapse risks in training machine learning algorithms in this study. A subset of these measures might also be used to evaluate model fairness on subgroups (e.g., sex, race, income, etc.).
+<!-- not sure about use of IDs in prediction models.  You will use demos for fairness analyses which is good to note here as you do. -->
+
+### SMS Messages
+
+At each of the follow-up visit, a research assistant<!--downloaded?  --> backed up the participants' SMS messages from their phone. Measures included the message type (incoming vs. outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants' phones. We will only analyze participants' individual outgoing messages in this study.
+<!-- why limit to outgoing messages only?   -->
+### Contact Information
+<!-- this is important and the info about context is somewhat scattered across sections right now -->
+Participants self-reported their frequent contacts at intake. Contextual information about the contact person was collected (see *Table 1*). Throughout the course of the study, we also documented any additional frequent contacts if the participant interacted with them at least twice in the past month. Same contextual information was obtained.
+
+| Log Type            | Measure                                                           |
+|:---------------------|:-------------------------------------------------|
+| Demographics        | Age                                                               |
+|                     | Sex                                                               |
+|                     | Race                                                              |
+|                     | Ethnicity                                                         |
+|                     | Highest Education                                                 |
+|                     | Employment Status                                                 |
+|                     | Total Personal Gross Income                                       |
+|                     | Marital Status                                                    |
+|                     | Family Member                                                     |
+| Alcohol Use         | Alcohol Use History                                               |
+|                     | DSM-5 Checklist for AUD                                           |
+|                     | Young Adult Alcohol Problems Test                                 |
+|                     | WHO-The Alcohol, Smoking and Substance Involvement Screening Test |
+| Contact Information | Relationship of Contact to Participant                            |
+|                     | Drinking History with Contact                                     |
+|                     | Drinking Status                                                   |
+|                     | Whether Contact Would be Present in Future Drinking               |
+|                     | Whether Contact is in Recovery                                    |
+|                     | Support from Contact                                              |
+|                     | Emotional Experience with Contact                                 |
+
+: Participant self-reported measures
+
+### Alcohol Lapses
+
+Participants were prompted up to four times daily to report their recent alcohol use. Dates and times of any unreported past alcohol use were obtained in these surveys.
+<!-- reported date and hour of start and end of drinking period.  Confirmed by staff during study visits.  When were EMAs delivered, how, etc-->
+
+## Feature Engineering
+<!-- make clear that you will consider several methods.  List the ones that you know you wil do.   Highlight again why you have multiple  methods. -->
+Text messages will be the sole predictor in the analysis. We will use the following natural language processing techniques to transform SMS messages into machine-interpretable data: 1) topic modeling; 2) sentiment analysis; 3) tf-idf; 4) word embeddings; and 5) customized dictionary. Each feature engineering technique will be evaluated separately.
+<!-- move this info to the above section.  lapse is not a feature and you already started to describe it earlier-->
+The outcome variable is dichotomous (Lapse vs. No Lapse). We will predict alcohol lapses in the next 24-hour window (i.e., next day lapse prediction). Predictions are updated every hour so that all algorithms will provide hour-by-hour estimation. The first prediction window will start from the midnight of the second day of participation and end 24 hours later.
+
+### Topic Modeling
+
+Topic modeling is an unsupervised machine learning method to identify clusters of topics in a body of text. It can do text mining without having predefined labels.<!-- ??? --> In this study, I will use one of the most popular topic modeling technique -- Latent Dirichlet Analysis (LDA). LDA unravels the hidden structure in the relationships between words in a document and groups similar words into topics. It assumes that different documents (i.e., SMS messages) have same topic clusters but with different distribution. As such, different topic clusters might have common words.
+
+### Sentiment Analysis
+
+Research has found that positive/negative emotional state to be associated with increased alcohol relapse risks [@mckayConceptualMethodologicalAnalytical2006b; @mckayStudiesFactorsRelapse1999a; @brownCharacteristicsRelapseFollowing1989]. Sentiment Analysis infers the emotional underpinning of texts. <!-- you don't need to be this specific RE package.  That could change -->I will use the *nrc* package available in R to mine emotional tone in SMS messages [@mohammadCrowdsourcingWordEmotionAssociation2013]. Nrc is a built-in dictionary that assigns a binary label (yes/no) to each lexicon (i.e., single word) into categories of positive and negative sentiment, as well as the eight basic emotions -- anger, fear, anticipation, trust, surprise, sadness, joy, and disgust. The annotation task was accomplished via crowd sourcing. We will assign each SMS message a score in those ten categories by summing sentiment content of all words in that message.
+
+### Tf-idf
+<!-- describe this method as bag of words.  You can consider different approaches that vary on n-gram and also metric (binary, count, tf, tf-idf) -->
+In this study, I will leverage combination of both term frequency (tf) and inverse document frequency (idf) to indicate word importance inside a document (see below formula). This scoring method has the advantage of highlighting the importance of a word to a document in a collection of documents. It has important implications in analyzing SMS messages so that we have a better understanding of the robustness of a certain word to a single message across all text messages that the participants sent. The idf score minimizes weights of words that are commonly used across all messages and can highlight words that contain important information.
+
+$$
+\text{tf} = \frac{n_{terms\ in\ document}}{n_{terms}}
+$$
+$$
+\text{idf} = \ln(\frac{n_{documents}}{n_{documents\ containing\ term}})
+$$
+$$
+\text{tf-idf} = tf * idf
+$$
+
+### Word Embeddings
+<!-- why BERT and why only BERT? -->
+Word embeddings are vectors that represent relationships of words within a document in a lower-dimension. I will use the pre-trained Bidirectional Encoder Representations from Transformers (BERT)[@devlinBERTPretrainingDeep2018] to transform SMS messages into such machine-readable vectors. They are capable of capturing embedded semantic structure within a neural network architecture. They take into account the context of where a word is (i.e., word tokens before and after the target word). 
+
+### Customized Dictionary
+<!-- you might describe this and LIWC within the BoW approach as a subset of that approach -->
+A bag-of-words approach represents word occurrences inside a document. This study will expand this total word count approach by using customized dictionaries built upon the LIWC dictionary [@pennebakerDevelopmentPsychometricProperties2015a] and compute score by counting frequency of words that belong to each category. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes [@brownCharacteristicsRelapseFollowing1989; @mckayStudiesFactorsRelapse1999a; @mckayStudiesFactorsRelapse1999a]. In addition to these linguistic categories, we will also include customized alcohol-related category as predictors as previous research has found them to be robust indicators of alcohol lapses [@mckayStudiesFactorsRelapse1999a; @korlakuntaReasonsRelapsePatients2012]. 
+
+## Candidate Machine Learning Algorithms and Model Training
+<!-- here make clear that you will consider several algorithms that vary with respect to...   you can list some that we know we will use glmnet, XGBoost, RF.   You can hedge on the others though I would like to consider them given time -->
+Candidate algorithms that will be used include glmnet (penalized, parametric linear model), k-nearest neighbor (KNN), linear/quadratic discriminant analysis (LDA/QDA), random forest (RF), and neural network (NN). A random split of 3/4 of the dataset will be used for model selection and model training. For each algorithm, we will perform a grouped, nested cross-validation on the training set to select the best model configuration. The selected best model will then be trained on the whole training dataset.
+
+## Model Performance Evaluation and Feature Importance
+
+The primary performance metrics to select the best model configuration and evaluate the model performance on the test sets will be auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. We choose this metric because it is more informative than accuracy for imbalanced data. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent.
+<!-- discuss use of bayesian estimation to quanify posteior distribution for auROC and if it differs from .50.   Also, no talk about cross-validation anywhere? -->
+
+Predicted probabilities will be calculated for all test sets. Binary classification (Lapse vs. No Lapse) will be determined with optimal decision threshold determined by Youden's Index.
+<!--  list secondary performance metrics-->
+
+We will also calculate SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability.
+
+## Algorithmic Bias Evaluation
+
+In addition to auROC, we will also evaluate auPRC, sensitivity, specificity and PPV across different subgroups. Negative Predictive Value (NPV) is not included due to the highly imbalanced outcomes in our dataset (N~positive~ = , N~negative~ = ). We will compare these performance metrics between different sex, race, income and age subgroups as these demographic minority groups face enhanced barriers to access alcohol treatment due to stigma, financial difficulties, etc. They are also traditionally underrepresented in research settings.
+
+\newpage
+
+# References
