@@ -1,0 +1,161 @@
+---
+title: A Super Cool Study - Take 2
+author:
+  - name: Josephine Student 
+    orcid: 0000-0002-7859-8394
+    corresponding: false
+    roles: []
+    affiliations:
+      - Department of Psychology, University of Wisconsin-Madison
+  - name: John J. Curtin 
+    orcid: 0000-0002-3286-938X
+    corresponding: true
+    email: jjcurtin@wisc.edu
+    roles:
+      - Investigation
+      - Project administration
+      - Software
+      - Visualization
+    affiliations:
+      - Department of Psychology, University of Wisconsin-Madison 
+keywords:
+  - Substance use disorders
+  - Precision mental health 
+abstract: |
+  This study found some pretty cool results that have both high impact and important clinical implications.  For example ...
+plain-language-summary: |
+  The ARC produces some of the best science around! ...
+key-points:
+  - Take away point 1 
+  - Take away point 2
+date: last-modified
+bibliography: references.bib
+citation:
+  container-title: Journal of Important Findings 
+number-sections: false 
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction
+
+You can write your text using markdown.  
+
+- Top level section headings use ## because # is reserved for the manuscript title. 
+- APA (and other?) formats support ##, ###, and #### at least.
+
+
+### Sub-heading - level 3
+
+This is the ### level
+
+
+#### Sub-heading - level 4
+
+This is the #### level
+
+
+##### Sub-heading - level 5
+
+This is the ##### level
+
+
+### Symbols and Equations
+
+You can use quarto inline or display math equations as needed.  Quarto provides [details](https://quarto.org/docs/authoring/markdown-basics.html#equations) on the use of these equations.
+
+For example $x$ and $y$ are two variables. And here is an important formula:
+
+$$
+p(x) = \frac{e^{-\lambda} \lambda^{x}}{x !}
+$$ 
+
+
+### Citations & References
+
+We can use cite relevant research in multiple formats.  The two most common are: 
+
+- @knuth84 concluded something.  
+- These are the conclusions[@knuth84].
+
+Article references are stored in a .bib file using betterbibtex (BBT) format.  We create these references in Zotero collections.
+
+Although we don't do this regularly I think, if needed you can reference figures elsewhere using the @ symbol.   Here is a reference to @fig-1
+
+
+## Methods
+
+This is the methods section.
+
+
+## Results
+
+Results include
+
+- Markdown text
+- Figures from data
+- Figures from images (maybe included table images)
+- Analysis output (i.e. statistics)
+
+We demonstrate each (other than markdown text, which you should know!) below
+
+
+### Data Figures
+
+Figures are also generally created in separate notebooks and embedded into your manuscript.
+
+{{< embed notebooks/fig1.qmd#fig-1 >}}
+
+### Figures from images
+
+Images from figures can be included using the standard code to insert image files.  These images should generally be saved in the image folder at the root of the study template by convention.  The quarto website provides [additional details](https://quarto.org/docs/authoring/figures.html)
+
+![ARC Logo](images/arc_logo.png){#fig-2}
+
+### Tables
+
+We create tables using the kableExtra package.  We are working on the optimal method to embed these from notebooks.  It may be to save the tables as high res image files and then embed those images.  Stay tuned.
+
+Alternatively, this is an example of a simple table that is hard-coded using markdown table format.  We don't recommend this for tables built from data. Tables values should come directly from data so they don't need to be typed in and will update if your data change.  However, you may have other uses for simple tables where this method is helpful.
+
+| Name                | Year |
+|---------------------|------|
+| Current             | 2021 |
+| Teneguía            | 1971 |
+| Nambroque           | 1949 |
+| El Charco           | 1712 |
+| Volcán San Antonio  | 1677 |
+| Volcán San Martin   | 1646 |
+| Tajuya near El Paso | 1585 |
+| Montaña Quemada     | 1492 |
+
+: Recent historic eruptions on La Palma {#tbl-history}
+
+### Analysis Results
+
+To add results that are not figures or tables, you will need to open the objects you saved from these analyses.  See lm.qmd as an example. Generally you will open csv files that contain tidied results. For example
+```{r}
+library(tidyverse)
+
+coeffs <- read_csv(here::here("objects/coeff_table.csv"),
+                   col_types = cols())
+```
+
+A significant effect of speed was observed ($\beta$ = `r sprintf("%1.1f", coeffs |> filter(term == "speed") |> pull(estimate))`, t = `r sprintf("%1.2f", coeffs |> filter(term == "speed") |> pull(statistic))`, p = `r sprintf("%1.3f", coeffs |> filter(term == "speed") |> pull(p.value))`).
+
+NOTES: 
+
+- We should write a function that works with tidied coeffs tables and takes the row, column, and number of decimal  places to make this code simpler.
+- This table doesnt contain df.  Need to add that to table when saving in lm
+
+
+
+## Discussion
+
+## References
+
+::: {#refs}
+:::
+
+
+

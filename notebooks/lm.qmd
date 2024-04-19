@@ -1,0 +1,45 @@
+---
+title: Linear model 1
+author: John Curtin
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+# set up environment
+options(conflicts.policy = "depends.ok")
+library(tidyverse)
+theme_set(theme_classic()) 
+
+# Paths
+# not needed for this demo but included as example for lab scripts
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+path_models <- format_path("studydata/risk/models/ema")
+path_data_shared <- format_path("studydata/risk/data_processed/shared")
+path_data_ema <- format_path("studydata/risk/data_processed/ema")
+```
+
+Fit the lm to our data
+```{r}
+m <- lm (dist ~ speed, data = cars)
+summary(m)
+
+# Tidied version of coeffs table is preferred over summary for saving.  
+# Its a tibble with better names for columns!
+# NOTE:  Need to add df column to this table for results reporting.  Can pull from summary(m)
+(coeff_table <- broom::tidy(m))
+```
+
+Save the model to load and use in manuscript results section.  Consider what should be saved.  We might save the model object because you can get everything you need from it.  But better still might be to save the output you need (e.g., tibble of coefficients and test statistics). In this example, we save both for the lm as demonstrations. 
+
+NOTES: 
+
+- If saving the model object, note that some models from tidymodels (e.g., keras, maybe xgboost) may need [special procedure](https://rstudio.github.io/bundle/reference/bundle_workflows.html) for saving.  
+
+```{r}
+# can save tidied tables of results as csv.  This is preferred method for saving tables and we believe that saving the tables is likely the best choice for later access to results in index.qmd
+coeff_table |> write_csv(here::here("objects", "coeff_table.csv"))
+
+# There may be situations where you need access to the model itself in index.qmd.  If so, model objects should be saved with saveRDS()
+m |> saveRDS(here::here("objects", "lm.rds"))
+```

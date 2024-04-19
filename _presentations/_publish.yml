@@ -1,0 +1,4 @@
+- source: talk.qmd
+  quarto-pub:
+    - id: abe17e94-2dc9-404b-8e9a-26c4d5ffb2f6
+      url: 'https://jjcurtin.quarto.pub/an-engaging-talk-6c90'

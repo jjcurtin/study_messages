@@ -1,0 +1,51 @@
+---
+title: "An Engaging Talk" 
+author: "John J. Curtin, Ph.D."
+institute: "University of Wisconsin-Madison"
+format: 
+  revealjs:
+    scrollable: true
+    chalkboard: true
+    css: slides.css
+title-slide-attributes:
+  data-background-image: https://github.com/jjcurtin/lectures_science/blob/main/images/smartphone_know_you.png?raw=true
+  data-background-size: 35%
+  data-background-repeat: no
+  data-background-position: left 10% bottom 10%
+fig-cap-location: top
+editor_options: 
+  chunk_output_type: console
+---
+## Mental Healthcare Needs are High and Unmet {.smaller}
+
+- In 2019, [52 million]{style="color: red;"} Americans had an active mental illness
+  - More than half did not receive any [treatment]{style="color: red;"}
+
+::: {.notes}
+We have a mental health crisis in the U.S. and it is a crisis of **unmet** high need because our delivery of mental healthcare is deeply flawed. 
+
+In 2019, **more than half of the 52 million Americans** with an active mental illness did not receive any treatment. **More than half**!
+:::
+
+
+
+## Mental Healthcare Needs are High and Unmet {.smaller}
+
+- [In 2019, 52 million Americans had an active mental illness]{style="color: grey;"}
+  - [More than half did not receive any treatment]{style="color: grey;"}
+
+
+- [20 million]{style="color: red;"} adults had an active substance use disorder
+  - 9 out of 10 did not receive any treatment
+
+
+::: {.notes}
+
+
+And for the 20 million adults suffering with a substance use disorder, it was worse still.
+
+**9 out of 10 without any treatment**
+:::
+
+
+
