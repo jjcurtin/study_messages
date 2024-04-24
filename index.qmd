@@ -51,32 +51,67 @@ In the current study, I will use different feature engineering techniques combin
 \newpage
 
 # Significance
-<!-- start with high prev and high costs first  -->
--   Despite the high prevalence of AUD, few are able to receive alcohol treatment. 
+<!-- I. start with high prev and high costs first  -->
+   - prev
+   - costs
 
+-   II. Despite the high prevalence of AUD, few are able to receive alcohol treatment. 
+    
+    -  talk about general numbers of untreated
+    - talk about not surprising because known barriers
     -   Individuals from unprivileged demographic subgroups suffer from even higher barriers accessing treatment due to financial concerns, stigma, and provider availability.
-<!-- transition?-->
+
+<!-- transition? where does this go
+
 -   AUD is a chronic disease where patients in recovery face constant challenges of returning to use by virtue of both individual and situational factors. [explain distal and proximal factors]
 
     -   Therefore, it is important to identify both *who* are at heightened risk of relapsing and *when*. Note that such risk monitoring should also be long-term. 
-    
--   DTx is an emerging tool that shows promising potentials in addressing extant challenges AUD patients face in accessing alcohol treatments.
+-->
+
+-   III. DTx is an emerging tool that shows promising potentials in addressing extant challenges AUD patients face in accessing alcohol treatments.
 <!-- cost and access are complicated.  Don't overstate -->
     -   Most DTx applications are freely available or at lower costs online, thus relieving financial burden of users and are immune to provider availability in the area.
-    
+    - somewhat effective
+
+-  IV.  Smart DTx could be more effective
     -   Through incorporating algorithms in the application, DTx can also achieve the tasks of risk monitoring. Indeed, machine learning models built upon EMA measures has shown encouraging results in predicting lapses for patients in recovery.
-    
+  - more effective because helps with when and helps with how (which supports to use)   
 -   Nonetheless, the burden of constantly completing surveys makes it sustainably infeasible for real-world DTx use.
+
+V. What outcomes are critical to predict
+lapse vs. relapse
+
+know alot about risks for laspe
+
+VI. Some progress on sensing and algorithms for lapse with EMA
+
+- discuss progress
+- discuss limitiations
+  - burden
+  - temporal specificiyt
+  - limited to  known risks
+
+
+VII NLP on text communications may address limitations of sensing EMA
 
     -   Although reducing the number of items in EMA measures or the frequency of collecting data might partially relieve this burden, it can almost inevitably undermine the temporal specificity of lapse prediction.
 
 -   Further, decisions regarding what constructs to assess and what items to include to assess these constructs are limited by theory and past data. 
+
+VIII NLP Options
+
+IX Tensions between good prediction vs. intetrpretable/useful for recommendatrions
 
     -   Unfortunately, our current understanding of alcohol relapse precursors is not comprehensive, especially for proximal factors.
     
     -   Including risk factors solely drawn from decades of research on White, male-dominant samples might even exacerbate health disparities when applied to DTx. [evidence from poster?]
 
 -   Text sensing technology, which is both feasible and sustainable, represents new opportunities in DTx that might address limitations of the current active reporting approach. As AUD is a chronic disease that demands consistent risk monitoring over a long period of time, DTx can benefit from SMS sensing due to its low burden on users.
+
+X Importance of fairness
+
+
+XI - current study
 
     -   Risk monitoring using SMS sensing is temporally sensitive to fluctuating risks as it can detect potential triggers in messages in time without actively prompting users to reflect on their feelings at the moment or report their environment.
 
