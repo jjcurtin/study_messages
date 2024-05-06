@@ -295,144 +295,176 @@ AUD remains a prevalent, lasting and costly problem in the United States
 over the past few years. According to 2022 NSDUH\textsuperscript{1,2},
 an estimate of 29.5 million (10.5\% of the population) individuals aged
 12 or older had AUD in 2022, which is consistent with the estimates for
-2021. The percentage of adults who had AUD was steady between 2011 and
-2014, with slight decrease after 2014\textsuperscript{23}. Nonetheless,
-AUD-related mortality and alcohol use frequency has spiked during the
-COVID-19 pandemic\textsuperscript{24,25}. AUD problems have also brought
-huge economic burdens to the United Stataes, where excessive alcohol use
-has cost U.S. \$223.5 billion in 2006 and \$249 billion in
-2010\textsuperscript{26}.
+2021. AUD problems have also brought huge economic burdens to the U.S.,
+where excessive alcohol use has cost \$223.5 billion in 2006 and \$249
+billion in 2010\textsuperscript{23}.
 
-Despite the high prevalence of AUD, few are able to access alcohol
-treatments due to various barriers. Only a small portion (7.6\%) of
+Despite the high prevalence of AUD, limited number of individuals are
+able to access alcohol treatments. Only a small portion (7.6\%) of
 individuals aged 12 or older with AUD received alcohol use treatment in
-the past year\textsuperscript{1,2}. A systematic review study has
-identified three major sources of barriers: shame and stigma, lack of
-awareness in treatment need, and fear of giving up
-drinking\textsuperscript{27}. Several studies have identified that AUD
-patients face financial barriers\textsuperscript{6,7}, lack of knowledge
-or awareness\textsuperscript{28,29}, social
-stigma\textsuperscript{30--32}, and geographical
-barriers\textsuperscript{33} for accessing care. Individuals with
+the past year\textsuperscript{1,2}. This lack of access to treatment
+options is even more pronounced for individuals from disadvantaged
+groups. Disparities in treatment-seeking behavior based on race, gender,
+and age are evident\textsuperscript{3--8}. Only 6.6\% of Black or
+African-American people, 3.8\% of people of two or more races, and 4.8\%
+of Hispanic or Latino people with past-year AUD received
+treatments\textsuperscript{1,2}. Women are less likely to obtain
+treatments compared to men, even if they have equivalent level of
+perceived need for help\textsuperscript{24}.
+
+Several obstacles hinder people's utilization of treatment options.
+Previous studies have identified that AUD patients face financial
+barriers\textsuperscript{6,7}, lack of knowledge or
+awareness\textsuperscript{25--27}, social
+stigma\textsuperscript{27--30}, and geographical
+barriers\textsuperscript{31} for accessing care. Individuals with
 disadvantaged demographic background suffer from even heightened
 barriers to treatment resources. Women with high severity of alcohol use
 face larger fear of stigma compared to their male
-counterparts\textsuperscript{31}. Disparities in treatment-seeking
-behavior based on race, gender, and age are also
-evident\textsuperscript{3--8}.
+counterparts\textsuperscript{29}.
 
 DTx is an emerging tool that shows promising potentials in addressing
 extant challenges AUD patients face in accessing alcohol treatments. DTx
 are evidence-based health software that generate or deliver medical
 intervention to patients at the goal of treating, alleviating, or
 managing a disease or disorder. They show effectiveness in treating
-mental health conditions and demonstrate clear clinical
-advantages\textsuperscript{34,35}. Further, DTx show significant
-potentials in reaching hard-to-reach populations, including those from
-socially marginalized group who encounter increased barriers to access
-treatment. They can benefit patients from rural areas with low provider
-availability as they are accessible remotely via mobile phones, tablets,
-or other devices\textsuperscript{10,36}. DTx also show potentials to
-relieve barriers to seek professional help resulting from stigma
-concerns as they can facilitate anonymity and shorten the need for
-in-person interactions. They are of lower costs compared to in person
-care and have the capacity to be scalable.
+mental health conditions including AUD and demonstrate clear clinical
+advantages\textsuperscript{32--34}. Further, DTx show significant
+potentials in approaching hard-to-reach populations, including those
+from socially marginalized group who encounter increased barriers to
+access treatment. They can benefit patients from rural areas with low
+provider availability as they are accessible remotely via mobile
+phones\textsuperscript{10,35}. DTx also show potentials to relieve
+barriers to seek professional help resulting from stigma concerns as
+they can facilitate anonymity and shorten the need for in-person
+interactions. They are of lower costs compared to in person care and
+have the capacity to be scalable.
 
-Benefits of DTx can be further extended to achieve risk monitoring and
-treatment recommendation through incorporating personal sensing
-technology and machine learning algorithms. With implemented algorithms
-for relapse prevention, DTx can identify \emph{who} are at heightened
-risks of lapsing, \emph{when} they will lapse, and \emph{why} they are
-at increased risks. Notably, these functions are very important given
-the dynamic nature of alcohol relapse. AUD is a chronic disease where
-patients face constant challenges of relapsing after
-abstinence\textsuperscript{37,38}. Indeed, current work has expanded the
-relapse prevention model to reflect the temporal, multifaceted, and
-dynamic process of alcohol relapse\textsuperscript{39}. The model now
-categorizes alcohol relapse precursors into two classes -- distal
-factors and proximal factors\textsuperscript{39--41}. Distal factors
-refers to stable individual traits such as socioeconomic status and
-education background. Proximal factors (e.g., drinking partner, drinking
-behavior) are situated and can be fluctuating over time. Proximal
-factors usually occurs before an episode of alcohol
-use\textsuperscript{42}. They can be elusive to therapists' attention
+Benefits of DTx can be further extended to develop ``smart'' DTx by
+incorporating machine learning algorithms into the app. The goal of
+smart DTx is to identify \emph{who} are at heightened risks of
+relapsing, \emph{when} they will relapse, and \emph{why} they are at
+increased risks. Through the embedded algorithms, smart DTx can achieve
+two tasks: 1) continuous AUD relapse risk-monitoring; and 2)
+individualized, just-in-time treatment recommendations when needed.
+Notably, these functions are very important given the dynamic nature of
+alcohol relapse. AUD is a chronic disease where patients face constant
+challenges of relapsing after abstinence\textsuperscript{36,37}. Indeed,
+current work has expanded the relapse prevention model to reflect the
+temporal, multifaceted, and dynamic process of alcohol
+relapse\textsuperscript{38}.
+
+To build such machine learning algorithms, it is crucial to quantify
+relapse risks (i.e., the outcome variable). A universally accepted
+formal operational definition of alcohol relapse has not yet been
+established due to the multidimensional nature of
+relapses\textsuperscript{39}. Relapse usually refers to the return of a
+symptomatic behavior. Current perspectives on conceptualization of
+alcohol relapse are too complicated and can encompass: 1) the level of
+alcohol consumed; 2) time of abstinence or reduced use; and 3) negative
+consequences related to use. It is hard to be implemented in machine
+learning models because relapse is not temporally precise -- it is hard
+to clearly identify when the onset of relapse is. In this study, we
+utilize lapse (i.e., a single episode of alcohol use) as our primary
+outcome variable. Lapses are easy to define, have a clear onset, and are
+also clinically meaningful. They can serve as an early warning sign of
+failure to sustain a desired behavioral change\textsuperscript{40,41}.
+Research has shown that initial lapse and frequent lapses are the
+associated with enhanced risks of relapses\textsuperscript{42,43}.
+
+{[}expand{]}Features used to build machine learning models should be
+easy to measure. The widespread availability of smartphones has rendered
+constant data collection with DTx attainable. Previous research has
+established satisfying acceptability of self-report measures and passive
+sensing (e.g., GPS data collection)\textsuperscript{16}.
+
+Desirable features should have good predictability. Methods relying on a
+top-down approach might be robust in predicting lapses. It involves
+integrating domain-specific knowledge of known risks for alcohol lapses
+from a relapse prevention model into the algorithms. Such features are
+multifaceted and might involve affect state, social interactions, and
+alcohol-related factors. For instance, the majority of an inpatient teen
+sample reported initial relapse to alcohol when offered alcohol, when in
+negative state, and when in interpersonal conflicts\textsuperscript{44}.
+Other commonly found risk factors include alcohol
+craving\textsuperscript{45,46}, negative affect
+state\textsuperscript{45}, cognitive factors\textsuperscript{45}, and
+interpersonal problem\textsuperscript{45}.
+
+Risk-monitoring algorithms should also have temporal granularity given
+the dynamic nature of alcohol relapse risks. Smart DTx algorithms with
+good temporal precision should consistently collect data on situated,
+risk-relevant predictors. Exemplary features with good temporal
+precision might involve the proximal factors depicted in the relapse
+prevention model\textsuperscript{38,47,48}. Proximal factors (e.g.,
+drinking partner, drinking behavior) are situated and can be fluctuating
+over time. They usually occurs before an episode of alcohol
+use\textsuperscript{49}. They can be elusive to therapists' attention
 due to infrequent visits, highlighting importance of sustained
 monitoring to prevent lapses.
 
-One critical question when building such machine learning algorithms is
-to pick which outcome to predict. A universally accepted formal
-operational definition of alcohol relapse has not yet been established
-due to the multidimensional nature of relapses\textsuperscript{43}.
-Relapse usually refers to the return of a symptomatic behavior. Current
-perspectives on conceptualization of alcohol relapse can encompass: 1)
-the level of alcohol consumed; 2) time of abstinence or reduced use; and
-3) negative consequences related to use. In this study, our primary
-outcome is focused on lapse, defined as a single episode of alcohol use.
-Lapses can serve as an early warning sign of failure to sustain a
-desired behavioral change\textsuperscript{44,45}. Research has shown
-that initial lapse and frequent lapses are the associated with enhanced
-risks of relapses\textsuperscript{46,47}.
+Useful machine learning algorithms are capable of identifying
+unrecognized risk factors for lapses. Researchers could adopt a
+bottom-up approach without pre-specified indexes when building models.
+It starts with collecting data from various sources and then analyzes
+them at a granular level and extracts relevant features. This method is
+less susceptible to our knowledge gaps and might even discover
+previously unfound underlying processes contributing to alcohol lapses.
+We might even expect less differential performance under the bottom up
+approach across privileged vs.~unprivileged groups because the features
+are not drawn from past research dominated by White males with AUD and
+are thus potentially unbiased towards privileged groups.
 
-Another crucial question in lapse risk prediction is determining which
-predictors to input into the algorithms. One potential method relies on
-a top-down approach that involves integrating domain-specific knowledge
-from a relapse prevention model into the algorithms. Alcohol relapse
-risk factors are multifaceted and might involve affect state, social
-interactions, and alcohol-related factors. For instance, the majority of
-an inpatient teen sample reported initial relapse to alcohol when
-offered alcohol, when in negative state, and when in interpersonal
-conflicts\textsuperscript{48}. Other commonly found risk factors include
-alcohol craving\textsuperscript{49,50}, negative affect
-state\textsuperscript{49}, cognitive factors\textsuperscript{49}, and
-interpersonal problem\textsuperscript{49}. Alternatively, researchers
-could adopt a bottom-up approach without pre-specified indexes when
-building models. It starts with collecting data from various sources and
-then analyzes them at a granular level and extracts relevant features.
-This method is less susceptible to our knowledge gaps and might even
-discover previously unfound underlying processes contributing to alcohol
-lapses. We might even expect less differential performance under the
-bottom up approach across privileged vs.~unprivileged groups because the
-features are not drawn from past research dominated by White males with
-AUD and are thus potentially unbiased towards privileged groups.
+The models should also be interpretable and map on to current
+interventions. It can be achieved through integrating interpretable
+features when training models. Exemplary features might include social
+relationship, which might have important implications for family or
+marital counseling. Computational methods can also be used to enhance
+model interpretability. For instance, we can examine global feature
+importance to determine which features contribute the most to predict
+lapses. Further, examining local feature importance (i.e., features
+influencing a single observation) in these models might also be helpful
+for model interpretation. They have benefits of identifying the factors
+that contribute to lapse risk for any specific person and moment in
+time.
 
-Importantly, one of the key benefits of DTx is that they partially
-address barriers accessing professional help by providing 24/7/365,
-affordable, personalized support. However, they might exacerbate health
-inequity if embedded algorithms perform relatively worse for less
-privileged groups. One possible explanation of differential performance
-across subgroups might stem from the under-representation of
-unprivileged groups in the dataset. It is therefore important to recruit
-a diverse sample in the training dataset. Another reason for divergent
-model performance between subgroups might be owing to the predictors we
-feed the algorithms. Unbiased predictors should be carefully selected
-during model training.
+Importantly, the algorithms should also be unbiased towards
+disadvantaged groups. One of the key benefits of DTx is that they
+partially address barriers accessing professional help by providing
+24/7/365, affordable, personalized support. However, they might
+exacerbate health inequity if embedded algorithms perform relatively
+worse for less privileged groups. One possible explanation of
+differential performance across subgroups might stem from the
+under-representation of unprivileged groups in the dataset. It is
+therefore important to recruit a diverse sample in the training dataset.
+Another reason for divergent model performance between subgroups might
+be owing to the predictors we feed the algorithms. Unbiased predictors
+should be carefully selected during model training.
 
-Recent DTx work has found that EMA measures can yield satisfactory
-performance in predicting lapses. Our group developed an XGBoost machine
+Recent DTx work has yielded satisfactory performance in predicting
+lapses with EMA measures. Our group developed an XGBoost machine
 learning model built upon self-reported craving, affect, efficacy, risky
 situations, stressful events, pleasant events to predict alcohol lapses
-in the next hour, day, or week\textsuperscript{51}. The surveys were
+in the next hour, day, or week\textsuperscript{50}. The surveys were
 collected up to four times daily for three months. The model achieved
 exceptional performance when predicting lapses for new individuals, with
 a mean auROC score of .89, .90 and .93 for the hour-, day-, and
-week-level model respectively. We also further examined global feature
-importance and discovered that past alcohol use and future self-efficacy
-consistently contributed greatly across all models to predict lapses.
-Examining local feature importance in these models might is also capable
-of identifying the factors that contribute to lapse risk for any
-specific person and moment in time.
+week-level model respectively. Global feature importance demonstrated
+that past alcohol use and future self-efficacy consistently contributed
+greatly across all models to predict lapses.
 
-Notheless, relying on EMA measures for model building is associated with
-several limitations. First, the burden of constantly completing surveys
-makes it sustainably infeasible for real-world DTx use. Most EMA
-relevant mental health research time windows last from two weeks to
-three months\textsuperscript{52--56}, which is insufficient for
-real-world DTx use. As extended period of time of app use is
-anticipated, users' perceived burden of answering surveys is presumably
-larger\textsuperscript{57}. Although minimizing the number of items in
-the surveys and the frequency of prompting users to complete the surveys
-might help mitigate the associated burden, it can inevitably reduce the
-prediction precision and temporal precision of algorithms.
+Nonetheless, relying on EMA measures for model building is associated
+with several limitations. First, constantly completing surveys makes it
+burdensome for real-world DTx use. Although most EMA relevant mental
+health research demonstrated modest compliance rates, their time windows
+last from two weeks to three months\textsuperscript{51--55}. The study
+length is insufficient for real-world DTx use. As extended period of
+time of app use is anticipated, users' perceived burden of answering
+surveys is presumably larger\textsuperscript{56}. Although minimizing
+the number of items in the surveys and the frequency of prompting users
+to complete the surveys might help mitigate the associated burden, it
+can inevitably reduce the prediction precision and temporal precision of
+algorithms.
 
 Second, decisions regarding what constructs to assess and what items to
 include to assess these constructs are limited by theory and past data.
@@ -442,58 +474,56 @@ applied to DTx. Unfortunately, our current understanding of alcohol
 relapse precursors is not comprehensive, especially for proximal
 factors. For example, Marlatt's proposed taxonomy characterizes
 high-risk situational precursors to alcohol relapse such as social
-pressure and positive/negative emotional state\textsuperscript{58}.
+pressure and positive/negative emotional state\textsuperscript{57}.
 Nonetheless, replication studies have found this theoretical framework
 to be somewhat unreliable and have low predictive validity of
-post-treatment outcomes\textsuperscript{59--61}. Further, while there is
-a growing recognition of the intricate interplay between distal and
-proximal factors in the relapse process, more evidence is needed to
-support this theoretical construct. A review study has also identified
-methodological constraints in aggregated alcohol research, highlight
-that there was a dearth of ``near real-time'' data capturing proximal
-factors in alcohol relapses\textsuperscript{40}.
+post-treatment outcomes\textsuperscript{58--60}. A review study also
+suggests that current proximal factors are not well-understood in past
+research due to methodological constraints and a death of ``near
+real-time'' data\textsuperscript{47}.
 
 Text sensing technology, which is both feasible and sustainable,
 represents new opportunities in DTx that might address limitations of
 the current active reporting approach. Since AUD is a chronic condition
 requiring ongoing risk monitoring over an extended period, DTx can
 benefit from SMS sensing because it places a low burden on users and
-allows for continuous data collection. EMA studies collecting passive
-data have demonstrated high acceptability from participants and higher
-compliance rates compared to active measures\textsuperscript{9,16}. Risk
-monitoring using SMS sensing is temporally sensitive to fluctuating
-risks as it can detect potential triggers in messages in time without
-actively prompting users to reflect on their feelings at the moment or
-report their environment.
+allows for continuous data collection. Studies collecting passive data
+have demonstrated high acceptability from participants and higher
+compliance rates compared to active measures\textsuperscript{9,16}.
+Further, risk monitoring using SMS sensing is temporally sensitive to
+fluctuating risks. Analyzing text messages can detect potential triggers
+in time without actively prompting users to reflect on their feelings at
+the moment or report their environment.
 
 With the burgeoning of NLP techniques, language analysis is
-well-equipped with diverse feature engineering tools to accomplish
-multiple tasks including prediction of alcohol-related outcomes in new
-individuals. Some might have good performance because they allow
-researchers to mine previously established robust construct of alcohol
-lapse precursors from SMS messages and incorporate them in training
-algorithms. For example, a bag-of-words approach using customized
-dictionary might allow researchers to mine alcohol-related content from
-messages such as alcohol cravings. Sentiment analysis can also enable
-researchers to assess individuals' affect state. Further, some NLP
-methods follow a bottom-up approach and are therefore less susceptible
-to limitations in past research. For example, topic modeling techniques
-such as Latent Dirichlet Analysis (LDA) and Latent Semantic Analysis
-(LSA) can examine patterns in SMS messages and identify clusters of
-topics from the data. Word embeddings approach transforms words into
-vectors with high dimension space.
+well-equipped with diverse feature engineering tools to have good
+predictability with temporal specificity for alcohol lapses in new
+individuals. Some top-down methods might have good performance because
+they allow researchers to mine previously established robust construct
+of alcohol lapse precursors. For example, a bag-of-words approach using
+customized dictionary might allow researchers to mine alcohol-related
+content from messages such as alcohol cravings. Sentiment analysis can
+also enable researchers to assess individuals' affect state. Further,
+some NLP methods follow a bottom-up approach. They might identify new
+alcohol lapse precursors and are less susceptible to limitations in past
+research. For example, topic modeling techniques such as Latent
+Dirichlet Analysis (LDA) and Latent Semantic Analysis (LSA) can examine
+patterns in SMS messages and identify clusters of topics from the data.
+Word embeddings approach transforms words into vectors with high
+dimension space.
 
-NLP also offers avenues for model interpretation, which is critical in
-DTx applications as it may yield valuable insights into treatment
-recommendations. Although some feature engineering techniques (e.g.,
-word embeddings) might reveal arbitrary features that is
-incomprehensible, some can still mine features that are interpretable.
-Assessing feature importance helps us understand how features contribute
-to the models (i.e., which are robust in predicting lapses). For
-example, global feature importance can identify features robust across
+NLP also offers avenues for model interpretation to yield valuable
+insights into treatment recommendations. Although some feature
+engineering techniques (e.g., word embeddings) might reveal arbitrary
+features that is incomprehensible, some can still mine features that can
+be potentially interpretable (e.g., topic clustering). Assessing their
+feature importance helps us understand how features contribute to the
+models (i.e., which features are robust in predicting lapses). For
+example, global feature importance can identify robust predictors across
 individuals in predicting lapses. Local feature importance provides
 insights on what contributes to a lapse for a specific person at a
-specific time.
+specific time. They can be useful in personalized, just-in-time
+treatment recommendations.
 
 \newpage
 
@@ -672,9 +702,9 @@ common words.
 
 Research has found that positive/negative emotional state to be
 associated with increased alcohol relapse
-risks\textsuperscript{40,48,49}. Sentiment Analysis infers the emotional
+risks\textsuperscript{44,45,47}. Sentiment Analysis infers the emotional
 underpinning of texts. I will use the \emph{nrc} package available in R
-to mine emotional tone in SMS messages\textsuperscript{62}. Nrc is a
+to mine emotional tone in SMS messages\textsuperscript{61}. Nrc is a
 built-in dictionary that assigns a binary label (yes/no) to each lexicon
 (i.e., single word) into categories of positive and negative sentiment,
 as well as the eight basic emotions -- anger, fear, anticipation, trust,
@@ -708,7 +738,7 @@ all messages and can highlight words that contain important information.
 Word embeddings are vectors that represent relationships of words within
 a document in a lower-dimension. I will use the pre-trained
 Bidirectional Encoder Representations from Transformers
-(BERT)\textsuperscript{63} to transform SMS messages into such
+(BERT)\textsuperscript{62} to transform SMS messages into such
 machine-readable vectors. They are capable of capturing embedded
 semantic structure within a neural network architecture. They take into
 account the context of where a word is (i.e., word tokens before and
@@ -719,14 +749,14 @@ after the target word).
 A bag-of-words approach represents word occurrences inside a document.
 This study will expand this total word count approach by using
 customized dictionaries built upon the LIWC
-dictionary\textsuperscript{64} and compute score by counting frequency
+dictionary\textsuperscript{63} and compute score by counting frequency
 of words that belong to each category. LIWC aligns with the current
 alcohol relapse risk factor literature in that it examines psychometric
 properties including cognitive state and social
-processes\textsuperscript{48,49,49}. In addition to these linguistic
+processes\textsuperscript{44,45,45}. In addition to these linguistic
 categories, we will also include customized alcohol-related category as
 predictors as previous research has found them to be robust indicators
-of alcohol lapses\textsuperscript{49,50}.
+of alcohol lapses\textsuperscript{45,46}.
 
 \subsection{Candidate Machine Learning Algorithms and Model
 Training}\label{candidate-machine-learning-algorithms-and-model-training}
@@ -960,48 +990,24 @@ Meaning} of {Words}: {LIWC} and {Computerized Text Analysis Methods}}.
 Journal of Language and Social Psychology. SAGE Publications Inc; 2010
 Mar;29(1):24--54. }
 
-\bibitem[\citeproctext]{ref-lipariTrendsSubstanceUse2013}
-\CSLLeftMargin{23. }%
-\CSLRightInline{Lipari RN, Van Horn SL. Trends in {Substance Use
-Disorders Among Adults Aged} 18 or {Older}. The {CBHSQ Report}.
-Rockville (MD): {Substance Abuse and Mental Health Services
-Administration (US)}; 2013. PMID:
-\href{https://www.ncbi.nlm.nih.gov/pubmed/28792721}{28792721}}
-
-\bibitem[\citeproctext]{ref-patrickAlcoholUseCOVID192022}
-\CSLLeftMargin{24. }%
-\CSLRightInline{Patrick ME, Terry-McElrath YM, Miech RA, Keyes KM, Jager
-J, Schulenberg JE.
-\href{https://doi.org/10.1016/j.socscimed.2022.114887}{Alcohol use and
-the {COVID-19} pandemic: {Historical} trends in drinking, contexts, and
-reasons for use among {U}.{S}. adults}. Social Science \& Medicine. 2022
-May;301:114887. }
-
-\bibitem[\citeproctext]{ref-yeoEvaluationTrendsAlcohol2022}
-\CSLLeftMargin{25. }%
-\CSLRightInline{Yeo YH, He X, Ting PS, Zu J, Almario CV, Spiegel BMR, Ji
-F. \href{https://doi.org/10.1001/jamanetworkopen.2022.10259}{Evaluation
-of {Trends} in {Alcohol Use Disorder}--{Related Mortality} in the {US
-Before} and {During} the {COVID-19 Pandemic}}. JAMA Network Open. 2022
-May;5(5):e2210259. }
-
 \bibitem[\citeproctext]{ref-sacks2010NationalState2015a}
-\CSLLeftMargin{26. }%
+\CSLLeftMargin{23. }%
 \CSLRightInline{Sacks JJ, Gonzales KR, Bouchery EE, Tomedi LE, Brewer
 RD. 2010 {National} and {State Costs} of {Excessive Alcohol
 Consumption}. American Journal of Preventive Medicine. 2015
 Nov;49(5):e73--e79. PMID:
 \href{https://www.ncbi.nlm.nih.gov/pubmed/26477807}{26477807}}
 
-\bibitem[\citeproctext]{ref-mayBarriersTreatmentAlcohol2019}
-\CSLLeftMargin{27. }%
-\CSLRightInline{May C, Nielsen AS, Bilberg R.
-\href{https://doi.org/10.4303/jdar/236083}{Barriers to {Treatment} for
-{Alcohol Dependence}}. Journal of Drug and Alcohol Research.
-2019;8(236083). }
+\bibitem[\citeproctext]{ref-gilbertGenderDifferencesUse2019b}
+\CSLLeftMargin{24. }%
+\CSLRightInline{Gilbert PA, Pro G, Zemore SE, Mulia N, Brown G. Gender
+{Differences} in {Use} of {Alcohol Treatment Services} and {Reasons} for
+{Non-Use} in a {National Sample}. Alcoholism, clinical and experimental
+research. 2019 Apr;43(4):722--731. PMCID:
+\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6443428}{PMC6443428}}
 
 \bibitem[\citeproctext]{ref-williamsBarriersFacilitatorsAlcohol2018}
-\CSLLeftMargin{28. }%
+\CSLLeftMargin{25. }%
 \CSLRightInline{Williams EC, Achtmeyer CE, Young JP, Berger D, Curran G,
 Bradley KA, Richards J, Siegel MB, Ludman EJ, Lapham GT, Forehand M,
 Harris AHS. \href{https://doi.org/10.1007/s11606-017-4202-z}{Barriers to
@@ -1010,15 +1016,22 @@ Care}: {A Qualitative Study} in {Five VA Clinics}}. Journal of General
 Internal Medicine. 2018 Mar;33(3):258--267. }
 
 \bibitem[\citeproctext]{ref-probstAlcoholUseDisorder2015}
-\CSLLeftMargin{29. }%
+\CSLLeftMargin{26. }%
 \CSLRightInline{Probst C, Manthey J, Martinez A, Rehm J.
 \href{https://doi.org/10.1186/s13011-015-0028-z}{Alcohol use disorder
 severity and reported reasons not to seek treatment: A cross-sectional
 study in {European} primary care practices}. Substance Abuse Treatment,
 Prevention, and Policy. 2015 Aug;10(1):32. }
 
+\bibitem[\citeproctext]{ref-mayBarriersTreatmentAlcohol2019}
+\CSLLeftMargin{27. }%
+\CSLRightInline{May C, Nielsen AS, Bilberg R.
+\href{https://doi.org/10.4303/jdar/236083}{Barriers to {Treatment} for
+{Alcohol Dependence}}. Journal of Drug and Alcohol Research.
+2019;8(236083). }
+
 \bibitem[\citeproctext]{ref-sedarousCultureStigmaInequities2023}
-\CSLLeftMargin{30. }%
+\CSLLeftMargin{28. }%
 \CSLRightInline{Sedarous M, Flemming JA.
 \href{https://doi.org/10.1097/CLD.0000000000000026}{Culture, stigma, and
 inequities creating barriers in alcohol use disorder management in
@@ -1026,7 +1039,7 @@ alcohol-associated liver disease}. Clinical Liver Disease. 2023
 May;21(5):130. }
 
 \bibitem[\citeproctext]{ref-finnPerceivedBarriersSeeking2023}
-\CSLLeftMargin{31. }%
+\CSLLeftMargin{29. }%
 \CSLRightInline{Finn SW, Mejldal A, Nielsen AS.
 \href{https://doi.org/10.1186/s13690-023-01085-4}{Perceived barriers to
 seeking treatment for alcohol use disorders among the general {Danish}
@@ -1034,7 +1047,7 @@ population -- a cross sectional study on the role of severity of alcohol
 use and gender}. Archives of Public Health. 2023 Apr;81(1):65. }
 
 \bibitem[\citeproctext]{ref-wallhedfinnAlcoholConsumptionDependence2014}
-\CSLLeftMargin{32. }%
+\CSLLeftMargin{30. }%
 \CSLRightInline{Wallhed Finn S, Bakshi AS, Andréasson S. Alcohol
 {Consumption}, {Dependence}, and {Treatment Barriers}: {Perceptions
 Among Nontreatment Seekers} with {Alcohol Dependence}. Substance Use \&
@@ -1042,7 +1055,7 @@ Misuse. Taylor \& Francis; 2014 May;49(6):762--769. PMID:
 \href{https://www.ncbi.nlm.nih.gov/pubmed/24601784}{24601784}}
 
 \bibitem[\citeproctext]{ref-gregoryFirstlineMedicationsOutpatient2022}
-\CSLLeftMargin{33. }%
+\CSLLeftMargin{31. }%
 \CSLRightInline{Gregory C, Chorny Y, McLeod SL, Mohindra R.
 \href{https://doi.org/10.1097/ADM.0000000000000918}{First-line
 {Medications} for the {Outpatient Treatment} of {Alcohol Use Disorder}:
@@ -1050,7 +1063,7 @@ Misuse. Taylor \& Francis; 2014 May;49(6):762--769. PMID:
 Medicine. 2022 Feb; }
 
 \bibitem[\citeproctext]{ref-philippeDigitalHealthInterventions2022}
-\CSLLeftMargin{34. }%
+\CSLLeftMargin{32. }%
 \CSLRightInline{Philippe TJ, Sikder N, Jackson A, Koblanski ME, Liow E,
 Pilarinos A, Vasarhelyi K. \href{https://doi.org/10.2196/35159}{Digital
 {Health Interventions} for {Delivery} of {Mental Health Care}:
@@ -1058,15 +1071,24 @@ Pilarinos A, Vasarhelyi K. \href{https://doi.org/10.2196/35159}{Digital
 Publications Inc., Toronto, Canada; 2022 May;9(5):e35159. }
 
 \bibitem[\citeproctext]{ref-lecomteMobileAppsMental2020}
-\CSLLeftMargin{35. }%
+\CSLLeftMargin{33. }%
 \CSLRightInline{Lecomte T, Potvin S, Corbière M, Guay S, Samson C,
 Cloutier B, Francoeur A, Pennou A, Khazaal Y.
 \href{https://doi.org/10.2196/17458}{Mobile {Apps} for {Mental Health
 Issues}: {Meta-Review} of {Meta-Analyses}}. JMIR mHealth and uHealth.
 JMIR Publications Inc., Toronto, Canada; 2020 May;8(5):e17458. }
 
+\bibitem[\citeproctext]{ref-gustafsonSmartphoneApplicationSupport2014b}
+\CSLLeftMargin{34. }%
+\CSLRightInline{Gustafson DH, McTavish FM, Chih MY, Atwood AK, A.
+Johnson R, G. Boyle M, S. Levy M, Driscoll H, M. Chisholm S, Dillenburg
+L, Isham A, Shah D. A smartphone application to support recovery from
+alcoholism: {A} randomized controlled trial. JAMA psychiatry. 2014
+May;71(5):566--572. PMCID:
+\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4016167}{PMC4016167}}
+
 \bibitem[\citeproctext]{ref-bucciTheyAreNot2019}
-\CSLLeftMargin{36. }%
+\CSLLeftMargin{35. }%
 \CSLRightInline{Bucci S, Berry N, Morris R, Berry K, Haddock G, Lewis S,
 Edge D. \href{https://doi.org/10.3389/fpsyt.2019.00344}{{``{They Are Not
 Hard-to-Reach Clients}. {We Have Just Got Hard-to-Reach Services}.''}
@@ -1074,58 +1096,35 @@ Hard-to-Reach Clients}. {We Have Just Got Hard-to-Reach Services}.''}
 Services}.} Frontiers in Psychiatry. Frontiers; 2019 May;10. }
 
 \bibitem[\citeproctext]{ref-scottPathwaysRelapseTreatment2005}
-\CSLLeftMargin{37. }%
+\CSLLeftMargin{36. }%
 \CSLRightInline{Scott CK, Foss MA, Dennis ML. Pathways in the
 relapse--treatment--recovery cycle over 3 years. Journal of Substance
 Abuse Treatment. 2005;28 Suppl 1:S63--72. PMID:
 \href{https://www.ncbi.nlm.nih.gov/pubmed/15797640}{15797640}}
 
 \bibitem[\citeproctext]{ref-anderssonRelapseInpatientSubstance2019}
-\CSLLeftMargin{38. }%
+\CSLLeftMargin{37. }%
 \CSLRightInline{Andersson HW, Wenaas M, Nordfjærn T. Relapse after
 inpatient substance use treatment: {A} prospective cohort study among
 users of illicit substances. Addictive Behaviors. 2019 Mar;90:222--228.
 PMID: \href{https://www.ncbi.nlm.nih.gov/pubmed/30447514}{30447514}}
 
 \bibitem[\citeproctext]{ref-witkiewitzModelingComplexityPosttreatment2007a}
-\CSLLeftMargin{39. }%
+\CSLLeftMargin{38. }%
 \CSLRightInline{Witkiewitz K, Marlatt GA.
 \href{https://doi.org/10.1016/j.cpr.2007.01.002}{Modeling the complexity
 of post-treatment drinking: {It}'s a rocky road to relapse}. Clinical
 Psychology Review. 2007 Jul;27(6):724--738. }
 
-\bibitem[\citeproctext]{ref-mckayConceptualMethodologicalAnalytical2006b}
-\CSLLeftMargin{40. }%
-\CSLRightInline{McKay JR, Franklin TR, Patapis N, Lynch KG. Conceptual,
-methodological, and analytical issues in the study of relapse. Clinical
-Psychology Review. 2006 Mar;26(2):109--127. PMID:
-\href{https://www.ncbi.nlm.nih.gov/pubmed/16371242}{16371242}}
-
-\bibitem[\citeproctext]{ref-feingoldProximalVsDistal2015}
-\CSLLeftMargin{41. }%
-\CSLRightInline{Feingold A, Capaldi DM, Owen LD. Proximal vs. Distal
-predictors of alcohol use disorders and treatment utilization in at-risk
-men in early middle age. Comprehensive psychiatry. 2015 Aug;61:64--71.
-PMCID:
-\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4758988}{PMC4758988}}
-
-\bibitem[\citeproctext]{ref-chihPredictiveModelingAddiction2014a}
-\CSLLeftMargin{42. }%
-\CSLRightInline{Chih MY, Patton T, McTavish FM, Isham AJ, Judkins-Fisher
-CL, Atwood AK, Gustafson DH. Predictive modeling of addiction lapses in
-a mobile health application. Journal of Substance Abuse Treatment. 2014
-Jan;46(1):29--35. PMCID:
-\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3963148}{PMC3963148}}
-
 \bibitem[\citeproctext]{ref-millerWhatRelapseFifty1996}
-\CSLLeftMargin{43. }%
+\CSLLeftMargin{39. }%
 \CSLRightInline{Miller WR.
 \href{https://doi.org/10.1046/j.1360-0443.91.12s1.6.x}{What is a
 relapse? {Fifty} ways to leave the wagon}. Addiction.
 1996;91(12s1):15--28. }
 
 \bibitem[\citeproctext]{ref-chungRelapseAlcoholOther2006a}
-\CSLLeftMargin{44. }%
+\CSLLeftMargin{40. }%
 \CSLRightInline{Chung T, Maisto SA.
 \href{https://doi.org/10.1016/j.cpr.2005.11.004}{Relapse to alcohol and
 other drug use in treated adolescents: {Review} and reconsideration of
@@ -1133,20 +1132,20 @@ relapse as a change point in clinical course}. Clinical Psychology
 Review. 2006 Mar;26(2):149--161. }
 
 \bibitem[\citeproctext]{ref-marlattRelapsePreventionMaintenance2005a}
-\CSLLeftMargin{45. }%
+\CSLLeftMargin{41. }%
 \CSLRightInline{Marlatt GA, Donovan DM, editors. Relapse prevention:
 {Maintenance} strategies in the treatment of addictive behaviors, 2nd
 ed. New York, NY, US: The Guilford Press; 2005. p. xiv, 416. }
 
 \bibitem[\citeproctext]{ref-witkiewitzRelapsePreventionAlcohol2004b}
-\CSLLeftMargin{46. }%
+\CSLLeftMargin{42. }%
 \CSLRightInline{Witkiewitz K, Marlatt GA. Relapse prevention for alcohol
 and drug problems: That was {Zen}, this is {Tao}. The American
 Psychologist. 2004;59(4):224--235. PMID:
 \href{https://www.ncbi.nlm.nih.gov/pubmed/15149263}{15149263}}
 
 \bibitem[\citeproctext]{ref-hogstrombrandtPredictionSingleEpisodes1999a}
-\CSLLeftMargin{47. }%
+\CSLLeftMargin{43. }%
 \CSLRightInline{Högström Brandt AM, Thorburn D, Hiltunen AJ, Borg S.
 Prediction of single episodes of drinking during the treatment of
 alcohol-dependent patients. Alcohol (Fayetteville, NY). 1999
@@ -1154,14 +1153,14 @@ May;18(1):35--42. PMID:
 \href{https://www.ncbi.nlm.nih.gov/pubmed/10386663}{10386663}}
 
 \bibitem[\citeproctext]{ref-brownCharacteristicsRelapseFollowing1989}
-\CSLLeftMargin{48. }%
+\CSLLeftMargin{44. }%
 \CSLRightInline{Brown SA, Vik PW, Creamer VA.
 \href{https://doi.org/10.1016/0306-4603(89)90060-9}{Characteristics of
 relapse following adolescent substance abuse treatment}. Addictive
 Behaviors. 1989 Jan;14(3):291--300. }
 
 \bibitem[\citeproctext]{ref-mckayStudiesFactorsRelapse1999a}
-\CSLLeftMargin{49. }%
+\CSLLeftMargin{45. }%
 \CSLRightInline{McKay JR.
 \href{https://doi.org/10.15288/jsa.1999.60.566}{Studies of factors in
 relapse to alcohol, drug and nicotine use: A critical review of
@@ -1169,20 +1168,43 @@ methodologies and findings.} Journal of Studies on Alcohol. Alcohol
 Research Documentation, Inc.; 1999 Jul;60(4):566--576. }
 
 \bibitem[\citeproctext]{ref-korlakuntaReasonsRelapsePatients2012}
-\CSLLeftMargin{50. }%
+\CSLLeftMargin{46. }%
 \CSLRightInline{Korlakunta A, Chary SRS, Reddy PKC. Reasons for relapse
 in patients with alcohol dependence. Archives of Mental Health.
 2012-07/2012-12;13(2):108. }
 
+\bibitem[\citeproctext]{ref-mckayConceptualMethodologicalAnalytical2006b}
+\CSLLeftMargin{47. }%
+\CSLRightInline{McKay JR, Franklin TR, Patapis N, Lynch KG. Conceptual,
+methodological, and analytical issues in the study of relapse. Clinical
+Psychology Review. 2006 Mar;26(2):109--127. PMID:
+\href{https://www.ncbi.nlm.nih.gov/pubmed/16371242}{16371242}}
+
+\bibitem[\citeproctext]{ref-feingoldProximalVsDistal2015}
+\CSLLeftMargin{48. }%
+\CSLRightInline{Feingold A, Capaldi DM, Owen LD. Proximal vs. Distal
+predictors of alcohol use disorders and treatment utilization in at-risk
+men in early middle age. Comprehensive psychiatry. 2015 Aug;61:64--71.
+PMCID:
+\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4758988}{PMC4758988}}
+
+\bibitem[\citeproctext]{ref-chihPredictiveModelingAddiction2014a}
+\CSLLeftMargin{49. }%
+\CSLRightInline{Chih MY, Patton T, McTavish FM, Isham AJ, Judkins-Fisher
+CL, Atwood AK, Gustafson DH. Predictive modeling of addiction lapses in
+a mobile health application. Journal of Substance Abuse Treatment. 2014
+Jan;46(1):29--35. PMCID:
+\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3963148}{PMC3963148}}
+
 \bibitem[\citeproctext]{ref-wyantMachineLearningModels2023b}
-\CSLLeftMargin{51. }%
+\CSLLeftMargin{50. }%
 \CSLRightInline{Wyant K, Sant'Ana SJK, Fronk G, Curtin JJ.
 \href{https://doi.org/10.31234/osf.io/cgsf7}{Machine learning models for
 temporally precise lapse prediction in alcohol use disorder}. OSF; 2023.
 }
 
 \bibitem[\citeproctext]{ref-porras-segoviaSmartphonebasedEcologicalMomentary2020}
-\CSLLeftMargin{52. }%
+\CSLLeftMargin{51. }%
 \CSLRightInline{Porras-Segovia A, Molina-Madueño RM, Berrouiguet S,
 López-Castroman J, Barrigón ML, Pérez-Rodríguez MS, Marco JH,
 Díaz-Oliván I, de León S, Courtet P, Artés-Rodríguez A, Baca-García E.
@@ -1192,7 +1214,7 @@ student controls: {A} real-world feasibility study}. Journal of
 Affective Disorders. 2020 Sep;274:733--741. }
 
 \bibitem[\citeproctext]{ref-czyzEcologicalAssessmentDaily2018}
-\CSLLeftMargin{53. }%
+\CSLLeftMargin{52. }%
 \CSLRightInline{Czyz EK, King CA, Nahum-Shani I.
 \href{https://doi.org/10.1016/j.psychres.2018.06.031}{Ecological
 assessment of daily suicidal thoughts and attempts among suicidal teens
@@ -1200,7 +1222,7 @@ after psychiatric hospitalization: {Lessons} about feasibility and
 acceptability}. Psychiatry Research. 2018 Sep;267:566--574. }
 
 \bibitem[\citeproctext]{ref-vangenugtenExperiencedBurdenAdherence2020a}
-\CSLLeftMargin{54. }%
+\CSLLeftMargin{53. }%
 \CSLRightInline{van Genugten CR, Schuurmans J, Lamers F, Riese H,
 Penninx BWJH, Schoevers RA, Riper HM, Smit JH.
 \href{https://doi.org/10.3390/jcm9020322}{Experienced {Burden} of and
@@ -1209,7 +1231,7 @@ Penninx BWJH, Schoevers RA, Riper HM, Smit JH.
 Multidisciplinary Digital Publishing Institute; 2020 Feb;9(2):322. }
 
 \bibitem[\citeproctext]{ref-mackesy-amitiFeasibilityEcologicalMomentary2018}
-\CSLLeftMargin{55. }%
+\CSLLeftMargin{54. }%
 \CSLRightInline{Mackesy-Amiti ME, Boodram B.
 \href{https://doi.org/10.1016/j.drugalcdep.2018.03.016}{Feasibility of
 ecological momentary assessment to study mood and risk behavior among
@@ -1217,7 +1239,7 @@ young people who inject drugs}. Drug and Alcohol Dependence. 2018
 Jun;187:227--235. }
 
 \bibitem[\citeproctext]{ref-hungSmartphonebasedEcologicalMomentary2016}
-\CSLLeftMargin{56. }%
+\CSLLeftMargin{55. }%
 \CSLRightInline{Hung S, Li MS, Chen YL, Chiang JH, Chen YY, Hung GCL.
 \href{https://doi.org/10.1016/j.ajp.2016.08.003}{Smartphone-based
 ecological momentary assessment for {Chinese} patients with depression:
@@ -1225,7 +1247,7 @@ ecological momentary assessment for {Chinese} patients with depression:
 Oct;23:131--136. }
 
 \bibitem[\citeproctext]{ref-mogkImplementationWorkflowStrategies2023}
-\CSLLeftMargin{57. }%
+\CSLLeftMargin{56. }%
 \CSLRightInline{Mogk JM, Matson TE, Caldeiro RM, Garza Mcwethy AM,
 Beatty T, Sevey BC, Hsu CW, Glass JE.
 \href{https://doi.org/10.1186/s13722-023-00387-w}{Implementation and
@@ -1234,48 +1256,48 @@ disorders into primary care: {A} qualitative study}. Addiction Science
 \& Clinical Practice. BioMed Central Limited; 2023 May;18(1). }
 
 \bibitem[\citeproctext]{ref-marlattTaxonomyHighriskSituations1996a}
-\CSLLeftMargin{58. }%
+\CSLLeftMargin{57. }%
 \CSLRightInline{Marlatt GA.
 \href{https://doi.org/10.1046/j.1360-0443.91.12s1.15.x}{Taxonomy of
 high-risk situations for alcohol relapse: Evolution and development of
 a}. Addiction. 1996;91(12s1):37--50. }
 
 \bibitem[\citeproctext]{ref-lowmanReplicationExtensionMarlatt1996a}
-\CSLLeftMargin{59. }%
+\CSLLeftMargin{58. }%
 \CSLRightInline{Lowman C, Allen J, Stout RL, Group TRR.
 \href{https://doi.org/10.1046/j.1360-0443.91.12s1.16.x}{Replication and
 extension of {Marlatt}'s taxonomy of relapse precipitants: Overview of
 procedures and results}. Addiction. 1996;91(12s1):51--72. }
 
 \bibitem[\citeproctext]{ref-stoutPredictiveValidityMarlatt1996}
-\CSLLeftMargin{60. }%
+\CSLLeftMargin{59. }%
 \CSLRightInline{Stout RL, Longabaugh R, Rubin A.
 \href{https://doi.org/10.1046/j.1360-0443.91.12s1.20.x}{Predictive
 validity of {Marlatt}'s relapse taxonomy versus a more general relapse
 code}. Addiction. 1996;91(12s1):99--110. }
 
 \bibitem[\citeproctext]{ref-kaddenMarlattRelapseTaxonomy1996}
-\CSLLeftMargin{61. }%
+\CSLLeftMargin{60. }%
 \CSLRightInline{Kadden RM.
 \href{https://doi.org/10.1046/j.1360-0443.91.12s1.4.x}{Is {Marlatt}'s
 relapse taxonomy reliable or valid?} Addiction. 1996;91(12s1):139--146.
 }
 
 \bibitem[\citeproctext]{ref-mohammadCrowdsourcingWordEmotionAssociation2013}
-\CSLLeftMargin{62. }%
+\CSLLeftMargin{61. }%
 \CSLRightInline{Mohammad SM, Turney PD. Crowdsourcing a {Word-Emotion
 Association Lexicon} {[}Internet{]}. arXiv; 2013 {[}cited 2024 Mar
 31{]}. Available from: \url{https://arxiv.org/abs/1308.6297}}
 
 \bibitem[\citeproctext]{ref-devlinBERTPretrainingDeep2018}
-\CSLLeftMargin{63. }%
+\CSLLeftMargin{62. }%
 \CSLRightInline{Devlin J, Chang MW, Lee K, Toutanova K.
 \href{https://doi.org/10.48550/arXiv.1810.04805}{{BERT}: {Pre-training}
 of {Deep Bidirectional Transformers} for {Language Understanding}}. 2018
 Oct; }
 
 \bibitem[\citeproctext]{ref-pennebakerDevelopmentPsychometricProperties2015a}
-\CSLLeftMargin{64. }%
+\CSLLeftMargin{63. }%
 \CSLRightInline{Pennebaker JW, Boyd RL, Jordan K, Blackburn K. The
 {Development} and {Psychometric Properties} of {LIWC2015}. 2015 Sep; }
 
