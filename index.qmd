@@ -103,20 +103,15 @@ In this study, we will utilize different NLP techniques to predict lapses from S
 
 ## Overview
 
-This study will analyze a subset of data from a larger grant funded by National Institute of Alcohol Abuse and Alcoholism (R01 AA024391). It is important to note that additional measures were collected from the participants that are not directly related to this study.
-<!-- Not sure what you mean about subset.  You are using all (essentially) participants.  You are not using all measures though.  You might mention when the data were collected.-->
-<!-- You can say that you focus on the methods and measures relavant to this study but that all measures are described elsewhere (and point to materials that Kendra shared on OSF I believe) -->
+This study will analyze data collected from 2017-2019 from a larger grant funded by National Institute of Alcohol Abuse and Alcoholism (R01 AA024391). It is important to note that additional measures were collected from the participants that are not directly related to this study. All materials are described at https://osf.io/w5h9y/. 
 
 ## Participants
 
-Individuals at early stages of recovery from AUD were recruited from Madison and surrounding area via social media platforms (e.g., Facebook), referrals from clinics, and television and radio advertisements. After initial phone screen, interested individuals came in-person to complete a more in-depth screening to determine their eligibility. We documented their demographic information. Inclusion criteria include that participants: 1) must be at least aged 18 or older; 2) must meet criteria for AUD with at least moderate severity (\>four DSM-5 criteria); 3) must be abstinent from alcohol for at least one week and fewer than two months at time of intake; 4) must be able to read and write in English; 5) must be willing to use smartphone and their smartphone is compatible with our study technology. Participants were excluded if they have a lifetime history of severe and persistent mental illness. Of the 216 interested participants, 199 met eligibility and enrolled in the study. \[final sample size for text analysis?\]
-<!-- are those numbers from burden paper? The first number sounds low to me and the second sounds high -->
+Individuals at early stages of recovery from AUD were recruited from Madison and surrounding area via social media platforms (e.g., Facebook), referrals from clinics, and television and radio advertisements. After initial phone screen, interested individuals came in-person to complete a more in-depth screening to determine their eligibility. We documented their demographic information. Inclusion criteria include that participants: 1) must be at least aged 18 or older; 2) must meet criteria for AUD with at least moderate severity (\>four DSM-5 criteria); 3) must be abstinent from alcohol for at least one week and fewer than two months at time of intake; 4) must be able to read and write in English; 5) must be willing to use smartphone and their smartphone is compatible with our study technology. Participants were excluded if they have a lifetime history of severe and persistent mental illness. One hundred sixty-nine participants were eligible and enrolled in the study. After excluding participants who discontinued before the first follow-up session and those with low compliance rates, we have a final sample size of 151 participants.
 
 ## Procedures
-<!-- need a bit more structure to the flow.   5 visits.  What was done at each visit.  Separate section for the EMA, which is important because your label comes from that measure -->
-The study lasted up to three months with five in-person visits (see *Figure 1*). Participants completed a semi-structured interview at intake and each of the three one-month apart follow-up visits about their frequently communicated contacts. Interview questions include contextual information about each contact person (e.g., past-drinking history with this individual) and risk-related information (e.g., pleasantness or unpleasantness of interacting with this individual). At intake, participants reported contact information retrospectively. At each follow-up visit, the researchers directly backed up participants' text messages and asked contact information on newly-identified people. Participants were instructed on how to delete text messages that they did not want to share with the resesarch team. Apart from these in-person visits, participants also reported their alcohol use when completing daily surveys prompted up to four times per day. These surveys also included measures of alcohol craving, risky situations, stressful events, and pleasant events. We further passively collected participants' geolocation data and asked contextual information about their frequently visited places (not relevant to this study).
-<!-- add time to diagram -->
-<!-- need to have clear focus on methods that are relevant to you. For example, you will only use item 1 on EMA.  You need to focus on that but say info on other items available elsewere -->
+
+The study lasted up to three months with five in-person visits (see *Figure 1*). Participants completed an in-person screening visit to determine their eligibility, obtain their informed consent, and collect their demographic information and self-report measures. They then completed an intake session one week later and three follow-up visits afterwards spaced at one-month intervals. At intake, participants reported their frequently contacted individuals and their drinking status and levels of support to participants' recovery. During each of the follow-up visits, a research assistant downloaded participants' SMS messages from their phone. Additional self-reported measures were obtained (see https://osf.io/w5h9y/). Throughout the course of the study, participants were expected to complete four daily EMAs that asked about their alcohol cravings, risky situations, stressful/pleasant events, etc [@wyantMachineLearningModels2023b]. Notably, in the first item in the EMA survey, participants also reported their past alcohol use. Answer to this item will be used as the predicted outcome (see *Section Alcohol Lapses*). 
 
 ::: {#fig-simp}
 ```{dot}
@@ -131,30 +126,45 @@ digraph {
   d [label = "Follow-up 2"]
   e [label = "Follow-up 3"]
   
-  a -> b -> c -> d -> e
+  a -> b [label = "1 week", minlen = 1] 
+  b -> c [label = "1 month", minlen = 3]
+  c -> d [label = "1 month", minlen = 3]
+  d -> e [label = "1 month", minlen = 3]
 
+  subgraph {
+      rankdir = LR
+      
+      f [shape = none, margin = 0, labelloc = t,
+      label = "demographic information\n"]
+      g [shape = none, margin = 0, labelloc = t,
+      label = "frequent contact information\n frequent address information"]
+      h [shape = none, margin = 0, labelloc = t,
+      label = "illicit drug use"]
+      i [shape = none, margin = 0, labelloc = t,
+      label = "illicit drug use"]
+      j [shape = none, margin = 0, labelloc = t,
+      label = "self-reported acceptability and burden"]
+
+  }
+  
+  a -> f [minlen = 0.1, color=none]
+  b -> g [minlen = 0.1, color = none]
+  c -> h [minlen = 0.1, color = none]
+  d -> i [minlen = 0.1, color = none]
+  e -> j [minlen = 0.1, color = none]
+
+  
 }
 ```
 
-Flowchart of in-person visits. We obtained participant demographics and alcohol use history from the screening session. Measures related to frequent contacts were reported at intake and the three follow-up visits. SMS messages were downloaded from participant phones at each of the follow-up visit.
+Flowchart of in-person visits. We obtained participant demographics and alcohol use history from the screening session. Measures related to frequent contacts were reported at intake, and the three follow-up visits if they had any additional frequent contacts. SMS messages were downloaded from participant phones at each of the follow-up visit.
 :::
 
 ## Measures
 
 ### Individual Characteristics
 
-We collected participants' individual characteristics including their demographics and their past drinking history during the screening session (see *Table 1*). It is important<!-- why is this important? --> to note that those measures will be included as predictors of relapse risks in training machine learning algorithms in this study. A subset of these measures might also be used to evaluate model fairness on subgroups (e.g., sex, race, income, etc.).
-<!-- not sure about use of IDs in prediction models.  You will use demos for fairness analyses which is good to note here as you do. -->
-<!-- probably need to specify which IDs you will focus on for fairness and justify why -->
-
-### SMS Messages
-
-At each of the follow-up visit, a research assistant <!--downloaded?  --> backed up the participants' SMS messages from their phone. Measures included the message type (incoming vs. outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants' phones. We will only analyze participants' individual outgoing messages in this study.
-<!-- why limit to outgoing messages only?   -->
-
-### Contact Information
-<!-- this is important and the info about context is somewhat scattered across sections right now -->
-Participants self-reported their frequent contacts at intake. Contextual information about the contact person was collected (see *Table 1*). Throughout the course of the study, we also documented any additional frequent contacts if the participant interacted with them at least twice in the past month. Same contextual information was obtained.
+We collected participants' individual characteristics including their demographics and their past drinking history during the screening session (see *Table 1*). A subset of these measures will be used to evaluate model fairness on subgroups (e.g., sex, race, income, etc.). Sex, racial, age and income subgruops are selected because the populations face increased barriers obtaining AUD treatments and are historically underrepresented in alcohol research.
 
 | Log Type            | Measure                                                           |
 |:---------------------|:-------------------------------------------------|
@@ -171,43 +181,36 @@ Participants self-reported their frequent contacts at intake. Contextual informa
 |                     | DSM-5 Checklist for AUD                                           |
 |                     | Young Adult Alcohol Problems Test                                 |
 |                     | WHO-The Alcohol, Smoking and Substance Involvement Screening Test |
-| Contact Information | Relationship of Contact to Participant                            |
-|                     | Drinking History with Contact                                     |
-|                     | Drinking Status                                                   |
-|                     | Whether Contact Would be Present in Future Drinking               |
-|                     | Whether Contact is in Recovery                                    |
-|                     | Support from Contact                                              |
-|                     | Emotional Experience with Contact                                 |
 
 : Participant self-reported measures
 
+### SMS Messages
+
+At each of the follow-up visit, a research assistant downloaded the participants' SMS messages from their phone. Measures included the message type (incoming vs. outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants' phones.
+
 ### Alcohol Lapses
 
-Participants were prompted up to four times daily to report their recent alcohol use. Dates and times of any unreported past alcohol use were obtained in these surveys.
-<!-- reported date and hour of start and end of drinking period.  Confirmed by staff during study visits.  When were EMAs delivered, how, etc-->
-<!-- you need to decide how you will handle other items on EMA.  You dont want them to distract from your focus on item 1 but need to reference them somehow -->
+Participants were prompted up to four times daily to report their recent alcohol use. In the first item of each daily EMA survey, dates and times of any unreported past alcohol use were obtained. Reports of past alcohol use is used as a dichotomous outcome variable (Lapse vs. No Lapse). We will predict alcohol lapses in the next 24-hour window (i.e., next day lapse prediction). Predictions are updated every hour so that all algorithms will provide hour-by-hour estimation. The first prediction window will start from the midnight of the second day of participation and end 24 hours later.
 
 ## Feature Engineering
-<!-- make clear that you will consider several methods.  List the ones that you know you wil do.   Highlight again why you have multiple  methods. -->
-Text messages will be the sole predictor in the analysis. We will use the following natural language processing techniques to transform SMS messages into machine-interpretable data: 1) topic modeling; 2) sentiment analysis; 3) tf-idf; 4) word embeddings; and 5) customized dictionary. Each feature engineering technique will be evaluated separately.
-<!-- need to think about how to situate bow RE tf-idf and dictionary.  and LIWC   ngrams? -->
-<!-- justify why these these feature engineering approaches -->
-<!-- should you be reminding us that these differ on how top-down vs. bottom-up or how much they are based on domain expertise (maybe better to think of it that way?) -->
 
-<!-- move this info to the above section.  lapse is not a feature and you already started to describe it earlier-->
-The outcome variable is dichotomous (Lapse vs. No Lapse). We will predict alcohol lapses in the next 24-hour window (i.e., next day lapse prediction). Predictions are updated every hour so that all algorithms will provide hour-by-hour estimation. The first prediction window will start from the midnight of the second day of participation and end 24 hours later.
+Text messages will be the sole predictor in the analysis. We will use several natural language processing techniques to transform SMS messages into machine-interpretable data and input them into machine learning algorithms. The methods we consider include: 1) topic modeling; 2) sentiment analysis; 3) bag-of-words; 4) word embeddings; and 5) customized dictionary. Each feature engineering technique will be evaluated separately. 
+
+Note that these feature engineering techniques encompass both top-down approaches and bottom-up approaches. Topic modeling, n-grams, and word embeddings are exemplary empirically-driven methods. Sentiment analysis aligns with concepts in affect science. LIWC relies on theories broadly in psycho-social research, and customized dictionary can be refined to narrower domain knowledge specific to addiction science. Features built from these top-down approaches might be slightly more interpretable and can map on to current interventions. 
 
 ### Topic Modeling
 
-Topic modeling is an unsupervised machine learning method to identify clusters of topics in a body of text. It can do text mining without having predefined labels.<!-- ??? --> In this study, I will use one of the most popular topic modeling technique -- Latent Dirichlet Analysis (LDA). LDA unravels the hidden structure in the relationships between words in a document and groups similar words into topics. It assumes that different documents (i.e., SMS messages) have same topic clusters but with different distribution. As such, different topic clusters might have common words.
+Topic modeling is an unsupervised machine learning method to identify clusters of topics in a body of text. In this study, I will use one of the most popular topic modeling technique -- Latent Dirichlet Analysis (LDA). LDA unravels the hidden structure in the relationships between words in a document and groups similar words into topics. It assumes that different documents (i.e., SMS messages) have same topic clusters but with different distribution. As such, different topic clusters might have common words.
 
 ### Sentiment Analysis
 
-Research has found that positive/negative emotional state to be associated with increased alcohol relapse risks [@mckayConceptualMethodologicalAnalytical2006b; @mckayStudiesFactorsRelapse1999a; @brownCharacteristicsRelapseFollowing1989]. Sentiment Analysis infers the emotional underpinning of texts. <!-- you don't need to be this specific RE package.  That could change -->I will use the *nrc* package available in R to mine emotional tone in SMS messages [@mohammadCrowdsourcingWordEmotionAssociation2013]. Nrc is a built-in dictionary that assigns a binary label (yes/no) to each lexicon (i.e., single word) into categories of positive and negative sentiment, as well as the eight basic emotions -- anger, fear, anticipation, trust, surprise, sadness, joy, and disgust. The annotation task was accomplished via crowd sourcing. We will assign each SMS message a score in those ten categories by summing sentiment content of all words in that message.
+Research has found that positive/negative emotional state to be associated with increased alcohol relapse risks [@mckayConceptualMethodologicalAnalytical2006b; @mckayStudiesFactorsRelapse1999a; @brownCharacteristicsRelapseFollowing1989]. Sentiment Analysis infers the emotional underpinning of texts. We will extract both emotional valence (i.e., positive, neutral, and negative emotional tone) and eight basic emotion categories (e.g., anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) from SMS messages. We will assign each SMS message a score in those ten categories by summing sentiment content of all words in that message.
 
-### Tf-idf
-<!-- describe this method as bag of words.  You can consider different approaches that vary on n-gram and also metric (binary, count, tf, tf-idf) -->
-In this study, I will leverage combination of both term frequency (tf) and inverse document frequency (idf) to indicate word importance inside a document (see below formula). This scoring method has the advantage of highlighting the importance of a word to a document in a collection of documents. It has important implications in analyzing SMS messages so that we have a better understanding of the robustness of a certain word to a single message across all text messages that the participants sent. The idf score minimizes weights of words that are commonly used across all messages and can highlight words that contain important information.
+### Bag-of-words Approach
+
+A bag-of-words approach represents word occurrences inside a document. I will first extract one-gram and two-gram words from the messages. Then I will analyze these n-grams based on their counts, binary representaiton, term frequency (tf), and inverse document frequency (idf). Counts represent the number of occurrences of a specific n-gram in a single text. Binary representation implies whether that n-gram is present in the text.
+
+I will also analyze tf, which indicates the frequency of the n-grams in each individual text relative to that text length. I will also further utilize combination of both tf and idf to calculate tf-idf, which indicates word importance inside a document (see below formula). This scoring method has the advantage of highlighting the importance of a word to a document in a collection of documents. It has important implications in analyzing SMS messages so that we have a better understanding of the robustness of a certain word to a single message across all text messages that the participants sent. The idf score minimizes weights of words that are commonly used across all messages and can highlight words that contain important information.
 
 $$
 \text{tf} = \frac{n_{terms\ in\ document}}{n_{terms}}
@@ -219,31 +222,30 @@ $$
 \text{tf-idf} = tf * idf
 $$
 
-### Word Embeddings
-<!-- why BERT and why only BERT? -->
-Word embeddings are vectors that represent relationships of words within a document in a lower-dimension. I will use the pre-trained Bidirectional Encoder Representations from Transformers (BERT)[@devlinBERTPretrainingDeep2018] to transform SMS messages into such machine-readable vectors. They are capable of capturing embedded semantic structure within a neural network architecture. They take into account the context of where a word is (i.e., word tokens before and after the target word). 
 
-### Customized Dictionary
-<!-- you might describe this and LIWC within the BoW approach as a subset of that approach -->
-A bag-of-words approach represents word occurrences inside a document. This study will expand this total word count approach by using customized dictionaries built upon the LIWC dictionary [@pennebakerDevelopmentPsychometricProperties2015a] and compute score by counting frequency of words that belong to each category. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes [@brownCharacteristicsRelapseFollowing1989; @mckayStudiesFactorsRelapse1999a; @mckayStudiesFactorsRelapse1999a]. In addition to these linguistic categories, we will also include customized alcohol-related category as predictors as previous research has found them to be robust indicators of alcohol lapses [@mckayStudiesFactorsRelapse1999a; @korlakuntaReasonsRelapsePatients2012]. 
+#### Customized Dictionary
+
+This study will also expand above bags-of-word approach by using customized dictionaries built upon the LIWC dictionary [@pennebakerDevelopmentPsychometricProperties2015a] and compute score by counting frequency of words that belong to each category. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes [@brownCharacteristicsRelapseFollowing1989; @mckayStudiesFactorsRelapse1999a; @mckayStudiesFactorsRelapse1999a]. In addition to these linguistic categories, we will also include customized alcohol-related category as predictors as previous research has found them to be robust indicators of alcohol lapses [@mckayStudiesFactorsRelapse1999a; @korlakuntaReasonsRelapsePatients2012]. 
+
+### Word Embeddings
+
+Word embeddings are vectors that represent relationships of words within a document in a lower-dimension. I will use the pre-trained Bidirectional Encoder Representations from Transformers (BERT)[@devlinBERTPretrainingDeep2018] to transform SMS messages into such machine-readable vectors. They are capable of capturing embedded semantic structure within a neural network architecture. Compared to traditional word embeddings methods (e.g., Word2Vec or GloVe), they take into account the context of where a word is (i.e., word tokens before and after the target word). It is also pre-trained on a massive dataset, which allows the model to learn a wide range of patterns and structures.
 
 ## Candidate Machine Learning Algorithms and Model Training
-<!-- here make clear that you will consider several algorithms that vary with respect to...   you can list some that we know we will use glmnet, XGBoost, RF.   You can hedge on the others though I would like to consider them given time -->
-Candidate algorithms that will be used include glmnet (penalized, parametric linear model), k-nearest neighbor (KNN), linear/quadratic discriminant analysis (LDA/QDA), random forest (RF), and neural network (NN). A random split of 3/4 of the dataset will be used for model selection and model training. For each algorithm, we will perform a grouped, nested cross-validation on the training set to select the best model configuration. The selected best model will then be trained on the whole training dataset.
+
+We consider a range of candidate algorithms that vary with regard to their model complexity, model assumptions, and training speed. Candidate algorithms that will be used include glmnet (penalized, parametric linear model), k-nearest neighbor (KNN), linear/quadratic discriminant analysis (LDA/QDA), random forest (RF), neural network (NN), and XGBoost. We will perform a grouped, nested cross-validation to perform hyperparameter tuning and select the best model configuration. The dataset will be participant-grouped so that each individual will be assigned to either held-in or held-out set to avoid bias of predicting participants' lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds are used as a validation set for model selection. In the outer loop, held-out folds are utilized as a test set for model evaluation. More specifically, we will use one repeat of 10-fold cross-validation in the inner loop for model selection and 3 repeats of 10-fold cross-validation in outer loop for model evaluation.
 
 ## Model Performance Evaluation and Feature Importance
 
-The primary performance metrics to select the best model configuration and evaluate the model performance on the test sets will be auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. We choose this metric because it is more informative than accuracy for imbalanced data. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent.
-<!-- discuss use of bayesian estimation to quanify posteior distribution for auROC and if it differs from .50.   Also, no talk about cross-validation anywhere? -->
+The primary performance metrics to select the best model configuration and evaluate the model performance on the test sets will be auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. We choose this metric because it is more informative than accuracy for imbalanced data. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. We will report the median auROCs for the 30 held-out folds. We will further perform a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions of the auROCs and determine if they are meaningfully different than .50.
 
-Predicted probabilities will be ca the algorithms. Such features are multifaceted and might involve affect state, social interactions, and alcohol-related factors. For instance, the majority of an inpatient teen sample reported initial relapse to alcohol when offered alcohol, when in negative state, and when in interpersonal conflicts [@brownCharacteristicsRelapseFollowing1989]. Other commonly found risk factors include alcohol craving [@lculated for all test sets. Binary classification (Lapse vs. No Lapse) will be determined with optimal decision threshold determined by Youden's Index.
-<!--  list secondary performance metrics-->
+Note that our models will output predicted probabilities of each observation falling into lapse vs. no-lapse class. Our primary model evaluation metrics (auROC) indicate the ability of the models to distinguish between two classes across all probability thresholds. We will also conduct supplemental performance evaluation using other metrics and class prediction at a specific probability threshold. Binary classification (Lapse vs. No Lapse) will be determined with optimal decision threshold determined by Youden's Index. We will report sensitivity, specificity, balanced accuracy, positive predictive value (PPV), and negative predictive value (NPV) at this threshold. 
 
 We will also calculate SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability.
 
 ## Algorithmic Bias Evaluation
 
-In addition to auROC, we will also evaluate auPRC, sensitivity, specificity and PPV across different subgroups. Negative Predictive Value (NPV) is not included due to the highly imbalanced outcomes in our dataset (N~positive~ = , N~negative~ = ). We will compare these performance metrics between different sex, race, income and age subgroups as these demographic minority groups face enhanced barriers to access alcohol treatment due to stigma, financial difficulties, etc. They are also traditionally underrepresented in research settings.
+In addition to auROC, we will also evaluate auPRC, sensitivity, specificity and PPV across different subgroups. NPV is not included due to the highly imbalanced outcomes in our dataset. We will compare these performance metrics between different sex, race, income and age subgroups as these demographic minority groups face enhanced barriers to access alcohol treatment due to stigma, financial difficulties, etc. They are also traditionally underrepresented in research settings.
 
 \newpage
 
