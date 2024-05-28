@@ -725,14 +725,15 @@ body, contact name, whether the participants read the text or not, etc.
 Images and voice texts were excluded from analysis. Both group messages
 and one-on-one messages were obtained from participants' phones.
 
-For each individual lapse window, we have twelve predictor sets that
-differ in prediction window length and their message type. We define
-text prediction windows to be 1-hour, 2-hour, 3-hour, and 1-week
-preceding the lapse window. Within each prediction window, we will
-filter the messages to be incoming only, outgoing only, and incoming and
-outgoing combined. We will then combine messages together for each of
-the filtering method. Each of the final twelve predictor sets will be
-referred to as a ``document'' in the following sections.
+For each individual lapse window, we have predictor sets that differ in
+prediction window length and their message type. We define text
+prediction windows to be 1-day, 2-day, 3-day, and 1-week preceding the
+lapse window. Within each prediction window, we will use two
+configuration methods to construct feature sets (referred to as
+``document'' in the following sections). First, we will combine both
+incoming and outgoing messages in one document as predictor. Second, we
+will separate incoming messages and outgoing messages into two documents
+as predictors.
 
 \subsection{Feature Engineering}\label{feature-engineering}
 
@@ -740,9 +741,8 @@ Text messages will serve as the only raw source for all feature
 engineering. The document sets will go through a generic pre-processing
 step that involves transformation of emojis to be readable text,
 tokenization into words and removal of punctuations and numbers. The
-derived feature sets from each of the twelve documents will go through
-the natural language processing techniques described below
-independently.
+documents from each of the configurations will go through the natural
+language processing techniques described below independently.
 
 We will use several natural language processing techniques to transform
 documents into machine-interpretable data and input them into machine
@@ -866,7 +866,7 @@ and XGBoost.
 \subsection{Model Training and Performance
 Evaluation}\label{model-training-and-performance-evaluation}
 
-For each natural language processing method, we will perform twelve
+For each natural language processing method, we will perform eight
 grouped, nested cross-validations to perform hyperparameter tuning and
 select the best model configuration. The dataset will be
 participant-grouped so that each individual will be assigned to either
@@ -886,7 +886,7 @@ between sensitivity and specificity across all possible thresholds.
 Values between .70 and .80 are considered fair, values between .80 and
 .90 are considered good, and values above .90 are considered excellent.
 We will report the median auROCs for the 30 held-out folds. The model
-with the highest auROC among the ones differing on those twelve
+with the highest auROC among the ones differing on those eight
 configurations (see \emph{Section SMS Messages}) and statistical methods
 (see \emph{Section Candidate Machine Learning Algorithms}) will be
 selected as the best model for each natural language processing
