@@ -169,10 +169,15 @@ data |>
 ```
 
 ```{r}
+# data |> 
+#   ggplot(aes(x = address)) +
+#   geom_bar() +
+#   facet_wrap(~subid)
+
 data |> 
-  ggplot(aes(x = address)) +
-  geom_bar() +
-  facet_wrap(~subid)
+  group_by(subid, address) |> 
+  summarize(n = n()) |> 
+  print_kbl()
 ```
 
 ## EDA on predictor windows
