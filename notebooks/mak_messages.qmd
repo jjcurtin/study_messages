@@ -185,7 +185,7 @@ pred_3day |>
 
 pred_1week |> 
   group_by(subid, lapse_onset) |> 
-  summarize(n = n()) |> view()
+  summarize(n = n()) |> 
   print_kbl()
 ```
 
