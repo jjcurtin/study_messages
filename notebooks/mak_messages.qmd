@@ -206,7 +206,7 @@ pred_3day |>
 pred_1week |> 
   filter(label == "yes") |> 
   group_by(subid, lapse_onset) |> 
-  summarize(n = n()) |> view()
+  summarize(n = n()) |> 
   print_kbl()
 ```
 
