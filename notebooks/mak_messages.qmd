@@ -156,10 +156,16 @@ pred_1week <- labels |>
 
 frequent contact based on self-reports
 ```{r}
+# data |> 
+#   ggplot(aes(x = freq_contacts)) +
+#   geom_bar() +
+#   facet_wrap(~subid)
+
 data |> 
-  ggplot(aes(x = freq_contacts)) +
-  geom_bar() +
-  facet_wrap(~subid)
+  group_by(subid, freq_contacts) |> 
+  summarize(n = n()) |>
+  pivot_wider(names_from = freq_contacts, values_from = n) |> 
+  print_kbl()
 ```
 
 ```{r}
