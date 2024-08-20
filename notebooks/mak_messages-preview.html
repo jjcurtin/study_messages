@@ -8,7 +8,7 @@
     <meta name="author" content="Coco Yu">
     <meta name="dcterms.date" content="2024-08-19">
 
-    <title>Clean up indiviudal messagers</title>
+    <title>Clean up indiviudal messages</title>
     <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3419,7 +3419,7 @@ border: 0;
     <div id="quarto-embed-header" class="headroom fixed-top bg-primary">
       
       <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link" href><i class="bi bi-caret-left"></i> Back to Article</a>
-      <h6><i class="bi bi-journal-code"></i> Clean up indiviudal messagers</h6>
+      <h6><i class="bi bi-journal-code"></i> Clean up indiviudal messages</h6>
 
             <a href="../notebooks/mak_messages.qmd" class="btn btn-primary quarto-download-embed" download="mak_messages.qmd">Download Source</a>
           </div>
@@ -3427,7 +3427,7 @@ border: 0;
      <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Clean up indiviudal messagers</h1>
+      <h1 class="title">Clean up indiviudal messages</h1>
           </div>
 
     
@@ -3472,6 +3472,7 @@ border: 0;
   <li><a href="#read-in-data" id="toc-read-in-data" class="nav-link" data-scroll-target="#read-in-data">Read in Data</a></li>
   <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning</a></li>
   <li><a href="#eda-on-contact" id="toc-eda-on-contact" class="nav-link" data-scroll-target="#eda-on-contact">EDA on Contact</a></li>
+  <li><a href="#eda-on-predictor-windows" id="toc-eda-on-predictor-windows" class="nav-link" data-scroll-target="#eda-on-predictor-windows">EDA on predictor windows</a></li>
   </ul>
 </nav>
 </div>
@@ -3531,7 +3532,8 @@ border: 0;
 </div></div>
 <p>Absolute Paths</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>path_shared <span class="ot">&lt;-</span> <span class="fu">format_path</span>(<span class="fu">str_c</span>(<span class="st">&quot;studydata/risk/data_processed/shared&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>path_shared <span class="ot">&lt;-</span> <span class="fu">format_path</span>(<span class="fu">str_c</span>(<span class="st">&quot;studydata/risk/data_processed/shared&quot;</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>path_messages <span class="ot">&lt;-</span> <span class="fu">format_path</span>(<span class="fu">str_c</span>(<span class="st">&quot;studydata/risk/data_processed/messages&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="read-in-data" class="level2">
@@ -3543,16 +3545,19 @@ border: 0;
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">address =</span> <span class="st">&quot;c&quot;</span>, <span class="at">date =</span> <span class="st">&quot;T&quot;</span>, <span class="at">type =</span> <span class="st">&quot;f&quot;</span>, <span class="at">body =</span> <span class="st">&quot;c&quot;</span>,</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">msg_type =</span> <span class="st">&quot;f&quot;</span>, <span class="at">phone_type =</span> <span class="st">&quot;f&quot;</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                 )) <span class="sc">|&gt;</span> </span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as_datetime</span>(date, <span class="at">tz =</span> <span class="st">&quot;America/Chicago&quot;</span>),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">start_study =</span> <span class="fu">as_datetime</span>(start_study, <span class="at">tz =</span> <span class="st">&quot;America/Chicago&quot;</span>),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">end_study =</span> <span class="fu">as_datetime</span>(end_study, <span class="at">tz =</span> <span class="st">&quot;America/Chicago&quot;</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 431,519
+<pre style="max-height: 500px;"><code>Rows: 431,669
 Columns: 9
 $ subid       &lt;dbl&gt; 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…
 $ start_study &lt;dttm&gt; 2017-03-02, 2017-03-02, 2017-03-24, 2017-03-24, 2017-03-2…
 $ end_study   &lt;dttm&gt; 2017-05-31, 2017-05-31, 2017-06-16, 2017-06-16, 2017-06-1…
-$ address     &lt;chr&gt; &quot;16085720721&quot;, &quot;16085722496&quot;, &quot;16086098891&quot;, &quot;16086098891&quot;…
-$ date        &lt;dttm&gt; 2017-05-01 14:35:14, 2017-04-21 22:01:40, 2017-03-24 01:3…
-$ type        &lt;fct&gt; received, received, sent, received, received, received, se…
+$ address     &lt;chr&gt; &quot;16085720721&quot;, &quot;16085722496&quot;, &quot;16082099771&quot;, &quot;16082099771&quot;…
+$ date        &lt;dttm&gt; 2017-05-01 09:35:14, 2017-04-21 17:01:40, 2017-03-24 06:2…
+$ type        &lt;fct&gt; received, received, sent, received, sent, received, receiv…
 $ body        &lt;chr&gt; &quot;Test&quot;, &quot;Test Message Please type YES if you receive this …
 $ msg_type    &lt;fct&gt; imessage, imessage, sms, sms, sms, sms, sms, sms, sms, sms…
 $ phone_type  &lt;fct&gt; ios, ios, android, android, android, android, android, and…</code></pre>
@@ -4695,15 +4700,15 @@ $ phone_type  &lt;fct&gt; ios, ios, android, android, android, android, android,
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(data, <span class="at">by =</span> <span class="st">&quot;subid&quot;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 431,519
+<pre style="max-height: 500px;"><code>Rows: 431,669
 Columns: 10
 $ subid         &lt;dbl&gt; 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,…
 $ freq_contacts &lt;list&gt; &lt;&quot;16083588174&quot;, &quot;16082227282&quot;, &quot;16085149557&quot;, &quot;16084385…
 $ start_study   &lt;dttm&gt; 2017-03-02, 2017-03-02, 2017-03-24, 2017-03-24, 2017-03…
 $ end_study     &lt;dttm&gt; 2017-05-31, 2017-05-31, 2017-06-16, 2017-06-16, 2017-06…
-$ address       &lt;chr&gt; &quot;16085720721&quot;, &quot;16085722496&quot;, &quot;16086098891&quot;, &quot;1608609889…
-$ date          &lt;dttm&gt; 2017-05-01 14:35:14, 2017-04-21 22:01:40, 2017-03-24 01…
-$ type          &lt;fct&gt; received, received, sent, received, received, received, …
+$ address       &lt;chr&gt; &quot;16085720721&quot;, &quot;16085722496&quot;, &quot;16082099771&quot;, &quot;1608209977…
+$ date          &lt;dttm&gt; 2017-05-01 09:35:14, 2017-04-21 17:01:40, 2017-03-24 06…
+$ type          &lt;fct&gt; received, received, sent, received, sent, received, rece…
 $ body          &lt;chr&gt; &quot;Test&quot;, &quot;Test Message Please type YES if you receive thi…
 $ msg_type      &lt;fct&gt; imessage, imessage, sms, sms, sms, sms, sms, sms, sms, s…
 $ phone_type    &lt;fct&gt; ios, ios, android, android, android, android, android, a…</code></pre>
@@ -4715,21 +4720,21 @@ $ phone_type    &lt;fct&gt; ios, ios, android, android, android, android, androi
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_contacts =</span> <span class="fu">if_else</span>(</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      address <span class="sc">%in%</span> <span class="fu">unlist</span>(freq_contacts),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;y&quot;</span>, <span class="st">&quot;n&quot;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_contacts =</span> <span class="fu">factor</span>(freq_contacts)</span>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre style="max-height: 500px;"><code>Rows: 431,519
+<pre style="max-height: 500px;"><code>Rows: 431,669
 Columns: 10
 $ subid         &lt;dbl&gt; 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,…
-$ freq_contacts &lt;fct&gt; n, n, y, y, y, y, y, y, y, y, y, y, y, y, y, y, y, y, y,…
+$ freq_contacts &lt;fct&gt; no, no, yes, yes, yes, yes, yes, yes, yes, yes, yes, yes…
 $ start_study   &lt;dttm&gt; 2017-03-02, 2017-03-02, 2017-03-24, 2017-03-24, 2017-03…
 $ end_study     &lt;dttm&gt; 2017-05-31, 2017-05-31, 2017-06-16, 2017-06-16, 2017-06…
-$ address       &lt;chr&gt; &quot;16085720721&quot;, &quot;16085722496&quot;, &quot;16086098891&quot;, &quot;1608609889…
-$ date          &lt;dttm&gt; 2017-05-01 14:35:14, 2017-04-21 22:01:40, 2017-03-24 01…
-$ type          &lt;fct&gt; received, received, sent, received, received, received, …
+$ address       &lt;chr&gt; &quot;16085720721&quot;, &quot;16085722496&quot;, &quot;16082099771&quot;, &quot;1608209977…
+$ date          &lt;dttm&gt; 2017-05-01 09:35:14, 2017-04-21 17:01:40, 2017-03-24 06…
+$ type          &lt;fct&gt; received, received, sent, received, sent, received, rece…
 $ body          &lt;chr&gt; &quot;Test&quot;, &quot;Test Message Please type YES if you receive thi…
 $ msg_type      &lt;fct&gt; imessage, imessage, sms, sms, sms, sms, sms, sms, sms, s…
 $ phone_type    &lt;fct&gt; ios, ios, android, android, android, android, android, a…</code></pre>
@@ -4752,6 +4757,22 @@ $ phone_type    &lt;fct&gt; ios, ios, android, android, android, android, androi
 </div>
 </div>
 </div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> address)) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>subid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class>
+<figure class="figure">
+<p class><a href="mak_messages_files/figure-html/unnamed-chunk-12-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img role="img" src="mak_messages_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div></div>
+</section>
+<section id="eda-on-predictor-windows" class="level2">
+<h2 class="anchored" data-anchor-id="eda-on-predictor-windows">EDA on predictor windows</h2>
 </section>
      </main>
 <!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
@@ -5173,7 +5194,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom","openEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
