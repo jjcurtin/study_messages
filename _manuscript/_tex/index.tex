@@ -23,8 +23,8 @@
 \usepackage{lmodern}
 \ifPDFTeX\else  
     % xetex/luatex font selection
-  \setmainfont[]{TimesNewRomanPSMT}
-  \setsansfont[]{TimesNewRomanPSMT}
+    \setmainfont[]{TimesNewRomanPSMT}
+    \setsansfont[]{TimesNewRomanPSMT}
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -47,14 +47,28 @@
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 % Make \paragraph and \subparagraph free-standing
+\makeatletter
 \ifx\paragraph\undefined\else
   \let\oldparagraph\paragraph
-  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
 \fi
 \ifx\subparagraph\undefined\else
   \let\oldsubparagraph\subparagraph
-  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
+\makeatother
 
 
 \providecommand{\tightlist}{%
@@ -115,6 +129,51 @@
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
+% Defines formatting of headers H1-H3 as well as the basic body (paragraph). 
+% Resources: 
+% Structure for these commands: https://texfaq.org/FAQ-atsigns
+% Fuller reference: https://latexref.xyz/_005c_0040startsection.html
+% Tips for seccntformat: https://tex.stackexchange.com/questions/95896/how-to-format-subsection-title-without-packages
+\makeatletter
+\def\@seccntformat#1{%
+  \expandafter\ifx\csname c@#1\endcsname\c@section\else
+  \expandafter\ifx\csname c@#1\endcsname\c@paragraph\else
+  \csname the#1\endcsname\quad
+  \fi\fi}
+
+\renewcommand\section{
+  \@startsection{section}{1}{\z@}
+    {11pt \@plus 0pt \@minus 0pt} % set space above the header
+    {.01pt \@plus 0pt }%reduce space below the header
+    {\normalfont\normalsize\bfseries\centering}} %modify font style of header
+
+  \renewcommand\subsection{
+  \@startsection{subsection}{2}{\z@} % name, level, indent
+    {11pt \@plus 0pt \@minus 0pt}
+    {.01pt \@plus 0pt }%reduce space below subsection (was 1.5ex)
+    {\normalfont\normalsize\bfseries}} %modify font style
+
+  \renewcommand\subsubsection{
+  \@startsection{subsubsection}{3}{\z@}
+    {11pt \@plus 0pt \@minus 0pt} %reduce space above subsubsection (was -3.25ex)
+    {-4pt \@plus 11pt} %reduce space below subsubsection (was 1.5ex)
+    {\normalfont\normalsize\bfseries}} %modify font style
+
+  \renewcommand\paragraph{
+  \@startsection{paragraph}{4}{\z@}
+    {-0.5ex\@plus -1ex \@minus -.2ex} %reduce space above paragraph (was -3.25ex)
+    {-1.5ex \@plus .2ex} %convert space below paragraph to an indent (was 1.5ex)
+    {\normalfont\normalsize\bfseries}} %modify font style
+\makeatother
+\raggedright % lines are flush with the left margin and ragged on the right margin (vs justified where text is stretched to ensure both margins are flush)
+\usepackage{wrapfig} % allow text wrapping
+\usepackage{float} % allow use of float options such as H (use UPPERCASE to preserve floats)
+\usepackage{caption} % allows supression of automatic caption numbering
+\usepackage{lscape} % allows insertion of a landscape oriented page
+\newcommand{\blandscape}{\begin{landscape}} % defines shorthand command to start a landscape page
+\newcommand{\elandscape}{\end{landscape}} % defines shorthand command to end a landscape page
+\usepackage{enumitem} % allows fine-grain control over list styling
+\setlist[itemize]{align=parleft,left=0pt..1em} % align=parleft aligns the list icon to the left margin. left=0pt..1em means, add 0 pts of padding to the left of the icon, then skip 1em before starting the item text.
 \KOMAoption{captions}{tableheading}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
@@ -157,6 +216,7 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
+
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -172,10 +232,12 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
+
 \author{}
 \date{}
 
 \begin{document}
+
 
 \section{Specific Aims}\label{specific-aims}
 
@@ -1439,6 +1501,7 @@ Treatment}: {Economic Resources Explain More Than Demographics} and
 {Addiction Severity}}. Health Services Research. 2007;42(2):773--794. }
 
 \end{CSLReferences}
+
 
 
 

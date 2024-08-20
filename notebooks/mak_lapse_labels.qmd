@@ -1,0 +1,118 @@
+---
+title: "Make Lapse Labels"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Code Status
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_plots.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+## Read in Data
+
+need further cleaning on lapses: for now, NA if NA in start_time
+```{r}
+visit_dates <- read_csv(here(path_shared, "visit_dates.csv"),
+                        col_types = cols(subid = "d", start_study = "c", 
+                                         end_study = "c")) |> 
+  select(subid, start_study, end_study) |> 
+  glimpse()
+
+visit_dates <- visit_dates |> 
+  mutate(start_study = if_else(is.na(start_study), NA_character_,
+                               paste(start_study, "04:00:00")),
+         end_study = if_else(is.na(end_study), NA_character_,
+                               paste(end_study, "04:00:00")),
+         start_study = as_datetime(start_study, tz = "America/Chicago"),
+         end_study = as_datetime(end_study, tz = "America/Chicago")) |> 
+  glimpse()
+
+lapses <- read_csv(here(path_shared, "lapses.csv"),
+                   col_types = cols(subid = "d")) |> 
+  mutate(lapse_start = as_datetime(lapse_start, tz = "America/Chicago")) |> 
+  glimpse()
+```
+
+check participant duration on study
+```{r}
+visit_dates <- visit_dates |> 
+  mutate(time_on_study = as.numeric(end_study - start_study) / 86400) |> 
+  glimpse()
+
+visit_dates <- visit_dates |> 
+  filter(time_on_study > 1) |> 
+  select(-time_on_study) |> 
+  glimpse()
+```
+
+???? daylight savings time -- hour automatic set to 5:00
+```{r}
+labels <- visit_dates |> 
+  rowwise() |>
+  mutate(lapse_onset = list(seq.POSIXt(start_study + days(1), end_study, by = "day"))) |> 
+  unnest(lapse_onset) |>
+  select(subid, lapse_onset) |> 
+  glimpse()
+```
+
+join lapses to labels
+```{r}
+labels <- labels |> 
+  full_join(lapses |> select(subid, lapse_start), by = "subid") |> 
+  mutate(
+    lapse_end = lapse_onset + days(1),
+    label = if_else(lapse_start >= lapse_onset & lapse_start <= lapse_end,
+                    "yes", "no", missing = "no")
+  ) |> 
+  group_by(subid, lapse_onset) |> 
+  summarize(label = if_else(any(label == "yes"), "yes", "no")) |> 
+  ungroup() |> 
+  glimpse()
+```
+
+## Write-out csv
+
+```{r}
+labels |> 
+  write_csv(here(path_messages, "lapses.csv")) |> 
+  glimpse()
+```
+

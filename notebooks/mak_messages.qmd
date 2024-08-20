@@ -1,0 +1,257 @@
+---
+title: "Clean up indiviudal messages"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Code Status
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_plots.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+## Read in Data
+
+```{r}
+data <- read_csv(here(path_shared, "sms.csv"), 
+                 col_types = cols(
+                   subid = "d", start_study = "T", end_study = "T",
+                   address = "c", date = "T", type = "f", body = "c",
+                   msg_type = "f", phone_type = "f"
+                 )) |> 
+  mutate(date = as_datetime(date, tz = "America/Chicago"),
+         start_study = as_datetime(start_study, tz = "America/Chicago"),
+         end_study = as_datetime(end_study, tz = "America/Chicago")) |> 
+  glimpse()
+```
+
+## Data Cleaning
+
+### Add Contact Information
+
+read in contact data
+```{r}
+contacts <- read_csv(here(path_shared, "contacts.csv"),
+                     col_types = cols(.default = col_character(),
+                                      subid = "d"))
+```
+
+check format of address in contacts.csv
+```{r}
+nchar(contacts$phone_number) |> 
+  tabyl()
+
+contacts |> 
+  mutate(
+    digits = nchar(phone_number)
+  ) |> 
+  group_by(digits) |> 
+  slice_head(n = 20) |> 
+  print_kbl()
+```
+
+make address format consistent across contacts and data
+```{r}
+contacts <- contacts |> 
+  mutate(
+    phone_number = if_else(
+      nchar(phone_number) == 10,
+      paste0("1", phone_number),
+      phone_number
+    )
+  )
+```
+
+combine data and contacts
+```{r}
+data <- contacts |> 
+  group_by(subid) |> 
+  summarize(freq_contacts = list(phone_number)) |>
+  right_join(data, by = "subid") |> 
+  glimpse()
+```
+
+create new column freq_contacts: y/n
+```{r}
+data <- data |> 
+  mutate(
+    freq_contacts = if_else(
+      address %in% unlist(freq_contacts),
+      "yes", "no"
+    ),
+    freq_contacts = factor(freq_contacts)
+  ) |> 
+  glimpse()
+```
+
+### Add lapse information
+
+read in lapse labels
+```{r}
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(lapse_onset = as_datetime(lapse_onset, tz = "America/Chicago")) |> 
+  glimpse()
+```
+
+create prediction window
+```{r}
+pred_1day <- labels |> 
+  mutate(pred_1day = lapse_onset - days(1)) |> 
+  inner_join(data, by = "subid") |>
+  filter(date >= pred_1day & date <= lapse_onset) |>
+  glimpse()
+
+pred_3day <- labels |> 
+  mutate(pred_3day = lapse_onset - days(3)) |> 
+  inner_join(data, by = "subid") |>
+  filter(date >= pred_3day & date <= lapse_onset) |>
+  glimpse()
+
+pred_1week <- labels |> 
+  mutate(pred_1week = lapse_onset - days(7)) |> 
+  inner_join(data, by = "subid") |>
+  filter(date >= pred_1week & date <= lapse_onset) |>
+  glimpse()
+```
+
+## EDA
+
+### EDA on Contact
+
+frequent contact based on self-reports
+```{r}
+data |> 
+  ggplot(aes(x = freq_contacts)) +
+  geom_bar() +
+  facet_wrap(~subid)
+```
+
+```{r}
+data |> 
+  ggplot(aes(x = address)) +
+  geom_bar() +
+  facet_wrap(~subid)
+```
+
+## EDA on predictor windows
+
+on all messages
+```{r}
+pred_1day |> 
+  group_by(subid, lapse_onset) |> 
+  summarize(n = n()) |>
+  print_kbl()
+
+pred_3day |> 
+  group_by(subid, lapse_onset) |> 
+  summarize(n = n()) |> 
+  print_kbl()
+
+pred_1week |> 
+  group_by(subid, lapse_onset) |> 
+  summarize(n = n()) |> view()
+  print_kbl()
+```
+
+for lapse label = yes only
+```{r}
+pred_1day |> 
+  filter(label == "yes") |> 
+  group_by(subid, lapse_onset) |> 
+  summarize(n = n()) |> 
+  print_kbl()
+
+pred_3day |> 
+  filter(label == "yes") |> 
+  group_by(subid, lapse_onset) |> 
+  summarize(n = n()) |> 
+  print_kbl()
+
+pred_1week |> 
+  filter(label == "yes") |> 
+  group_by(subid, lapse_onset) |> 
+  summarize(n = n()) |> view()
+  print_kbl()
+```
+
+on all messages by message type
+```{r}
+pred_1day |> 
+  group_by(subid, lapse_onset, type) |> 
+  summarize(n = n()) |> 
+  pivot_wider(names_from = type, values_from = n) |> 
+  print_kbl()
+
+pred_3day |> 
+  group_by(subid, lapse_onset, type) |> 
+  summarize(n = n()) |> 
+  pivot_wider(names_from = type, values_from = n) |> 
+  print_kbl()
+
+pred_1week |> 
+  group_by(subid, lapse_onset, type) |> 
+  summarize(n = n()) |> 
+  pivot_wider(names_from = type, values_from = n) |> 
+  print_kbl()
+```
+
+for lapse label = yes only by message type
+```{r}
+pred_1day |> 
+  filter(label == "yes") |> 
+  group_by(subid, lapse_onset, type) |> 
+  summarize(n = n()) |> 
+  pivot_wider(names_from = type, values_from = n) |> 
+  print_kbl()
+
+pred_3day |> 
+  filter(label == "yes") |> 
+  group_by(subid, lapse_onset, type) |> 
+  summarize(n = n()) |> 
+  pivot_wider(names_from = type, values_from = n) |> 
+  print_kbl()
+
+pred_1week |> 
+  filter(label == "yes") |> 
+  group_by(subid, lapse_onset, type) |> 
+  summarize(n = n()) |> 
+  pivot_wider(names_from = type, values_from = n) |> 
+  print_kbl()
+```
+
