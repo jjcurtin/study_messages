@@ -132,25 +132,25 @@ labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |>
 create prediction window
 ```{r}
 pred_1day <- labels |> 
-  mutate(pred_1day = lapse_onset - days(1)) |> 
-  inner_join(data, by = "subid") |>
-  filter(date >= pred_1day & date <= lapse_onset) |>
+  mutate(pred_onset = lapse_onset - days(1)) |> 
+  full_join(data, by = "subid") |>
+  filter(date >= pred_onset & date <= lapse_onset) |>
   glimpse()
 
 pred_3day <- labels |> 
-  mutate(pred_3day = lapse_onset - days(3)) |> 
-  inner_join(data, by = "subid") |>
-  filter(date >= pred_3day & date <= lapse_onset) |>
+  mutate(pred_onset = lapse_onset - days(3)) |> 
+  full_join(data, by = "subid") |>
+  filter(date >= pred_onset & date <= lapse_onset) |>
   glimpse()
 
 pred_1week <- labels |> 
-  mutate(pred_1week = lapse_onset - days(7)) |> 
-  inner_join(data, by = "subid") |>
-  filter(date >= pred_1week & date <= lapse_onset) |>
+  mutate(pred_onset = lapse_onset - days(7)) |> 
+  full_join(data, by = "subid") |>
+  filter(date >= pred_onset & date <= lapse_onset) |>
   glimpse()
 ```
 
-## EDA
+## EDA on full dataset
 
 ### EDA on Contact
 
@@ -180,7 +180,7 @@ data |>
   print_kbl()
 ```
 
-## EDA on predictor windows
+### EDA on predictor windows
 
 on all messages
 ```{r}
@@ -264,5 +264,62 @@ pred_1week |>
   summarize(n = n()) |> 
   pivot_wider(names_from = type, values_from = n) |> 
   print_kbl()
+```
+
+## Create Predictor Documents
+
+function to combine prediction window
+```{r}
+combine_text <- function(df){
+  df |> 
+    select(subid, pred_onset, lapse_onset, label, body) |> 
+    group_by(subid, pred_onset) |> 
+    summarize(body = ifelse(all(is.na(body)), NA_character_, 
+                            str_c(body, collapse = " ")),
+              label = first(label),
+              .groups = "drop")
+}
+```
+
+Combine all messages within same prediction window
+```{r}
+doc_1day <- combine_text(pred_1day)
+doc_3day <- combine_text(pred_3day)
+doc_1week <- combine_text(pred_1week)
+```
+
+Combine documents based no incoming/outgoing
+```{r}
+doc_incoming_1day <- combine_text(filter(pred_1day, type == "received"))
+doc_incoming_3day <- combine_text(filter(pred_3day, type == "received"))
+doc_incoming_1week <- combine_text(filter(pred_1week, type == "received"))
+
+doc_outgoing_1day <- combine_text(filter(pred_1day, type == "sent"))
+doc_outgoing_3day <- combine_text(filter(pred_3day, type == "sent"))
+doc_outgoing_1week <- combine_text(filter(pred_1week, type == "sent"))
+```
+
+## Write-out csv
+```{r}
+doc_1day <- doc_1day |> 
+  write_csv(here(path_messages, "predictors/doc_1day.csv"))
+doc_3day <- doc_3day |> 
+  write_csv(here(path_messages, "predictors/doc_3day.csv"))
+doc_1week <- doc_1week |> 
+  write_csv(here(path_messages, "predictors/doc_1week.csv"))
+
+doc_incoming_1day <- doc_incoming_1day |> 
+  write_csv(here(path_messages, "predictors/doc_incoming_1day.csv"))
+doc_incoming_3day <- doc_incoming_3day |> 
+  write_csv(here(path_messages, "predictors/doc_incoming_3day.csv"))
+doc_incoming_1week <- doc_incoming_1week |> 
+  write_csv(here(path_messages, "predictors/doc_incoming_1week.csv"))
+
+doc_outgoing_1day <- doc_outgoing_1day |> 
+  write_csv(here(path_messages, "predictors/doc_outgoing_1day.csv"))
+doc_outgoing_3day <- doc_outgoing_3day |> 
+  write_csv(here(path_messages, "predictors/doc_outgoing_3day.csv"))
+doc_outgoing_1week <- doc_outgoing_1week |> 
+  write_csv(here(path_messages, "predictors/doc_outgoing_1week.csv"))
 ```
 

@@ -1,0 +1,79 @@
+---
+title: "Compute Feature Scores (Sentiment Analysis)"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Code Status
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_ml.R?raw=true")
+tidymodels_conflictRules()
+```
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+library(tidytext)
+
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_plots.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+## Read in Data
+
+```{r}
+data <- read_csv(
+    here(path_messages, "predictors/doc_1day.csv"),
+    col_types = cols(subid = "d", pred_onset = "T", body = "c", label = "f")
+) |>
+    mutate(pred_onset = as_datetime(pred_onset, tz = "America/Chicago"))
+
+data <- data |>
+    select(-pred_onset)
+```
+
+## Compute Sentiment Scores
+
+```{r}
+data <- data |>
+  mutate(id = row_number())
+
+data |> 
+  unnest_tokens(word, body) |> 
+  inner_join(get_sentiments("afinn")) |>
+  group_by(id) |>
+  summarize(sentiment = sum(value)) |> 
+  full_join(data, by = "id") |> view()
+
+```
