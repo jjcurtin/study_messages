@@ -57,13 +57,14 @@ data <- read_csv(here(path_shared, "sms.csv"),
                  )) |> 
   mutate(date = as_datetime(date, tz = "America/Chicago"),
          start_study = as_datetime(start_study, tz = "America/Chicago"),
-         end_study = as_datetime(end_study, tz = "America/Chicago")) |> 
-  glimpse()
+         end_study = as_datetime(end_study, tz = "America/Chicago"))
 ```
 
 ## Data Cleaning
 
 ### Add Contact Information
+
+#### Contact information based on self-reports
 
 read in contact data
 ```{r}
@@ -77,13 +78,6 @@ check format of address in contacts.csv
 nchar(contacts$phone_number) |> 
   tabyl()
 
-contacts |> 
-  mutate(
-    digits = nchar(phone_number)
-  ) |> 
-  group_by(digits) |> 
-  slice_head(n = 20) |> 
-  print_kbl()
 ```
 
 make address format consistent across contacts and data
@@ -102,22 +96,33 @@ combine data and contacts
 ```{r}
 data <- contacts |> 
   group_by(subid) |> 
-  summarize(freq_contacts = list(phone_number)) |>
-  right_join(data, by = "subid") |> 
-  glimpse()
+  summarize(freq_reported = list(phone_number)) |>
+  right_join(data, by = "subid") 
 ```
 
-create new column freq_contacts: y/n
+create new column freq_reported: y/n
 ```{r}
 data <- data |> 
   mutate(
-    freq_contacts = if_else(
-      address %in% unlist(freq_contacts),
+    freq_reported = if_else(
+      address %in% unlist(freq_reported),
       "yes", "no"
     ),
-    freq_contacts = factor(freq_contacts)
-  ) |> 
-  glimpse()
+    freq_reported = if_else(
+      str_detect(address, "~"),
+      "yes", freq_reported
+    ),
+    freq_reported = factor(freq_reported)
+  ) 
+```
+
+#### Contact information based on text frequency
+
+```{r}
+data <- data |> 
+  group_by(subid, address) |> 
+  mutate(freq_text = n()) |> 
+  ungroup()
 ```
 
 ### Add lapse information
@@ -125,59 +130,70 @@ data <- data |>
 read in lapse labels
 ```{r}
 labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
-  mutate(lapse_onset = as_datetime(lapse_onset, tz = "America/Chicago")) |> 
-  glimpse()
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
 ```
 
 create prediction window
 ```{r}
 pred_1day <- labels |> 
-  mutate(pred_onset = lapse_onset - days(1)) |> 
+  mutate(pred_onset = day_start - days(1)) |> 
   full_join(data, by = "subid") |>
-  filter(date >= pred_onset & date <= lapse_onset) |>
-  glimpse()
+  filter(date >= pred_onset & date <= day_start) 
 
 pred_3day <- labels |> 
-  mutate(pred_onset = lapse_onset - days(3)) |> 
+  mutate(pred_onset = day_start - days(3)) |> 
   full_join(data, by = "subid") |>
-  filter(date >= pred_onset & date <= lapse_onset) |>
-  glimpse()
+  filter(date >= pred_onset & date <= day_start) 
 
 pred_1week <- labels |> 
-  mutate(pred_onset = lapse_onset - days(7)) |> 
+  mutate(pred_onset = day_start - days(7)) |> 
   full_join(data, by = "subid") |>
-  filter(date >= pred_onset & date <= lapse_onset) |>
-  glimpse()
+  filter(date >= pred_onset & date <= day_start)
 ```
 
 ## EDA on full dataset
 
-### EDA on Contact
+### EDA on number of messages
 
-frequent contact based on self-reports
 ```{r}
-# data |> 
-#   ggplot(aes(x = freq_contacts)) +
-#   geom_bar() +
-#   facet_wrap(~subid)
-
-data |> 
-  group_by(subid, freq_contacts) |> 
-  summarize(n = n()) |>
-  pivot_wider(names_from = freq_contacts, values_from = n) |> 
-  print_kbl()
+data$subid |> hist()
 ```
 
+### EDA on message length
+
 ```{r}
-# data |> 
-#   ggplot(aes(x = address)) +
-#   geom_bar() +
-#   facet_wrap(~subid)
+data |> 
+  mutate(text_length = lengths(strsplit(data$body, "\\s+"))) |> 
+  ggplot(aes(x = text_length)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free") +
+  theme_minimal()
 
 data |> 
-  group_by(subid, address) |> 
-  summarize(n = n()) |> 
-  print_kbl()
+  mutate(text_length = lengths(strsplit(data$body, "\\s+"))) |> 
+  ggplot(aes(x = body, y = text_length)) +
+  geom_point() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal() +
+  theme(axis.text.x = element_blank())
+```
+
+### EDA on Contact
+
+```{r}
+data |> 
+  ggplot(aes(x = freq_text)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free") +
+  theme_minimal()
+
+data |> 
+  ggplot(aes(x = address, y = freq_text)) +
+  geom_point() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal() +
+  theme(axis.text.x = element_blank())
 ```
 
 ### EDA on predictor windows
@@ -185,85 +201,91 @@ data |>
 on all messages
 ```{r}
 pred_1day |> 
-  group_by(subid, lapse_onset) |> 
-  summarize(n = n()) |>
-  print_kbl()
+  ggplot(aes(x = day_start)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 
 pred_3day |> 
-  group_by(subid, lapse_onset) |> 
-  summarize(n = n()) |> 
-  print_kbl()
+  ggplot(aes(x = day_start)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 
 pred_1week |> 
-  group_by(subid, lapse_onset) |> 
-  summarize(n = n()) |> 
-  print_kbl()
+  ggplot(aes(x = day_start)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 ```
 
 for lapse label = yes only
 ```{r}
 pred_1day |> 
-  filter(label == "yes") |> 
-  group_by(subid, lapse_onset) |> 
-  summarize(n = n()) |> 
-  print_kbl()
+  filter(lapse == "lapse") |> 
+  ggplot(aes(x = day_start)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 
 pred_3day |> 
-  filter(label == "yes") |> 
-  group_by(subid, lapse_onset) |> 
-  summarize(n = n()) |> 
-  print_kbl()
+  filter(lapse == "lapse") |> 
+  ggplot(aes(x = day_start)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 
 pred_1week |> 
-  filter(label == "yes") |> 
-  group_by(subid, lapse_onset) |> 
-  summarize(n = n()) |> 
-  print_kbl()
+  filter(lapse == "lapse") |>
+  ggplot(aes(x = day_start)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 ```
 
 on all messages by message type
 ```{r}
 pred_1day |> 
-  group_by(subid, lapse_onset, type) |> 
-  summarize(n = n()) |> 
-  pivot_wider(names_from = type, values_from = n) |> 
-  print_kbl()
+  ggplot(aes(x = day_start, fill = type)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 
 pred_3day |> 
-  group_by(subid, lapse_onset, type) |> 
-  summarize(n = n()) |> 
-  pivot_wider(names_from = type, values_from = n) |> 
-  print_kbl()
+  ggplot(aes(x = day_start, fill = type)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 
 pred_1week |> 
-  group_by(subid, lapse_onset, type) |> 
-  summarize(n = n()) |> 
-  pivot_wider(names_from = type, values_from = n) |> 
-  print_kbl()
+  ggplot(aes(x = day_start, fill = type)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 ```
 
 for lapse label = yes only by message type
 ```{r}
 pred_1day |> 
-  filter(label == "yes") |> 
-  group_by(subid, lapse_onset, type) |> 
-  summarize(n = n()) |> 
-  pivot_wider(names_from = type, values_from = n) |> 
-  print_kbl()
+  filter(lapse == "lapse") |>
+  ggplot(aes(x = day_start, fill = type)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 
 pred_3day |> 
-  filter(label == "yes") |> 
-  group_by(subid, lapse_onset, type) |> 
-  summarize(n = n()) |> 
-  pivot_wider(names_from = type, values_from = n) |> 
-  print_kbl()
+  filter(lapse == "lapse") |>
+  ggplot(aes(x = day_start, fill = type)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 
 pred_1week |> 
-  filter(label == "yes") |> 
-  group_by(subid, lapse_onset, type) |> 
-  summarize(n = n()) |> 
-  pivot_wider(names_from = type, values_from = n) |> 
-  print_kbl()
+  filter(lapse == "lapse") |>
+  ggplot(aes(x = day_start, fill = type)) +
+  geom_histogram() +
+  facet_wrap(~subid, scales = "free_x") +
+  theme_minimal()
 ```
 
 ## Create Predictor Documents
@@ -272,11 +294,11 @@ function to combine prediction window
 ```{r}
 combine_text <- function(df){
   df |> 
-    select(subid, pred_onset, lapse_onset, label, body) |> 
+    select(subid, pred_onset, day_start, lapse, body) |> 
     group_by(subid, pred_onset) |> 
     summarize(body = ifelse(all(is.na(body)), NA_character_, 
                             str_c(body, collapse = " ")),
-              label = first(label),
+              lapse = first(lapse),
               .groups = "drop")
 }
 ```

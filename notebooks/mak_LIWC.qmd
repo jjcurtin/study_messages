@@ -1,0 +1,95 @@
+---
+title: "Make Lapse Labels"
+author: "Coco Yu & Claire Punturieri"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+
+```
+
+## LIWC
+
+```{r}
+# shellType <- "cmd"
+
+# input <- here(path_messages, "predictors/doc_1day.csv")
+# output <- here(path_messages, "LIWC/liwc_1day.csv")
+```
+
+```{r}
+# cmd_to_execute <- paste(
+#     "LIWC-22-cli",
+#     "--mode", "wc",
+#     "--row-id-indices", "1",
+#     "--column-indices", "2",
+#     "--input", shQuote(input, type=shellType),
+#     "--output", shQuote(output, type=shellType),
+#     sep = " "
+# )
+```
+
+```{r}
+# system(
+#     command = cmd_to_execute,
+#     # shell = shellType,
+#     intern = FALSE,
+#     wait = TRUE
+# )
+```
+
+## Read in LIWC Results
+
+```{r}
+data <- read_csv(
+    here(path_messages, "predictors/doc_1week.csv"),
+    col_types = cols()
+)
+liwc <- read_csv(
+    here(path_messages, "LIWC/liwc_1week.csv"),
+    col_types = cols()
+) |> janitor::clean_names()
+```
+
+combine two rows
+```{r}
+data$row_id <- 1:nrow(data)
+
+data <- data |> 
+    full_join(liwc, by = "row_id")
+```

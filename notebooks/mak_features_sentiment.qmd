@@ -68,12 +68,38 @@ data <- data |>
 ```{r}
 data <- data |>
   mutate(id = row_number())
+```
 
-data |> 
+afinn package
+```{r}
+afinn <- data |> 
   unnest_tokens(word, body) |> 
   inner_join(get_sentiments("afinn")) |>
   group_by(id) |>
   summarize(sentiment = sum(value)) |> 
-  full_join(data, by = "id") |> view()
+  full_join(data, by = "id") |> 
+  mutate(sentiment = if_else(is.na(sentiment), 0, sentiment))
+```
 
+bing
+```{r}
+bing <- data |> 
+  unnest_tokens(word, body) |> 
+  inner_join(get_sentiments("bing")) |>
+  count(id, sentiment) |> 
+  pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) |> 
+  mutate(sentiment = positive - negative) |> 
+  full_join(data, by = "id") |> 
+  mutate(sentiment = if_else(is.na(sentiment), 0, sentiment)) |> 
+  select(-positive, -negative)
+ ```
+
+nrc
+```{r}
+nrc <- data |> 
+  unnest_tokens(word, body) |> 
+  inner_join(get_sentiments("nrc")) |> 
+  count(id, sentiment) |> 
+  pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) |> 
+  full_join(data, by = "id")
 ```
