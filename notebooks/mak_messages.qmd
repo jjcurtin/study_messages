@@ -108,10 +108,10 @@ data <- data |>
       address %in% unlist(freq_reported),
       "yes", "no"
     ),
-    freq_reported = if_else(
-      str_detect(address, "~"),
-      "yes", freq_reported
-    ),
+    # freq_reported = if_else(
+    #   str_detect(address, "~"),
+    #   "yes", freq_reported
+    # ),
     freq_reported = factor(freq_reported)
   ) 
 ```
@@ -160,14 +160,25 @@ pred_1week <- labels |>
 data$subid |> hist()
 ```
 
+```{r}
+data |> 
+  group_by(subid) |> 
+  summarise(n = n()) |>
+  summarise(mean = mean(n),
+            max = max(n),
+            min = min(n),
+            med = median(n))
+```
+
 ### EDA on message length
 
+get descriptives
 ```{r}
 data |> 
   mutate(text_length = lengths(strsplit(data$body, "\\s+"))) |> 
   ggplot(aes(x = text_length)) +
   geom_histogram() +
-  facet_wrap(~subid, scales = "free") +
+  facet_wrap(~subid, scales = "free_y") +
   theme_minimal()
 
 data |> 
