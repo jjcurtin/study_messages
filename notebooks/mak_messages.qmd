@@ -322,6 +322,39 @@ doc_outgoing_1week <- combine_text(filter(pred_1week, type == "sent"))
 ```
 
 ## Write-out csv
+
+write out individual messages
+
+```{r}
+pred_1day |> 
+  write_csv(here(path_messages, "predictors/pred_1day.csv"))
+pred_3day |> 
+  write_csv(here(path_messages, "predictors/pred_3day.csv"))
+pred_1week |> 
+  write_csv(here(path_messages, "predictors/pred_1week.csv"))
+
+pred_1day |> 
+  filter(type == "received") |> 
+  write_csv(here(path_messages, "predictors/pred_incoming_1day.csv"))
+pred_3day |> 
+  filter(type == "received") |> 
+  write_csv(here(path_messages, "predictors/pred_incoming_3day.csv"))
+pred_1week |> 
+  filter(type == "received") |> 
+  write_csv(here(path_messages, "predictors/pred_incoming_1week.csv"))
+
+pred_1day |> 
+  filter(type == "sent") |> 
+  write_csv(here(path_messages, "predictors/pred_outgoing_1day.csv"))
+pred_3day |> 
+  filter(type == "sent") |> 
+  write_csv(here(path_messages, "predictors/pred_outgoing_3day.csv"))
+pred_1week |> 
+  filter(type == "sent") |> 
+  write_csv(here(path_messages, "predictors/pred_outgoing_1week.csv"))
+```
+
+write out combined documents
 ```{r}
 doc_1day <- doc_1day |> 
   write_csv(here(path_messages, "predictors/doc_1day.csv"))
