@@ -322,7 +322,8 @@ summary_info <- function(data){
       min = min(n),
       max = max(n)
     ) |> 
-    print_kbl()
+    pull(median) |> 
+    hist()
 }
 
 summary_info(eda_1day)
