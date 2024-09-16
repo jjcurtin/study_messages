@@ -1,6 +1,6 @@
 ---
-title: "Make Lapse Labels"
-author: "Coco Yu & Claire Punturieri"
+title: "Make LIWC features"
+author: "Coco Yu"
 date: "`r lubridate::today()`"
 format: 
   html:
@@ -40,56 +40,53 @@ devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.
 Absolute Paths 
 ```{r}
 path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
-
 ```
 
-## LIWC
-
-```{r}
-# shellType <- "cmd"
-
-# input <- here(path_messages, "predictors/doc_1day.csv")
-# output <- here(path_messages, "LIWC/liwc_1day.csv")
-```
-
-```{r}
-# cmd_to_execute <- paste(
-#     "LIWC-22-cli",
-#     "--mode", "wc",
-#     "--row-id-indices", "1",
-#     "--column-indices", "2",
-#     "--input", shQuote(input, type=shellType),
-#     "--output", shQuote(output, type=shellType),
-#     sep = " "
-# )
-```
-
-```{r}
-# system(
-#     command = cmd_to_execute,
-#     # shell = shellType,
-#     intern = FALSE,
-#     wait = TRUE
-# )
-```
 
 ## Read in LIWC Results
 
 ```{r}
-data <- read_csv(
-    here(path_messages, "predictors/doc_1week.csv"),
-    col_types = cols()
-)
 liwc <- read_csv(
-    here(path_messages, "LIWC/liwc_1week.csv"),
+    here(path_messages, "liwc/liwc_1day.csv"),
     col_types = cols()
-) |> janitor::clean_names()
+) |> 
+  janitor::clean_names()
 ```
 
-combine two rows
 ```{r}
-data$row_id <- 1:nrow(data)
+liwc <- liwc |> 
+  select(
+    -day_start, -day_end, -address, -contact_type, -date, -type, -msg_type,
+    -phone_type, -column_id, -segment
+  )
+```
 
-data <- data |> 
-    full_join(liwc, by = "row_id")
+normalize liwc scores
+```{r}
+liwc <- liwc |> 
+  mutate(across(where(is.numeric), ~ if_else(is.na(.), 0, .))) |> 
+  mutate(across(
+    -c(subid, lapse, pred_onset, text, wc, wps), 
+    ~ (. * wc / 100) / sqrt(wc)
+  ))
+```
+
+create new columns 
+
+```{r}
+liwc <- liwc |> 
+  group_by(subid, pred_onset, lapse) |>
+  summarize(
+    across(
+      -c(text, wc, wps),
+      list(
+        mean = ~ mean(., na.rm = TRUE),
+        median = ~ median(., na.rm = TRUE),
+        min = ~ min(., na.rm = TRUE),
+        max = ~ max(., na.rm = TRUE),
+        sd = ~ sd(., na.rm = TRUE)
+      ),
+      .names = "{.col}_{.fn}"
+    )
+  )
 ```
