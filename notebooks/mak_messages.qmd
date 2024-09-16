@@ -13,6 +13,18 @@ editor_options:
 
 ## Code Status
 
+## Notes
+
+- Coco deleted subid 63, 64, 82, 100, 135, 190, 238, 211, 270, 116 (in mak_study_dates) because:
+  - fewer than 100 messages
+
+- Subid 1 & 84 were deleted (in mak_study_dates) because no important contact reported
+
+- Coco filtered out only important contacts
+  - excluding Self, Other, Co-Worker/Business Contact, Irrelevant/Spam 
+  - including Parent, Friend, Sibling, Spouse/Significant Other, Child, Family-Other, Cousin, Grandparent, Counselor, Social Worker/Case Manager
+
+
 ## Setup
 
 Chunk Defaults
@@ -62,6 +74,16 @@ data <- read_csv(here(path_shared, "sms.csv"),
 
 ## Data Cleaning
 
+filter out NA messages
+
+```{r}
+data <- data |> 
+  filter(!is.na(body))
+
+subids <- data$subid |> 
+  unique()
+```
+
 ### Add Contact Information
 
 #### Contact information based on self-reports
@@ -89,43 +111,116 @@ contacts <- contacts |>
       paste0("1", phone_number),
       phone_number
     )
-  )
+  ) |> 
+  rename(address = phone_number) |> 
+  select(subid, utc, address, contact_type)
+```
+
+resolve duplicated contacts
+
+```{r}
+contacts <- contacts |> 
+  group_by(subid, address) |> 
+  slice_max(utc, n = 1) |> 
+  ungroup() |> 
+  select(-utc)
+```
+
+see the list of contact type
+
+```{r}
+contacts |> 
+  pull(contact_type) |> 
+  unique()
 ```
 
 combine data and contacts
 ```{r}
 data <- contacts |> 
+  right_join(data, by = c("subid", "address")) 
+```
+
+
+filter down important contact only
+
+```{r}
+data <- data |> 
+  filter(
+    str_detect(address, "~") |
+    contact_type %in% c("Parent", "Friend", "Sibling", "Spouse/Significant Other", 
+    "Child", "Family-Other", "Cousin", "Grandparent", "Counselor", 
+    "Social Worker/Case Manager")
+  )
+```
+
+```{r}
+data <- data |> 
+  select(-start_study, -end_study)
+```
+
+see what subids were excluded\
+NOTE: The result should return NULL because subids (1, 84) were removed in mak_study_dates
+
+```{r}
+subids |> 
+  setdiff(
+    data |> 
+      pull(subid) |> 
+      unique()
+  )
+```
+
+
+## EDA on full dataset
+
+### EDA on number of messages
+
+```{r}
+data |> 
+  tabyl(subid) |> 
+  arrange(n) |> 
+  print_kbl()
+```
+
+```{r}
+data |> 
   group_by(subid) |> 
-  summarize(freq_reported = list(phone_number)) |>
-  right_join(data, by = "subid") 
+  summarise(n = n()) |>
+  summarise(mean = mean(n),
+            max = max(n),
+            min = min(n),
+            med = median(n))
 ```
 
-create new column freq_reported: y/n
-```{r}
-data <- data |> 
-  mutate(
-    freq_reported = if_else(
-      address %in% unlist(freq_reported),
-      "yes", "no"
-    ),
-    # freq_reported = if_else(
-    #   str_detect(address, "~"),
-    #   "yes", freq_reported
-    # ),
-    freq_reported = factor(freq_reported)
-  ) 
-```
+### EDA on message length
 
-#### Contact information based on text frequency
+get descriptives grouped by subid & pred_onset
 
 ```{r}
-data <- data |> 
-  group_by(subid, address) |> 
-  mutate(freq_text = n()) |> 
-  ungroup()
+data |> 
+  mutate(text_length = lengths(strsplit(data$body, "\\s+")))  |> 
+  group_by(subid) |> 
+  summarize(
+    mean_length = mean(text_length),
+    median_length = median(text_length),
+    min_length = min(text_length),
+    max_length = max(text_length)
+  ) |> 
+  print_kbl()
 ```
 
-### Add lapse information
+look into the long text
+
+```{r}
+# data |> 
+#   mutate(text_length = lengths(strsplit(data$body, "\\s+")))  |> 
+#   arrange(desc(text_length)) |> 
+#   head(5) |> 
+#   pull(body) |> 
+#   print()
+```
+
+## Add lapse information
 
 read in lapse labels
 ```{r}
@@ -152,151 +247,115 @@ pred_1week <- labels |>
   filter(date >= pred_onset & date <= day_start)
 ```
 
-## EDA on full dataset
-
-### EDA on number of messages
-
+create dataframe for EDA: code text as NA if none message exists for one lapse label
 ```{r}
-data$subid |> hist()
+eda_1day <- pred_1day |> 
+  full_join(
+    labels |> 
+      mutate(pred_onset = day_start - days(1)),
+    by = c("subid", "day_start", "day_end", "pred_onset", "lapse")
+  ) |> 
+  mutate(body = if_else(is.na(body), "", body))
+
+eda_3day <- pred_3day |> 
+  full_join(
+    labels |> 
+      mutate(pred_onset = day_start - days(3)),
+    by = c("subid", "day_start", "day_end", "pred_onset", "lapse")
+  ) |> 
+  mutate(body = if_else(is.na(body), "", body))
+
+eda_1week <- pred_1week |> 
+  full_join(
+    labels |> 
+      mutate(pred_onset = day_start - days(7)),
+    by = c("subid", "day_start", "day_end", "pred_onset", "lapse")
+  ) |> 
+  mutate(body = if_else(is.na(body), "", body))
+```
+
+## EDA on predictor windows
+
+histogram on number of messages (missing value included) per participant
+```{r}
+message_count_hist <- function(data){
+  data |> 
+    group_by(subid, pred_onset) |> 
+    summarise(
+      n = sum(body != ""),
+      n_na = sum(body == "")
+    ) |> 
+    pivot_longer(
+      cols = c(n, n_na), 
+      names_to = "n", 
+      values_to = "n_messages"
+    ) |>
+    ggplot(aes(x = pred_onset, y = n_messages, fill = n)) +
+    geom_bar(stat = "identity") +
+    facet_wrap(~subid, scales = "free_x") +
+    theme_minimal()
+}
+
+message_count_hist(eda_1day)
+message_count_hist(eda_3day)
+message_count_hist(eda_1week)
+```
+
+**get basic summary information**\
+missing: percentage of missingness (calculated by # of missing values divided by total number of lapses)\
+total_messages: total count of messages\
+mean/sd/min/max: descriptives of # of messages per label
+```{r}
+summary_info <- function(data){
+  data |> 
+    group_by(subid, pred_onset) |> 
+    summarise(
+      n = sum(body != ""),
+      n_na = sum(body == "")
+    ) |> 
+    group_by(subid) |> 
+    summarize(
+      missing = sum(n_na) / n(),
+      total_messages = sum(n) + sum(n_na),
+      mean = mean(n),
+      median = median(n),
+      min = min(n),
+      max = max(n)
+    ) |> 
+    print_kbl()
+}
+
+summary_info(eda_1day)
+summary_info(eda_3day)
+summary_info(eda_1week)
 ```
 
 ```{r}
-data |> 
-  group_by(subid) |> 
-  summarise(n = n()) |>
-  summarise(mean = mean(n),
-            max = max(n),
-            min = min(n),
-            med = median(n))
-```
+missing_hist <- function(data){
+  data |> 
+    group_by(subid, pred_onset) |> 
+    summarise(
+      n_na = sum(body == "")
+    ) |> 
+    group_by(subid) |> 
+    summarize(
+      missing = sum(n_na),
+      have_text = n() - sum(n_na)
+    ) |> 
+    pivot_longer(
+      cols = c(missing, have_text), 
+      names_to = "type", 
+      values_to = "n"
+    ) |> 
+    mutate(subid = as.character(subid)) |> 
+    ggplot(aes(y = subid, x = n, fill = type)) +
+    geom_bar(stat = "identity") +
+    theme_minimal()
+}
 
-### EDA on message length
-
-get descriptives
-```{r}
-data |> 
-  mutate(text_length = lengths(strsplit(data$body, "\\s+"))) |> 
-  ggplot(aes(x = text_length)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_y") +
-  theme_minimal()
-
-data |> 
-  mutate(text_length = lengths(strsplit(data$body, "\\s+"))) |> 
-  ggplot(aes(x = body, y = text_length)) +
-  geom_point() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal() +
-  theme(axis.text.x = element_blank())
-```
-
-### EDA on Contact
-
-```{r}
-data |> 
-  ggplot(aes(x = freq_text)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free") +
-  theme_minimal()
-
-data |> 
-  ggplot(aes(x = address, y = freq_text)) +
-  geom_point() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal() +
-  theme(axis.text.x = element_blank())
-```
-
-### EDA on predictor windows
-
-on all messages
-```{r}
-pred_1day |> 
-  ggplot(aes(x = day_start)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-
-pred_3day |> 
-  ggplot(aes(x = day_start)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-
-pred_1week |> 
-  ggplot(aes(x = day_start)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-```
-
-for lapse label = yes only
-```{r}
-pred_1day |> 
-  filter(lapse == "lapse") |> 
-  ggplot(aes(x = day_start)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-
-pred_3day |> 
-  filter(lapse == "lapse") |> 
-  ggplot(aes(x = day_start)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-
-pred_1week |> 
-  filter(lapse == "lapse") |>
-  ggplot(aes(x = day_start)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-```
-
-on all messages by message type
-```{r}
-pred_1day |> 
-  ggplot(aes(x = day_start, fill = type)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-
-pred_3day |> 
-  ggplot(aes(x = day_start, fill = type)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-
-pred_1week |> 
-  ggplot(aes(x = day_start, fill = type)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-```
-
-for lapse label = yes only by message type
-```{r}
-pred_1day |> 
-  filter(lapse == "lapse") |>
-  ggplot(aes(x = day_start, fill = type)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-
-pred_3day |> 
-  filter(lapse == "lapse") |>
-  ggplot(aes(x = day_start, fill = type)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
-
-pred_1week |> 
-  filter(lapse == "lapse") |>
-  ggplot(aes(x = day_start, fill = type)) +
-  geom_histogram() +
-  facet_wrap(~subid, scales = "free_x") +
-  theme_minimal()
+missing_hist(eda_1day)
+missing_hist(eda_3day)
+missing_hist(eda_1week)
 ```
 
 ## Create Predictor Documents
