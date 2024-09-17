@@ -85,7 +85,7 @@ liwc <- liwc |>
         q_10 = ~ quantile(., 0.1, na.rm = TRUE),
         q_90 = ~ quantile(., 0.9, na.rm = TRUE)
       ),
-      .names = "{.col}_{.fn}"
+      .names = "3day_{.col}_{.fn}"
     )
   )
 ```
@@ -107,6 +107,7 @@ liwc <- liwc |>
 
 ## EDA
 
+look at means, median, sd and min/max
 ```{r}
 
 ```

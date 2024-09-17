@@ -218,6 +218,11 @@ data |>
   print_kbl()
 ```
 
+get means, median, min, max
+```{r}
+
+```
+
 look into the long text
 
 ```{r}
@@ -239,6 +244,7 @@ labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |>
 ```
 
 create prediction window
+FIX: set relationship = many-to-many
 ```{r}
 
 pred_1day <- labels |> 
@@ -332,13 +338,35 @@ summary_info <- function(data){
       min = min(n),
       max = max(n)
     ) |> 
-    pull(median) |> 
+    pull(missing) |> 
     hist()
 }
 
 summary_info(eda_1day)
 summary_info(eda_3day)
 summary_info(eda_1week)
+```
+
+```{r}
+eda_1week |> 
+    group_by(subid, pred_onset) |> 
+    summarise(
+      n = sum(body != ""),
+      n_na = sum(body == "")
+    ) |> 
+    group_by(subid) |> 
+    summarize(
+      missing = sum(n_na) / n(),
+      total_messages = sum(n) + sum(n_na),
+      mean = mean(n),
+      median = median(n),
+      min = min(n),
+      max = max(n)
+    ) |> 
+  mutate(
+    high_missing = if_else(missing > .2, 1, 0)
+  ) |> 
+  pull(high_missing) |> mean()
 ```
 
 ```{r}
