@@ -47,17 +47,18 @@ path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
 
 ```{r}
 liwc <- read_csv(
-    here(path_messages, "liwc/liwc_1day.csv"),
+    here(path_messages, "liwc/liwc_3day.csv"),
     col_types = cols()
 ) |> 
   janitor::clean_names()
 ```
 
+removed emoji category
 ```{r}
 liwc <- liwc |> 
   select(
     -day_start, -day_end, -address, -contact_type, -date, -type, -msg_type,
-    -phone_type, -column_id, -segment
+    -phone_type, -column_id, -segment, -emoji
   )
 ```
 
@@ -80,13 +81,33 @@ liwc <- liwc |>
     across(
       -c(text, wc, wps),
       list(
-        mean = ~ mean(., na.rm = TRUE),
         median = ~ median(., na.rm = TRUE),
-        min = ~ min(., na.rm = TRUE),
-        max = ~ max(., na.rm = TRUE),
-        sd = ~ sd(., na.rm = TRUE)
+        q_10 = ~ quantile(., 0.1, na.rm = TRUE),
+        q_90 = ~ quantile(., 0.9, na.rm = TRUE)
       ),
       .names = "{.col}_{.fn}"
     )
   )
 ```
+
+merge with lapse labels
+```{r}
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+
+liwc <- liwc |> 
+  full_join(
+    labels |> 
+      mutate(pred_onset = day_start - days(3)),
+    by = c("subid", "pred_onset", "lapse")
+  ) |> 
+  select(-day_start, -day_end)
+```
+
+## EDA
+
+```{r}
+
+```
+
