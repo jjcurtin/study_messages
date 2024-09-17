@@ -196,9 +196,10 @@ data |>
   group_by(subid) |> 
   summarise(n = n()) |>
   summarise(mean = mean(n),
-            max = max(n),
+            sd = sd(n),
+            median = median(n),
             min = min(n),
-            med = median(n))
+            max = max(n))
 ```
 
 ### EDA on message length
@@ -220,7 +221,17 @@ data |>
 
 get means, median, min, max
 ```{r}
-
+data |> 
+  mutate(text_length = lengths(strsplit(data$body, "\\s+")))  |> 
+  group_by(subid) |> 
+  summarise(text_length = sum(text_length) / n()) |> 
+  summarise(
+    mean = mean(text_length),
+    sd = sd(text_length),
+    median = median(text_length),
+    min = min(text_length),
+    max = max(text_length)
+  )
 ```
 
 look into the long text
@@ -244,22 +255,21 @@ labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |>
 ```
 
 create prediction window
-FIX: set relationship = many-to-many
 ```{r}
 
 pred_1day <- labels |> 
   mutate(pred_onset = day_start - days(1)) |> 
-  full_join(data, by = "subid") |>
+  full_join(data, by = "subid", relationship = "many-to-many") |>
   filter(date >= pred_onset & date <= day_start) 
 
 pred_3day <- labels |> 
   mutate(pred_onset = day_start - days(3)) |> 
-  full_join(data, by = "subid") |>
+  full_join(data, by = "subid", relationship = "many-to-many") |>
   filter(date >= pred_onset & date <= day_start) 
 
 pred_1week <- labels |> 
   mutate(pred_onset = day_start - days(7)) |> 
-  full_join(data, by = "subid") |>
+  full_join(data, by = "subid", relationship = "many-to-many") |>
   filter(date >= pred_onset & date <= day_start)
 ```
 

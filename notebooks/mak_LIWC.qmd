@@ -43,67 +43,65 @@ path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
 ```
 
 
-## Read in LIWC Results
+## Clean LIWC Results and Engineer Features
+
+read in lapse labels
+```{r}
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+```
 
 ```{r}
-liwc <- read_csv(
-    here(path_messages, "liwc/liwc_3day.csv"),
+clean_features <- function(window){
+
+  # read in data
+  data <- read_csv(
+    here(path_messages, str_c("liwc/liwc_", window, ".csv")),
     col_types = cols()
-) |> 
+  ) |> 
   janitor::clean_names()
-```
 
-removed emoji category
-```{r}
-liwc <- liwc |> 
-  select(
-    -day_start, -day_end, -address, -contact_type, -date, -type, -msg_type,
-    -phone_type, -column_id, -segment, -emoji
-  )
-```
+  # remove unnecessary columns
+  data <- data |> 
+    select(
+      -day_start, -day_end, -address, -contact_type, -date, -type, -msg_type,
+      -phone_type, -column_id, -segment, -emoji
+    )
+  
+  # normalize liwc scores
+  data <- data |> 
+    mutate(across(
+      -c(subid, lapse, pred_onset, text, wc, wps, analytic, clout, authentic, tone),
+      ~ (. * wc / 100) / sqrt(wc)
+    ))
 
-normalize liwc scores
-```{r}
-liwc <- liwc |> 
-  mutate(across(where(is.numeric), ~ if_else(is.na(.), 0, .))) |> 
-  mutate(across(
-    -c(subid, lapse, pred_onset, text, wc, wps), 
-    ~ (. * wc / 100) / sqrt(wc)
-  ))
-```
-
-create new columns 
-
-```{r}
-liwc <- liwc |> 
-  group_by(subid, pred_onset, lapse) |>
-  summarize(
-    across(
-      -c(text, wc, wps),
+  # create new columns
+  data <- data |> 
+    group_by(subid, pred_onset, lapse) |> 
+    summarize(across(
+      -text,
       list(
         median = ~ median(., na.rm = TRUE),
         q_10 = ~ quantile(., 0.1, na.rm = TRUE),
         q_90 = ~ quantile(., 0.9, na.rm = TRUE)
       ),
-      .names = "3day_{.col}_{.fn}"
-    )
-  )
+      .names = str_c(window, "_{.col}_{.fn}")
+    ),
+    .groups = "drop")
+  
+  # merge with lapse labels
+  data <- data |> 
+    full_join(
+      labels |> 
+        mutate(pred_onset = day_start - days(3)),
+      by = c("subid", "pred_onset", "lapse")
+    ) |> 
+    select(-day_start, -day_end)
+}
 ```
 
-merge with lapse labels
-```{r}
-labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
-  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
-         day_end = as_datetime(day_end, tz = "America/Chicago"))
 
-liwc <- liwc |> 
-  full_join(
-    labels |> 
-      mutate(pred_onset = day_start - days(3)),
-    by = c("subid", "pred_onset", "lapse")
-  ) |> 
-  select(-day_start, -day_end)
-```
 
 ## EDA
 
