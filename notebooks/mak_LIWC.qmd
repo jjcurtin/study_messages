@@ -53,11 +53,11 @@ labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |>
 ```
 
 ```{r}
-clean_features <- function(window){
+clean_features <- function(n){
 
   # read in data
   data <- read_csv(
-    here(path_messages, str_c("liwc/liwc_", window, ".csv")),
+    here(path_messages, str_c("liwc/liwc_", n, "day.csv")),
     col_types = cols()
   ) |> 
   janitor::clean_names()
@@ -86,7 +86,7 @@ clean_features <- function(window){
         q_10 = ~ quantile(., 0.1, na.rm = TRUE),
         q_90 = ~ quantile(., 0.9, na.rm = TRUE)
       ),
-      .names = str_c(window, "_{.col}_{.fn}")
+      .names = str_c("{.col}_{.fn}_", n, "day")
     ),
     .groups = "drop")
   
@@ -94,19 +94,44 @@ clean_features <- function(window){
   data <- data |> 
     full_join(
       labels |> 
-        mutate(pred_onset = day_start - days(3)),
+        mutate(pred_onset = day_start - days(n)),
       by = c("subid", "pred_onset", "lapse")
     ) |> 
     select(-day_start, -day_end)
 }
 ```
 
+create dataframes
+```{r}
+liwc_3day <- clean_features(3)
+liwc_7day <- clean_features(7)
 
+FIX: join by day_start, not pred_onset
+liwc_combined <- liwc_3day |> 
+  full_join(liwc_7day, by = c("subid", "pred_onset", "lapse"))
+```
 
 ## EDA
 
 look at means, median, sd and min/max
 ```{r}
 
+data |> 
+  group_by(subid, pred_onset) |> 
+  summarise(
+    n_na = sum(rowSums(is.na(across(everything()))) > 0),
+    n = sum(!rowSums(is.na(across(everything()))))
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    missing = sum(n_na) / n(),
+    total_messages = sum(n) + sum(n_na),
+    mean = mean(n),
+    median = median(n),
+    min = min(n),
+    max = max(n)
+  ) |> 
+  pull(missing) |> 
+  hist()
 ```
 
