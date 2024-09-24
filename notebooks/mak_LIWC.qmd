@@ -118,6 +118,45 @@ liwc_combined <- liwc_3day |>
 
 ## EDA
 
+### figure out why no variance in 1week but in 3day
+
+mental, substances, lack, reward, filler
+
+```{r}
+check_data <- function(window){
+  data <- read_csv(
+    here(path_messages, str_c("liwc/raw_liwc_", window, ".csv")),
+    col_types = cols()
+  ) |> 
+  janitor::clean_names()
+
+  # remove unnecessary columns
+  data <- data |> 
+    select(
+      -day_end, -pred_onset, -address, -contact_type, -date, -type, -msg_type,
+      -phone_type, -column_id, -segment, -emoji
+    )
+  
+  # normalize liwc scores
+  data <- data |> 
+    mutate(across(
+      -c(subid, day_start, lapse, text, wc, wps, analytic, clout, authentic, tone),
+      ~ (. * wc / 100) / sqrt(wc)
+    ))
+}
+
+check_3day <- check_data("3day")
+check_1week <- check_data("1week")
+
+# mental, substances, lack, reward, filler
+check_3day |> select(mental, substances, lack, reward, filler, cognition) |> skim_all()
+check_1week |> select(mental, substances, lack, reward, filler) |> skim_all()
+check_3day$mental |> density(na.rm = TRUE) |> plot()
+check_1week$mental |> density(na.rm = TRUE) |> plot()
+```
+
+
+### Clean up later
 
 check rows
 check columns
@@ -144,6 +183,7 @@ stats <- liwc_combined |>
 stats |> 
   arrange(complete_rate)
 ```
+
 ```{r}
 stats |> 
   arrange(numeric.sd)
