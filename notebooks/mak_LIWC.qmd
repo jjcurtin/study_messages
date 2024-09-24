@@ -11,6 +11,14 @@ editor_options:
   chunk_output_type: console
 ---
 
+## Notes
+
+- Coco removed all OBJs and emojis from the raw text
+
+- Emoji category was removed from LIWC dictionary
+
+- Around 82% of feature q_10 score and median score overlap
+
 ## Setup
 
 Chunk Defaults
@@ -53,11 +61,11 @@ labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |>
 ```
 
 ```{r}
-clean_features <- function(n){
+clean_features <- function(window){
 
   # read in data
   data <- read_csv(
-    here(path_messages, str_c("liwc/liwc_", n, "day.csv")),
+    here(path_messages, str_c("liwc/liwc_", window, ".csv")),
     col_types = cols()
   ) |> 
   janitor::clean_names()
@@ -65,20 +73,20 @@ clean_features <- function(n){
   # remove unnecessary columns
   data <- data |> 
     select(
-      -day_start, -day_end, -address, -contact_type, -date, -type, -msg_type,
+      -day_end, -pred_onset, -address, -contact_type, -date, -type, -msg_type,
       -phone_type, -column_id, -segment, -emoji
     )
   
   # normalize liwc scores
   data <- data |> 
     mutate(across(
-      -c(subid, lapse, pred_onset, text, wc, wps, analytic, clout, authentic, tone),
+      -c(subid, day_start, lapse, text, wc, wps, analytic, clout, authentic, tone),
       ~ (. * wc / 100) / sqrt(wc)
     ))
 
   # create new columns
   data <- data |> 
-    group_by(subid, pred_onset, lapse) |> 
+    group_by(subid, day_start, lapse) |> 
     summarize(across(
       -text,
       list(
@@ -86,52 +94,247 @@ clean_features <- function(n){
         q_10 = ~ quantile(., 0.1, na.rm = TRUE),
         q_90 = ~ quantile(., 0.9, na.rm = TRUE)
       ),
-      .names = str_c("{.col}_{.fn}_", n, "day")
+      .names = str_c("{.col}_{.fn}_", window)
     ),
     .groups = "drop")
   
   # merge with lapse labels
   data <- data |> 
     full_join(
-      labels |> 
-        mutate(pred_onset = day_start - days(n)),
-      by = c("subid", "pred_onset", "lapse")
+      labels,
+      by = c("subid", "day_start", "lapse")
     ) |> 
-    select(-day_start, -day_end)
+    select(-day_end)
 }
 ```
 
 create dataframes
 ```{r}
-liwc_3day <- clean_features(3)
-liwc_7day <- clean_features(7)
+liwc_3day <- clean_features("3day")
+liwc_1week <- clean_features("1week")
 
-FIX: join by day_start, not pred_onset
 liwc_combined <- liwc_3day |> 
-  full_join(liwc_7day, by = c("subid", "pred_onset", "lapse"))
+  full_join(liwc_1week, by = c("subid", "day_start", "lapse"))
 ```
 
 ## EDA
 
 look at means, median, sd and min/max
-```{r}
 
-data |> 
-  group_by(subid, pred_onset) |> 
-  summarise(
-    n_na = sum(rowSums(is.na(across(everything()))) > 0),
-    n = sum(!rowSums(is.na(across(everything()))))
+```{r}
+missing_3day <- liwc_3day |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
   ) |> 
-  group_by(subid) |> 
-  summarize(
-    missing = sum(n_na) / n(),
-    total_messages = sum(n) + sum(n_na),
-    mean = mean(n),
-    median = median(n),
-    min = min(n),
-    max = max(n)
-  ) |> 
+  ungroup() |> 
   pull(missing) |> 
+  mean()
+
+missing_1week <- liwc_1week |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  pull(missing) |> 
+  mean()
+
+missing_combined <- liwc_combined |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  pull(missing) |> 
+  mean()
+
+liwc_3day |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  group_by(subid) |> 
+  summarise(
+    miss = sum(missing) / n()
+  ) |> 
+  pull(miss) |> 
+  mean()
+```
+
+```{r}
+liwc_3day |> 
+  select(
+    -subid, -day_start, -lapse, 
+    -contains(c("analytic", "tone", "clout", "authentic"))) |> 
+  summarise(
+    across(everything(), ~ mean(is.na(.x)))
+  ) |> 
+  as.matrix() |> 
+  t() |> 
+  as_tibble(rownames = "variable") |> 
+  filter(round(V1) != round(missing_3day))
+
+liwc_1week|> 
+  select(
+    -subid, -day_start, -lapse, 
+    -contains(c("analytic", "tone", "clout", "authentic"))) |> 
+  summarise(
+    across(everything(), ~ mean(is.na(.x)))
+  ) |> 
+  as.matrix() |> 
+  t() |> 
+  as_tibble(rownames = "variable") |> 
+  filter(round(V1) != round(missing_1week))
+```
+
+```{r}
+liwc_3day |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  group_by(subid) |> 
+  summarize(mean_missing = mean(missing))
+
+liwc_1week |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  group_by(subid) |> 
+  summarize(mean_missing = mean(missing))
+
+liwc_1week |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  group_by(subid) |> 
+  summarize(mean_missing = mean(missing))
+```
+
+```{r}
+liwc_3day |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  group_by(subid) |> 
+  summarize(n_missing = sum(missing) / n()) |> 
+  pull(n_missing) |> 
+  hist()
+
+liwc_1week |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  group_by(subid) |> 
+  summarize(n_missing = sum(missing) / n()) |> 
+  pull(n_missing) |> 
+  hist()
+
+liwc_combined |> 
+  rowwise() |> 
+  mutate(
+    missing = if_else(all(is.na(c_across(-c(subid, day_start, lapse)))), 1, 0)
+  ) |> 
+  ungroup() |> 
+  group_by(subid) |> 
+  summarize(n_missing = sum(missing) / n()) |> 
+  pull(n_missing) |> 
   hist()
 ```
+
+```{r}
+liwc_3day |> 
+  select(-subid, -day_start, -lapse) |> 
+  skim_some()
+
+liwc_1week |> 
+  select(-subid, -day_start, -lapse) |> 
+  skim_some()
+
+liwc_combined |> 
+  select(-subid, -day_start, -lapse) |> 
+  skim_some()
+```
+
+check q10 lower than q90
+
+```{r}
+check <- read_csv(
+    here(path_messages, str_c("liwc/liwc_", "3day", ".csv")),
+    col_types = cols()
+  ) |> 
+  janitor::clean_names()
+```
+
+```{r}
+check |> pull(adverb) |> hist()
+
+
+check |> 
+  mutate(adverb = adverb / 100 * wc / sqrt(wc)) |> 
+  # group_by(subid, day_start) |> 
+  # summarize(median = median(adverb)) |> 
+  # pull(median) |> 
+  pull(adverb) |> 
+  hist()
+```
+
+make scatter plots to see relationship between normalized on wc, normalized on sqrt(wc), and wc
+
+```{r}
+# remove unnecessary columns
+check <- check |> 
+  select(
+    -day_end, -pred_onset, -address, -contact_type, -date, -type, -msg_type,
+    -phone_type, -column_id, -segment, -emoji
+  )
+
+check <- check |> 
+  pivot_longer(
+    cols = -c(subid, day_start, lapse, text, wc, wps),
+    names_to = "feature",
+    values_to = "norm_wc"
+  ) |> 
+  mutate(
+    count = norm_wc / 100 * wc,
+    norm_sqrt = norm_wc / 100 * wc / sqrt(wc),
+    norm_log = norm_wc / 100 * wc / log(wc + 1)
+  ) 
+
+check_agg <- check |> 
+  group_by(subid, day_start, feature) |> 
+  summarise(
+    q_1 = quantile(norm_sqrt, 0.01, na.rm = TRUE),
+    q_5 = quantile(norm_sqrt, 0.05, na.rm = TRUE),
+    q_10 = quantile(norm_sqrt, 0.1, na.rm = TRUE),
+    q_50 = median(norm_sqrt, na.rm = TRUE),
+    q_90 = quantile(norm_sqrt, 0.9, na.rm = TRUE),
+    q_95 = quantile(norm_sqrt, 0.95, na.rm = TRUE)
+  )
+
+(check_agg |> filter(q_10 == q_50) |> nrow()) / nrow(check_agg)
+(check_agg |> filter(q_5 == q_50) |> nrow()) / nrow(check_agg)
+(check_agg |> filter(q_1 == q_50) |> nrow()) / nrow(check_agg)
+(check_agg |> filter(q_90 == q_50) |> nrow()) / nrow(check_agg)
+(check_agg |> filter(q_95 == q_50) |> nrow()) / nrow(check_agg)
+  
+check |> 
+  ggplot(aes(x = norm_sqrt)) +
+  geom_histogram() +
+  facet_wrap(~feature, scales = "free") +
+  theme_classic()
+
+```
+
 

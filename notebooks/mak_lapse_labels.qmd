@@ -233,6 +233,7 @@ labels |>
 
 ```{r}
 labels |> 
+  distinct() |> 
   write_csv(here(path_messages, "lapses.csv")) |> 
   glimpse()
 ```

@@ -168,7 +168,7 @@ data <- data |>
 ```
 
 see what subids were excluded\
-NOTE: The result should return NULL because subids (1, 84) were removed in mak_study_dates
+NOTE: The result should return NULL 
 
 ```{r}
 subids |> 
@@ -358,12 +358,12 @@ summary_info(eda_1week)
 ```
 
 ```{r}
-eda_1week |> 
+eda_3day |> 
     group_by(subid, pred_onset) |> 
     summarise(
       n = sum(body != ""),
       n_na = sum(body == "")
-    ) |> 
+    ) |>
     group_by(subid) |> 
     summarize(
       missing = sum(n_na) / n(),
@@ -373,10 +373,25 @@ eda_1week |>
       min = min(n),
       max = max(n)
     ) |> 
-  mutate(
-    high_missing = if_else(missing > .2, 1, 0)
-  ) |> 
-  pull(high_missing) |> mean()
+  pull(missing) |> mean()
+
+eda_3day |> 
+  group_by(subid, pred_onset) |> 
+  summarise(
+    n = sum(body != ""),
+    n_na = sum(body == "")
+  )  |> 
+  pull(n_na) |> 
+  mean()
+
+eda_1week |> 
+  group_by(subid, pred_onset) |> 
+  summarise(
+    n = sum(body != ""),
+    n_na = sum(body == "")
+  )  |> 
+  pull(n_na) |> 
+  mean()
 ```
 
 ```{r}
