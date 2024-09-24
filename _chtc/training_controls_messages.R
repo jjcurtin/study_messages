@@ -23,7 +23,7 @@ data_trn <- str_c("liwc_features_long.csv")
 seed_splits <- 102030
 
 ml_mode <- "classification"   # regression or classification
-configs_per_job <- 150 # number of model configurations that will be fit/evaluated within each CHTC
+configs_per_job <- 400 # number of model configurations that will be fit/evaluated within each CHTC
 
 # RESAMPLING FOR OUTCOME-----------------------------------
 # note that ratio is under_ratio, which is used by downsampling as is
@@ -36,7 +36,7 @@ resample <- c("none", "up_1", "up_2", "up_3", "up_4", "up_5", "down_1", "down_2"
 # tar <- c("train.tar.gz") # name of tar packages for submit file - does not transfer these anywhere 
 max_idle <- 1000
 request_cpus <- 1 
-request_memory <- "5000MB"
+request_memory <- "2000MB"
 request_disk <- "1000MB"
 flock <- TRUE
 glide <- TRUE
@@ -157,11 +157,11 @@ build_recipe <- function(d, config) {
   # no need to select down if feature_set is all 
   if(config$feature_set == "3day") {
     rec <- rec |> 
-      step_select(ends_with("3day"))
+      step_select(-ends_with("1week"))
   }
   if(config$feature_set == "1week") {
     rec <- rec |> 
-      step_select(ends_with("1week"))
+      step_select(-ends_with("3day"))
   }
   return(rec)
 }
