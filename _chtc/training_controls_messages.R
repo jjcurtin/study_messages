@@ -36,7 +36,7 @@ resample <- c("none", "up_1", "up_2", "up_3", "up_4", "up_5", "down_1", "down_2"
 # tar <- c("train.tar.gz") # name of tar packages for submit file - does not transfer these anywhere 
 max_idle <- 1000
 request_cpus <- 1 
-request_memory <- "2000MB"
+request_memory <- "5000MB"
 request_disk <- "1000MB"
 flock <- TRUE
 glide <- TRUE
