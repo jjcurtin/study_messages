@@ -234,15 +234,10 @@ data |>
   )
 ```
 
-look into the long text
-
 ```{r}
-# data |> 
-#   mutate(text_length = lengths(strsplit(data$body, "\\s+")))  |> 
-#   arrange(desc(text_length)) |> 
-#   head(5) |> 
-#   pull(body) |> 
-#   print()
+data |> write_csv(
+  here(path_messages, "cleaned_messages.csv")
+)
 ```
 
 ## Add lapse information
