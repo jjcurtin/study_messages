@@ -424,7 +424,7 @@ function to combine prediction window
 combine_text <- function(df){
   df |> 
     select(subid, pred_onset, day_start, lapse, body) |> 
-    group_by(subid, pred_onset) |> 
+    group_by(subid, day_start) |> 
     summarize(body = ifelse(all(is.na(body)), NA_character_, 
                             str_c(body, collapse = " ")),
               lapse = first(lapse),
