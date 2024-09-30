@@ -86,6 +86,7 @@ data <- data |>
   )
 
 data <- data |> 
+  mutate(body = str_squish(body)) |> 
   filter(!is.na(body)) |> 
   filter(body != "")
 
@@ -179,61 +180,7 @@ subids |>
   )
 ```
 
-
-## EDA on full dataset
-
-### EDA on number of messages
-
-```{r}
-data |> 
-  tabyl(subid) |> 
-  arrange(n) |> 
-  print_kbl()
-```
-
-```{r}
-data |> 
-  group_by(subid) |> 
-  summarise(n = n()) |>
-  summarise(mean = mean(n),
-            sd = sd(n),
-            median = median(n),
-            min = min(n),
-            max = max(n))
-```
-
-### EDA on message length
-
-get descriptives grouped by subid & pred_onset
-
-```{r}
-data |> 
-  mutate(text_length = lengths(strsplit(data$body, "\\s+")))  |> 
-  group_by(subid) |> 
-  summarize(
-    mean_length = mean(text_length),
-    median_length = median(text_length),
-    min_length = min(text_length),
-    max_length = max(text_length)
-  ) |> 
-  print_kbl()
-```
-
-get means, median, min, max
-```{r}
-data |> 
-  mutate(text_length = lengths(strsplit(data$body, "\\s+")))  |> 
-  group_by(subid) |> 
-  summarise(text_length = sum(text_length) / n()) |> 
-  summarise(
-    mean = mean(text_length),
-    sd = sd(text_length),
-    median = median(text_length),
-    min = min(text_length),
-    max = max(text_length)
-  )
-```
-
+**Write-out raw messages**
 ```{r}
 data |> write_csv(
   here(path_messages, "cleaned_messages.csv")
@@ -268,154 +215,6 @@ pred_1week <- labels |>
   filter(date >= pred_onset & date <= day_start)
 ```
 
-create dataframe for EDA: code text as NA if none message exists for one lapse label
-```{r}
-eda_1day <- pred_1day |> 
-  full_join(
-    labels |> 
-      mutate(pred_onset = day_start - days(1)),
-    by = c("subid", "day_start", "day_end", "pred_onset", "lapse")
-  ) |> 
-  mutate(body = if_else(is.na(body), "", body))
-
-eda_3day <- pred_3day |> 
-  full_join(
-    labels |> 
-      mutate(pred_onset = day_start - days(3)),
-    by = c("subid", "day_start", "day_end", "pred_onset", "lapse")
-  ) |> 
-  mutate(body = if_else(is.na(body), "", body))
-
-eda_1week <- pred_1week |> 
-  full_join(
-    labels |> 
-      mutate(pred_onset = day_start - days(7)),
-    by = c("subid", "day_start", "day_end", "pred_onset", "lapse")
-  ) |> 
-  mutate(body = if_else(is.na(body), "", body))
-```
-
-## EDA on predictor windows
-
-histogram on number of messages (missing value included) per participant
-```{r}
-message_count_hist <- function(data){
-  data |> 
-    group_by(subid, pred_onset) |> 
-    summarise(
-      n = sum(body != ""),
-      n_na = sum(body == "")
-    ) |> 
-    pivot_longer(
-      cols = c(n, n_na), 
-      names_to = "n", 
-      values_to = "n_messages"
-    ) |>
-    ggplot(aes(x = pred_onset, y = n_messages, fill = n)) +
-    geom_bar(stat = "identity") +
-    facet_wrap(~subid, scales = "free_x") +
-    theme_minimal()
-}
-
-message_count_hist(eda_1day)
-message_count_hist(eda_3day)
-message_count_hist(eda_1week)
-```
-
-**get basic summary information**\
-missing: percentage of missingness (calculated by # of missing values divided by total number of lapses)\
-total_messages: total count of messages\
-mean/sd/min/max: descriptives of # of messages per label
-```{r}
-summary_info <- function(data){
-  data |> 
-    group_by(subid, pred_onset) |> 
-    summarise(
-      n = sum(body != ""),
-      n_na = sum(body == "")
-    ) |> 
-    group_by(subid) |> 
-    summarize(
-      missing = sum(n_na) / n(),
-      total_messages = sum(n) + sum(n_na),
-      mean = mean(n),
-      median = median(n),
-      min = min(n),
-      max = max(n)
-    ) |> 
-    pull(missing) |> 
-    hist()
-}
-
-summary_info(eda_1day)
-summary_info(eda_3day)
-summary_info(eda_1week)
-```
-
-```{r}
-eda_3day |> 
-    group_by(subid, pred_onset) |> 
-    summarise(
-      n = sum(body != ""),
-      n_na = sum(body == "")
-    ) |>
-    group_by(subid) |> 
-    summarize(
-      missing = sum(n_na) / n(),
-      total_messages = sum(n) + sum(n_na),
-      mean = mean(n),
-      median = median(n),
-      min = min(n),
-      max = max(n)
-    ) |> 
-  pull(missing) |> mean()
-
-eda_3day |> 
-  group_by(subid, pred_onset) |> 
-  summarise(
-    n = sum(body != ""),
-    n_na = sum(body == "")
-  )  |> 
-  pull(n_na) |> 
-  mean()
-
-eda_1week |> 
-  group_by(subid, pred_onset) |> 
-  summarise(
-    n = sum(body != ""),
-    n_na = sum(body == "")
-  )  |> 
-  pull(n_na) |> 
-  mean()
-```
-
-```{r}
-missing_hist <- function(data){
-  data |> 
-    group_by(subid, pred_onset) |> 
-    summarise(
-      n_na = sum(body == "")
-    ) |> 
-    group_by(subid) |> 
-    summarize(
-      missing = sum(n_na),
-      have_text = n() - sum(n_na)
-    ) |> 
-    pivot_longer(
-      cols = c(missing, have_text), 
-      names_to = "type", 
-      values_to = "n"
-    ) |> 
-    mutate(subid = as.character(subid)) |> 
-    ggplot(aes(y = subid, x = n, fill = type)) +
-    geom_bar(stat = "identity") +
-    theme_minimal()
-}
-
-missing_hist(eda_1day)
-missing_hist(eda_3day)
-missing_hist(eda_1week)
-```
 
 ## Create Predictor Documents
 
@@ -423,10 +222,9 @@ function to combine prediction window
 ```{r}
 combine_text <- function(df){
   df |> 
-    select(subid, pred_onset, day_start, lapse, body) |> 
+    select(subid, day_start, lapse, body) |> 
     group_by(subid, day_start) |> 
-    summarize(body = ifelse(all(is.na(body)), NA_character_, 
-                            str_c(body, collapse = " ")),
+    summarize(body = str_c(body, collapse = " "),
               lapse = first(lapse),
               .groups = "drop")
 }

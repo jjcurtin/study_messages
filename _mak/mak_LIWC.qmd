@@ -17,7 +17,10 @@ editor_options:
 
 - Emoji category was removed from LIWC dictionary
 
-- Around 82% of feature q_10 score and median score overlap
+- Coco & John decided to use median score and 95% percentile on liwc generated on individual messages
+
+  - Around 80% of feature q_10 score and median score overlap (individual messages)
+
 
 ## Setup
 
@@ -59,6 +62,8 @@ labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |>
   mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
          day_end = as_datetime(day_end, tz = "America/Chicago"))
 ```
+
+### Clean up liwc features on individual messages
 
 ```{r}
 clean_features <- function(window){
@@ -116,83 +121,68 @@ liwc_combined <- liwc_3day |>
   full_join(liwc_1week, by = c("subid", "day_start", "lapse"))
 ```
 
-## EDA
-
-### figure out why no variance in 1week but in 3day
-
-mental, substances, lack, reward, filler
-
-```{r}
-check_data <- function(window){
-  data <- read_csv(
-    here(path_messages, str_c("liwc/raw_liwc_", window, ".csv")),
-    col_types = cols()
-  ) |> 
-  janitor::clean_names()
-
-  # remove unnecessary columns
-  data <- data |> 
-    select(
-      -day_end, -pred_onset, -address, -contact_type, -date, -type, -msg_type,
-      -phone_type, -column_id, -segment, -emoji
-    )
-  
-  # normalize liwc scores
-  data <- data |> 
-    mutate(across(
-      -c(subid, day_start, lapse, text, wc, wps, analytic, clout, authentic, tone),
-      ~ (. * wc / 100) / sqrt(wc)
-    ))
-}
-
-check_3day <- check_data("3day")
-check_1week <- check_data("1week")
-
-# mental, substances, lack, reward, filler
-check_3day |> select(mental, substances, lack, reward, filler, cognition) |> skim_all()
-check_1week |> select(mental, substances, lack, reward, filler) |> skim_all()
-check_3day$mental |> density(na.rm = TRUE) |> plot()
-check_1week$mental |> density(na.rm = TRUE) |> plot()
-```
-
-
-### Clean up later
-
-check rows
-check columns
-check rows per subject
-check number subjects
-check lapse label distirbution overall and by subject
-
-
-
-```{r}
-skim_minimal <- skimr::skim_with(numeric = skimr::sfl(mean = NULL, p25 = NULL, 
-                                                      p75 = NULL, 
-                                                      hist = NULL,
-                                                      n_missing = NULL))
-```
-
-```{r}
-stats <- liwc_combined |> 
-  select(-subid, -day_start, -lapse) |> 
-  skim_minimal()
-```
-
-```{r}
-stats |> 
-  arrange(complete_rate)
-```
-
-```{r}
-stats |> 
-  arrange(numeric.sd)
-```
-
-
+write-out csv file
 ```{r}
 liwc_combined |> 
  mutate(label_num = 1:nrow(liwc_combined)) |>
  write_csv(here(path_messages, "liwc", "liwc_features_long.csv"))
+```
+
+### Clean up liwc features on concatenated messages
+
+read in data
+```{r}
+liwc_3day_cat <- read_csv(
+  here(path_messages, "liwc/raw_cat_liwc_3day.csv"),
+  col_types = cols()
+) |> 
+  janitor::clean_names() |> 
+  select(-column_id, -text, -segment, -emoji)
+
+liwc_1week_cat <- read_csv(
+  here(path_messages, "liwc/raw_cat_liwc_1week.csv"),
+  col_types = cols()
+) |> 
+  janitor::clean_names() |> 
+  select(-column_id, -text, -segment, -emoji)
+```
+
+merge with labels
+```{r}
+liwc_3day_cat <- liwc_3day_cat |> 
+  full_join(
+    labels,
+    by = c("subid", "day_start", "lapse")
+  ) |> 
+  select(-day_end)
+
+liwc_1week_cat <- liwc_1week_cat |> 
+  full_join(
+    labels,
+    by = c("subid", "day_start", "lapse")
+  ) |> 
+  select(-day_end)
+```
+
+rename column names
+```{r}
+liwc_3day_cat <- liwc_3day_cat |> 
+  rename_with(~ paste0(., "_3day"), -c(subid, day_start, lapse))
+
+liwc_1week_cat <- liwc_1week_cat |> 
+  rename_with(~ paste0(., "_1week"), -c(subid, day_start, lapse))
+```
+
+combine dataframes
+```{r}
+liwc_combined_cat <- liwc_3day_cat |> 
+  full_join(liwc_1week_cat, by = c("subid", "day_start", "lapse"))
+```
+
+write_out csv
+```{r}
+liwc_combined_cat |> 
+ mutate(label_num = 1:nrow(liwc_combined_cat)) |>
+ write_csv(here(path_messages, "liwc", "liwc_features_cat.csv"))
 ```
 

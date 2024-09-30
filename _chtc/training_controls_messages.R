@@ -38,8 +38,8 @@ max_idle <- 1000
 request_cpus <- 1 
 request_memory <- "5000MB"
 request_disk <- "1000MB"
-flock <- TRUE
-glide <- TRUE
+flock <- FALSE
+glide <- FALSE
 
 
 # OUTCOME-------------------------------------
