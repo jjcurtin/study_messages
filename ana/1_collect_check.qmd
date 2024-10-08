@@ -9,7 +9,7 @@ format:
     embed-resources: true
 params:
   study: "messages"
-  version: "v1"
+  version: "v2"
   cv: "nested_1_x_10_3_x_10"
   algorithms: "xgboost"
   model: "main"
