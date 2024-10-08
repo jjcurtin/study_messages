@@ -239,7 +239,7 @@ We performed a Bayesian hierarchical generalized linear model that regresses the
 
 The final sample includes 138 participants. 73 (53%) participants are females, 17 (12%) are non-White minorities, 39 (28%) earned less than half of the median income in Madison in Year 2017, and 13 (9%) aged 55 or older.
 
-{{< embed eda/eda_demographics.qmd#fig-demographics >}}
+{{< embed _eda/eda_demographics.qmd#fig-demographics >}}
 
 ## Sample Distribution
 
@@ -248,26 +248,26 @@ The final total number of lapse labels in the dataset is 11562. On average, each
 The total number of messages in the dataset is 313492. On average, each subject has 2271.68 messages (sd = 2536.6, range = 100 - 15884). The average message length across all participants is 10.4 words (sd = 14.3, median = 7, range = 1 - 1266). On average, each participant has a mean message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).
 
 ::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count >}}
-{{< embed eda/eda_messages.qmd#fig-message_length >}}
+{{< embed _eda/eda_messages.qmd#fig-message_count >}}
+{{< embed _eda/eda_messages.qmd#fig-message_length >}}
 :::
 
 On average, each lapse label has 79.2 messages (sd = 112, median = 40, range = 1 - 1414) during the 3-day prediction window. 11.9% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant's data missingness is 12% (sd = .19, median = 1%, range = 0% - 77%).
 
-{{< embed eda/eda_messages.qmd#fig-message_count_3day >}}
+{{< embed _eda/eda_messages.qmd#fig-message_count_3day >}}
 
 ::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count_3day_byid >}}
-{{< embed eda/eda_messages.qmd#fig-missingness_3day_byid >}}
+{{< embed _eda/eda_messages.qmd#fig-message_count_3day_byid >}}
+{{< embed _eda/eda_messages.qmd#fig-missingness_3day_byid >}}
 :::
 
 On average, each lapse label has 180 messages (sd = 241, median = 96, range = 1 - 2866) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant's data missingness is 8% (sd = .16, median = 0%, range = 0% - 73%).
 
-{{< embed eda/eda_messages.qmd#fig-message_count_1week >}}
+{{< embed _eda/eda_messages.qmd#fig-message_count_1week >}}
 
 ::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count_1week_byid >}}
-{{< embed eda/eda_messages.qmd#fig-missingness_1week_byid >}}
+{{< embed _eda/eda_messages.qmd#fig-message_count_1week_byid >}}
+{{< embed _eda/eda_messages.qmd#fig-missingness_1week_byid >}}
 :::
 
 ## LIWC Features
