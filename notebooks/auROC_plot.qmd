@@ -79,7 +79,7 @@ path_processed <- format_path(str_c("studydata/risk/data_processed/", study))
 > CP these are I think raw probabilities not beta -- issue?
 
 ```{r}
-probs <- read_csv(here::here(path_models, str_c("inner_metrics_", version, "_", cv, ".csv")))
+probs <- read_csv(here::here(path_models, str_c("inner_metrics_", version, "_", cv, ".csv"))) |> 
   #pivot_longer(cols = starts_with("prob"), 
                #names_to = "method", 
                #values_to = ".pred_Lapse") |>
@@ -88,7 +88,7 @@ probs <- read_csv(here::here(path_models, str_c("inner_metrics_", version, "_", 
 
 ```{r}
 roc_data <- probs |> 
-  roc_curve(prob, truth = truth)
+  roc_curve(prob, truth = label)
   
 roc_data |>
   mutate(sensitivity = round(sensitivity, 4),
@@ -110,39 +110,39 @@ roc_data |>
 
 Add in curves for every outer fold.
 ```{r}
-roc_folds <- probs |> 
-  nest(.by = outer_split_num, .key = "preds") |> 
-  mutate(roc = map(preds, \(preds) roc_curve(preds, prob, 
-                                             truth = truth)))
-
-fig_roc_folds <- roc_data |>   # plot region from full concatenated data
-  ggplot(aes(x = 1 - specificity, y = sensitivity)) + 
-  geom_abline(lty = 3) +
-  coord_fixed(xlim = c(0, 1), ylim = c(0, 1)) +
-  labs(x = "Specificity",
-       y = "Sensitivity") +
-  scale_x_continuous(breaks = seq(0,1,.25),
-    labels = sprintf("%.2f", seq(1,0,-.25))) +
-  theme(axis.title.x=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-  
-for (i in 1:nrow(roc_folds)) {
-  fig_roc_folds <- fig_roc_folds +
-     geom_path(data = roc_folds$roc[[i]],
-               mapping = aes(x = 1 - specificity, y = sensitivity),
-               color = "gray")
-}
-
-roc_data_smooth <- roc_data |> mutate(sensitivity = round(sensitivity, 4),
-                                      specificity = round(specificity, 4)) |>
-  group_by(sensitivity, specificity) |> 
-  summarise(.threshold = mean(.threshold)) 
-
-#add full concatenated curve
-fig_roc_folds +
-     geom_path(data = roc_data_smooth,
-               mapping = aes(x = 1 - specificity, y = sensitivity, color = .threshold),
-               linewidth = 2) +
-    scale_color_gradient(low="blue", high="red")
+# roc_folds <- probs |> 
+#   nest(.by = outer_split_num, .key = "preds") |> 
+#   mutate(roc = map(preds, \(preds) roc_curve(preds, prob, 
+#                                              truth = truth)))
+# 
+# fig_roc_folds <- roc_data |>   # plot region from full concatenated data
+#   ggplot(aes(x = 1 - specificity, y = sensitivity)) + 
+#   geom_abline(lty = 3) +
+#   coord_fixed(xlim = c(0, 1), ylim = c(0, 1)) +
+#   labs(x = "Specificity",
+#        y = "Sensitivity") +
+#   scale_x_continuous(breaks = seq(0,1,.25),
+#     labels = sprintf("%.2f", seq(1,0,-.25))) +
+#   theme(axis.title.x=element_blank(),
+#         axis.text.x=element_blank(),
+#         axis.ticks.x=element_blank())
+#   
+# for (i in 1:nrow(roc_folds)) {
+#   fig_roc_folds <- fig_roc_folds +
+#      geom_path(data = roc_folds$roc[[i]],
+#                mapping = aes(x = 1 - specificity, y = sensitivity),
+#                color = "gray")
+# }
+# 
+# roc_data_smooth <- roc_data |> mutate(sensitivity = round(sensitivity, 4),
+#                                       specificity = round(specificity, 4)) |>
+#   group_by(sensitivity, specificity) |> 
+#   summarise(.threshold = mean(.threshold)) 
+# 
+# #add full concatenated curve
+# fig_roc_folds +
+#      geom_path(data = roc_data_smooth,
+#                mapping = aes(x = 1 - specificity, y = sensitivity, color = .threshold),
+#                linewidth = 2) +
+#     scale_color_gradient(low="blue", high="red")
 ```
