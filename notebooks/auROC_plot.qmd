@@ -1,0 +1,148 @@
+---
+title: "Performance plots"
+author: "John Curtin & Coco"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+params:
+  study: "messages"
+  version: "v1"
+  cv: "nested_1_x_10_3_x_10"
+  algorithms: "xgboost"   # "all" or name of specific algorithm
+editor_options: 
+  chunk_output_type: console
+---
+
+# Housekeeping
+
+## Code status
+
+Complete for use in GPS study as of 10/2024.
+
+## Notes
+
+Generates auROC plot.
+
+# Set Up
+
+## Set Up Environment
+
+### Study parameters
+```{r}
+study <- params$study
+cv <- params$cv
+algorithms <- params$algorithms
+version <- params$version
+```
+
+### Defaults
+```{r}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_ml.R?raw=true")
+tidymodels_conflictRules()
+
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+### Packages for script
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(tidyposterior)
+library(yardstick)
+
+theme_set(theme_classic())
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+```
+
+
+### Absolute paths
+```{r}
+path_processed <- format_path(str_c("studydata/risk/data_processed/", study))
+```
+
+> CP these are I think raw probabilities not beta -- issue?
+
+```{r}
+probs <- read_csv(here::here(path_models, str_c("inner_metrics_", version, "_", cv, ".csv")))
+  #pivot_longer(cols = starts_with("prob"), 
+               #names_to = "method", 
+               #values_to = ".pred_Lapse") |>
+  glimpse()
+```
+
+```{r}
+roc_data <- probs |> 
+  roc_curve(prob, truth = truth)
+  
+roc_data |>
+  mutate(sensitivity = round(sensitivity, 4),
+         specificity = round(specificity, 4)) |>
+  group_by(sensitivity, specificity) |> 
+  summarise(.threshold = mean(.threshold)) |> 
+  ggplot(aes(x = 1 - specificity, y = sensitivity, color = .threshold)) +
+  geom_path(linewidth = 1) +
+  geom_abline(lty = 3) +
+  coord_fixed(xlim = c(0, 1), ylim = c(0, 1)) +
+  labs(x = "Specificity",
+       y = "Sensitivity") +
+  scale_x_continuous(breaks = seq(0,1,.25),
+    labels = sprintf("%.2f", seq(1,0,-.25))) +
+  scale_color_gradient(low="blue", high = "red") +
+  theme(axis.text = element_text(size = rel(1.50)), 
+        axis.title = element_text(size = rel(1.75)))
+```
+
+Add in curves for every outer fold.
+```{r}
+roc_folds <- probs |> 
+  nest(.by = outer_split_num, .key = "preds") |> 
+  mutate(roc = map(preds, \(preds) roc_curve(preds, prob, 
+                                             truth = truth)))
+
+fig_roc_folds <- roc_data |>   # plot region from full concatenated data
+  ggplot(aes(x = 1 - specificity, y = sensitivity)) + 
+  geom_abline(lty = 3) +
+  coord_fixed(xlim = c(0, 1), ylim = c(0, 1)) +
+  labs(x = "Specificity",
+       y = "Sensitivity") +
+  scale_x_continuous(breaks = seq(0,1,.25),
+    labels = sprintf("%.2f", seq(1,0,-.25))) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+  
+for (i in 1:nrow(roc_folds)) {
+  fig_roc_folds <- fig_roc_folds +
+     geom_path(data = roc_folds$roc[[i]],
+               mapping = aes(x = 1 - specificity, y = sensitivity),
+               color = "gray")
+}
+
+roc_data_smooth <- roc_data |> mutate(sensitivity = round(sensitivity, 4),
+                                      specificity = round(specificity, 4)) |>
+  group_by(sensitivity, specificity) |> 
+  summarise(.threshold = mean(.threshold)) 
+
+#add full concatenated curve
+fig_roc_folds +
+     geom_path(data = roc_data_smooth,
+               mapping = aes(x = 1 - specificity, y = sensitivity, color = .threshold),
+               linewidth = 2) +
+    scale_color_gradient(low="blue", high="red")
+```
