@@ -146,7 +146,7 @@ raw_data |>
 
 > Conclusion 1: The total number of messages in the dataset is 313492.
 
-> Conclusion 2: On average, participants have 2272 messages (100 - 15884).
+> Conclusion 2: On average, each subject has 2271.68 messages (sd = 2536.6, range = 100 - 15884).
 
 ```{r}
 (nrow(raw_data))
@@ -166,6 +166,10 @@ raw_data |>
 
 **Histogram on # of messages per participant**
 ```{r}
+#| label: fig-message_count
+#| fig-cap: "Distribution of Message Counts"
+#| fig-width: 3.5
+#| fig-height: 2.5
 raw_data |> 
     group_by(subid) |> 
     summarize(n = n()) |> 
@@ -222,6 +226,10 @@ raw_data |>
 
 **Histogram on mean/median message length per participant**
 ```{r}
+#| label: fig-message_length
+#| fig-cap: "Distribution of Mean Message Length"
+#| fig-width: 3.5
+#| fig-height: 2.5
 raw_data |> 
   mutate(text_length = lengths(strsplit(raw_data$body, "\\s+")))  |> 
   group_by(subid) |> 
@@ -229,7 +237,9 @@ raw_data |>
   ggplot(aes(x = mean_length)) + 
   geom_histogram(binwidth = 1, fill = "#97C4C5") +
   labs(x = "mean message length", y = "subject counts")
+```
 
+```{r}
 raw_data |> 
   mutate(text_length = lengths(strsplit(raw_data$body, "\\s+")))  |> 
   group_by(subid) |> 
@@ -322,6 +332,10 @@ pred_3day |>
 
 **Distribution by label**
 ```{r}
+#| label: fig-message_count_3day
+#| fig-cap: "Distribution of Message Counts in the 3-Day Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
 pred_3day |> 
   group_by(subid, day_start) |> 
   summarize(n = n()) |> 
@@ -375,6 +389,10 @@ pred_3day |>
 
 **Distribution by participant**
 ```{r}
+#| label: fig-message_count_3day_byid
+#| fig-cap: "Distribution of Message Counts by Subject in the 3-Day Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
 pred_3day |> 
   group_by(subid, day_start) |> 
   summarize(
@@ -387,7 +405,13 @@ pred_3day |>
   ggplot(aes(x = mean_messages)) +
   geom_histogram(fill = "#97C4C5") +
   labs(x = "averaged number of messages per label", y = "subject counts")
+```
 
+```{r}
+#| label: fig-missingness_3day_byid
+#| fig-cap: "Distribution of Missingness by Subject in the 3-Day Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
 pred_3day |> 
   group_by(subid, day_start) |> 
   summarize(
@@ -431,6 +455,10 @@ pred_1week |>
 
 **Distribution by label**
 ```{r}
+#| label: fig-message_count_1week
+#| fig-cap: "Distribution of Message Counts in the 1-Week Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
 pred_1week |> 
   group_by(subid, day_start) |> 
   summarize(n = n()) |> 
@@ -483,6 +511,10 @@ pred_1week |>
 ```
 
 ```{r}
+#| label: fig-message_count_1week_byid
+#| fig-cap: "Distribution of Message Counts by Subject in the 1-Week Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
 pred_1week |> 
   group_by(subid, day_start) |> 
   summarize(
@@ -495,7 +527,13 @@ pred_1week |>
   ggplot(aes(x = mean_messages)) +
   geom_histogram(fill = "#97C4C5") +
   labs(x = "averaged number of messages per label", y = "subject counts")
+```
 
+```{r}
+#| label: fig-missingness_1week_byid
+#| fig-cap: "Distribution of Missingness by Subject in the 1-Week Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
 pred_1week |> 
   group_by(subid, day_start) |> 
   summarize(

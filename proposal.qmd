@@ -14,6 +14,18 @@ csl: https://raw.githubusercontent.com/citation-style-language/styles/master/nat
 bibliography: paper_messages.bib
 ---
 
+```{=html}
+<!--
+1.  DTx address treatment access problems and are somewhat effective.  
+2.  Smart dtx (sensing and algorithms) can improve effectiveness by anticipating lapses and personalizing interventions
+3.  There has been some progress building algorithms  using EMA but these are limited by burden, sustainatiblity, temporal precision, and by the limits of our  understanding of lapse causes
+4.  Text message sensing may address all of these limitations
+5.  We now have methods to engineer features from text.  They may differ in predictive performance and interpretabilty.  
+
+so our aims are....
+-->
+```
+
 # Specific Aims
 
 ## Background
@@ -110,7 +122,7 @@ This study will analyze data collected from 2017-2019 from a larger grant funded
 
 ## Participants
 
-Individuals in early recovery from AUD were recruited from Madison and surrounding area via social media platforms (e.g., Facebook), referrals from clinics, and television and radio advertisements. After initial phone screen, interested individuals came in-person to complete a more in-depth screening to determine their eligibility. We documented their demographic information. Inclusion criteria include that participants: 1) must be at least aged 18 or older; 2) must meet criteria for AUD with at least moderate severity (\>four DSM-5 criteria); 3) must be abstinent from alcohol for at least one week and fewer than two months at time of intake; 4) must be able to read and write in English; 5) must be willing to use smartphone and their smartphone is compatible with our study technology. Participants were excluded if they have a lifetime history of severe and persistent mental illness. One hundred sixty-nine participants were eligible and enrolled in the study. After excluding participants who discontinued before the first follow-up session and those with low compliance rates and too few messages (<100 messages), we have a final sample size of 138 participants.
+Individuals in early recovery from AUD were recruited from Madison and surrounding area via social media platforms (e.g., Facebook), referrals from clinics, and television and radio advertisements. After initial phone screen, interested individuals came in-person to complete a more in-depth screening to determine their eligibility. We documented their demographic information. Inclusion criteria include that participants: 1) must be at least aged 18 or older; 2) must meet criteria for AUD with at least moderate severity (\>four DSM-5 criteria); 3) must be abstinent from alcohol for at least one week and fewer than two months at time of intake; 4) must be able to read and write in English; 5) must be willing to use smartphone and their smartphone is compatible with our study technology. Participants were excluded if they have a lifetime history of severe and persistent mental illness. One hundred sixty-nine participants were eligible and enrolled in the study. After excluding participants who discontinued before the first follow-up session and those with low compliance rates, we have a final sample size of 151 participants.
 
 ## Procedures
 
@@ -120,7 +132,6 @@ Throughout the course of the study, participants were expected to complete four 
 
 
 ::: {#fig-simp}
-
 ```{dot}
 digraph {
 
@@ -197,86 +208,70 @@ Participants were prompted up to four times daily to report their recent alcohol
 
 ### SMS Messages
 
-At each of the follow-up visits, a research assistant downloaded the participants' SMS message logs from their phone. These logs included the message type (incoming vs. outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants' phones. We included only messages from/to important contacts and in group chats.
+At each of the follow-up visits, a research assistant downloaded the participants' SMS message logs from their phone. These logs included the message type (incoming vs. outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants' phones.
 
-For each individual lapse window, we have predictor sets that differ in prediction window length and their analytic unit. We define text prediction windows to be 3-day and 1-week preceding the lapse window. We analyzed the two prediction windows both individually and combined (i.e., three configurations in total). 
+For each individual lapse window, we have predictor sets that differ in prediction window length and their message type. We define text prediction windows to be 1-day, 2-day, 3-day, and 1-week preceding the lapse window. Within each prediction window, we will use two configuration methods to construct feature sets (referred to as "document" in the following sections). First, we will combine both incoming and outgoing messages in one document as predictor. Second, we will separate incoming messages and outgoing messages into two documents as predictors.
 
 ## Feature Engineering
 
-Text messages will serve as the only raw source for all feature engineering. The document sets will go through a generic pre-processing step that involves removal of all emojis. Our decision to remove all emojis was due to loss of emoji data in the ios devices during back up. This study used the LIWC dictionary [@pennebakerDevelopmentPsychometricProperties2015a] and computed scores by counting frequency of words that belong to each category. We did not remove any stop words. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes [@brownCharacteristicsRelapseFollowing1989; @mckayStudiesFactorsRelapse1999a; @mckayStudiesFactorsRelapse1999a]. 
+Text messages will serve as the only raw source for all feature engineering. The document sets will go through a generic pre-processing step that involves transformation of emojis to be readable text, tokenization into words and removal of punctuations and numbers. The documents from each of the configurations will go through the natural language processing techniques described below independently. 
 
-We adopted two configurations for analytic units -- individual messages and concatenated messages. In the first configuration method, we ran individual messages within the defined prediction window through LIWC. We then normalized LIWC feature scores based on the square root of word counts instead of raw word counts. This normalizatio method was chosen due to the relatively short message length for individual messages. We further obtained the median and 95% percentile of normalized LIWC scores for all messages related to each lapse label.
+We will use several natural language processing techniques to transform documents into machine-interpretable data and input them into machine learning algorithms. The methods we consider include: 1) topic modeling; 2) sentiment analysis; 3) n-gram approach; 4) dictionary approaches (LIWC and customized alcohol-relevant dictionaries); and 5) word embeddings. Each feature engineering technique will be evaluated separately. 
 
-In the other analytic unit configuration, we first concatenated all messages associated with each lapse label altogether. We then obtained LIWC results for the concatenated messages. We further adopted three configurations for normalization methods -- normalized on raw word count, normalized on the square root of word count, and combination of these two.
+Note that these feature engineering techniques encompass both top-down approaches and bottom-up approaches. Topic modeling, n-grams, and word embeddings are exemplary empirically-driven methods. Sentiment analysis aligns with concepts in affect science. LIWC relies on theories broadly in psycho-social research, and customized dictionary can be refined to narrower domain knowledge specific to addiction science [@tausczikPsychologicalMeaningWords2010a]. Features built from these top-down approaches may be more interpretable and can map on to current interventions. 
+
+### Topic Modeling
+
+Topic modeling is an unsupervised machine learning method to identify clusters of topics in a body of text. We will make all words lower-case and remove stop words (i.e., common words without significant meaning). We will also perform stemming to transform the words into their root form. We will further apply the cleaned tokens into one of the most popular topic modeling technique -- Latent Dirichlet Analysis (LDA). LDA unravels the hidden structure in the relationships between words in a document and groups similar words into topics. It assumes that different documents (i.e., SMS messages) have same topic clusters but with different distribution. As such, different topic clusters might have common words.
+
+### Sentiment Analysis
+
+Research has found that positive/negative emotional state to be associated with increased alcohol relapse risks [@mckayConceptualMethodologicalAnalytical2006b; @mckayStudiesFactorsRelapse1999a; @brownCharacteristicsRelapseFollowing1989]. Sentiment Analysis infers the emotional underpinning of texts. We will extract both emotional valence (i.e., positive, neutral, and negative emotional tone) and eight basic emotion categories (e.g., anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) from SMS messages. We will make all words in lower-case, and perform stemming and removal of stop words on our feature sets. We will then assign each document a score in those ten categories by summing sentiment content of all tokens in that message.
+
+### N-grams Approach
+
+A bag-of-words approach represents word occurrences inside a document. Unlike other feature engineering methods, we will tokenize documents into one-gram, two-gram and one-gram and two-grams combined tokens in the generic pre-processing step. Then we will make all text in lower-case, remove stop words and stem the n-grams. We will then analyze these n-grams based on their term frequency (tf), and a combination of term frequency and inverse document frequency (tf-idf).
+
+Tf indicates the frequency of the n-grams in each individual text relative to that text length. We will also further utilize combination of both tf and idf to calculate tf-idf, which indicates word importance inside a document (see below formula). This scoring method has the advantage of highlighting the importance of a word to a document in a collection of documents. It has important implications in analyzing SMS messages so that we have a better understanding of the robustness of a certain word to a single message across all text messages that the participants sent. The idf score minimizes weights of words that are commonly used across all messages and can highlight words that contain important information.
+
+$$
+\text{tf} = \frac{n_{terms\ in\ document}}{n_{terms}}
+$$
+$$
+\text{idf} = \ln(\frac{n_{documents}}{n_{documents\ containing\ term}})
+$$
+$$
+\text{tf-idf} = tf * idf
+$$
+
+
+### Dictionary Approach
+
+This study will also expand above bags-of-word approach by using customized dictionaries built upon the LIWC dictionary [@pennebakerDevelopmentPsychometricProperties2015a] and compute score by counting frequency of words that belong to each category. We will remove punctuations for the tokens. We will not remove any stop words. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes [@brownCharacteristicsRelapseFollowing1989; @mckayStudiesFactorsRelapse1999a; @mckayStudiesFactorsRelapse1999a]. In addition to these linguistic categories, we will also include customized alcohol-related category as predictors as previous research has found them to be robust indicators of alcohol lapses [@mckayStudiesFactorsRelapse1999a; @korlakuntaReasonsRelapsePatients2012]. We will compute the relative frequency of each token that matches the dictionary normalized by the total number of tokens in the document.
+
+### Word Embeddings
+
+Word embeddings are vectors that represent relationships of words within a document in a lower-dimension. We will remove stop words and stem the tokens. We will use the pre-trained Bidirectional Encoder Representations from Transformers (BERT)[@devlinBERTPretrainingDeep2018] to transform documents into such machine-readable vectors. It is capable of capturing embedded semantic structure within a neural network architecture.They take into account the context of where a word is (i.e., word tokens before and after the target word). It is also pre-trained on a massive dataset, which allows the model to learn a wide range of patterns and structures. Independently, we will also use Global Vectors for Word Representation (GloVe) to transform text into word embeddings. This method constructs a word co-occurrence matrix and factorizes it to generate word vectors. 
 
 ## Candidate Machine Learning Algorithms
 
-Note that our candidate machine learning algorithms already differ on three configurations: 1) prediction window length (see *Section SMS Messages*); 2) analytic units (see *Section Feature Engineering*); and 3) normalization methods (see *Section Feature Engineering*). We further consider a range of candidate statistical algorithms that vary with regard to their model complexity, model assumptions, and training speed. Candidate algorithms that will be used include glmnet (penalized, parametric linear model), random forest (RF), and XGBoost. 
+Note that our candidate machine learning algorithms differ on two configurations: 1) the predictor set differing on prediction window length and message type (see *Section SMS Messages*); 2) and the statistical methods. We consider a range of candidate statistical algorithms that vary with regard to their model complexity, model assumptions, and training speed. Candidate algorithms that will be used include glmnet (penalized, parametric linear model), random forest (RF), and XGBoost. 
 
 ## Model Training and Performance Evaluation
 
-We performed grouped, nested cross-validations to perform hyperparameter tuning and select the best model configuration. The dataset was be participant-grouped so that each individual will be assigned to either held-in or held-out set to avoid bias of predicting participants' lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds are used as a validation set for model selection. In the outer loop, held-out folds are utilized as a test set for model evaluation. More specifically, we will use one repeat of 10-fold cross-validation in the inner loop for model selection and 3 repeats of 10-fold cross-validation in outer loop for model evaluation.
+For each natural language processing method, we will perform eight grouped, nested cross-validations to perform hyperparameter tuning and select the best model configuration. The dataset will be participant-grouped so that each individual will be assigned to either held-in or held-out set to avoid bias of predicting participants' lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds are used as a validation set for model selection. In the outer loop, held-out folds are utilized as a test set for model evaluation. More specifically, we will use one repeat of 10-fold cross-validation in the inner loop for model selection and 3 repeats of 10-fold cross-validation in outer loop for model evaluation.
 
 The primary performance metrics to select the best model configuration and evaluate the model performance on the test sets will be auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. We will report the median auROCs for the 30 held-out folds. The model with the highest auROC among the ones differing on those eight configurations (see *Section SMS Messages*) and statistical methods (see *Section Candidate Machine Learning Algorithms*) will be selected as the best model for each natural language processing technique.
 
 ## Feature Importance
 
-We also calculated SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output [@lundbergUnifiedApproachInterpreting2017]. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability. Local Shapley values explain factors that contribute to a single observation, and global Shapley values represent feature importance across all observations. To compute global Shapley values, we average the absolute value of all local Shapley values.
+We will also calculate SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output [@lundbergUnifiedApproachInterpreting2017]. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability. Local Shapley values explain factors that contribute to a single observation, and global Shapley values represent feature importance across all observations. To compute global Shapley values, we average the absolute value of all local Shapley values.
 
 ## Model Comparison and Algorithmic Bias
 
-We further performed a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. We will regress the 30 auROCs from the held-out test set as a function of feature engineering technique (a total of 10 comparisons for the five NLP methods). The two random intercepts in the models include the repeat and the fold within repeat. We will report the 95% CIs for our models' auROCs and determine if they include .5 (chance performance). We will also report the 95% CI for the differences in performance with regard to Bayesian comparison. If this CI does not include 0, we can conclude that the feature engineering technique yields better model performance than the other.
+We will further perform a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. We will regress the 30 auROCs from the held-out test set as a function of feature engineering technique (a total of 10 comparisons for the five NLP methods). The two random intercepts in the models include the repeat and the fold within repeat. We will report the 95% CIs for our models' auROCs and determine if they include .5 (chance performance). We will also report the 95% CI for the differences in performance with regard to Bayesian comparison. If this CI does not include 0, we can conclude that the feature engineering technique yields better model performance than the other.
 
-A subset of individual characteristic measures will be used to evaluate model fairness on subgroups. We compared model performance among each sex, racial, age and income subgruops because the populations face increased barriers obtaining AUD treatments. Stigma among older populations and wome, and economic hardship in racial minority groups can all contribute to low treatment-seeking and alcohol treatment completion [@dibartoloAlcoholUseDisorder2017; @jacobsonRacialDisparitiesCompletion2007; @mayBarriersTreatmentAlcohol2019]. Participants younger than 55 years old were considered as a privileged group. We adopted half of median income in Madison area in 2017 as cut-off to assign participants to income groups.
-
-We performed a Bayesian hierarchical generalized linear model that regresses the auROCs from the 30 held-out test set as a function of group membership (privileged group vs. unprivileged group in each of above individual characteristics). We reported the 95% CI for model performance differences and examine if they include 0.
-
-\newpage
-
-# Results
-
-## Demographics
-
-The final sample includes 138 participants. 73 (53%) participants are females, 17 (12%) are non-White minorities, 39 (28%) earned less than half of the median income in Madison in Year 2017, and 13 (9%) aged 55 or older.
-
-{{< embed eda/eda_demographics.qmd#fig-demographics >}}
-
-## Sample Distribution
-
-The final total number of lapse labels in the dataset is 11562. On average, each participant has 83.8 labels (sd = 11.4, median = 88, range = 30 - 90).
-
-The total number of messages in the dataset is 313492. On average, each subject has 2271.68 messages (sd = 2536.6, range = 100 - 15884). The average message length across all participants is 10.4 words (sd = 14.3, median = 7, range = 1 - 1266). On average, each participant has a mean message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).
-
-::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count >}}
-{{< embed eda/eda_messages.qmd#fig-message_length >}}
-:::
-
-On average, each lapse label has 79.2 messages (sd = 112, median = 40, range = 1 - 1414) during the 3-day prediction window. 11.9% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant's data missingness is 12% (sd = .19, median = 1%, range = 0% - 77%).
-
-{{< embed eda/eda_messages.qmd#fig-message_count_3day >}}
-
-::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count_3day_byid >}}
-{{< embed eda/eda_messages.qmd#fig-missingness_3day_byid >}}
-:::
-
-On average, each lapse label has 180 messages (sd = 241, median = 96, range = 1 - 2866) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant's data missingness is 8% (sd = .16, median = 0%, range = 0% - 73%).
-
-{{< embed eda/eda_messages.qmd#fig-message_count_1week >}}
-
-::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count_1week_byid >}}
-{{< embed eda/eda_messages.qmd#fig-missingness_1week_byid >}}
-:::
-
-## LIWC Features
-
-We obtained LIWC scores from XXX linguistic categories.
-
-\newpage
-
-# Discussions
+A subset of individual characteristic measures will be used to evaluate model fairness on subgroups . We will compare model performance among each sex, racial, age and income subgruops because the populations face increased barriers obtaining AUD treatments. Stigma among older populations and wome, and economic hardship in racial minority groups can all contribute to low treatment-seeking and alcohol treatment completion [@dibartoloAlcoholUseDisorder2017; @jacobsonRacialDisparitiesCompletion2007; @mayBarriersTreatmentAlcohol2019]. We will perform a Bayesian hierarchical generalized linear model that regresses the auROCs from the 30 held-out test set as a function of group membership (privileged group vs. unprivileged group in each of above individual characteristics). We will report the 95% CI for model performance differences and examine if they include 0.
 
 \newpage
 
