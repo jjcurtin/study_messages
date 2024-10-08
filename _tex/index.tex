@@ -790,21 +790,19 @@ and one-on-one messages were obtained from participants' phones. We
 included only messages from/to important contacts and in group chats.
 
 For each individual lapse window, we have predictor sets that differ in
-prediction window length and their message type. We define text
+prediction window length and their analytic unit. We define text
 prediction windows to be 3-day and 1-week preceding the lapse window. We
-used two configuration methods to construct feature sets (referred to as
-``document'' in the following sections). First, we will combine both
-prediction windows in one document as predictor. Second, we will
-separate each prediction window into two documents as predictors.
+analyzed the two prediction windows both individually and combined
+(i.e., three configurations in total).
 
 \subsection{Feature Engineering}\label{feature-engineering}
 
 Text messages will serve as the only raw source for all feature
 engineering. The document sets will go through a generic pre-processing
-step that involves transformation of emojis to be readable text,
-tokenization into words and removal of punctuations and numbers. The
-documents from each of the configurations will go through the natural
-language processing techniques described below independently.
+step that involves removal of all emojis, tokenization into words and
+removal of punctuations and numbers. The documents from each of the
+configurations will go through the natural language processing
+techniques described below independently.
 
 We will use several natural language processing techniques to transform
 documents into machine-interpretable data and input them into machine
@@ -826,19 +824,17 @@ interventions.
 
 \subsubsection{Dictionary Approach}\label{dictionary-approach}
 
-This study will also expand above bags-of-word approach by using
-customized dictionaries built upon the LIWC
-dictionary\textsuperscript{61} and compute score by counting frequency
-of words that belong to each category. We will remove punctuations for
-the tokens. We will not remove any stop words. LIWC aligns with the
-current alcohol relapse risk factor literature in that it examines
-psychometric properties including cognitive state and social
-processes\textsuperscript{44,45,45}. In addition to these linguistic
-categories, we will also include customized alcohol-related category as
-predictors as previous research has found them to be robust indicators
-of alcohol lapses\textsuperscript{45,46}. We will compute the relative
-frequency of each token that matches the dictionary normalized by the
-total number of tokens in the document.
+This study will also expand above bags-of-word approach by using the
+LIWC dictionary\textsuperscript{61} and compute score by counting
+frequency of words that belong to each category. We will not remove any
+stop words. LIWC aligns with the current alcohol relapse risk factor
+literature in that it examines psychometric properties including
+cognitive state and social processes\textsuperscript{44,45,45}. In
+addition to these linguistic categories, we will also include customized
+alcohol-related category as predictors as previous research has found
+them to be robust indicators of alcohol lapses\textsuperscript{45,46}.
+We will compute the relative frequency of each token that matches the
+dictionary normalized by the total number of tokens in the document.
 
 \subsection{Candidate Machine Learning
 Algorithms}\label{candidate-machine-learning-algorithms}
@@ -962,6 +958,10 @@ average message length across all participants is 10.4 words (sd = 14.3,
 median = 7, range = 1 - 1266). On average, each participant has a mean
 message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).
 
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
 \begin{figure}[H]
 
 \centering{
@@ -977,6 +977,10 @@ message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).
 \textsubscript{Source:
 \href{https://jjcurtin.github.io/study_messages/eda/eda_messages-preview.html\#cell-fig-message_count}{EDA
 on Raw Messages}}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
 
 \begin{figure}[H]
 
@@ -994,12 +998,20 @@ on Raw Messages}}
 \href{https://jjcurtin.github.io/study_messages/eda/eda_messages-preview.html\#cell-fig-message_length}{EDA
 on Raw Messages}}
 
+\end{minipage}%
+
+\end{figure}%
+
 On average, each lapse label has 79.2 messages (sd = 112, median = 40,
 range = 1 - 1414) during the 3-day prediction window. 11.9\% of labels
 have no associated messages in the previous 3 days. Each participant has
 an averaged 79.48 messages as predictors per label (sd = 87.12, median =
 50.12, range = 2.97 - 529.45). On average, each participant's data
 missingness is 12\% (sd = .19, median = 1\%, range = 0\% - 77\%).
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
 
 \begin{figure}[H]
 
@@ -1018,6 +1030,10 @@ the 3-Day Prediction Window}
 \href{https://jjcurtin.github.io/study_messages/eda/eda_messages-preview.html\#cell-fig-message_count_3day}{EDA
 on Raw Messages}}
 
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
 \begin{figure}[H]
 
 \centering{
@@ -1034,6 +1050,10 @@ Counts by Subject in the 3-Day Prediction Window}
 \textsubscript{Source:
 \href{https://jjcurtin.github.io/study_messages/eda/eda_messages-preview.html\#cell-fig-message_count_3day_byid}{EDA
 on Raw Messages}}
+
+\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
 
 \begin{figure}[H]
 
@@ -1052,12 +1072,20 @@ Subject in the 3-Day Prediction Window}
 \href{https://jjcurtin.github.io/study_messages/eda/eda_messages-preview.html\#cell-fig-missingness_3day_byid}{EDA
 on Raw Messages}}
 
+\end{minipage}%
+
+\end{figure}%
+
 On average, each lapse label has 180 messages (sd = 241, median = 96,
 range = 1 - 2866) during the 1-week prediction window. 7.83\% of labels
 have no associated messages in the previous week. Each participant has
 an averaged 181.23 messages as predictors per label (sd = 199.32, median
 = 113.47, range = 6.75 - 1200.76). On average, each participant's data
 missingness is 8\% (sd = .16, median = 0\%, range = 0\% - 73\%).
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
 
 \begin{figure}[H]
 
@@ -1076,6 +1104,10 @@ in the 1-Week Prediction Window}
 \href{https://jjcurtin.github.io/study_messages/eda/eda_messages-preview.html\#cell-fig-message_count_1week}{EDA
 on Raw Messages}}
 
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
 \begin{figure}[H]
 
 \centering{
@@ -1093,6 +1125,10 @@ Counts by Subject in the 1-Week Prediction Window}
 \href{https://jjcurtin.github.io/study_messages/eda/eda_messages-preview.html\#cell-fig-message_count_1week_byid}{EDA
 on Raw Messages}}
 
+\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+
 \begin{figure}[H]
 
 \centering{
@@ -1109,6 +1145,10 @@ by Subject in the 1-Week Prediction Window}
 \textsubscript{Source:
 \href{https://jjcurtin.github.io/study_messages/eda/eda_messages-preview.html\#cell-fig-missingness_1week_byid}{EDA
 on Raw Messages}}
+
+\end{minipage}%
+
+\end{figure}%
 
 \subsection{LIWC Features}\label{liwc-features}
 
