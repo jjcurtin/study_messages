@@ -221,14 +221,14 @@ fit_predict_eval <- function(outer_split_num, inner_split_num, splits, config_be
     cal_apply(logi)
 
   # beta calibration
-  beta <- predict(model_cal, feat_cal_out,
-                 type = "prob") |>
-    mutate(truth = feat_cal_out$y) |>
-    cal_estimate_beta(truth = truth,
-                           estimate = dplyr::starts_with(".pred_"),
-                           smooth = TRUE)
-  preds_prob_beta <- preds_prob |>
-    cal_apply(beta)
+  # beta <- predict(model_cal, feat_cal_out,
+  #                type = "prob") |>
+  #   mutate(truth = feat_cal_out$y) |> 
+  #   cal_estimate_beta(truth = truth,
+  #                          estimate = dplyr::starts_with(".pred_"),
+  #                          smooth = TRUE)
+  # preds_prob_beta <- preds_prob |>
+  #   cal_apply(beta)
 
   # combine raw and calibrated probs
   probs_out <- tibble(id_obs = d_out$id_obs,
@@ -237,7 +237,7 @@ fit_predict_eval <- function(outer_split_num, inner_split_num, splits, config_be
                       prob_raw = preds_prob[[str_c(".pred_", y_level_pos)]],
                       prob_iso = preds_prob_iso[[str_c(".pred_", y_level_pos)]],
                       prob_logi = preds_prob_logi[[str_c(".pred_", y_level_pos)]],
-                      prob_beta = preds_prob_beta[[str_c(".pred_", y_level_pos)]],
+                      # prob_beta = preds_prob_beta[[str_c(".pred_", y_level_pos)]],
                       label = d_out$y) 
 
   # NOTE SHAPS COMMENTED OUT FOR NOW FOR TESTING
@@ -248,7 +248,7 @@ fit_predict_eval <- function(outer_split_num, inner_split_num, splits, config_be
    mutate(id_obs = rep(d_out$id_obs, times = ncol(feat_out) - 1),
           outer_split_num = outer_split_num,
           inner_split_num = inner_split_num) |>
-   relocate(id_obs, outer_split_num, inner_split_num)
+   relocate(id_obs, outer_split_num, inner_split_num) # |> bind_rows()
 
   return(list(probs_out = probs_out, 
               shaps_out = shaps_out))
@@ -322,15 +322,12 @@ if(!file.exists(here::here(path_models, str_c("inner_preds_",
   # one option with separate inner and outer lists
   inner_split_num_list <- rep(1:10, times = 30)
   outer_split_num_list <- rep(1:30, each = 10)
-   
-  inner_split_num_list <- rep(1:2, times = 1)
-  outer_split_num_list <- rep(1, each = 2)
+
    
   all <- map2(inner_split_num_list, outer_split_num_list, \(inner_split_num, outer_split_num)
        fit_predict_eval(inner_split_num = inner_split_num, outer_split_num = outer_split_num,
                         splits = splits, 
-                        config_best = config_best)) |> 
-  list_rbind()
+                        config_best = config_best))
   
   
   # # one option with mutate split_num column
@@ -348,11 +345,11 @@ if(!file.exists(here::here(path_models, str_c("inner_preds_",
   
   rm(splits)  # save a bit of memory!
   
-  write_csv(tibble(stage = "probs_save",
-                   outer_split_num = NA, 
-                   start_time = Sys.time()),
-            here::here(path_models, str_c("tmp_metrics_inner_progress_",window)),
-            append = TRUE)  
+  # write_csv(tibble(stage = "probs_save",
+  #                  outer_split_num = NA, 
+  #                  start_time = Sys.time()),
+  #           here::here(path_models, str_c("tmp_metrics_inner_progress_",window)),
+  #           append = TRUE)  
   probs_out <- all |> 
     map(\(l) pluck(l, "probs_out")) |> 
     list_rbind() |> 

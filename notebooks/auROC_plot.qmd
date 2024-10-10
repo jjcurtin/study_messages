@@ -79,7 +79,8 @@ path_processed <- format_path(str_c("studydata/risk/data_processed/", study))
 > CP these are I think raw probabilities not beta -- issue?
 
 ```{r}
-probs <- read_csv(here::here(path_models, str_c("inner_metrics_", version, "_", cv, ".csv"))) |> 
+probs <- # read_csv(here::here(path_models, str_c("inner_metrics_", version, "_", cv, ".csv"))) |> 
+  read_rds(here::here(path_models, str_c("inner_preds_", version, "_", cv, ".rds"))) |> 
   #pivot_longer(cols = starts_with("prob"), 
                #names_to = "method", 
                #values_to = ".pred_Lapse") |>
