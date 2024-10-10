@@ -73,7 +73,7 @@ devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_p
 
 ### Absolute paths
 ```{r}
-path_processed <- format_path(str_c("studydata/risk/data_processed/", study))
+path_models <- format_path(str_c("studydata/risk/models/", study))
 ```
 
 > CP these are I think raw probabilities not beta -- issue?
@@ -89,7 +89,7 @@ probs <- # read_csv(here::here(path_models, str_c("inner_metrics_", version, "_"
 
 ```{r}
 roc_data <- probs |> 
-  roc_curve(prob, truth = label)
+  roc_curve(prob_raw, truth = label)
   
 roc_data |>
   mutate(sensitivity = round(sensitivity, 4),
