@@ -234,6 +234,13 @@ We performed a Bayesian hierarchical generalized linear model that regresses the
 \newpage
 
 # Results
+i
+
+```{r}
+#| echo: false
+
+# Load objects for results
+```
 
 ## Demographics
 
@@ -269,6 +276,8 @@ On average, each lapse label has 180 messages (sd = 241, median = 96, range = 1 
 {{< embed eda/eda_messages.qmd#fig-message_count_1week_byid >}}
 {{< embed eda/eda_messages.qmd#fig-missingness_1week_byid >}}
 :::
+
+The median of the CI is `r sprintf("%.2f", ci_day$median)`
 
 ## LIWC Features
 
