@@ -80,11 +80,8 @@ path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
 
 Read in Data
 ```{r}
-probs <- # read_csv(here::here(path_models, str_c("inner_metrics_", version, "_", cv, ".csv"))) |> 
+probs <- 
   read_rds(here::here(path_models, str_c("inner_preds_", version, "_", cv, ".rds"))) |> 
-  #pivot_longer(cols = starts_with("prob"), 
-               #names_to = "method", 
-               #values_to = ".pred_Lapse") |>
   glimpse()
 
 labels <- read_csv(here::here(path_messages, "lapses.csv"), col_types = cols()) |> 
@@ -133,37 +130,37 @@ auroc_all <- probs |>
 ```{r}
 auroc_race <- probs |> 
   group_by(inner_split_num, outer_split_num, race) |> 
-  summarize(auroc = roc_auc(cur_data(), prob_raw, truth = label)$.estimate) |> 
+  summarize(auroc = roc_auc_vec(truth = label, estimate = prob_raw)) |> 
   ungroup() |> 
   bind_rows(auroc_all |> mutate(race = "all")) |> 
   rename(subgroup = race)
 
 auroc_sex <- probs |> 
   group_by(inner_split_num, outer_split_num, sex) |> 
-  summarize(auroc = roc_auc(cur_data(), prob_raw, truth = label)$.estimate) |> 
+  summarize(auroc = roc_auc_vec(truth = label, estimate = prob_raw)) |> 
   ungroup() |> 
   bind_rows(auroc_all |> mutate(sex = "all")) |> 
   rename(subgroup = sex)
 
 auroc_age <- probs |> 
   group_by(inner_split_num, outer_split_num, age) |> 
-  summarize(auroc = roc_auc(cur_data(), prob_raw, truth = label)$.estimate) |>
+  summarize(auroc = roc_auc_vec(truth = label, estimate = prob_raw)) |>
   ungroup() |> 
   bind_rows(auroc_all |> mutate(age = "all")) |> 
   rename(subgroup = age)
 
 auroc_income <- probs |> 
   group_by(inner_split_num, outer_split_num, income) |> 
-  summarize(auroc = roc_auc(cur_data(), prob_raw, truth = label)$.estimate) |>
+  summarize(auroc = roc_auc_vec(truth = label, estimate = prob_raw)) |>
   ungroup() |> 
   bind_rows(auroc_all |> mutate(income = "all")) |> 
   rename(subgroup = income)
 ```
 
-## Model Comparison
+## Build Model
 
 ```{r}
-contrast_table <- function(df, levels){
+bayes_model <- function(df){
   df |> 
     filter(subgroup != "all") |>
     select(c("auroc", "subgroup", "inner_split_num", "outer_split_num")) |> 
@@ -177,24 +174,52 @@ contrast_table <- function(df, levels){
              # prior_intercept = rstanarm::student_t(autoscale = TRUE),
              # prior = rstanarm::student_t(autoscale = TRUE),
              # transform = tidyposterior::logit_trans,  # for skewed & bounded AUC
-             # iter = 2000, chains = 4,
+             iter = 12000, chains = 4,
              adapt_delta = .99,
              # cores = 4, seed = 12345,
-             family = gaussian, verbose = FALSE) |> 
-    contrast_models(list_1 = levels[1], list_2 = levels[2]) |> 
-    summary(size = 0) |> 
-    mutate(metrics = "auroc", .before = contrast)
-  }
+             family = gaussian, verbose = FALSE)
+}
 ```
 
 ```{r}
-contrast_table(auroc_race, c("white", "non_white"))
-contrast_table(auroc_sex, c("male", "female"))
-contrast_table(auroc_age, c("younger", "older"))
-contrast_table(auroc_income, c("above_poverty", "below_poverty"))
+    # contrast_models(list_1 = levels[1], list_2 = levels[2]) |> 
+    # summary(size = 0) |> 
+    # mutate(metrics = "auroc", .before = contrast)
 ```
 
-Plots
+```{r}
+if (file.exists("objects/pp_race.rds")){
+  pp_race <- read_rds("objects/pp_race.rds")
+} else{
+  pp_race <- bayes_model(auroc_race)
+  pp_race |> write_rds("objects/pp_race.rds")
+}
+
+if (file.exists("objects/pp_sex.rds")){
+  pp_sex <- read_rds("objects/pp_sex.rds")
+} else{
+  pp_sex <- bayes_model(auroc_race)
+  pp_sex |> write_rds("objects/pp_sex.rds")
+}
+
+if (file.exists("objects/pp_age.rds")){
+  pp_age <- read_rds("objects/pp_age.rds")
+} else{
+  pp_age <- bayes_model(auroc_race)
+  pp_age |> write_rds("objects/pp_age.rds")
+}
+
+if (file.exists("objects/pp_income.rds")){
+  pp_income <- read_rds("objects/pp_income.rds")
+} else{
+  pp_income <- bayes_model(auroc_race)
+  pp_income |> write_rds("objects/pp_income.rds")
+}
+```
+
+## Plot
+
+Construct Data
 ```{r}
 auroc_plot <- auroc_race |> 
   mutate(group = "race") |> 
