@@ -19,6 +19,14 @@ editor_options:
 ---
 
 # Set up environment
+
+```{r}
+study <- params$study
+cv <- params$cv
+algorithms <- params$algorithms
+version <- params$version
+```
+
 ```{r}
 library(tidyverse)
 theme_set(theme_classic()) 
@@ -49,8 +57,8 @@ shaps_grp <- read_rds(file.path(path_models, str_c("inner_shapsgrp_",
 ```{r}
 #| label: fig-shaps
 #| fig-cap: "Shapley Value"
-#| fig-width: 3.5
-#| fig-height: 2.5
+#| fig-width: 5
+#| fig-height: 3
 shaps_grp |>
   group_by(variable_grp) |> 
   summarize(mean_value = (mean(abs(value)))) |> 
