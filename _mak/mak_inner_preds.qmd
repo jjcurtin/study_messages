@@ -89,37 +89,6 @@ path_models <- format_path(str_c("studydata/risk/models/", study))
 
 ### Script Functions
 
-Function to clean up poor choices for feature names for SHAPs!!
-```{r}
-# clean_feature_names <- function(feat_name){
-#   new_name <- gsub("p6.l0.rratesum_duration.", "p6.raw_duration.", new_name)
-#   new_name <- gsub("p12.l0.rratesum_duration.", "p12.raw_duration.", new_name)
-#   new_name <- gsub("p24.l0.rratesum_duration.", "p24.raw_duration.", new_name)
-#   new_name <- gsub("p48.l0.rratesum_duration.", "p48.raw_duration.", new_name)
-#   new_name <- gsub("p72.l0.rratesum_duration.", "p72.raw_duration.", new_name)
-#   new_name <- gsub("p168.l0.rratesum_duration.", "p168.raw_duration.", new_name)
-#   new_name <- gsub("p6.l0.dratesum_duration.", "p6.diff_duration.", new_name)
-#   new_name <- gsub("p12.l0.dratesum_duration.", "p12.diff_duration.", new_name)
-#   new_name <- gsub("p24.l0.dratesum_duration.", "p24.diff_duration.", new_name)
-#   new_name <- gsub("p48.l0.dratesum_duration.", "p48.diff_duration.", new_name)
-#   new_name <- gsub("p72.l0.dratesum_duration.", "p72.diff_duration.", new_name)
-#   new_name <- gsub("p168.l0.dratesum_duration.", "p168.diff_duration.", new_name)
-#   new_name <- gsub("p6.rvar_location", "p6.raw_location_variance", new_name)
-#   new_name <- gsub("p12.rvar_location", "p12.raw_location_variance", new_name)
-#   new_name <- gsub("p24.rvar_location", "p24.raw_location_variance", new_name)
-#   new_name <- gsub("p48.rvar_location", "p48.raw_location_variance", new_name)
-#   new_name <- gsub("p72.rvar_location", "p72.raw_location_variance", new_name)
-#   new_name <- gsub("p168.rvar_location", "p168.raw_location_variance", new_name)
-#   new_name <- gsub("p6.dvar_location", "p6.diff_location_variance", new_name)
-#   new_name <- gsub("p12.dvar_location", "p12.diff_location_variance", new_name)
-#   new_name <- gsub("p24.dvar_location", "p24.diff_location_variance", new_name)
-#   new_name <- gsub("p48.dvar_location", "p48.diff_location_variance", new_name)
-#   new_name <- gsub("p72.drvar_location", "p72.diff_location_variance", new_name)
-#   new_name <- gsub("p168.dvar_location", "p168.diff_location_variance", new_name)
-#   return(new_name) 
-#}
-```
-
 Function to fit, predict, and calc metrics, preds, shaps
 ```{r}
 # should this be outer_split_num and inner_split_num?
@@ -132,7 +101,7 @@ fit_predict_eval <- function(outer_split_num, inner_split_num, splits, config_be
                    outer_split_num = outer_split_num,
                    inner_split_num = inner_split_num,
                    start_time = Sys.time()),
-            here::here(path_models, str_c("tmp_metrics_inner_progress_", window)),
+            here::here(path_models, str_c("tmp_metrics_inner_progress")),
             append = TRUE)
   
   ## this might need to be different???
@@ -278,7 +247,7 @@ NOTE: Delete `outer_metrics_*` or this code chunk won't run!
 ```{r}
 if(!file.exists(here::here(path_models, str_c("inner_preds_", 
                                   version, "_", 
-                                  cv, ".rds")))){ 
+                                  cv, ".rds")))){
   
   # can source any training control given assumptions above
   # batch_names <- list.dirs(path_input, full.names = FALSE, recursive = FALSE)
@@ -296,6 +265,7 @@ if(!file.exists(here::here(path_models, str_c("inner_preds_",
   source(here::here(path_batch, "input", "training_controls.R"))
   # NOTE: NEED TO UPDATE PATH PATCH BECAUSE WE CHANGED IT FROM WHEN WE TRAINED   
   path_batch <- here::here(path_input, batch_name)
+  version <- "v1"
   
   chunks <- str_split_fixed(data_trn, "\\.", n = Inf) # parse name from extensions
   if (length(chunks) == 2) {
@@ -392,8 +362,8 @@ Now group SHAPs
 
 ```{r}
 if(!file.exists(here::here(path_models, str_c("inner_shapsgrp_",
-                                            window, "_", version, "_",
-                                            cv, ".rds"))) & model != "baseline"){
+                                            version, "_",
+                                            cv, ".rds")))){
 
   message("Calculating grouped SHAPs")
   write_csv(tibble(stage = "shapsgrp_save",
@@ -403,76 +373,22 @@ if(!file.exists(here::here(path_models, str_c("inner_shapsgrp_",
             append = TRUE)
   
   shaps_out_grp <- shaps_out |>  
-    # mutate(variable_grp = if_else(str_detect(variable, ".lapse"), 
-    #                        "past use (EMA item)", 
-    #                        variable),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_2"), 
-    #                        "craving (EMA item)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_3"), 
-    #                        "past risky situation (EMA item)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_4"), 
-    #                        "past stressful event (EMA item)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_5"), 
-    #                        "past pleasant event (EMA item)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_6"), 
-    #                        "valence (EMA item)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_7"), 
-    #                        "arousal (EMA item)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_8"), 
-    #                        "future risky situation (EMA item)",
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_9"), 
-    #                        "future stressful event (EMA item)",
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "ema_10"), 
-    #                        "future efficacy (EMA item)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, ".ema$"), 
-    #                        "missing surveys (other)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "day"), 
-    #                        "lapse day (other)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "hour"), 
-    #                        "lapse hour (other)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "age"), 
-    #                        "age (demographic)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "sex"), 
-    #                        "sex (demographic)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "marital"), 
-    #                        "marital (demographic)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "race"), 
-    #                        "race (demographic)", 
-    #                        variable_grp),
-    #        variable_grp = if_else(str_detect(variable_grp, "educ"), 
-    #                        "education (demographic)", 
-    #                        variable_grp)) |> 
+    mutate(variable_grp = gsub("(_[^_]*_?[^_]*)$", "", variable)) |> 
     mutate(variable_grp = factor(variable_grp)) |>  
     group_by(id_obs, variable_grp) |>  # values are already averaged across repeats
     summarize(value = sum(value))
   
   shaps_out_grp |>  write_rds(here::here(path_models, 
-                                          str_c("inner_shapsgrp_", window, "_", 
-                                                lead, "_", version, "_",
-                                                cv, "_", model, ".rds")))
+                                          str_c("inner_shapsgrp_", version, "_",
+                                                cv, ".rds")))
 }
 ```
 
 
 ```{r}
 # delete tracking file
-if(file.exists(here::here(path_models, str_c("tmp_metrics_inner_progress_", window)))) {
-  file.remove(here::here(path_models, str_c("tmp_metrics_inner_progress_", window)))
+if(file.exists(here::here(path_models, str_c("tmp_metrics_inner_progress")))) {
+  file.remove(here::here(path_models, str_c("tmp_metrics_inner_progress")))
 }
 ```
 

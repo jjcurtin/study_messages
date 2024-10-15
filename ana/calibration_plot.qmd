@@ -10,11 +10,10 @@ format:
   html:
     embed-resources: true
 params:
-  study: "gps"
-  version: "v6"
+  study: "messages"
+  version: "v1"
   cv: "nested_1_x_10_3_x_10"
   algorithms: "xgboost"   # "all" or name of specific algorithm
-  model: "main"
 editor_options: 
   chunk_output_type: console
 ---
@@ -22,7 +21,6 @@ editor_options:
 ```{r}
 study <- params$study
 cv <- params$cv
-model <- params$model
 algorithms <- params$algorithms
 version <- params$version
 ```
