@@ -270,11 +270,9 @@ labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |>
   mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
          day_end = as_datetime(day_end, tz = "America/Chicago"))
 
-eda_window <- read_rds("objects/eda_window.rds")
-
-raw_data <- eda_window[[1]] |> glimpse()
-pred_3day <- eda_window[[2]] |> glimpse()
-pred_1week <- eda_window[[3]] |> glimpse()
+raw_data <- read_csv("objects/eda_raw.csv")
+pred_3day <- read_csv("objects/eda_3day.csv")
+pred_1week <- read_csv("objects/eda_1week.csv")
 
 txt_length_by_id <- raw_data |> 
   group_by(subid) |> 
