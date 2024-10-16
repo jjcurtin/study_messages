@@ -1,0 +1,234 @@
+---
+title: "EDA on Raw Messages"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Code Status
+
+## Notes
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+
+theme_set(theme_classic())
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+# path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+Read in Data 
+```{r}
+data <- read_rds("objects/eda_window.rds")
+
+raw_data <- data[[1]] |> glimpse()
+pred_3day <- data[[2]] |> glimpse()
+pred_1week <- data[[3]] |> glimpse()
+
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+```
+
+## EDA on lapse labels
+
+```{r}
+#| label: fig-lapse_count
+#| fig-cap: "Distribution of Lapse Label Counts"
+#| fig-width: 3.5
+#| fig-height: 2.5
+labels |> 
+  group_by(subid) |> 
+  summarize(n = n()) |> 
+  ggplot(aes(x = n)) + 
+  geom_histogram(fill = "#97C4C5", bins = 70) +
+  labs(y = "subject counts")
+```
+
+## EDA on raw messages
+
+### Message counts per participant
+
+**Histogram on # of messages per participant**
+```{r}
+#| label: fig-message_count
+#| fig-cap: "Distribution of Message Counts"
+#| fig-width: 3.5
+#| fig-height: 2.5
+raw_data |> 
+    group_by(subid) |> 
+    summarize(n = n()) |> 
+    ggplot(aes(x = n)) + 
+    geom_histogram(bins = 50, fill = "#97C4C5") +
+    labs(x = "# of messages", y = "subject counts")
+```
+
+### Message Length per participant
+
+**Histogram on mean/median message length per participant**
+```{r}
+#| label: fig-message_length
+#| fig-cap: "Distribution of Mean Message Length"
+#| fig-width: 3.5
+#| fig-height: 2.5
+raw_data |> 
+  group_by(subid) |> 
+  summarize(mean_length = mean(text_length)) |> 
+  ggplot(aes(x = mean_length)) + 
+  geom_histogram(binwidth = 1, fill = "#97C4C5") +
+  labs(x = "mean message length", y = "subject counts")
+```
+
+```{r}
+raw_data |> 
+  group_by(subid) |> 
+  summarize(median_length = median(text_length)) |> 
+  ggplot(aes(x = median_length)) + 
+  geom_histogram(binwidth = 1, fill = "#97C4C5") +
+  labs(x = "median message length", y = "subject counts")
+```
+
+## EDA on prediction windows
+
+### prediction window: 3-day
+
+**Distribution by label**
+```{r}
+#| label: fig-message_count_3day
+#| fig-cap: "Distribution of Message Counts in the 3-Day Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
+pred_3day |> 
+  group_by(subid, day_start) |> 
+  summarize(n = n()) |> 
+  ggplot(aes(x = n)) + 
+  geom_histogram(fill = "#97C4C5") +
+  labs(x = "number of messages", y = "lapse counts")
+```
+
+**Distribution by participant**
+```{r}
+#| label: fig-message_count_3day_byid
+#| fig-cap: "Distribution of Message Counts by Subject in the 3-Day Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
+pred_3day |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    n_messages = sum(!na)
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_messages = mean(n_messages)
+  ) |>
+  ggplot(aes(x = mean_messages)) +
+  geom_histogram(fill = "#97C4C5") +
+  labs(x = "averaged number of messages per label", y = "subject counts")
+```
+
+```{r}
+#| label: fig-missingness_3day_byid
+#| fig-cap: "Distribution of Missingness by Subject in the 3-Day Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
+pred_3day |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    missingness = sum(na) / n()
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_missing = mean(missingness)
+  ) |> 
+  ggplot(aes(x = mean_missing)) +
+  geom_histogram(fill = "#97C4C5") +
+  labs(x = "percentage of missingness", y = "subject counts")
+
+```
+
+### prediction window: 1 week
+
+**Distribution by label**
+```{r}
+#| label: fig-message_count_1week
+#| fig-cap: "Distribution of Message Counts in the 1-Week Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
+pred_1week |> 
+  group_by(subid, day_start) |> 
+  summarize(n = n()) |> 
+  ggplot(aes(x = n)) + 
+  geom_histogram(fill = "#97C4C5") +
+  labs(x = "number of messages", y = "lapse counts")
+```
+
+```{r}
+#| label: fig-message_count_1week_byid
+#| fig-cap: "Distribution of Message Counts by Subject in the 1-Week Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
+pred_1week |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    n_messages = sum(!na)
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_messages = mean(n_messages)
+  ) |>
+  ggplot(aes(x = mean_messages)) +
+  geom_histogram(fill = "#97C4C5") +
+  labs(x = "averaged number of messages per label", y = "subject counts")
+```
+
+```{r}
+#| label: fig-missingness_1week_byid
+#| fig-cap: "Distribution of Missingness by Subject in the 1-Week Prediction Window"
+#| fig-width: 3.5
+#| fig-height: 2.5
+pred_1week |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    missingness = sum(na) / n()
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_missing = mean(missingness)
+  ) |> 
+  ggplot(aes(x = mean_missing)) +
+  geom_histogram(fill = "#97C4C5") +
+  labs(x = "percentage of missingness", y = "subject counts")
+
+```

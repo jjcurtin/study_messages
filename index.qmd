@@ -1,4 +1,7 @@
 ---
+title: "Leveraging Text Messages to Predict Near Real-Time Alcohol Lapse"
+author: "Coco Yu & John Curtin"
+date: "`r lubridate::today()`"
 format: 
   pdf: 
     include-in-header: 
@@ -13,6 +16,28 @@ csl: https://raw.githubusercontent.com/citation-style-language/styles/master/nat
 # csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl # APA format
 bibliography: paper_messages.bib
 ---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+options(conflicts.policy = "depends.ok")
+
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+
+theme_set(theme_classic())
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
 
 # Specific Aims
 
@@ -234,54 +259,83 @@ We performed a Bayesian hierarchical generalized linear model that regresses the
 \newpage
 
 # Results
-i
 
 ```{r}
 #| echo: false
+#| warning: false
+#| include: false
 
 # Load objects for results
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+
+eda_window <- read_rds("objects/eda_window.rds")
+
+raw_data <- eda_window[[1]] |> glimpse()
+pred_3day <- eda_window[[2]] |> glimpse()
+pred_1week <- eda_window[[3]] |> glimpse()
+
+txt_length_by_id <- raw_data |> 
+  group_by(subid) |> 
+  summarize(
+    mean_length = mean(text_length),
+    median_length = median(text_length),
+    min_length = min(text_length),
+    max_length = max(text_length)
+  )
+
+fairness <- read_csv("objects/subgroup_comparison.csv")
 ```
 
 ## Demographics
 
-The final sample includes 138 participants. 73 (53%) participants are females, 17 (12%) are non-White minorities, 39 (28%) earned less than half of the median income in Madison in Year 2017, and 13 (9%) aged 55 or older.
+The final sample includes `r sprintf("%.2f", length(unique(labels$subid)))` participants. 73 (53%) participants are females, 17 (12%) are non-White minorities, 39 (28%) earned less than half of the median income in Madison in Year 2017, and 13 (9%) aged 55 or older.
 
-{{< embed eda/eda_demographics.qmd#fig-demographics >}}
+{{< embed notebooks/eda_demographics.qmd#fig-demographics >}}
 
 ## Sample Distribution
 
-The final total number of lapse labels in the dataset is 11562. On average, each participant has 83.8 labels (sd = 11.4, median = 88, range = 30 - 90).
+The final total number of lapse labels in the dataset is `r sprintf("%.2f", nrow(labels))`. On average, each participant has `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> mean())` labels (sd = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> sd())`, median = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> median())`, range = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> min())` - `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> max())`).
 
-The total number of messages in the dataset is 313492. On average, each subject has 2271.68 messages (sd = 2536.6, range = 100 - 15884). The average message length across all participants is 10.4 words (sd = 14.3, median = 7, range = 1 - 1266). On average, each participant has a mean message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).
-
-::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count >}}
-{{< embed eda/eda_messages.qmd#fig-message_length >}}
-:::
-
-On average, each lapse label has 79.2 messages (sd = 112, median = 40, range = 1 - 1414) during the 3-day prediction window. 11.9% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant's data missingness is 12% (sd = .19, median = 1%, range = 0% - 77%).
-
-{{< embed eda/eda_messages.qmd#fig-message_count_3day >}}
+The total number of messages in the dataset is `r sprintf("%.2f", nrow(raw_data))`. On average, each subject has `r sprintf("%.2f", raw_data |> group_by(subid) |> summarize(n = n()) |> pull(n) |> mean())` messages (sd = `r sprintf("%.2f", raw_data |> group_by(subid) |> summarize(n = n()) |> pull(n) |> sd())`, range = `r sprintf("%.2f", raw_data |> group_by(subid) |> summarize(n = n()) |> pull(n) |> min())` - `r sprintf("%.2f", raw_data |> group_by(subid) |> summarize(n = n()) |> pull(n) |> max())`). The average message length across all participants is `r sprintf("%.2f", raw_data |> pull(text_length) |> mean())` words (sd = `r sprintf("%.2f", raw_data |> pull(text_length) |> sd())`, median = `r sprintf("%.2f", raw_data |> pull(text_length) |> median())`, range = `r sprintf("%.2f", raw_data |> pull(text_length) |> min())` - `r sprintf("%.2f", raw_data |> pull(text_length) |> max())`). On average, each participant has a mean message length of `r sprintf("%.2f", txt_length_by_id |> pull(mean_length) |> mean())` (sd = `r sprintf("%.2f", txt_length_by_id |> pull(mean_length) |> sd())`, range = `r sprintf("%.2f", txt_length_by_id |> pull(mean_length) |> min())` - `r sprintf("%.2f", txt_length_by_id |> pull(mean_length) |> max())`).
 
 ::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count_3day_byid >}}
-{{< embed eda/eda_messages.qmd#fig-missingness_3day_byid >}}
+{{< embed notebooks/eda_messages.qmd#fig-message_count >}}
+{{< embed notebooks/eda_messages.qmd#fig-message_length >}}
 :::
 
-On average, each lapse label has 180 messages (sd = 241, median = 96, range = 1 - 2866) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant's data missingness is 8% (sd = .16, median = 0%, range = 0% - 73%).
+On average, each lapse label has `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> mean())` messages (sd = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> sd())`, median = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> median())`, range = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> min())` - `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> max())`) during the 3-day prediction window. `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(na = if_else(any(na), 1, 0)) |> pull(na) |> mean() * 100)`% of labels have no associated messages in the previous 3 days. Each participant has an averaged `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> mean())` messages as predictors per label (sd = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> sd())`, median = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> median())`, range = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> min())` - `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> max())`). On average, each participant's data missingness is `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> mean() * 100)`% (sd = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> sd() * 100)`%, median = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> median() * 100)`%, range = `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> min() * 100)`% - `r sprintf("%.2f", pred_3day |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> max() * 100)`%).
 
-{{< embed eda/eda_messages.qmd#fig-message_count_1week >}}
+{{< embed notebooks/eda_messages.qmd#fig-message_count_3day >}}
 
 ::: {layout-ncol=2}
-{{< embed eda/eda_messages.qmd#fig-message_count_1week_byid >}}
-{{< embed eda/eda_messages.qmd#fig-missingness_1week_byid >}}
+{{< embed notebooks/eda_messages.qmd#fig-message_count_3day_byid >}}
+{{< embed notebooks/eda_messages.qmd#fig-missingness_3day_byid >}}
 :::
 
-The median of the CI is `r sprintf("%.2f", ci_day$median)`
+On average, each lapse label has `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> mean())` messages (sd = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> sd())`, median = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> median())`, range = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> min())` - `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n = n()) |> pull(n) |> max())`) during the 1-week prediction window. `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(na = if_else(any(na), 1, 0)) |> pull(na) |> mean() * 100)`% of labels have no associated messages in the previous week. Each participant has an averaged `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> mean())` messages as predictors per label (sd = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> sd())`, median = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> median())`, range = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> min())` - `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(n_messages = sum(!na)) |> group_by(subid) |> summarize(mean_messages = mean(n_messages)) |> pull(mean_messages) |> max())`). On average, each participant's data missingness is `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> mean() * 100)`% (sd = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> sd() * 100)`%, median = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> median() * 100)`%, range = `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> min() * 100)`% - `r sprintf("%.2f", pred_1week |> group_by(subid, day_start) |> summarize(missingness = sum(na)/ n()) |> group_by(subid) |> summarize(mean_missing = mean(missingness)) |> pull(mean_missing) |> max() * 100)`%).
+
+{{< embed notebooks/eda_messages.qmd#fig-message_count_1week >}}
+
+::: {layout-ncol=2}
+{{< embed notebooks/eda_messages.qmd#fig-message_count_1week_byid >}}
+{{< embed notebooks/eda_messages.qmd#fig-missingness_1week_byid >}}
+:::
+
 
 ## LIWC Features
 
 We obtained LIWC scores from XXX linguistic categories.
+
+## Model Evaluation
+
+## Model Fairness
+
+```{r}
+fairness |> 
+  print_kbl()
+```
 
 \newpage
 

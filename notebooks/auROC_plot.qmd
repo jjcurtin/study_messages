@@ -104,9 +104,7 @@ tpfp_data |>
   labs(x = "False Positive Rate",
        y = "True Positive Rate") +
   scale_x_continuous(breaks = seq(0,1,.25)) +
-  scale_color_gradient(low="blue", high = "red") #+
-  # theme(axis.text = element_text(size = rel(1.50)), 
-  #       axis.title = element_text(size = rel(1.75)))
+  scale_color_gradient(low="blue", high = "red")
 ```
 
 ```{r}
@@ -170,12 +168,11 @@ ci <- pp_tidy |>
 pp_tidy |> 
   ggplot() + 
   geom_density(aes(x = posterior), color = c("#80B1D3"), 
-               fill = c("#B3CFE8"), linewidth = 1.2, alpha = .6) +
-  # geom_segment(mapping = aes(y = y, yend = y, x = lower, xend = upper), color = c("#80B1D3"),
-  #              data = ci) +
+               fill = c("#B3CFE8"), linewidth = .8, alpha = .6) +
   geom_errorbar(data = ci, aes(y = y, xmin = lower, xmax = upper), 
-                linewidth = .8, width = 2, color = c("#4292C6")) +
-  geom_vline(xintercept = median(pp_tidy$posterior), linetype = "dashed", color = "red") +
+                linewidth = .6, width = 2, color = c("#4292C6")) +
+  geom_vline(xintercept = median(pp_tidy$posterior), 
+             linetype = "dashed", color = "red") +
   ylab("Posterior Probability Density") +
   xlab("Area Under ROC Curve")
 ```

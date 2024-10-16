@@ -45,6 +45,7 @@ version <- params$version
 # handle conflicts
 options(conflicts.policy = "depends.ok")
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_ml.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
 tidymodels_conflictRules()
 
 knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
@@ -179,13 +180,17 @@ bayes_model <- function(df){
              # cores = 4, seed = 12345,
              family = gaussian, verbose = FALSE)
 }
+
+bayes_output <- function(pp){
+  pp |>
+  tidy(seed = 123) |>
+  group_by(model) |> 
+  summarize(median = quantile(posterior, probs = .5),
+            lower = quantile(posterior, probs = .025), 
+            upper = quantile(posterior, probs = .975))
+}
 ```
 
-```{r}
-    # contrast_models(list_1 = levels[1], list_2 = levels[2]) |> 
-    # summary(size = 0) |> 
-    # mutate(metrics = "auroc", .before = contrast)
-```
 
 ```{r}
 if (file.exists("objects/pp_race.rds")){
@@ -198,75 +203,125 @@ if (file.exists("objects/pp_race.rds")){
 if (file.exists("objects/pp_sex.rds")){
   pp_sex <- read_rds("objects/pp_sex.rds")
 } else{
-  pp_sex <- bayes_model(auroc_race)
+  pp_sex <- bayes_model(auroc_sex)
   pp_sex |> write_rds("objects/pp_sex.rds")
 }
 
 if (file.exists("objects/pp_age.rds")){
   pp_age <- read_rds("objects/pp_age.rds")
 } else{
-  pp_age <- bayes_model(auroc_race)
+  pp_age <- bayes_model(auroc_age)
   pp_age |> write_rds("objects/pp_age.rds")
 }
 
 if (file.exists("objects/pp_income.rds")){
   pp_income <- read_rds("objects/pp_income.rds")
 } else{
-  pp_income <- bayes_model(auroc_race)
+  pp_income <- bayes_model(auroc_income)
   pp_income |> write_rds("objects/pp_income.rds")
 }
 ```
 
 ## Plot
 
-Construct Data
-```{r}
-auroc_plot <- auroc_race |> 
-  mutate(group = "race") |> 
-  bind_rows(auroc_sex |> mutate(group = "sex")) |> 
-  bind_rows(auroc_age |> mutate(group = "age")) |> 
-  bind_rows(auroc_income |> mutate(group = "income"))
-```
-
 ```{r}
 #| label: fig-fairness
-#| fig-cap: "auROC scores across different privileged vs. unprivileged groups"
+#| fig-cap: "auROC posterior distribution across different privileged vs. unprivileged groups"
 #| fig-width: 7
 #| fig-height: 5
 ggpubr::ggarrange(
-  auroc_race |> 
-    ggplot(aes(x = factor(subgroup, levels = c("all", "white", "non_white")), 
-               y = auroc, fill = subgroup)) +
-    geom_boxplot() +
-    theme(legend.position = "none", axis.text.x = element_text(angle = 10)) +
-    scale_fill_manual(values = c("#80B1D3", "#B5D66E", "#F28072")) +
-    ylim(0, 1) +
-    labs(x = "Race"),
-  auroc_sex |> 
-    ggplot(aes(x = factor(subgroup, levels = c("all", "male", "female")),
-               y = auroc, fill = subgroup)) +
-    geom_boxplot() +
-    theme(legend.position = "none", axis.text.x = element_text(angle = 10)) +
-    scale_fill_manual(values = c("#80B1D3", "#B5D66E", "#F28072")) +
-    ylim(0, 1) +
-    labs(x = "Sex"),
-  auroc_age |> 
-    ggplot(aes(x = factor(subgroup, levels = c("all", "younger", "older")),
-               y = auroc, fill = subgroup)) +
-    geom_boxplot() +
-    theme(legend.position = "none", axis.text.x = element_text(angle = 10)) +
-    scale_fill_manual(values = c("#80B1D3", "#B5D66E", "#F28072")) +
-    ylim(0, 1) +
-    labs(x = "Age"),
-  auroc_income |> 
-    ggplot(aes(x = factor(subgroup, levels = 
-                            c("all", "above_poverty", "below_poverty")),
-               y = auroc, fill = subgroup)) +
-    geom_boxplot() +
-    theme(legend.position = "none", axis.text.x = element_text(angle = 10)) +
-    scale_fill_manual(values = c("#80B1D3", "#B5D66E", "#F28072")) +
-    ylim(0, 1) +
-    labs(x = "Income")
+  bayes_output(pp_race) |> 
+    ggplot(aes(y = factor(model, levels = c("non_white", "white")), 
+               x = median, color = model)) + 
+    geom_point() +
+    geom_errorbar(aes(xmin = lower, xmax = upper), width = .2) +
+    scale_color_manual(values = c("#F28072", "#B5D66E")) +
+    labs(x = "auROC", y = element_blank(), title = "Race") +
+    scale_x_continuous(limits = c(0.46, 0.56), 
+                       breaks = seq(0.46, 0.58, by = 0.02)) +
+    theme(legend.position = "none"),
+  bayes_output(pp_sex) |> 
+    ggplot(aes(y = factor(model, levels = c("female", "male")), 
+               x = median, color = model)) + 
+    geom_point() +
+    geom_errorbar(aes(xmin = lower, xmax = upper), width = .2) +
+    scale_color_manual(values = c("#F28072", "#B5D66E")) +
+    labs(x = "auROC", y = element_blank(), title = "Sex") +
+    scale_x_continuous(limits = c(0.46, 0.56), 
+                       breaks = seq(0.46, 0.58, by = 0.02)) +
+    theme(legend.position = "none"),
+  bayes_output(pp_age) |> 
+    ggplot(aes(y = factor(model, levels = c("older", "younger")), 
+               x = median, color = model)) + 
+    geom_point() +
+    geom_errorbar(aes(xmin = lower, xmax = upper), width = .2) +
+    scale_color_manual(values = c("#F28072", "#B5D66E")) +
+    labs(x = "auROC", y = element_blank(), title = "Age") +
+    scale_x_continuous(limits = c(0.46, 0.56), 
+                       breaks = seq(0.46, 0.58, by = 0.02)) +
+    theme(legend.position = "none"),
+  bayes_output(pp_income) |> 
+    ggplot(aes(y = factor(model, levels = c("below_poverty", "above_poverty")), 
+               x = median, color = model)) + 
+    geom_point() +
+    geom_errorbar(aes(xmin = lower, xmax = upper), width = .2) +
+    scale_color_manual(values = c("#B5D66E", "#F28072")) +
+    labs(x = "auROC", y = element_blank(), title = "Income") +
+    scale_x_continuous(limits = c(0.46, 0.56), 
+                       breaks = seq(0.46, 0.58, by = 0.02)) +
+    theme(legend.position = "none")
 )
+```
+
+## Model Comparison
+
+```{r}
+pp_race |> 
+  contrast_models("white", "non_white") |>
+  summarize(
+    median = quantile(difference, probs = .5),
+    lower = quantile(difference, probs = .025), 
+    upper = quantile(difference, probs = .975),
+    prob = mean(difference > 0)
+    ) |> 
+  mutate(group = "white vs. non_white") |> 
+  relocate(group) |> 
+  bind_rows(
+    pp_sex |> 
+      contrast_models("male", "female") |>
+      summarize(
+        median = quantile(difference, probs = .5),
+        lower = quantile(difference, probs = .025), 
+        upper = quantile(difference, probs = .975),
+        prob = mean(difference > 0)
+        ) |> 
+      mutate(group = "male vs. female") |> 
+      relocate(group)
+  ) |> 
+  bind_rows(
+    pp_age |> 
+      contrast_models("younger", "older") |>
+      summarize(
+        median = quantile(difference, probs = .5),
+        lower = quantile(difference, probs = .025), 
+        upper = quantile(difference, probs = .975),
+        prob = mean(difference > 0)
+        ) |> 
+      mutate(group = "younger vs. older") |> 
+      relocate(group)
+  ) |> 
+  bind_rows(
+    pp_income |> 
+      contrast_models("above_poverty", "below_poverty") |>
+      summarize(
+        median = quantile(difference, probs = .5),
+        lower = quantile(difference, probs = .025), 
+        upper = quantile(difference, probs = .975),
+        prob = mean(difference > 0)
+        ) |> 
+      mutate(group = "above_poverty vs. below_poverty") |> 
+      relocate(group)
+  ) |> 
+  write_csv("objects/subgroup_comparison.csv")
 ```
 
