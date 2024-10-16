@@ -1,39 +1,56 @@
 ---
-title: "Leveraging Text Messages to Predict Near Real-Time Alcohol Lapse"
-author: "Coco Yu & John Curtin"
-date: "`r lubridate::today()`"
-format: 
-  pdf: 
-    include-in-header: 
-    # edit these paths depending on your QMD's location relative to lab_support
-      - ../lab_support/templates/latex/define_headers_arc.tex 
-      - ../lab_support/templates/latex/includes.tex
-geometry: margin=.5in
-mainfont: TimesNewRomanPSMT #ArialMT
-sansfont: TimesNewRomanPSMT #ArialMT
-fontsize: 12pt
-csl: https://raw.githubusercontent.com/citation-style-language/styles/master/national-library-of-medicine-grant-proposals.csl # NIH grants
-# csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl # APA format
+title: The Feasibility and Equity of Geolocation Data for Lapse Prediction in AUD
+author:
+    #  - Investigation
+  - name: Claire Punturieri 
+    email: punturieri@wisc.edu
+    #orcid: 0009-0003-7743-3736
+    #corresponding: false
+    #roles: []
+    #affiliations:
+      #- Department of Psychology, University of Wisconsin-Madison
+  - name: John J. Curtin 
+    #orcid: 0000-0002-3286-938X
+    #corresponding: true
+    email: jjcurtin@wisc.edu
+    #roles:
+      #- Project administration
+      #- Software
+      #- Visualization
+    #affiliations:
+      #- Department of Psychology, University of Wisconsin-Madison 
+#keywords:
+  #- Substance use disorders
+  #- Precision mental health 
+#abstract: |
+  #To be filled in.
+#plain-language-summary: |
+  #To be filled in.
+#key-points:
+  #- Take away point 1 
+  #- Take away point 2
+date: last-modified
 bibliography: paper_messages.bib
+#citation:
+  #container-title: To be filled in. 
+number-sections: false 
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
-#| echo: false
-#| message: false
-#| warning: false
-knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+#| include: false
 options(conflicts.policy = "depends.ok")
 
 library(tidyverse)
-library(kableExtra, exclude = "group_rows")
 library(lubridate)
-library(janitor, include.only = c("tabyl", "clean_names"))
-library(here, include.only = c("here"))
+# library(janitor, include.only = c("tabyl", "clean_names"))
+# library(here, include.only = c("here"))
 
 theme_set(theme_classic())
 
 devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
-devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+# devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
 
 path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
 path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
@@ -266,7 +283,7 @@ We performed a Bayesian hierarchical generalized linear model that regresses the
 #| include: false
 
 # Load objects for results
-labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+labels <- read_csv(here::here(path_messages, "lapses.csv"), col_types = cols()) |> 
   mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
          day_end = as_datetime(day_end, tz = "America/Chicago"))
 
@@ -331,8 +348,8 @@ We obtained LIWC scores from XXX linguistic categories.
 ## Model Fairness
 
 ```{r}
-fairness |> 
-  print_kbl()
+# fairness |> 
+#   print_kbl()
 ```
 
 \newpage
