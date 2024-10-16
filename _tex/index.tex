@@ -174,6 +174,20 @@
 \newcommand{\elandscape}{\end{landscape}} % defines shorthand command to end a landscape page
 \usepackage{enumitem} % allows fine-grain control over list styling
 \setlist[itemize]{align=parleft,left=0pt..1em} % align=parleft aligns the list icon to the left margin. left=0pt..1em means, add 0 pts of padding to the left of the icon, then skip 1em before starting the item text.
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 \KOMAoption{captions}{tableheading}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
@@ -238,6 +252,10 @@
 
 \begin{document}
 
+
+\textsubscript{Source:
+\href{https://jjcurtin.github.io/study_messages/index.qmd.html}{Article
+Notebook}}
 
 \section{Specific Aims}\label{specific-aims}
 
@@ -916,16 +934,16 @@ performance differences and examine if they include 0.
 
 \subsection{Demographics}\label{demographics}
 
-The final sample includes 138 participants. 73 (53\%) participants are
-females, 17 (12\%) are non-White minorities, 39 (28\%) earned less than
-half of the median income in Madison in Year 2017, and 13 (9\%) aged 55
-or older.
+The final sample includes 138.00 participants. 73 (53\%) participants
+are females, 17 (12\%) are non-White minorities, 39 (28\%) earned less
+than half of the median income in Madison in Year 2017, and 13 (9\%)
+aged 55 or older.
 
 \begin{figure}[H]
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_demographics-fig-demographics-output-1.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_demographics-fig-demographics-output-1.png}
 
 }
 
@@ -934,20 +952,21 @@ or older.
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_demographics.qmd.html\#cell-fig-demographics}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_demographics-preview.html\#cell-fig-demographics}{EDA
 on Subject Demographics}}
 
 \subsection{Sample Distribution}\label{sample-distribution}
 
-The final total number of lapse labels in the dataset is 11562. On
-average, each participant has 83.8 labels (sd = 11.4, median = 88, range
-= 30 - 90).
+The final total number of lapse labels in the dataset is 11562.00. On
+average, each participant has 83.78 labels (sd = 11.35, median = 88.00,
+range = 30.00 - 90.00).
 
-The total number of messages in the dataset is 313492. On average, each
-subject has 2271.68 messages (sd = 2536.6, range = 100 - 15884). The
-average message length across all participants is 10.4 words (sd = 14.3,
-median = 7, range = 1 - 1266). On average, each participant has a mean
-message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).
+The total number of messages in the dataset is 313492.00. On average,
+each subject has 2271.68 messages (sd = 2536.60, range = 100.00 -
+15884.00). The average message length across all participants is 10.42
+words (sd = 14.30, median = 7.00, range = 1.00 - 1266.00). On average,
+each participant has a mean message length of 10.87 (sd = 3.97, range =
+5.25 - 38.91).
 
 \begin{figure}
 
@@ -957,7 +976,7 @@ message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_messages-fig-message_count-output-1.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_messages-fig-message_count-output-1.png}
 
 }
 
@@ -966,7 +985,7 @@ message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_messages.qmd.html\#cell-fig-message_count}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_messages-preview.html\#cell-fig-message_count}{EDA
 on Raw Messages}}
 
 \end{minipage}%
@@ -977,7 +996,7 @@ on Raw Messages}}
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_messages-fig-message_length-output-1.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_messages-fig-message_length-output-1.png}
 
 }
 
@@ -986,25 +1005,26 @@ on Raw Messages}}
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_messages.qmd.html\#cell-fig-message_length}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_messages-preview.html\#cell-fig-message_length}{EDA
 on Raw Messages}}
 
 \end{minipage}%
 
 \end{figure}%
 
-On average, each lapse label has 79.2 messages (sd = 112, median = 40,
-range = 1 - 1414) during the 3-day prediction window. 11.9\% of labels
-have no associated messages in the previous 3 days. Each participant has
-an averaged 79.48 messages as predictors per label (sd = 87.12, median =
-50.12, range = 2.97 - 529.45). On average, each participant's data
-missingness is 12\% (sd = .19, median = 1\%, range = 0\% - 77\%).
+On average, each lapse label has 79.21 messages (sd = 112.13, median =
+40.00, range = 1.00 - 1414.00) during the 3-day prediction window.
+11.92\% of labels have no associated messages in the previous 3 days.
+Each participant has an averaged 79.48 messages as predictors per label
+(sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each
+participant's data missingness is 12.28\% (sd = 19.42\%, median =
+1.14\%, range = 0.00\% - 77.27\%).
 
 \begin{figure}[H]
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_messages-fig-message_count_3day-output-2.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_messages-fig-message_count_3day-output-2.png}
 
 }
 
@@ -1014,7 +1034,7 @@ the 3-Day Prediction Window}
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_messages.qmd.html\#cell-fig-message_count_3day}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_messages-preview.html\#cell-fig-message_count_3day}{EDA
 on Raw Messages}}
 
 \begin{figure}
@@ -1025,7 +1045,7 @@ on Raw Messages}}
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_messages-fig-message_count_3day_byid-output-2.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_messages-fig-message_count_3day_byid-output-2.png}
 
 }
 
@@ -1035,7 +1055,7 @@ Counts by Subject in the 3-Day Prediction Window}
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_messages.qmd.html\#cell-fig-message_count_3day_byid}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_messages-preview.html\#cell-fig-message_count_3day_byid}{EDA
 on Raw Messages}}
 
 \end{minipage}%
@@ -1046,7 +1066,7 @@ on Raw Messages}}
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_messages-fig-missingness_3day_byid-output-2.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_messages-fig-missingness_3day_byid-output-2.png}
 
 }
 
@@ -1056,25 +1076,26 @@ Subject in the 3-Day Prediction Window}
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_messages.qmd.html\#cell-fig-missingness_3day_byid}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_messages-preview.html\#cell-fig-missingness_3day_byid}{EDA
 on Raw Messages}}
 
 \end{minipage}%
 
 \end{figure}%
 
-On average, each lapse label has 180 messages (sd = 241, median = 96,
-range = 1 - 2866) during the 1-week prediction window. 7.83\% of labels
-have no associated messages in the previous week. Each participant has
-an averaged 181.23 messages as predictors per label (sd = 199.32, median
-= 113.47, range = 6.75 - 1200.76). On average, each participant's data
-missingness is 8\% (sd = .16, median = 0\%, range = 0\% - 73\%).
+On average, each lapse label has 180.42 messages (sd = 241.30, median =
+96.00, range = 1.00 - 2866.00) during the 1-week prediction window.
+7.83\% of labels have no associated messages in the previous week. Each
+participant has an averaged 181.23 messages as predictors per label (sd
+= 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each
+participant's data missingness is 8.14\% (sd = 16.23\%, median = 0.00\%,
+range = 0.00\% - 72.73\%).
 
 \begin{figure}[H]
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_messages-fig-message_count_1week-output-2.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_messages-fig-message_count_1week-output-2.png}
 
 }
 
@@ -1084,7 +1105,7 @@ in the 1-Week Prediction Window}
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_messages.qmd.html\#cell-fig-message_count_1week}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_messages-preview.html\#cell-fig-message_count_1week}{EDA
 on Raw Messages}}
 
 \begin{figure}
@@ -1095,7 +1116,7 @@ on Raw Messages}}
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_messages-fig-message_count_1week_byid-output-2.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_messages-fig-message_count_1week_byid-output-2.png}
 
 }
 
@@ -1105,7 +1126,7 @@ Counts by Subject in the 1-Week Prediction Window}
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_messages.qmd.html\#cell-fig-message_count_1week_byid}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_messages-preview.html\#cell-fig-message_count_1week_byid}{EDA
 on Raw Messages}}
 
 \end{minipage}%
@@ -1116,7 +1137,7 @@ on Raw Messages}}
 
 \centering{
 
-\includegraphics{index_files/figure-latex/_eda-eda_messages-fig-missingness_1week_byid-output-2.png}
+\includegraphics{index_files/figure-latex/notebooks-eda_messages-fig-missingness_1week_byid-output-2.png}
 
 }
 
@@ -1126,7 +1147,7 @@ by Subject in the 1-Week Prediction Window}
 \end{figure}%
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/_eda/eda_messages.qmd.html\#cell-fig-missingness_1week_byid}{EDA
+\href{https://jjcurtin.github.io/study_messages/notebooks/eda_messages-preview.html\#cell-fig-missingness_1week_byid}{EDA
 on Raw Messages}}
 
 \end{minipage}%
@@ -1136,6 +1157,31 @@ on Raw Messages}}
 \subsection{LIWC Features}\label{liwc-features}
 
 We obtained LIWC scores from XXX linguistic categories.
+
+\subsection{Model Evaluation}\label{model-evaluation}
+
+\subsection{Model Fairness}\label{model-fairness}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{r|r|r|r|r}
+\hline
+group & median & lower & upper & prob\\
+\hline
+white vs. non\_white & 0.03 & 0.01 & 0.06 & 0.99\\
+\hline
+male vs. female & 0.02 & 0.01 & 0.04 & 1.00\\
+\hline
+younger vs. older & 0.04 & 0.01 & 0.07 & 1.00\\
+\hline
+above\_poverty vs. below\_poverty & 0.02 & 0.00 & 0.04 & 0.99\\
+\hline
+\end{tabular}
+\end{table}
+
+\textsubscript{Source:
+\href{https://jjcurtin.github.io/study_messages/index.qmd.html}{Article
+Notebook}}
 
 \newpage
 
