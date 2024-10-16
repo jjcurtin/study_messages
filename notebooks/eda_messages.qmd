@@ -51,11 +51,9 @@ path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
 
 Read in Data 
 ```{r}
-data <- read_rds("objects/eda_window.rds")
-
-raw_data <- data[[1]] |> glimpse()
-pred_3day <- data[[2]] |> glimpse()
-pred_1week <- data[[3]] |> glimpse()
+raw_data <- read_csv("objects/eda_raw.csv") |> glimpse()
+pred_3day <- read_csv("objects/eda_3day.csv") |> glimpse()
+pred_1week <- read_csv("objects/eda_1week.csv") |> glimpse()
 
 labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
   mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
