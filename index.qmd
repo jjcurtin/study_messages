@@ -34,6 +34,7 @@ bibliography: messages.bib
 #citation:
   #container-title: To be filled in. 
 number-sections: false 
+tbl-cap-location: bottom
 editor_options: 
   chunk_output_type: console
 ---
@@ -341,7 +342,7 @@ On average, each lapse label has `r sprintf("%.2f", pred_1week |> group_by(subid
 We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic categories.
 
 |   | SD | Median | Min | Max |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | wc_median | `r sprintf("%.2f", stats_ind$numeric.sd[1])` | `r sprintf("%.2f", stats_ind$numeric.p50[1])` | `r sprintf("%.2f", stats_ind$numeric.p0[1])` | `r sprintf("%.2f", stats_ind$numeric.p100[1])` |
 | wc_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[2])` | `r sprintf("%.2f", stats_ind$numeric.p50[2])` | `r sprintf("%.2f", stats_ind$numeric.p0[2])` | `r sprintf("%.2f", stats_ind$numeric.p100[2])` |
 | wps_median | `r sprintf("%.2f", stats_ind$numeric.sd[11])` | `r sprintf("%.2f", stats_ind$numeric.p50[11])` | `r sprintf("%.2f", stats_ind$numeric.p0[11])` | `r sprintf("%.2f", stats_ind$numeric.p100[11])` |
@@ -358,7 +359,7 @@ We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic cat
 : Sample Characteristics of Median and 95% Quantile Scores of All Raw Scores from Individual Messages Within Each 3-Day Prediction Window {#tbl-ind_3day}
 
 |   | SD | Median | Min | Max |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | wc_median | `r sprintf("%.2f", stats_ind$numeric.sd[235])` | `r sprintf("%.2f", stats_ind$numeric.p50[235])` | `r sprintf("%.2f", stats_ind$numeric.p0[235])` | `r sprintf("%.2f", stats_ind$numeric.p100[235])` |
 | wc_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[236])` | `r sprintf("%.2f", stats_ind$numeric.p50[236])` | `r sprintf("%.2f", stats_ind$numeric.p0[236])` | `r sprintf("%.2f", stats_ind$numeric.p100[236])` |
 | wps_median | `r sprintf("%.2f", stats_ind$numeric.sd[245])` | `r sprintf("%.2f", stats_ind$numeric.p50[245])` | `r sprintf("%.2f", stats_ind$numeric.p0[245])` | `r sprintf("%.2f", stats_ind$numeric.p100[245])` |
@@ -377,7 +378,7 @@ We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic cat
 {{< embed notebooks/eda_liwc.qmd#fig-liwc_ind >}}
 
 |   | SD | Median | Min | Max |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | wc | `r sprintf("%.2f", stats_cat$numeric.sd[1])` | `r sprintf("%.2f", stats_cat$numeric.p50[1])` | `r sprintf("%.2f", stats_cat$numeric.p0[1])` | `r sprintf("%.2f", stats_cat$numeric.p100[1])` |
 | wps | `r sprintf("%.2f", stats_cat$numeric.sd[6])` | `r sprintf("%.2f", stats_cat$numeric.p50[6])` | `r sprintf("%.2f", stats_cat$numeric.p0[6])` | `r sprintf("%.2f", stats_cat$numeric.p100[6])` |
 | analytic | `r sprintf("%.2f", stats_cat$numeric.sd[2])` | `r sprintf("%.2f", stats_cat$numeric.p50[2])` | `r sprintf("%.2f", stats_cat$numeric.p0[2])` | `r sprintf("%.2f", stats_cat$numeric.p100[2])` |
@@ -388,7 +389,7 @@ We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic cat
 : Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 3-Day Prediction Window {#tbl-cat_3day}
 
 |   | SD | Median | Min | Max |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | wc | `r sprintf("%.2f", stats_cat$numeric.sd[235])` | `r sprintf("%.2f", stats_cat$numeric.p50[235])` | `r sprintf("%.2f", stats_cat$numeric.p0[235])` | `r sprintf("%.2f", stats_cat$numeric.p100[235])` |
 | wps | `r sprintf("%.2f", stats_cat$numeric.sd[240])` | `r sprintf("%.2f", stats_cat$numeric.p50[240])` | `r sprintf("%.2f", stats_cat$numeric.p0[240])` | `r sprintf("%.2f", stats_cat$numeric.p100[240])` |
 | analytic | `r sprintf("%.2f", stats_cat$numeric.sd[236])` | `r sprintf("%.2f", stats_cat$numeric.p50[236])` | `r sprintf("%.2f", stats_cat$numeric.p0[236])` | `r sprintf("%.2f", stats_cat$numeric.p100[236])` |
@@ -411,7 +412,7 @@ We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic cat
 See @tbl-fairness.
 
 |   | median | lower | upper | probability |
-|----|----|----|----|----|
+|---------------|---------------|---------------|---------------|---------------|
 | `r fairness$group[1]` | `r sprintf("%.2f", fairness$median[1])` | `r sprintf("%.2f", fairness$lower[1])` | `r sprintf("%.2f", fairness$upper[1])` | `r sprintf("%.2f", fairness$prob[1])` |
 | `r fairness$group[2]` | `r sprintf("%.2f", fairness$median[2])` | `r sprintf("%.2f", fairness$lower[2])` | `r sprintf("%.2f", fairness$upper[2])` | `r sprintf("%.2f", fairness$prob[2])` |
 | `r fairness$group[3]` | `r sprintf("%.2f", fairness$median[3])` | `r sprintf("%.2f", fairness$lower[3])` | `r sprintf("%.2f", fairness$upper[3])` | `r sprintf("%.2f", fairness$prob[3])` |
