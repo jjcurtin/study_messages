@@ -931,7 +931,7 @@ Figure&nbsp;4: Distribution of Mean Message Length
 </div>
 <p>On average, each lapse label has 79.21 messages (sd = 112.13, median = 40.00, range = 1.00 - 1414.00) during the 3-day prediction window. 11.92% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant’s data missingness is 12.28% (sd = 19.42%, median = 1.14%, range = 0.00% - 77.27%).</p>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-message_count_3day">
-<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-fig-message_count_3day" class="cell" data-fig-width="3.5" data-fig-height="2.5">
+<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-fig-message_count_3day" class="cell" data-fig-width="10" data-fig-height="8">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pred_3day <span class="op">|&gt;</span> </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  group_by(subid, day_start) <span class="op">|&gt;</span> </span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  summarize(n <span class="op">=</span> n()) <span class="op">|&gt;</span> </span>
@@ -1752,7 +1752,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
