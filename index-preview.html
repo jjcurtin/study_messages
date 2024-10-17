@@ -933,8 +933,8 @@ Figure&nbsp;4: Distribution of Mean Message Length
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-3day">
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-fig-3day" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), <span class="co"># Centering plot1 in the first row</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2, plt3, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),               <span class="co"># Arranging plot2 and plot3 in the second row</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1_3day, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2_3day, plt3_3day, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),  </span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  nrow <span class="op">=</span> <span class="dv">2</span>, ncol <span class="op">=</span> <span class="dv">1</span>, heights <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>) </span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -957,102 +957,31 @@ Figure&nbsp;5: Sample Distribution in the 3-Day Prediction Window
 </div></div>
 </div>
 <p>On average, each lapse label has 180.42 messages (sd = 241.30, median = 96.00, range = 1.00 - 2866.00) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant’s data missingness is 8.14% (sd = 16.23%, median = 0.00%, range = 0.00% - 72.73%).</p>
-<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-message_count_1week">
-<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-fig-message_count_1week" class="cell" data-fig-width="3.5" data-fig-height="2.5">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pred_1week <span class="op">|&gt;</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  group_by(subid, day_start) <span class="op">|&gt;</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  summarize(n <span class="op">=</span> n()) <span class="op">|&gt;</span> </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> n)) <span class="op">+</span> </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>) <span class="op">+</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  labs(x <span class="op">=</span> <span class="st">"number of messages"</span>, y <span class="op">=</span> <span class="st">"lapse counts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-1week">
+<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-fig-1week" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1_1week, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2_1week, plt3_1week, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),  </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  nrow <span class="op">=</span> <span class="dv">2</span>, ncol <span class="op">=</span> <span class="dv">1</span>, heights <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>) </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'subid'. You can override using the
-`.groups` argument.
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<div id="fig-message_count_1week" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-1week" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-message_count_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="index_files/figure-html/notebooks-eda_messages-fig-message_count_1week-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;6: Distribution of Message Counts in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_messages-fig-message_count_1week-output-2.png" class="img-fluid figure-img"></a>
+<div aria-describedby="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="index_files/figure-html/notebooks-eda_messages-fig-1week-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;6: Sample Distribution in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_messages-fig-1week-output-2.png" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-message_count_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Distribution of Message Counts in the 1-Week Prediction Window
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Sample Distribution in the 1-Week Prediction Window
 </figcaption>
 </figure>
 </div>
 </div>
 </div></div>
-</div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>pred_1week <span class="op">|&gt;</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  group_by(subid, day_start) <span class="op">|&gt;</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  summarize(</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    n_messages <span class="op">=</span> <span class="bu">sum</span>(<span class="op">!</span>na)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">|&gt;</span> </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  group_by(subid) <span class="op">|&gt;</span> </span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  summarize(</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    mean_messages <span class="op">=</span> mean(n_messages)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">|&gt;</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> mean_messages)) <span class="op">+</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>) <span class="op">+</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  labs(x <span class="op">=</span> <span class="st">"averaged number of messages per label"</span>, y <span class="op">=</span> <span class="st">"subject counts"</span>)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>pred_1week <span class="op">|&gt;</span> </span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  group_by(subid, day_start) <span class="op">|&gt;</span> </span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  summarize(</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    missingness <span class="op">=</span> <span class="bu">sum</span>(na) <span class="op">/</span> n()</span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">|&gt;</span> </span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  group_by(subid) <span class="op">|&gt;</span> </span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  summarize(</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    mean_missing <span class="op">=</span> mean(missingness)</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">|&gt;</span> </span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> mean_missing)) <span class="op">+</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>) <span class="op">+</span></span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  labs(x <span class="op">=</span> <span class="st">"percentage of missingness"</span>, y <span class="op">=</span> <span class="st">"subject counts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-embed-nb-cell quarto-layout-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-message_count_1week_byid" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-message_count_1week_byid" class="cell" data-fig-width="3.5" data-fig-height="2.5">
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'subid'. You can override using the
-`.groups` argument.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-message_count_1week_byid" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-message_count_1week_byid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="index_files/figure-html/notebooks-eda_messages-fig-message_count_1week_byid-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;7: Distribution of Message Counts by Subject in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_messages-fig-message_count_1week_byid-output-2.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-message_count_1week_byid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Distribution of Message Counts by Subject in the 1-Week Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-</div>
-<div class="quarto-embed-nb-cell quarto-layout-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-missingness_1week_byid" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-fig-missingness_1week_byid" class="cell" data-fig-width="3.5" data-fig-height="2.5">
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'subid'. You can override using the
-`.groups` argument.
-`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-missingness_1week_byid" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-missingness_1week_byid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="index_files/figure-html/notebooks-eda_messages-fig-missingness_1week_byid-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Distribution of Missingness by Subject in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_messages-fig-missingness_1week_byid-output-2.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-missingness_1week_byid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Distribution of Missingness by Subject in the 1-Week Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-</div>
-</div>
 </div>
 </section>
 <section id="liwc-features" class="level2">
@@ -1681,7 +1610,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom","openEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
