@@ -258,6 +258,7 @@ div.csl-indent {
   <li><a href="#liwc-features" id="toc-liwc-features" class="nav-link" data-scroll-target="#liwc-features">LIWC Features</a></li>
   <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a></li>
   <li><a href="#model-fairness" id="toc-model-fairness" class="nav-link" data-scroll-target="#model-fairness">Model Fairness</a></li>
+  <li><a href="#model-interpretation" id="toc-model-interpretation" class="nav-link" data-scroll-target="#model-interpretation">Model Interpretation</a></li>
   </ul></li>
   <li><a href="#discussions" id="toc-discussions" class="nav-link" data-scroll-target="#discussions">Discussions</a></li>
   </ul>
@@ -703,7 +704,7 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
 <div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc" class="cell" data-fig-width="3.5" data-fig-height="2.5">
+<div id="cell-fig-auroc" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -826,6 +827,25 @@ Table&nbsp;2: Model Performance Difference across different demographic subgroup
 </table>
 </div>
 </figure>
+</div>
+</section>
+<section id="model-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="model-interpretation">Model Interpretation</h2>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-shaps" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-shaps" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;11: Shapley Value"><img src="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Shapley Value
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </div>
 <div style="page-break-after: always;"></div>
 </section>
@@ -1449,7 +1469,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

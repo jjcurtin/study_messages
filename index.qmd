@@ -358,6 +358,10 @@ See @tbl-fairness.
 
 : Model Performance Difference across different demographic subgroups {#tbl-fairness}
 
+## Model Interpretation
+
+{{< embed notebooks/shaps.qmd#fig-shaps >}}
+
 \newpage
 
 # Discussions

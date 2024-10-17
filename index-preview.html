@@ -387,6 +387,7 @@
   <li><a href="#liwc-features" id="toc-liwc-features" class="nav-link" data-scroll-target="#liwc-features">LIWC Features</a></li>
   <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a></li>
   <li><a href="#model-fairness" id="toc-model-fairness" class="nav-link" data-scroll-target="#model-fairness">Model Fairness</a></li>
+  <li><a href="#model-interpretation" id="toc-model-interpretation" class="nav-link" data-scroll-target="#model-interpretation">Model Interpretation</a></li>
   </ul></li>
   <li><a href="#discussions" id="toc-discussions" class="nav-link" data-scroll-target="#discussions">Discussions</a></li>
   </ul>
@@ -1013,7 +1014,7 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc">
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-auroc" class="cell" data-fig-width="3.5" data-fig-height="2.5">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-auroc" class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">&lt;-</span> probs <span class="op">|&gt;</span> </span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  roc_curve(prob_raw, truth <span class="op">=</span> label)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -1223,6 +1224,36 @@ Table&nbsp;2: Model Performance Difference across different demographic subgroup
 </table>
 </div>
 </figure>
+</div>
+</section>
+<section id="model-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="model-interpretation">Model Interpretation</h2>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/shaps.qmd" data-notebook-title="shaps" data-notebook-cellid="cell-fig-shaps">
+<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-fig-shaps" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>shaps_grp <span class="op">|&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  group_by(variable_grp) <span class="op">|&gt;</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  summarize(mean_value <span class="op">=</span> (mean(<span class="bu">abs</span>(value)))) <span class="op">|&gt;</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  mutate(group <span class="op">=</span> reorder(variable_grp, mean_value)) <span class="op">|&gt;</span> </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  arrange(desc(mean_value)) <span class="op">|&gt;</span> </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  head(<span class="dv">30</span>) <span class="op">|&gt;</span> </span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  geom_bar(aes(x <span class="op">=</span> group, y <span class="op">=</span> mean_value), stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#af1f21"</span>) <span class="op">+</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  ylab(<span class="st">"Mean |SHAP| value (in Log-Odds)"</span>) <span class="op">+</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">""</span>) <span class="op">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  coord_flip()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-shaps" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;11: Shapley Value"><img src="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Shapley Value
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
 </div>
 <div style="page-break-after: always;"></div>
 </section>
@@ -1842,7 +1873,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
