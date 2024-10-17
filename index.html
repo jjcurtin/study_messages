@@ -262,7 +262,7 @@ div.csl-indent {
   </ul></li>
   <li><a href="#discussions" id="toc-discussions" class="nav-link" data-scroll-target="#discussions">Discussions</a></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks/eda_messages-preview.html"><i class="bi bi-journal-code"></i>EDA on Raw Messages</a></li><li><a href="notebooks/eda_demographics-preview.html"><i class="bi bi-journal-code"></i>EDA on Subject Demographics</a></li><li><a href="notebooks/calibration_plot-preview.html"><i class="bi bi-journal-code"></i>Generate INNER calibration</a></li><li><a href="notebooks/auROC_plot-preview.html"><i class="bi bi-journal-code"></i>Performance plots</a></li><li><a href="notebooks/shaps-preview.html"><i class="bi bi-journal-code"></i>shaps</a></li><li><a href="notebooks/fairness-preview.html"><i class="bi bi-journal-code"></i>Subgroup Analysis</a></li></ul></div></nav>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks/eda_liwc-preview.html"><i class="bi bi-journal-code"></i>EDA on LIWC Features</a></li><li><a href="notebooks/eda_messages-preview.html"><i class="bi bi-journal-code"></i>EDA on Raw Messages</a></li><li><a href="notebooks/eda_demographics-preview.html"><i class="bi bi-journal-code"></i>EDA on Subject Demographics</a></li><li><a href="notebooks/calibration_plot-preview.html"><i class="bi bi-journal-code"></i>Generate INNER calibration</a></li><li><a href="notebooks/auROC_plot-preview.html"><i class="bi bi-journal-code"></i>Performance plots</a></li><li><a href="notebooks/shaps-preview.html"><i class="bi bi-journal-code"></i>shaps</a></li><li><a href="notebooks/fairness-preview.html"><i class="bi bi-journal-code"></i>Subgroup Analysis</a></li></ul></div></nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -699,7 +699,379 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 </section>
 <section id="liwc-features" class="level2">
 <h2 class="anchored" data-anchor-id="liwc-features">LIWC Features</h2>
-<p>We obtained LIWC scores from XXX linguistic categories.</p>
+<p>We obtained LIWC scores from 117 linguistic categories.</p>
+<div id="tbl-ind_3day" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ind_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Sample Characteristics of Median and 95% Quantile Scores of All Raw Scores from Individual Messages Within Each 3-Day Prediction Window
+</figcaption>
+<div aria-describedby="tbl-ind_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>SD</th>
+<th>Median</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wc_median</td>
+<td>5.43</td>
+<td>7.00</td>
+<td>1.00</td>
+<td>142.00</td>
+</tr>
+<tr class="even">
+<td>wc_q_95</td>
+<td>20.31</td>
+<td>26.40</td>
+<td>1.00</td>
+<td>369.05</td>
+</tr>
+<tr class="odd">
+<td>wps_median</td>
+<td>2.45</td>
+<td>5.00</td>
+<td>0.00</td>
+<td>78.00</td>
+</tr>
+<tr class="even">
+<td>wps_q_95</td>
+<td>5.96</td>
+<td>14.75</td>
+<td>0.00</td>
+<td>78.00</td>
+</tr>
+<tr class="odd">
+<td>analytic_median</td>
+<td>17.11</td>
+<td>10.19</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>analytic_q_95</td>
+<td>19.24</td>
+<td>97.20</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>clout_median</td>
+<td>32.72</td>
+<td>40.06</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>clout_q_95</td>
+<td>12.98</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>authentic_median</td>
+<td>19.60</td>
+<td>89.39</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>authentic_q_95</td>
+<td>10.77</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>tone_median</td>
+<td>17.84</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>tone_q_95</td>
+<td>9.85</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-ind_1week" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ind_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Sample Characteristics of Median and 95% Quantile Scores of All Raw Scores from Individual Messages Within Each 1-Week Prediction Window
+</figcaption>
+<div aria-describedby="tbl-ind_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>SD</th>
+<th>Median</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wc_median</td>
+<td>4.00</td>
+<td>7.00</td>
+<td>1.00</td>
+<td>81.00</td>
+</tr>
+<tr class="even">
+<td>wc_q_95</td>
+<td>17.84</td>
+<td>28.00</td>
+<td>1.00</td>
+<td>404.00</td>
+</tr>
+<tr class="odd">
+<td>wps_median</td>
+<td>2.20</td>
+<td>5.00</td>
+<td>1.00</td>
+<td>78.00</td>
+</tr>
+<tr class="even">
+<td>wps_q_95</td>
+<td>5.53</td>
+<td>15.10</td>
+<td>1.00</td>
+<td>78.00</td>
+</tr>
+<tr class="odd">
+<td>analytic_median</td>
+<td>14.02</td>
+<td>10.19</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>analytic_q_95</td>
+<td>14.85</td>
+<td>98.59</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>clout_median</td>
+<td>30.57</td>
+<td>40.06</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>clout_q_95</td>
+<td>9.94</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>authentic_median</td>
+<td>15.87</td>
+<td>89.39</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>authentic_q_95</td>
+<td>7.36</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>tone_median</td>
+<td>13.85</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>tone_q_95</td>
+<td>7.27</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-liwc_ind" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-liwc_ind" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;7: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tbl-cat_3day" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cat_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 3-Day Prediction Window
+</figcaption>
+<div aria-describedby="tbl-cat_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>SD</th>
+<th>Median</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wc</td>
+<td>1175.22</td>
+<td>512.00</td>
+<td>1.00</td>
+<td>13211.00</td>
+</tr>
+<tr class="even">
+<td>wps</td>
+<td>9.75</td>
+<td>10.76</td>
+<td>0.00</td>
+<td>295.00</td>
+</tr>
+<tr class="odd">
+<td>analytic</td>
+<td>16.96</td>
+<td>19.05</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>clout</td>
+<td>25.37</td>
+<td>50.20</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>authentic</td>
+<td>22.34</td>
+<td>77.13</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>tone</td>
+<td>23.28</td>
+<td>82.19</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-cat_1week" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cat_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 1-Week Prediction Window
+</figcaption>
+<div aria-describedby="tbl-cat_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>SD</th>
+<th>Median</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wc</td>
+<td>2484.84</td>
+<td>1124.00</td>
+<td>1.00</td>
+<td>23702.00</td>
+</tr>
+<tr class="even">
+<td>wps</td>
+<td>8.73</td>
+<td>10.91</td>
+<td>1.00</td>
+<td>241.00</td>
+</tr>
+<tr class="odd">
+<td>analytic</td>
+<td>14.30</td>
+<td>19.17</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>clout</td>
+<td>22.54</td>
+<td>50.15</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>authentic</td>
+<td>19.04</td>
+<td>77.10</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>tone</td>
+<td>20.76</td>
+<td>82.04</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-liwc_cat" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-liwc_cat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-liwc_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
@@ -709,42 +1081,10 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 <div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;7: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;9: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: ROC Curve for the Best Model Configuration
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc_hist" class="cell" data-fig-width="5" data-fig-height="3">
-<div class="cell-output cell-output-display">
-<div id="fig-auroc_hist" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc_hist-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Distribution of auROCs Across 300 Inner Folds"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc_hist-output-2.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Distribution of auROCs Across 300 Inner Folds
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc_posterior" class="cell" data-fig-width="5" data-fig-height="3">
-<div class="cell-output cell-output-display">
-<div id="fig-auroc_posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc_posterior-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;9: Posterior Distribution of auROC Scores"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc_posterior-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Posterior Distribution of auROC Scores
+Figure&nbsp;9: ROC Curve for the Best Model Configuration
 </figcaption>
 </figure>
 </div>
@@ -770,21 +1110,14 @@ Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbs
 </div>
 </div>
 </div>
-<p>See <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;2</a>.</p>
+<p>See <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;6</a>.</p>
 <div id="tbl-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Model Performance Difference across different demographic subgroups
+Table&nbsp;6: Model Performance Difference across different demographic subgroups
 </figcaption>
 <div aria-describedby="tbl-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -1469,7 +1802,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","closeEffect":"zoom","loop":false,"descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

@@ -306,6 +306,9 @@ txt_length_by_id <- raw_data |>
     max_length = max(text_length)
   )
 
+stats_ind <- read_csv(here(path_messages, "eda", "eda_liwc_ind.csv"))
+stats_cat <- read_csv(here(path_messages, "eda", "eda_liwc_cat.csv"))
+
 fairness <- read_csv("objects/subgroup_comparison.csv")
 ```
 
@@ -335,13 +338,71 @@ On average, each lapse label has `r sprintf("%.2f", pred_1week |> group_by(subid
 
 ## LIWC Features
 
-We obtained LIWC scores from XXX linguistic categories.
+We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic categories.
+
+|   | SD | Median | Min | Max |
+|----|----|----|----|----|
+| wc_median | `r sprintf("%.2f", stats_ind$numeric.sd[1])` | `r sprintf("%.2f", stats_ind$numeric.p50[1])` | `r sprintf("%.2f", stats_ind$numeric.p0[1])` | `r sprintf("%.2f", stats_ind$numeric.p100[1])` |
+| wc_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[2])` | `r sprintf("%.2f", stats_ind$numeric.p50[2])` | `r sprintf("%.2f", stats_ind$numeric.p0[2])` | `r sprintf("%.2f", stats_ind$numeric.p100[2])` |
+| wps_median | `r sprintf("%.2f", stats_ind$numeric.sd[11])` | `r sprintf("%.2f", stats_ind$numeric.p50[11])` | `r sprintf("%.2f", stats_ind$numeric.p0[11])` | `r sprintf("%.2f", stats_ind$numeric.p100[11])` |
+| wps_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[12])` | `r sprintf("%.2f", stats_ind$numeric.p50[12])` | `r sprintf("%.2f", stats_ind$numeric.p0[12])` | `r sprintf("%.2f", stats_ind$numeric.p100[12])` |
+| analytic_median | `r sprintf("%.2f", stats_ind$numeric.sd[3])` | `r sprintf("%.2f", stats_ind$numeric.p50[3])` | `r sprintf("%.2f", stats_ind$numeric.p0[3])` | `r sprintf("%.2f", stats_ind$numeric.p100[3])` |
+| analytic_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[4])` | `r sprintf("%.2f", stats_ind$numeric.p50[4])` | `r sprintf("%.2f", stats_ind$numeric.p0[4])` | `r sprintf("%.2f", stats_ind$numeric.p100[4])` |
+| clout_median | `r sprintf("%.2f", stats_ind$numeric.sd[5])` | `r sprintf("%.2f", stats_ind$numeric.p50[5])` | `r sprintf("%.2f", stats_ind$numeric.p0[5])` | `r sprintf("%.2f", stats_ind$numeric.p100[5])` |
+| clout_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[6])` | `r sprintf("%.2f", stats_ind$numeric.p50[6])` | `r sprintf("%.2f", stats_ind$numeric.p0[6])` | `r sprintf("%.2f", stats_ind$numeric.p100[6])` |
+| authentic_median | `r sprintf("%.2f", stats_ind$numeric.sd[7])` | `r sprintf("%.2f", stats_ind$numeric.p50[7])` | `r sprintf("%.2f", stats_ind$numeric.p0[7])` | `r sprintf("%.2f", stats_ind$numeric.p100[7])` |
+| authentic_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[8])` | `r sprintf("%.2f", stats_ind$numeric.p50[8])` | `r sprintf("%.2f", stats_ind$numeric.p0[8])` | `r sprintf("%.2f", stats_ind$numeric.p100[8])` |
+| tone_median | `r sprintf("%.2f", stats_ind$numeric.sd[9])` | `r sprintf("%.2f", stats_ind$numeric.p50[9])` | `r sprintf("%.2f", stats_ind$numeric.p0[9])` | `r sprintf("%.2f", stats_ind$numeric.p100[9])` |
+| tone_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[10])` | `r sprintf("%.2f", stats_ind$numeric.p50[10])` | `r sprintf("%.2f", stats_ind$numeric.p0[10])` | `r sprintf("%.2f", stats_ind$numeric.p100[10])` |
+
+: Sample Characteristics of Median and 95% Quantile Scores of All Raw Scores from Individual Messages Within Each 3-Day Prediction Window {#tbl-ind_3day}
+
+|   | SD | Median | Min | Max |
+|----|----|----|----|----|
+| wc_median | `r sprintf("%.2f", stats_ind$numeric.sd[235])` | `r sprintf("%.2f", stats_ind$numeric.p50[235])` | `r sprintf("%.2f", stats_ind$numeric.p0[235])` | `r sprintf("%.2f", stats_ind$numeric.p100[235])` |
+| wc_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[236])` | `r sprintf("%.2f", stats_ind$numeric.p50[236])` | `r sprintf("%.2f", stats_ind$numeric.p0[236])` | `r sprintf("%.2f", stats_ind$numeric.p100[236])` |
+| wps_median | `r sprintf("%.2f", stats_ind$numeric.sd[245])` | `r sprintf("%.2f", stats_ind$numeric.p50[245])` | `r sprintf("%.2f", stats_ind$numeric.p0[245])` | `r sprintf("%.2f", stats_ind$numeric.p100[245])` |
+| wps_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[246])` | `r sprintf("%.2f", stats_ind$numeric.p50[246])` | `r sprintf("%.2f", stats_ind$numeric.p0[246])` | `r sprintf("%.2f", stats_ind$numeric.p100[246])` |
+| analytic_median | `r sprintf("%.2f", stats_ind$numeric.sd[237])` | `r sprintf("%.2f", stats_ind$numeric.p50[237])` | `r sprintf("%.2f", stats_ind$numeric.p0[237])` | `r sprintf("%.2f", stats_ind$numeric.p100[237])` |
+| analytic_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[238])` | `r sprintf("%.2f", stats_ind$numeric.p50[238])` | `r sprintf("%.2f", stats_ind$numeric.p0[238])` | `r sprintf("%.2f", stats_ind$numeric.p100[238])` |
+| clout_median | `r sprintf("%.2f", stats_ind$numeric.sd[239])` | `r sprintf("%.2f", stats_ind$numeric.p50[239])` | `r sprintf("%.2f", stats_ind$numeric.p0[239])` | `r sprintf("%.2f", stats_ind$numeric.p100[239])` |
+| clout_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[240])` | `r sprintf("%.2f", stats_ind$numeric.p50[240])` | `r sprintf("%.2f", stats_ind$numeric.p0[240])` | `r sprintf("%.2f", stats_ind$numeric.p100[240])` |
+| authentic_median | `r sprintf("%.2f", stats_ind$numeric.sd[241])` | `r sprintf("%.2f", stats_ind$numeric.p50[241])` | `r sprintf("%.2f", stats_ind$numeric.p0[241])` | `r sprintf("%.2f", stats_ind$numeric.p100[241])` |
+| authentic_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[242])` | `r sprintf("%.2f", stats_ind$numeric.p50[242])` | `r sprintf("%.2f", stats_ind$numeric.p0[242])` | `r sprintf("%.2f", stats_ind$numeric.p100[242])` |
+| tone_median | `r sprintf("%.2f", stats_ind$numeric.sd[243])` | `r sprintf("%.2f", stats_ind$numeric.p50[243])` | `r sprintf("%.2f", stats_ind$numeric.p0[243])` | `r sprintf("%.2f", stats_ind$numeric.p100[243])` |
+| tone_q_95 | `r sprintf("%.2f", stats_ind$numeric.sd[244])` | `r sprintf("%.2f", stats_ind$numeric.p50[244])` | `r sprintf("%.2f", stats_ind$numeric.p0[244])` | `r sprintf("%.2f", stats_ind$numeric.p100[244])` |
+
+: Sample Characteristics of Median and 95% Quantile Scores of All Raw Scores from Individual Messages Within Each 1-Week Prediction Window {#tbl-ind_1week}
+
+{{< embed notebooks/eda_liwc.qmd#fig-liwc_ind >}}
+
+|   | SD | Median | Min | Max |
+|----|----|----|----|----|
+| wc | `r sprintf("%.2f", stats_cat$numeric.sd[1])` | `r sprintf("%.2f", stats_cat$numeric.p50[1])` | `r sprintf("%.2f", stats_cat$numeric.p0[1])` | `r sprintf("%.2f", stats_cat$numeric.p100[1])` |
+| wps | `r sprintf("%.2f", stats_cat$numeric.sd[6])` | `r sprintf("%.2f", stats_cat$numeric.p50[6])` | `r sprintf("%.2f", stats_cat$numeric.p0[6])` | `r sprintf("%.2f", stats_cat$numeric.p100[6])` |
+| analytic | `r sprintf("%.2f", stats_cat$numeric.sd[2])` | `r sprintf("%.2f", stats_cat$numeric.p50[2])` | `r sprintf("%.2f", stats_cat$numeric.p0[2])` | `r sprintf("%.2f", stats_cat$numeric.p100[2])` |
+| clout | `r sprintf("%.2f", stats_cat$numeric.sd[3])` | `r sprintf("%.2f", stats_cat$numeric.p50[3])` | `r sprintf("%.2f", stats_cat$numeric.p0[3])` | `r sprintf("%.2f", stats_cat$numeric.p100[3])` |
+| authentic | `r sprintf("%.2f", stats_cat$numeric.sd[4])` | `r sprintf("%.2f", stats_cat$numeric.p50[4])` | `r sprintf("%.2f", stats_cat$numeric.p0[4])` | `r sprintf("%.2f", stats_cat$numeric.p100[4])` |
+| tone | `r sprintf("%.2f", stats_cat$numeric.sd[5])` | `r sprintf("%.2f", stats_cat$numeric.p50[5])` | `r sprintf("%.2f", stats_cat$numeric.p0[5])` | `r sprintf("%.2f", stats_cat$numeric.p100[5])` |
+
+: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 3-Day Prediction Window {#tbl-cat_3day}
+
+|   | SD | Median | Min | Max |
+|----|----|----|----|----|
+| wc | `r sprintf("%.2f", stats_cat$numeric.sd[235])` | `r sprintf("%.2f", stats_cat$numeric.p50[235])` | `r sprintf("%.2f", stats_cat$numeric.p0[235])` | `r sprintf("%.2f", stats_cat$numeric.p100[235])` |
+| wps | `r sprintf("%.2f", stats_cat$numeric.sd[240])` | `r sprintf("%.2f", stats_cat$numeric.p50[240])` | `r sprintf("%.2f", stats_cat$numeric.p0[240])` | `r sprintf("%.2f", stats_cat$numeric.p100[240])` |
+| analytic | `r sprintf("%.2f", stats_cat$numeric.sd[236])` | `r sprintf("%.2f", stats_cat$numeric.p50[236])` | `r sprintf("%.2f", stats_cat$numeric.p0[236])` | `r sprintf("%.2f", stats_cat$numeric.p100[236])` |
+| clout | `r sprintf("%.2f", stats_cat$numeric.sd[237])` | `r sprintf("%.2f", stats_cat$numeric.p50[237])` | `r sprintf("%.2f", stats_cat$numeric.p0[237])` | `r sprintf("%.2f", stats_cat$numeric.p100[237])` |
+| authentic | `r sprintf("%.2f", stats_cat$numeric.sd[238])` | `r sprintf("%.2f", stats_cat$numeric.p50[238])` | `r sprintf("%.2f", stats_cat$numeric.p0[238])` | `r sprintf("%.2f", stats_cat$numeric.p100[238])` |
+| tone | `r sprintf("%.2f", stats_cat$numeric.sd[239])` | `r sprintf("%.2f", stats_cat$numeric.p50[239])` | `r sprintf("%.2f", stats_cat$numeric.p0[239])` | `r sprintf("%.2f", stats_cat$numeric.p100[239])` |
+
+: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 1-Week Prediction Window {#tbl-cat_1week}
+
+{{< embed notebooks/eda_liwc.qmd#fig-liwc_cat >}}
 
 ## Model Evaluation
 
-{{< embed notebooks/auROC_plot.qmd#fig-auroc >}}
-{{< embed notebooks/auROC_plot.qmd#fig-auroc_hist >}}
-{{< embed notebooks/auROC_plot.qmd#fig-auroc_posterior >}}
+{{< embed notebooks/auROC_plot.qmd#fig-auroc >}} {{< embed notebooks/auROC_plot.qmd#fig-auroc_hist >}} {{< embed notebooks/auROC_plot.qmd#fig-auroc_posterior >}}
 
 ## Model Fairness
 
@@ -350,7 +411,7 @@ We obtained LIWC scores from XXX linguistic categories.
 See @tbl-fairness.
 
 |   | median | lower | upper | probability |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | `r fairness$group[1]` | `r sprintf("%.2f", fairness$median[1])` | `r sprintf("%.2f", fairness$lower[1])` | `r sprintf("%.2f", fairness$upper[1])` | `r sprintf("%.2f", fairness$prob[1])` |
 | `r fairness$group[2]` | `r sprintf("%.2f", fairness$median[2])` | `r sprintf("%.2f", fairness$lower[2])` | `r sprintf("%.2f", fairness$upper[2])` | `r sprintf("%.2f", fairness$prob[2])` |
 | `r fairness$group[3]` | `r sprintf("%.2f", fairness$median[3])` | `r sprintf("%.2f", fairness$lower[3])` | `r sprintf("%.2f", fairness$upper[3])` | `r sprintf("%.2f", fairness$prob[3])` |

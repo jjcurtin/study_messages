@@ -839,7 +839,29 @@ $ na        &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, 
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_length =</span> <span class="fu">max</span>(text_length)</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>fairness <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"objects/subgroup_comparison.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>stats_ind <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">"eda"</span>, <span class="st">"eda_liwc_ind.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 468 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): skim_type, skim_variable
+dbl (5): complete_rate, numeric.sd, numeric.p0, numeric.p50, numeric.p100
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>stats_cat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">"eda"</span>, <span class="st">"eda_liwc_cat.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 468 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): skim_type, skim_variable
+dbl (5): complete_rate, numeric.sd, numeric.p0, numeric.p50, numeric.p100
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fairness <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"objects/subgroup_comparison.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 4 Columns: 5
 ── Column specification ────────────────────────────────────────────────────────
@@ -856,44 +878,44 @@ dbl (4): median, lower, upper, prob
 <p>The final sample includes 138 participants. 73 (53%) participants are females, 17 (12%) are non-White minorities, 39 (28%) earned less than half of the median income in Madison in Year 2017, and 13 (9%) aged 55 or older.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_demographics.qmd" data-notebook-title="EDA on Subject Demographics" data-notebook-cellid="cell-fig-demographics">
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-fig-demographics" class="cell" data-fig-width="10">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">|&gt;</span> </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  mutate(</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    subgroup <span class="op">=</span> case_when(</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"female"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"male"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"white"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"non_white"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"above_poverty"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"below_poverty"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"younger"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"older"</span> <span class="op">~</span> <span class="st">"unprivileged"</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    demographics <span class="op">=</span> case_when(</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"sex"</span> <span class="op">~</span> <span class="st">"Sex"</span>,</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"race"</span> <span class="op">~</span> <span class="st">"Race"</span>,</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"income"</span> <span class="op">~</span> <span class="st">"Income"</span>,</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"age"</span> <span class="op">~</span> <span class="st">"Age"</span></span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">|&gt;</span> </span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a> ggplot(aes(x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> N, fill <span class="op">=</span> subgroup)) <span class="op">+</span> </span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>  geom_bar(stat<span class="op">=</span><span class="st">"identity"</span>, width<span class="op">=</span><span class="dv">1</span>) <span class="op">+</span></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>  coord_polar(<span class="st">"y"</span>, start<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>  scale_fill_manual(values <span class="op">=</span> c(<span class="st">"privileged"</span> <span class="op">=</span> <span class="st">"#B5D66E"</span>,</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"unprivileged"</span> <span class="op">=</span> <span class="st">"#F28072"</span>)) <span class="op">+</span></span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  geom_text(aes(label <span class="op">=</span> c(</span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Male"</span>,</span>
-<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Female"</span>,</span>
-<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"White"</span>,</span>
-<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Person of Color"</span>,</span>
-<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Above Poverty"</span>,</span>
-<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Below Poverty"</span>,</span>
-<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Younger"</span>,</span>
-<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Older (&gt;55)"</span></span>
-<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>  )), position <span class="op">=</span> position_stack(vjust <span class="op">=</span> <span class="fl">0.5</span>)) <span class="op">+</span></span>
-<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>  theme_void() <span class="op">+</span></span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>  theme(legend.title<span class="op">=</span>element_blank(), legend.position <span class="op">=</span> <span class="st">"bottom"</span>) <span class="op">+</span></span>
-<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>  facet_wrap(<span class="op">~</span>factor(demographics, levels <span class="op">=</span> c(<span class="st">"Race"</span>, <span class="st">"Sex"</span>, <span class="st">"Income"</span>, <span class="st">"Age"</span>))) <span class="op">+</span></span>
-<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>  theme(strip.text.x <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">16</span>, face<span class="op">=</span><span class="st">"bold"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">|&gt;</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  mutate(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    subgroup <span class="op">=</span> case_when(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"female"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"male"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"white"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"non_white"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"above_poverty"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"below_poverty"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"younger"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"older"</span> <span class="op">~</span> <span class="st">"unprivileged"</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    demographics <span class="op">=</span> case_when(</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"sex"</span> <span class="op">~</span> <span class="st">"Sex"</span>,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"race"</span> <span class="op">~</span> <span class="st">"Race"</span>,</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"income"</span> <span class="op">~</span> <span class="st">"Income"</span>,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"age"</span> <span class="op">~</span> <span class="st">"Age"</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">|&gt;</span> </span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a> ggplot(aes(x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> N, fill <span class="op">=</span> subgroup)) <span class="op">+</span> </span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>  geom_bar(stat<span class="op">=</span><span class="st">"identity"</span>, width<span class="op">=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  coord_polar(<span class="st">"y"</span>, start<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  scale_fill_manual(values <span class="op">=</span> c(<span class="st">"privileged"</span> <span class="op">=</span> <span class="st">"#B5D66E"</span>,</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"unprivileged"</span> <span class="op">=</span> <span class="st">"#F28072"</span>)) <span class="op">+</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  geom_text(aes(label <span class="op">=</span> c(</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Male"</span>,</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Female"</span>,</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"White"</span>,</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Person of Color"</span>,</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Above Poverty"</span>,</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Below Poverty"</span>,</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Younger"</span>,</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Older (&gt;55)"</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>  )), position <span class="op">=</span> position_stack(vjust <span class="op">=</span> <span class="fl">0.5</span>)) <span class="op">+</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>  theme_void() <span class="op">+</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>  theme(legend.title<span class="op">=</span>element_blank(), legend.position <span class="op">=</span> <span class="st">"bottom"</span>) <span class="op">+</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>  facet_wrap(<span class="op">~</span>factor(demographics, levels <span class="op">=</span> c(<span class="st">"Race"</span>, <span class="st">"Sex"</span>, <span class="st">"Income"</span>, <span class="st">"Age"</span>))) <span class="op">+</span></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>  theme(strip.text.x <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">16</span>, face<span class="op">=</span><span class="st">"bold"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-demographics" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -914,12 +936,12 @@ Figure&nbsp;2: Demographic Distribution
 <p>The final total number of lapse labels in the dataset is 11562. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30.00 - 90.00).</p>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-lapse_count">
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-fig-lapse_count" class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">|&gt;</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  group_by(subid) <span class="op">|&gt;</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  summarize(n <span class="op">=</span> n()) <span class="op">|&gt;</span> </span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> n)) <span class="op">+</span> </span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>, bins <span class="op">=</span> <span class="dv">70</span>) <span class="op">+</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  labs(y <span class="op">=</span> <span class="st">"subject counts"</span>, x <span class="op">=</span> <span class="st">"# of lapses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  group_by(subid) <span class="op">|&gt;</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  summarize(n <span class="op">=</span> n()) <span class="op">|&gt;</span> </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> n)) <span class="op">+</span> </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>, bins <span class="op">=</span> <span class="dv">70</span>) <span class="op">+</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  labs(y <span class="op">=</span> <span class="st">"subject counts"</span>, x <span class="op">=</span> <span class="st">"# of lapses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-lapse_count" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -937,7 +959,7 @@ Figure&nbsp;3: Distribution of Lapse Label Counts
 <p>The total number of messages in the dataset is 313492. On average, each subject has 2271.68 messages (sd = 2536.60, range = 100.00 - 15884.00). The average message length across all participants is 10.42 words (sd = 14.30, median = 7.00, range = 1.00 - 1266.00). On average, each participant has a mean message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).</p>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-raw">
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-fig-raw" class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(plt1_raw, plt2_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(plt1_raw, plt2_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-raw" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -955,11 +977,11 @@ Figure&nbsp;4: Sample Characteristics of Raw Messages
 <p>On average, each lapse label has 79.21 messages (sd = 112.13, median = 40.00, range = 1.00 - 1414.00) during the 3-day prediction window. 11.92% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant’s data missingness is 12.28% (sd = 19.42%, median = 1.14%, range = 0.00% - 77.27%).</p>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-3day">
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-fig-3day" class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1_3day, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2_3day, plt3_3day, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),  </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  nrow <span class="op">=</span> <span class="dv">2</span>, ncol <span class="op">=</span> <span class="dv">1</span>, heights <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>) </span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1_3day, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2_3day, plt3_3day, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),  </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  nrow <span class="op">=</span> <span class="dv">2</span>, ncol <span class="op">=</span> <span class="dv">1</span>, heights <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>) </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
@@ -982,11 +1004,11 @@ Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window
 <p>On average, each lapse label has 180.42 messages (sd = 241.30, median = 96.00, range = 1.00 - 2866.00) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant’s data missingness is 8.14% (sd = 16.23%, median = 0.00%, range = 0.00% - 72.73%).</p>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-1week">
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-fig-1week" class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1_1week, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), </span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2_1week, plt3_1week, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),  </span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  nrow <span class="op">=</span> <span class="dv">2</span>, ncol <span class="op">=</span> <span class="dv">1</span>, heights <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>) </span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1_1week, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2_1week, plt3_1week, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),  </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  nrow <span class="op">=</span> <span class="dv">2</span>, ncol <span class="op">=</span> <span class="dv">1</span>, heights <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>) </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
@@ -1009,28 +1031,418 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 </section>
 <section id="liwc-features" class="level2">
 <h2 class="anchored" data-anchor-id="liwc-features">LIWC Features</h2>
-<p>We obtained LIWC scores from XXX linguistic categories.</p>
+<p>We obtained LIWC scores from 117 linguistic categories.</p>
+<div id="tbl-ind_3day" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ind_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Sample Characteristics of Median and 95% Quantile Scores of All Raw Scores from Individual Messages Within Each 3-Day Prediction Window
+</figcaption>
+<div aria-describedby="tbl-ind_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>SD</th>
+<th>Median</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wc_median</td>
+<td>5.43</td>
+<td>7.00</td>
+<td>1.00</td>
+<td>142.00</td>
+</tr>
+<tr class="even">
+<td>wc_q_95</td>
+<td>20.31</td>
+<td>26.40</td>
+<td>1.00</td>
+<td>369.05</td>
+</tr>
+<tr class="odd">
+<td>wps_median</td>
+<td>2.45</td>
+<td>5.00</td>
+<td>0.00</td>
+<td>78.00</td>
+</tr>
+<tr class="even">
+<td>wps_q_95</td>
+<td>5.96</td>
+<td>14.75</td>
+<td>0.00</td>
+<td>78.00</td>
+</tr>
+<tr class="odd">
+<td>analytic_median</td>
+<td>17.11</td>
+<td>10.19</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>analytic_q_95</td>
+<td>19.24</td>
+<td>97.20</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>clout_median</td>
+<td>32.72</td>
+<td>40.06</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>clout_q_95</td>
+<td>12.98</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>authentic_median</td>
+<td>19.60</td>
+<td>89.39</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>authentic_q_95</td>
+<td>10.77</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>tone_median</td>
+<td>17.84</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>tone_q_95</td>
+<td>9.85</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-ind_1week" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ind_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Sample Characteristics of Median and 95% Quantile Scores of All Raw Scores from Individual Messages Within Each 1-Week Prediction Window
+</figcaption>
+<div aria-describedby="tbl-ind_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>SD</th>
+<th>Median</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wc_median</td>
+<td>4.00</td>
+<td>7.00</td>
+<td>1.00</td>
+<td>81.00</td>
+</tr>
+<tr class="even">
+<td>wc_q_95</td>
+<td>17.84</td>
+<td>28.00</td>
+<td>1.00</td>
+<td>404.00</td>
+</tr>
+<tr class="odd">
+<td>wps_median</td>
+<td>2.20</td>
+<td>5.00</td>
+<td>1.00</td>
+<td>78.00</td>
+</tr>
+<tr class="even">
+<td>wps_q_95</td>
+<td>5.53</td>
+<td>15.10</td>
+<td>1.00</td>
+<td>78.00</td>
+</tr>
+<tr class="odd">
+<td>analytic_median</td>
+<td>14.02</td>
+<td>10.19</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>analytic_q_95</td>
+<td>14.85</td>
+<td>98.59</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>clout_median</td>
+<td>30.57</td>
+<td>40.06</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>clout_q_95</td>
+<td>9.94</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>authentic_median</td>
+<td>15.87</td>
+<td>89.39</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>authentic_q_95</td>
+<td>7.36</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>tone_median</td>
+<td>13.85</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>tone_q_95</td>
+<td>7.27</td>
+<td>99.00</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_liwc.qmd" data-notebook-title="EDA on LIWC Features" data-notebook-cellid="cell-fig-liwc_ind">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-liwc_ind" class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>plot_grid(plt1_ind <span class="op">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(a) liwc score distribution in 3-day prediction window"</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                       size <span class="op">=</span> <span class="dv">10</span>, x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>          plt2_ind <span class="op">+</span> </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(b) liwc score distribution in 1-week prediction window"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                       x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>, size <span class="op">=</span> <span class="dv">10</span>) <span class="op">+</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>          ncol <span class="op">=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-liwc_ind" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;7: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+</div>
+<div id="tbl-cat_3day" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cat_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 3-Day Prediction Window
+</figcaption>
+<div aria-describedby="tbl-cat_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>SD</th>
+<th>Median</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wc</td>
+<td>1175.22</td>
+<td>512.00</td>
+<td>1.00</td>
+<td>13211.00</td>
+</tr>
+<tr class="even">
+<td>wps</td>
+<td>9.75</td>
+<td>10.76</td>
+<td>0.00</td>
+<td>295.00</td>
+</tr>
+<tr class="odd">
+<td>analytic</td>
+<td>16.96</td>
+<td>19.05</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>clout</td>
+<td>25.37</td>
+<td>50.20</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>authentic</td>
+<td>22.34</td>
+<td>77.13</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>tone</td>
+<td>23.28</td>
+<td>82.19</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-cat_1week" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cat_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 1-Week Prediction Window
+</figcaption>
+<div aria-describedby="tbl-cat_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>SD</th>
+<th>Median</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>wc</td>
+<td>2484.84</td>
+<td>1124.00</td>
+<td>1.00</td>
+<td>23702.00</td>
+</tr>
+<tr class="even">
+<td>wps</td>
+<td>8.73</td>
+<td>10.91</td>
+<td>1.00</td>
+<td>241.00</td>
+</tr>
+<tr class="odd">
+<td>analytic</td>
+<td>14.30</td>
+<td>19.17</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>clout</td>
+<td>22.54</td>
+<td>50.15</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="odd">
+<td>authentic</td>
+<td>19.04</td>
+<td>77.10</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+<tr class="even">
+<td>tone</td>
+<td>20.76</td>
+<td>82.04</td>
+<td>1.00</td>
+<td>99.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_liwc.qmd" data-notebook-title="EDA on LIWC Features" data-notebook-cellid="cell-fig-liwc_cat">
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-fig-liwc_cat" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>plot_grid(plt1_cat <span class="op">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(a) liwc score distribution in 3-day prediction window"</span>,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                       size <span class="op">=</span> <span class="dv">10</span>, x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>          plt2_cat <span class="op">+</span> </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(b) liwc score distribution in 1-week prediction window"</span>,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>                       x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>, size <span class="op">=</span> <span class="dv">10</span>) <span class="op">+</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>          ncol <span class="op">=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-liwc_cat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-liwc_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+</div>
 </section>
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc">
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-auroc" class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">&lt;-</span> probs <span class="op">|&gt;</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  roc_curve(prob_raw, truth <span class="op">=</span> label)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">|&gt;</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  mutate(tp <span class="op">=</span> <span class="bu">round</span>(sensitivity, <span class="dv">4</span>),</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>         fp <span class="op">=</span> <span class="bu">round</span>(<span class="dv">1</span> <span class="op">-</span> specificity, <span class="dv">4</span>)) <span class="op">|&gt;</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  group_by(tp, fp) <span class="op">|&gt;</span> </span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  summarise(.threshold <span class="op">=</span> mean(.threshold)) <span class="op">|&gt;</span> </span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> fp, y <span class="op">=</span> tp, color <span class="op">=</span> .threshold)) <span class="op">+</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  geom_path(linewidth <span class="op">=</span> <span class="dv">1</span>) <span class="op">+</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  geom_abline(lty <span class="op">=</span> <span class="dv">3</span>) <span class="op">+</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  coord_fixed(xlim <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">1</span>), ylim <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  labs(x <span class="op">=</span> <span class="st">"False Positive Rate"</span>,</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>       y <span class="op">=</span> <span class="st">"True Positive Rate"</span>) <span class="op">+</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  scale_x_continuous(breaks <span class="op">=</span> seq(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">.25</span>)) <span class="op">+</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  scale_color_gradient(low<span class="op">=</span><span class="st">"blue"</span>, high <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-fig-auroc" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">&lt;-</span> probs <span class="op">|&gt;</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  roc_curve(prob_raw, truth <span class="op">=</span> label)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">|&gt;</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  mutate(tp <span class="op">=</span> <span class="bu">round</span>(sensitivity, <span class="dv">4</span>),</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>         fp <span class="op">=</span> <span class="bu">round</span>(<span class="dv">1</span> <span class="op">-</span> specificity, <span class="dv">4</span>)) <span class="op">|&gt;</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  group_by(tp, fp) <span class="op">|&gt;</span> </span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  summarise(.threshold <span class="op">=</span> mean(.threshold)) <span class="op">|&gt;</span> </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> fp, y <span class="op">=</span> tp, color <span class="op">=</span> .threshold)) <span class="op">+</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  geom_path(linewidth <span class="op">=</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  geom_abline(lty <span class="op">=</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  coord_fixed(xlim <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">1</span>), ylim <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>  labs(x <span class="op">=</span> <span class="st">"False Positive Rate"</span>,</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>       y <span class="op">=</span> <span class="st">"True Positive Rate"</span>) <span class="op">+</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>  scale_x_continuous(breaks <span class="op">=</span> seq(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  scale_color_gradient(low<span class="op">=</span><span class="st">"blue"</span>, high <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'tp'. You can override using the `.groups`
 argument.</code></pre>
@@ -1039,67 +1451,10 @@ argument.</code></pre>
 <div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;7: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;9: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: ROC Curve for the Best Model Configuration
-</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-</div>
-<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc_hist">
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-fig-auroc_hist" class="cell" data-fig-width="5" data-fig-height="3">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>aurocs <span class="op">|&gt;</span> </span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> auroc)) <span class="op">+</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>) <span class="op">+</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  geom_vline(xintercept <span class="op">=</span> median(aurocs$auroc), linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-auroc_hist" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc_hist-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Distribution of auROCs Across 300 Inner Folds"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc_hist-output-2.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Distribution of auROCs Across 300 Inner Folds
-</figcaption>
-</figure>
-</div>
-</div>
-</div></div>
-</div>
-<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc_posterior">
-<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-fig-auroc_posterior" class="cell" data-fig-width="5" data-fig-height="3">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="op">&lt;-</span> pp <span class="op">|&gt;</span> </span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  tidy(seed <span class="op">=</span> <span class="dv">123</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>ci <span class="op">&lt;-</span> pp_tidy <span class="op">|&gt;</span> </span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  summary() <span class="op">|&gt;</span> </span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  mutate(y <span class="op">=</span> <span class="dv">30</span>)</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co"># vertical line for the median</span></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="op">|&gt;</span> </span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span> </span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  geom_density(aes(x <span class="op">=</span> posterior), color <span class="op">=</span> c(<span class="st">"#80B1D3"</span>), </span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>               fill <span class="op">=</span> c(<span class="st">"#B3CFE8"</span>), linewidth <span class="op">=</span> <span class="fl">.8</span>, alpha <span class="op">=</span> <span class="fl">.6</span>) <span class="op">+</span></span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  geom_errorbar(data <span class="op">=</span> ci, aes(y <span class="op">=</span> y, xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), </span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>                linewidth <span class="op">=</span> <span class="fl">.6</span>, width <span class="op">=</span> <span class="dv">2</span>, color <span class="op">=</span> c(<span class="st">"#4292C6"</span>)) <span class="op">+</span></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  geom_vline(xintercept <span class="op">=</span> median(pp_tidy$posterior), </span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>             linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"red"</span>) <span class="op">+</span></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>  ylab(<span class="st">"Posterior Probability Density"</span>) <span class="op">+</span></span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">"Area Under ROC Curve"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div id="fig-auroc_posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc_posterior-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;9: Posterior Distribution of auROC Scores"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc_posterior-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Posterior Distribution of auROC Scores
+Figure&nbsp;9: ROC Curve for the Best Model Configuration
 </figcaption>
 </figure>
 </div>
@@ -1111,48 +1466,48 @@ Figure&nbsp;9: Posterior Distribution of auROC Scores
 <h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fairness.qmd" data-notebook-title="Subgroup Analysis" data-notebook-cellid="cell-fig-fairness">
 <div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-fig-fairness" class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_race) <span class="op">|&gt;</span> </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"non_white"</span>, <span class="st">"white"</span>)), </span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Race"</span>) <span class="op">+</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_sex) <span class="op">|&gt;</span> </span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"female"</span>, <span class="st">"male"</span>)), </span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Sex"</span>) <span class="op">+</span></span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_age) <span class="op">|&gt;</span> </span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"older"</span>, <span class="st">"younger"</span>)), </span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Age"</span>) <span class="op">+</span></span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_income) <span class="op">|&gt;</span> </span>
-<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"below_poverty"</span>, <span class="st">"above_poverty"</span>)), </span>
-<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
-<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
-<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
-<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#B5D66E"</span>, <span class="st">"#F28072"</span>)) <span class="op">+</span></span>
-<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Income"</span>) <span class="op">+</span></span>
-<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
-<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
-<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>)</span>
-<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_race) <span class="op">|&gt;</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"non_white"</span>, <span class="st">"white"</span>)), </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Race"</span>) <span class="op">+</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_sex) <span class="op">|&gt;</span> </span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"female"</span>, <span class="st">"male"</span>)), </span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Sex"</span>) <span class="op">+</span></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_age) <span class="op">|&gt;</span> </span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"older"</span>, <span class="st">"younger"</span>)), </span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Age"</span>) <span class="op">+</span></span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_income) <span class="op">|&gt;</span> </span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"below_poverty"</span>, <span class="st">"above_poverty"</span>)), </span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#B5D66E"</span>, <span class="st">"#F28072"</span>)) <span class="op">+</span></span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Income"</span>) <span class="op">+</span></span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>)</span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1167,21 +1522,14 @@ Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbs
 </div>
 </div></div>
 </div>
-<p>See <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;2</a>.</p>
+<p>See <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;6</a>.</p>
 <div id="tbl-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Model Performance Difference across different demographic subgroups
+Table&nbsp;6: Model Performance Difference across different demographic subgroups
 </figcaption>
 <div aria-describedby="tbl-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -1230,17 +1578,17 @@ Table&nbsp;2: Model Performance Difference across different demographic subgroup
 <h2 class="anchored" data-anchor-id="model-interpretation">Model Interpretation</h2>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/shaps.qmd" data-notebook-title="shaps" data-notebook-cellid="cell-fig-shaps">
 <div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-fig-shaps" class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>shaps_grp <span class="op">|&gt;</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  group_by(variable_grp) <span class="op">|&gt;</span> </span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  summarize(mean_value <span class="op">=</span> (mean(<span class="bu">abs</span>(value)))) <span class="op">|&gt;</span> </span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  mutate(group <span class="op">=</span> reorder(variable_grp, mean_value)) <span class="op">|&gt;</span> </span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  arrange(desc(mean_value)) <span class="op">|&gt;</span> </span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  head(<span class="dv">30</span>) <span class="op">|&gt;</span> </span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  geom_bar(aes(x <span class="op">=</span> group, y <span class="op">=</span> mean_value), stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#af1f21"</span>) <span class="op">+</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  ylab(<span class="st">"Mean |SHAP| value (in Log-Odds)"</span>) <span class="op">+</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">""</span>) <span class="op">+</span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  coord_flip()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>shaps_grp <span class="op">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  group_by(variable_grp) <span class="op">|&gt;</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  summarize(mean_value <span class="op">=</span> (mean(<span class="bu">abs</span>(value)))) <span class="op">|&gt;</span> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  mutate(group <span class="op">=</span> reorder(variable_grp, mean_value)) <span class="op">|&gt;</span> </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  arrange(desc(mean_value)) <span class="op">|&gt;</span> </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  head(<span class="dv">30</span>) <span class="op">|&gt;</span> </span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  geom_bar(aes(x <span class="op">=</span> group, y <span class="op">=</span> mean_value), stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#af1f21"</span>) <span class="op">+</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  ylab(<span class="st">"Mean |SHAP| value (in Log-Odds)"</span>) <span class="op">+</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">""</span>) <span class="op">+</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  coord_flip()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-shaps" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1873,7 +2221,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
