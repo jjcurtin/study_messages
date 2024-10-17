@@ -377,26 +377,26 @@ We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic cat
 
 {{< embed notebooks/eda_liwc.qmd#fig-liwc_ind >}}
 
-::: {#tbl-panel layout-ncol=2}
+::: {#tbl-panel layout-ncol="2"}
 |   | SD | Median | Min | Max |
 |---------------|---------------|---------------|---------------|---------------|
-| wc | `r sprintf("%.2f", stats_cat$numeric.sd[1])` | `r sprintf("%.2f", stats_cat$numeric.p50[1])` | `r sprintf("%.2f", stats_cat$numeric.p0[1])` | `r sprintf("%.2f", stats_cat$numeric.p100[1])` |
-| wps | `r sprintf("%.2f", stats_cat$numeric.sd[6])` | `r sprintf("%.2f", stats_cat$numeric.p50[6])` | `r sprintf("%.2f", stats_cat$numeric.p0[6])` | `r sprintf("%.2f", stats_cat$numeric.p100[6])` |
-| analytic | `r sprintf("%.2f", stats_cat$numeric.sd[2])` | `r sprintf("%.2f", stats_cat$numeric.p50[2])` | `r sprintf("%.2f", stats_cat$numeric.p0[2])` | `r sprintf("%.2f", stats_cat$numeric.p100[2])` |
-| clout | `r sprintf("%.2f", stats_cat$numeric.sd[3])` | `r sprintf("%.2f", stats_cat$numeric.p50[3])` | `r sprintf("%.2f", stats_cat$numeric.p0[3])` | `r sprintf("%.2f", stats_cat$numeric.p100[3])` |
-| authentic | `r sprintf("%.2f", stats_cat$numeric.sd[4])` | `r sprintf("%.2f", stats_cat$numeric.p50[4])` | `r sprintf("%.2f", stats_cat$numeric.p0[4])` | `r sprintf("%.2f", stats_cat$numeric.p100[4])` |
-| tone | `r sprintf("%.2f", stats_cat$numeric.sd[5])` | `r sprintf("%.2f", stats_cat$numeric.p50[5])` | `r sprintf("%.2f", stats_cat$numeric.p0[5])` | `r sprintf("%.2f", stats_cat$numeric.p100[5])` |
+| wc | `r sprintf("%.2f", stats_cat$numeric.sd[1])` | `r sprintf("%.2f", stats_cat$numeric.p50[1])` | `r sprintf("%d", stats_cat$numeric.p0[1])` | `r sprintf("%d", stats_cat$numeric.p100[1])` |
+| wps | `r sprintf("%.2f", stats_cat$numeric.sd[6])` | `r sprintf("%.2f", stats_cat$numeric.p50[6])` | `r sprintf("%d", stats_cat$numeric.p0[6])` | `r sprintf("%d", stats_cat$numeric.p100[6])` |
+| analytic | `r sprintf("%.2f", stats_cat$numeric.sd[2])` | `r sprintf("%.2f", stats_cat$numeric.p50[2])` | `r sprintf("%d", stats_cat$numeric.p0[2])` | `r sprintf("%d", stats_cat$numeric.p100[2])` |
+| clout | `r sprintf("%.2f", stats_cat$numeric.sd[3])` | `r sprintf("%.2f", stats_cat$numeric.p50[3])` | `r sprintf("%d", stats_cat$numeric.p0[3])` | `r sprintf("%d", stats_cat$numeric.p100[3])` |
+| authentic | `r sprintf("%.2f", stats_cat$numeric.sd[4])` | `r sprintf("%.2f", stats_cat$numeric.p50[4])` | `r sprintf("%d", stats_cat$numeric.p0[4])` | `r sprintf("%d", stats_cat$numeric.p100[4])` |
+| tone | `r sprintf("%.2f", stats_cat$numeric.sd[5])` | `r sprintf("%.2f", stats_cat$numeric.p50[5])` | `r sprintf("%d", stats_cat$numeric.p0[5])` | `r sprintf("%d", stats_cat$numeric.p100[5])` |
 
 : 3-Day Prediction Window {#tbl-cat_3day}
 
 |   | SD | Median | Min | Max |
 |---------------|---------------|---------------|---------------|---------------|
-| wc | `r sprintf("%.2f", stats_cat$numeric.sd[235])` | `r sprintf("%.2f", stats_cat$numeric.p50[235])` | `r sprintf("%.2f", stats_cat$numeric.p0[235])` | `r sprintf("%.2f", stats_cat$numeric.p100[235])` |
-| wps | `r sprintf("%.2f", stats_cat$numeric.sd[240])` | `r sprintf("%.2f", stats_cat$numeric.p50[240])` | `r sprintf("%.2f", stats_cat$numeric.p0[240])` | `r sprintf("%.2f", stats_cat$numeric.p100[240])` |
-| analytic | `r sprintf("%.2f", stats_cat$numeric.sd[236])` | `r sprintf("%.2f", stats_cat$numeric.p50[236])` | `r sprintf("%.2f", stats_cat$numeric.p0[236])` | `r sprintf("%.2f", stats_cat$numeric.p100[236])` |
-| clout | `r sprintf("%.2f", stats_cat$numeric.sd[237])` | `r sprintf("%.2f", stats_cat$numeric.p50[237])` | `r sprintf("%.2f", stats_cat$numeric.p0[237])` | `r sprintf("%.2f", stats_cat$numeric.p100[237])` |
-| authentic | `r sprintf("%.2f", stats_cat$numeric.sd[238])` | `r sprintf("%.2f", stats_cat$numeric.p50[238])` | `r sprintf("%.2f", stats_cat$numeric.p0[238])` | `r sprintf("%.2f", stats_cat$numeric.p100[238])` |
-| tone | `r sprintf("%.2f", stats_cat$numeric.sd[239])` | `r sprintf("%.2f", stats_cat$numeric.p50[239])` | `r sprintf("%.2f", stats_cat$numeric.p0[239])` | `r sprintf("%.2f", stats_cat$numeric.p100[239])` |
+| wc | `r sprintf("%.2f", stats_cat$numeric.sd[235])` | `r sprintf("%.2f", stats_cat$numeric.p50[235])` | `r sprintf("%d", stats_cat$numeric.p0[235])` | `r sprintf("%d", stats_cat$numeric.p100[235])` |
+| wps | `r sprintf("%.2f", stats_cat$numeric.sd[240])` | `r sprintf("%.2f", stats_cat$numeric.p50[240])` | `r sprintf("%d", stats_cat$numeric.p0[240])` | `r sprintf("%d", stats_cat$numeric.p100[240])` |
+| analytic | `r sprintf("%.2f", stats_cat$numeric.sd[236])` | `r sprintf("%.2f", stats_cat$numeric.p50[236])` | `r sprintf("%d", stats_cat$numeric.p0[236])` | `r sprintf("%d", stats_cat$numeric.p100[236])` |
+| clout | `r sprintf("%.2f", stats_cat$numeric.sd[237])` | `r sprintf("%.2f", stats_cat$numeric.p50[237])` | `r sprintf("%d", stats_cat$numeric.p0[237])` | `r sprintf("%d", stats_cat$numeric.p100[237])` |
+| authentic | `r sprintf("%.2f", stats_cat$numeric.sd[238])` | `r sprintf("%.2f", stats_cat$numeric.p50[238])` | `r sprintf("%d", stats_cat$numeric.p0[238])` | `r sprintf("%d", stats_cat$numeric.p100[238])` |
+| tone | `r sprintf("%.2f", stats_cat$numeric.sd[239])` | `r sprintf("%.2f", stats_cat$numeric.p50[239])` | `r sprintf("%d", stats_cat$numeric.p0[239])` | `r sprintf("%d", stats_cat$numeric.p100[239])` |
 
 : 1-Week Prediction Window {#tbl-cat_1week}
 
