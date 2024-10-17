@@ -171,7 +171,7 @@ Throughout the course of the study, participants were expected to complete four 
 
 ::: {#fig-simp}
 ```{dot}
-#| fig-width: 8
+#| fig-width: 5
 #| fig-height: 2
 
 
