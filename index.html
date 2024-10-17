@@ -703,7 +703,7 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
 <div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc" class="cell">
+<div id="cell-fig-auroc" class="cell" data-fig-width="5" data-fig-height="3">
 <div class="cell-output cell-output-display">
 <div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -753,6 +753,22 @@ Figure&nbsp;9: Posterior Distribution of auROC Scores
 </section>
 <section id="model-fairness" class="level2">
 <h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-fairness" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups"><img src="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
 <p>See <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;2</a>.</p>
 <div id="tbl-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1433,7 +1449,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","descPosition":"bottom","loop":false});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

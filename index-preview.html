@@ -1013,7 +1013,7 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc">
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-auroc" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-auroc" class="cell" data-fig-width="5" data-fig-height="3">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">&lt;-</span> probs <span class="op">|&gt;</span> </span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  roc_curve(prob_raw, truth <span class="op">=</span> label)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -1108,6 +1108,64 @@ Figure&nbsp;9: Posterior Distribution of auROC Scores
 </section>
 <section id="model-fairness" class="level2">
 <h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fairness.qmd" data-notebook-title="Subgroup Analysis" data-notebook-cellid="cell-fig-fairness">
+<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-fig-fairness" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_race) <span class="op">|&gt;</span> </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"non_white"</span>, <span class="st">"white"</span>)), </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Race"</span>) <span class="op">+</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_sex) <span class="op">|&gt;</span> </span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"female"</span>, <span class="st">"male"</span>)), </span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Sex"</span>) <span class="op">+</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_age) <span class="op">|&gt;</span> </span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"older"</span>, <span class="st">"younger"</span>)), </span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Age"</span>) <span class="op">+</span></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_income) <span class="op">|&gt;</span> </span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"below_poverty"</span>, <span class="st">"above_poverty"</span>)), </span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#B5D66E"</span>, <span class="st">"#F28072"</span>)) <span class="op">+</span></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Income"</span>) <span class="op">+</span></span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>)</span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups"><img src="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+</div>
 <p>See <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;2</a>.</p>
 <div id="tbl-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1784,7 +1842,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","loop":false});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

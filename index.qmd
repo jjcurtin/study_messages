@@ -345,6 +345,8 @@ We obtained LIWC scores from XXX linguistic categories.
 
 ## Model Fairness
 
+{{< embed notebooks/fairness.qmd#fig-fairness >}}
+
 See @tbl-fairness.
 
 |   | median | lower | upper | probability |
