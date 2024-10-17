@@ -60,6 +60,7 @@ path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
 
 ## Background
 
+
 According to National Survey on Drug Use and Health (NSDUH), 29.5 million people age 12 and older had alcohol use disorder (AUD) in the past year. However, only 2.2 million (less than 10%) in this age group received alcohol treatment [@nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023; @nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023]. Provider availability in rural areas, fear of stigma, and economic hardship all contribute to racial, gender and age disparities in treatment seeking [@abrahamAvailabilityMedicationsTreatment2020; @dibartoloAlcoholUseDisorder2017; @youngDifferencesPerceptionsPractices2018; @kaufmannTreatmentSeekingBarriers2014; @schulerPerceivedBarriersTreatment2015; @verissimoInfluenceGenderRace2017]. The emergence of digital therapeutics (DTx) has provided new opportunities to address such health disparity in underprivileged groups with its higher accessibility, acceptability and at least modest efficacy [@beukenhorstUsingSmartphonesReduce2022a; @jacobsonUsingDigitalTherapeutics2023; @mckayEfficacyComparativeEffectiveness2022a; @perskiAcceptabilityDigitalHealth2021]. The broad goal of this program of research is to improve the effectiveness of DTx, by adding personal sensing capabilities and algorithms that allow DTx to have more refined capacities in anticipating lapses and personalizing interventions and supports to meet individuals' momentary needs [@baeMobilePhoneSensors2018a; @leeDataDrivenDigitalTherapeutics2023; @carreiroMHealthDetectionIntervention2018a]
 
 Machine learning models leveraging ecological momentary assessment (EMA) measures have performed relatively well to predict goal-inconsistent alcohol use (e.g., lapses), yet this methodology is associated with several limitations. As it actively relies on self-reports, it places some measurement burden on users. This is particularly problematic as AUD is a chronic disease that requires constant risk monitoring. Reducing sampling rates and number of survey items might reduce this burden but at the cost of impairing prediction precision and temporal specificity. Further, selection of EMA items is based on a top-down, theory-driven approach that may be limited by historical biases in the research literature (e.g., over-representation of white, males).  Given this,  we might miss important constructs that predict lapses among individuals from groups that have been less well-studied. 
@@ -352,6 +353,3 @@ We obtained LIWC scores from XXX linguistic categories.
 
 # Discussions
 
-\newpage
-
-# References
