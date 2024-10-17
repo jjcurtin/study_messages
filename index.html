@@ -496,10 +496,6 @@ Figure&nbsp;1: Flowchart of in-person visits. We obtained participant demographi
 <p>We collected participants’ individual characteristics including their demographics and their past drinking history during the screening session (see <em>Table 1</em>).</p>
 <table class="caption-top table">
 <caption>Participant self-reported measures</caption>
-<colgroup>
-<col style="width: 30%">
-<col style="width: 69%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Log Type</th>
@@ -701,15 +697,64 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 </section>
 <section id="model-fairness" class="level2">
 <h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>median</th>
+<th>lower</th>
+<th>upper</th>
+<th>probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>white vs.&nbsp;non_white</td>
+<td>0.0316735</td>
+<td>0.007314</td>
+<td>0.0562629</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>male vs.&nbsp;female</td>
+<td>0.0244796</td>
+<td>0.0055156</td>
+<td>0.0430544</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>younger vs.&nbsp;older</td>
+<td>0.0408296</td>
+<td>0.01397</td>
+<td>0.0676038</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>above_poverty vs.&nbsp;below_poverty</td>
+<td>0.0243536</td>
+<td>0.0047602</td>
+<td>0.0436645</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
-<section id="discussions" class="level1 unnumbered">
-
+<section id="discussions" class="level1">
+<h1>Discussions</h1>
+<div style="page-break-after: always;"></div>
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Discussions</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-abrahamAvailabilityMedicationsTreatment2020" class="csl-entry" role="listitem">
 Abraham, Amanda J., Christina M. Andrews, Samantha J. Harris, and Peter D. Friedmann. 2020. <span>“Availability of <span>Medications</span> for the <span>Treatment</span> of <span>Alcohol</span> and <span>Opioid Use Disorder</span> in the <span>USA</span>.”</span> <em>Neurotherapeutics</em> 17 (1): 55–69. <a href="https://doi.org/10.1007/s13311-019-00814-4">https://doi.org/10.1007/s13311-019-00814-4</a>.
 </div>
@@ -1322,7 +1367,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom","loop":false,"selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

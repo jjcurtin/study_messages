@@ -3320,7 +3320,7 @@ font-family: inherit;
 </div></div>
 <p>Read in Data</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;objects/eda_raw.csv&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">&quot;eda&quot;</span>, <span class="st">&quot;eda_raw.csv&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 313492 Columns: 3
 ── Column specification ────────────────────────────────────────────────────────
@@ -3337,7 +3337,7 @@ $ id_obs      &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
 $ subid       &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2…
 $ text_length &lt;dbl&gt; 1, 2, 8, 18, 11, 5, 10, 4, 21, 2, 3, 14, 7, 17, 1, 15, 5, …</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pred_3day <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;objects/eda_3day.csv&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>pred_3day <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">&quot;eda&quot;</span>, <span class="st">&quot;eda_3day.csv&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 915833 Columns: 5
 ── Column specification ────────────────────────────────────────────────────────
@@ -3359,7 +3359,7 @@ $ day_start &lt;dttm&gt; 2017-03-25 09:00:00, 2017-03-25 09:00:00, 2017-03-25 09
 $ lapse     &lt;chr&gt; &quot;no lapse&quot;, &quot;no lapse&quot;, &quot;no lapse&quot;, &quot;no lapse&quot;, &quot;no lapse&quot;, …
 $ na        &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALS…</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pred_1week <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;objects/eda_1week.csv&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pred_1week <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">&quot;eda&quot;</span>, <span class="st">&quot;eda_1week.csv&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 2086041 Columns: 5
 ── Column specification ────────────────────────────────────────────────────────
@@ -4066,7 +4066,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
