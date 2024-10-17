@@ -1012,6 +1012,99 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 </section>
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-auroc" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">&lt;-</span> probs <span class="op">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  roc_curve(prob_raw, truth <span class="op">=</span> label)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">|&gt;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  mutate(tp <span class="op">=</span> <span class="bu">round</span>(sensitivity, <span class="dv">4</span>),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>         fp <span class="op">=</span> <span class="bu">round</span>(<span class="dv">1</span> <span class="op">-</span> specificity, <span class="dv">4</span>)) <span class="op">|&gt;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  group_by(tp, fp) <span class="op">|&gt;</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  summarise(.threshold <span class="op">=</span> mean(.threshold)) <span class="op">|&gt;</span> </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> fp, y <span class="op">=</span> tp, color <span class="op">=</span> .threshold)) <span class="op">+</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  geom_path(linewidth <span class="op">=</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  geom_abline(lty <span class="op">=</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  coord_fixed(xlim <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">1</span>), ylim <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  labs(x <span class="op">=</span> <span class="st">"False Positive Rate"</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>       y <span class="op">=</span> <span class="st">"True Positive Rate"</span>) <span class="op">+</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  scale_x_continuous(breaks <span class="op">=</span> seq(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  scale_color_gradient(low<span class="op">=</span><span class="st">"blue"</span>, high <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'tp'. You can override using the `.groups`
+argument.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;7: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: ROC Curve for the Best Model Configuration
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+</div>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc_hist">
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-fig-auroc_hist" class="cell" data-fig-width="5" data-fig-height="3">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>aurocs <span class="op">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> auroc)) <span class="op">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>) <span class="op">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  geom_vline(xintercept <span class="op">=</span> median(aurocs$auroc), linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-auroc_hist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc_hist-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Distribution of auROCs Across 300 Inner Folds"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc_hist-output-2.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Distribution of auROCs Across 300 Inner Folds
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+</div>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc_posterior">
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-fig-auroc_posterior" class="cell" data-fig-width="5" data-fig-height="3">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="op">&lt;-</span> pp <span class="op">|&gt;</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  tidy(seed <span class="op">=</span> <span class="dv">123</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>ci <span class="op">&lt;-</span> pp_tidy <span class="op">|&gt;</span> </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  summary() <span class="op">|&gt;</span> </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  mutate(y <span class="op">=</span> <span class="dv">30</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co"># vertical line for the median</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="op">|&gt;</span> </span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span> </span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  geom_density(aes(x <span class="op">=</span> posterior), color <span class="op">=</span> c(<span class="st">"#80B1D3"</span>), </span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>               fill <span class="op">=</span> c(<span class="st">"#B3CFE8"</span>), linewidth <span class="op">=</span> <span class="fl">.8</span>, alpha <span class="op">=</span> <span class="fl">.6</span>) <span class="op">+</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  geom_errorbar(data <span class="op">=</span> ci, aes(y <span class="op">=</span> y, xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), </span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>                linewidth <span class="op">=</span> <span class="fl">.6</span>, width <span class="op">=</span> <span class="dv">2</span>, color <span class="op">=</span> c(<span class="st">"#4292C6"</span>)) <span class="op">+</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  geom_vline(xintercept <span class="op">=</span> median(pp_tidy$posterior), </span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>             linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"red"</span>) <span class="op">+</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>  ylab(<span class="st">"Posterior Probability Density"</span>) <span class="op">+</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">"Area Under ROC Curve"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-auroc_posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc_posterior-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;9: Posterior Distribution of auROC Scores"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc_posterior-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Posterior Distribution of auROC Scores
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
+</div>
 </section>
 <section id="model-fairness" class="level2">
 <h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
@@ -1691,7 +1784,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","selector":".lightbox","descPosition":"bottom","openEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

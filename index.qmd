@@ -339,6 +339,10 @@ We obtained LIWC scores from XXX linguistic categories.
 
 ## Model Evaluation
 
+{{< embed notebooks/auROC_plot.qmd#fig-auroc >}}
+{{< embed notebooks/auROC_plot.qmd#fig-auroc_hist >}}
+{{< embed notebooks/auROC_plot.qmd#fig-auroc_posterior >}}
+
 ## Model Fairness
 
 See @tbl-fairness.
