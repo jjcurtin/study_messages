@@ -219,7 +219,7 @@ Flowchart of in-person visits. We obtained participant demographics and alcohol 
 
 ### Individual Characteristics
 
-We collected participants' individual characteristics including their demographics and their past drinking history during the screening session (see *Table 1*).
+We collected participants' individual characteristics including their demographics and their past drinking history during the screening session (see @tbl-measures).
 
 | Log Type | Measure |
 |:---|:---|
@@ -237,7 +237,7 @@ We collected participants' individual characteristics including their demographi
 |  | Young Adult Alcohol Problems Test |
 |  | WHO-The Alcohol, Smoking and Substance Involvement Screening Test |
 
-: Participant self-reported measures
+: Participant self-reported measures {#tbl-measures}
 
 ### Alcohol Lapses
 
@@ -341,12 +341,16 @@ We obtained LIWC scores from XXX linguistic categories.
 
 ## Model Fairness
 
+See @tbl-fairness.
+
 |   | median | lower | upper | probability |
 |---------------|---------------|---------------|---------------|---------------|
-| `r fairness$group[1]` | `r fairness$median[1]` | `r fairness$lower[1]` | `r fairness$upper[1]` | `r fairness$probability[1]` |
-| `r fairness$group[2]` | `r fairness$median[2]` | `r fairness$lower[2]` | `r fairness$upper[2]` | `r fairness$probability[2]` |
-| `r fairness$group[3]` | `r fairness$median[3]` | `r fairness$lower[3]` | `r fairness$upper[3]` | `r fairness$probability[3]` |
-| `r fairness$group[4]` | `r fairness$median[4]` | `r fairness$lower[4]` | `r fairness$upper[4]` | `r fairness$probability[4]` |
+| `r fairness$group[1]` | `r sprintf("%.2f", fairness$median[1])` | `r sprintf("%.2f", fairness$lower[1])` | `r sprintf("%.2f", fairness$upper[1])` | `r sprintf("%.2f", fairness$prob[1])` |
+| `r fairness$group[2]` | `r sprintf("%.2f", fairness$median[2])` | `r sprintf("%.2f", fairness$lower[2])` | `r sprintf("%.2f", fairness$upper[2])` | `r sprintf("%.2f", fairness$prob[2])` |
+| `r fairness$group[3]` | `r sprintf("%.2f", fairness$median[3])` | `r sprintf("%.2f", fairness$lower[3])` | `r sprintf("%.2f", fairness$upper[3])` | `r sprintf("%.2f", fairness$prob[3])` |
+| `r fairness$group[4]` | `r sprintf("%.2f", fairness$median[4])` | `r sprintf("%.2f", fairness$lower[4])` | `r sprintf("%.2f", fairness$upper[4])` | `r sprintf("%.2f", fairness$prob[4])` |
+
+: Model Performance Difference across different demographic subgroups {#tbl-fairness}
 
 \newpage
 

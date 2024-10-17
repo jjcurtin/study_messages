@@ -650,9 +650,14 @@ Figure&nbsp;1: Flowchart of in-person visits. We obtained participant demographi
 <h2 class="anchored" data-anchor-id="measures">Measures</h2>
 <section id="individual-characteristics" class="level3">
 <h3 class="anchored" data-anchor-id="individual-characteristics">Individual Characteristics</h3>
-<p>We collected participants’ individual characteristics including their demographics and their past drinking history during the screening session (see <em>Table 1</em>).</p>
+<p>We collected participants’ individual characteristics including their demographics and their past drinking history during the screening session (see <a href="#tbl-measures" class="quarto-xref">Table&nbsp;1</a>).</p>
+<div id="tbl-measures" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-measures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Participant self-reported measures
+</figcaption>
+<div aria-describedby="tbl-measures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
-<caption>Participant self-reported measures</caption>
 <thead>
 <tr class="header">
 <th style="text-align: left;">Log Type</th>
@@ -714,6 +719,9 @@ Figure&nbsp;1: Flowchart of in-person visits. We obtained participant demographi
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 </section>
 <section id="alcohol-lapses" class="level3">
 <h3 class="anchored" data-anchor-id="alcohol-lapses">Alcohol Lapses</h3>
@@ -1007,6 +1015,13 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 </section>
 <section id="model-fairness" class="level2">
 <h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
+<p>See <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;2</a>.</p>
+<div id="tbl-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Model Performance Difference across different demographic subgroups
+</figcaption>
+<div aria-describedby="tbl-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
@@ -1027,34 +1042,37 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 <tbody>
 <tr class="odd">
 <td>white vs.&nbsp;non_white</td>
-<td>0.0316735</td>
-<td>0.007314</td>
-<td>0.0562629</td>
-<td></td>
+<td>0.03</td>
+<td>0.01</td>
+<td>0.06</td>
+<td>0.99</td>
 </tr>
 <tr class="even">
 <td>male vs.&nbsp;female</td>
-<td>0.0244796</td>
-<td>0.0055156</td>
-<td>0.0430544</td>
-<td></td>
+<td>0.02</td>
+<td>0.01</td>
+<td>0.04</td>
+<td>1.00</td>
 </tr>
 <tr class="odd">
 <td>younger vs.&nbsp;older</td>
-<td>0.0408296</td>
-<td>0.01397</td>
-<td>0.0676038</td>
-<td></td>
+<td>0.04</td>
+<td>0.01</td>
+<td>0.07</td>
+<td>1.00</td>
 </tr>
 <tr class="even">
 <td>above_poverty vs.&nbsp;below_poverty</td>
-<td>0.0243536</td>
-<td>0.0047602</td>
-<td>0.0436645</td>
-<td></td>
+<td>0.02</td>
+<td>0.00</td>
+<td>0.04</td>
+<td>0.99</td>
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -1673,7 +1691,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","descPosition":"bottom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","selector":".lightbox","descPosition":"bottom","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
