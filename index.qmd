@@ -387,7 +387,7 @@ We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic cat
 | authentic | `r sprintf("%.2f", stats_cat$numeric.sd[4])` | `r sprintf("%.2f", stats_cat$numeric.p50[4])` | `r sprintf("%.2f", stats_cat$numeric.p0[4])` | `r sprintf("%.2f", stats_cat$numeric.p100[4])` |
 | tone | `r sprintf("%.2f", stats_cat$numeric.sd[5])` | `r sprintf("%.2f", stats_cat$numeric.p50[5])` | `r sprintf("%.2f", stats_cat$numeric.p0[5])` | `r sprintf("%.2f", stats_cat$numeric.p100[5])` |
 
-: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 3-Day Prediction Window {#tbl-cat_3day}
+: 3-Day Prediction Window {#tbl-cat_3day}
 
 |   | SD | Median | Min | Max |
 |---------------|---------------|---------------|---------------|---------------|
@@ -398,9 +398,9 @@ We obtained LIWC scores from `r sprintf("%d", nrow(stats_ind)/4)` linguistic cat
 | authentic | `r sprintf("%.2f", stats_cat$numeric.sd[238])` | `r sprintf("%.2f", stats_cat$numeric.p50[238])` | `r sprintf("%.2f", stats_cat$numeric.p0[238])` | `r sprintf("%.2f", stats_cat$numeric.p100[238])` |
 | tone | `r sprintf("%.2f", stats_cat$numeric.sd[239])` | `r sprintf("%.2f", stats_cat$numeric.p50[239])` | `r sprintf("%.2f", stats_cat$numeric.p0[239])` | `r sprintf("%.2f", stats_cat$numeric.p100[239])` |
 
-: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each 1-Week Prediction Window {#tbl-cat_1week}
+: 1-Week Prediction Window {#tbl-cat_1week}
 
-Main Caption
+Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each Prediction Window
 :::
 
 {{< embed notebooks/eda_liwc.qmd#fig-liwc_cat >}}
