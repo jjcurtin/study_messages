@@ -595,8 +595,13 @@ Table&nbsp;1: Participant self-reported measures
 <section id="sms-messages" class="level3">
 <h3 class="anchored" data-anchor-id="sms-messages">SMS Messages</h3>
 <p>At each of the follow-up visits, a research assistant downloaded the participants’ SMS message logs from their phone. These logs included the message type (incoming vs.&nbsp;outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants’ phones. We included only messages from/to important contacts and in group chats.</p>
-<p>For each individual lapse window, we have predictor sets that differ in prediction window length and their analytic unit. We define text prediction windows to be 3-day and 1-week preceding the lapse window (see <strong>?@fig-window</strong>). We analyzed the two prediction windows both individually and combined (i.e., three configurations in total).</p>
-<p><img src="images/prediction_window.png" class="img-fluid" alt="Prediction Window"> {#fig-window}</p>
+<p>For each individual lapse window, we have predictor sets that differ in prediction window length and their analytic unit. We define text prediction windows to be 3-day and 1-week preceding the lapse window (see ). We analyzed the two prediction windows both individually and combined (i.e., three configurations in total).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/prediction_window.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="window"><img src="images/prediction_window.png" class="img-fluid figure-img" alt="window"></a></p>
+<figcaption>window</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="model-training" class="level2">
@@ -646,7 +651,7 @@ Table&nbsp;1: Participant self-reported measures
 <div id="fig-demographics" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_demographics-fig-demographics-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;2: Demographic Distribution"><img src="index_files/figure-html/notebooks-eda_demographics-fig-demographics-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-eda_demographics-fig-demographics-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Demographic Distribution"><img src="index_files/figure-html/notebooks-eda_demographics-fig-demographics-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: Demographic Distribution
@@ -659,14 +664,14 @@ Figure&nbsp;2: Demographic Distribution
 </section>
 <section id="sample-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="sample-distribution">Sample Distribution</h2>
-<p>The final total number of lapse labels in the dataset is 11562. 7.63% of the labels are associated with a lapse episode. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30.00 - 90.00).</p>
+<p>The final total number of lapse labels in the dataset is 11562. 7.63% of the labels are associated with a lapse episode. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30.00 - 90.00; see <a href="#fig-lapse_count" class="quarto-xref">Figure&nbsp;3</a>).</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-lapse_count" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-lapse_count" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-lapse_count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_messages-fig-lapse_count-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;3: Distribution of Lapse Label Counts"><img src="index_files/figure-html/notebooks-eda_messages-fig-lapse_count-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-eda_messages-fig-lapse_count-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Distribution of Lapse Label Counts"><img src="index_files/figure-html/notebooks-eda_messages-fig-lapse_count-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lapse_count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Distribution of Lapse Label Counts
@@ -683,7 +688,7 @@ Figure&nbsp;3: Distribution of Lapse Label Counts
 <div id="fig-raw" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_messages-fig-raw-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;4: Sample Characteristics of Raw Messages"><img src="index_files/figure-html/notebooks-eda_messages-fig-raw-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-eda_messages-fig-raw-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Sample Characteristics of Raw Messages"><img src="index_files/figure-html/notebooks-eda_messages-fig-raw-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Sample Characteristics of Raw Messages
@@ -700,7 +705,7 @@ Figure&nbsp;4: Sample Characteristics of Raw Messages
 <div id="fig-3day" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_messages-fig-3day-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-eda_messages-fig-3day-output-2.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-eda_messages-fig-3day-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-eda_messages-fig-3day-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window
@@ -717,7 +722,7 @@ Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window
 <div id="fig-1week" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_messages-fig-1week-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_messages-fig-1week-output-2.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-eda_messages-fig-1week-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_messages-fig-1week-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
@@ -980,7 +985,7 @@ Table&nbsp;2: Sample Characteristics of Median and 95% Quantile Scores of All Ra
 <div id="fig-liwc_ind" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;7: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;7: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window
@@ -1153,7 +1158,7 @@ Table&nbsp;3: Sample Characteristics of Raw LIWC Scores on Concatenated Messages
 <div id="fig-liwc_cat" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-liwc_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window
@@ -1172,7 +1177,7 @@ Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction W
 <div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;9: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;9: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9: ROC Curve for the Best Model Configuration
@@ -1191,7 +1196,7 @@ Figure&nbsp;9: ROC Curve for the Best Model Configuration
 <div id="fig-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups"><img src="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups"><img src="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;10: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups
@@ -1268,7 +1273,7 @@ Table&nbsp;4: Model Performance Difference across different demographic subgroup
 <div id="fig-shaps" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;11: Shapley Value"><img src="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Figure&nbsp;11: Shapley Value"><img src="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;11: Shapley Value
@@ -1900,7 +1905,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"loop":false,"openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
