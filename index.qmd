@@ -250,7 +250,7 @@ At each of the follow-up visits, a research assistant downloaded the participant
 
 For each individual lapse window, we have predictor sets that differ in prediction window length and their analytic unit. We define text prediction windows to be 3-day and 1-week preceding the lapse window (see @fig-window). We analyzed the two prediction windows both individually and combined (i.e., three configurations in total).
 
-::: {#fig-window fig-alt="Prediction Window"}
+::: {#fig-window fig-cap="Prediction Window"}
 ![](images/prediction_window.png)
 :::
 
