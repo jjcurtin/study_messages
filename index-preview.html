@@ -7,9 +7,9 @@
 
     <meta name="author" content="Coco Yu">
     <meta name="author" content="John J. Curtin">
-    <meta name="dcterms.date" content="2024-10-17">
+    <meta name="dcterms.date" content="2024-10-19">
 
-    <title>Leveraging Text Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</title>
+    <title>Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</title>
     <style>
       code{white-space: pre-wrap;}
       span.smallcaps{font-variant: small-caps;}
@@ -183,13 +183,13 @@
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
      
-      <meta name="citation_title" content="Leveraging Text Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients">
+      <meta name="citation_title" content="Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients">
 <meta name="citation_author" content="Coco Yu">
 <meta name="citation_author" content="John J. Curtin">
-<meta name="citation_publication_date" content="2024-10-17">
-<meta name="citation_cover_date" content="2024-10-17">
+<meta name="citation_publication_date" content="2024-10-19">
+<meta name="citation_cover_date" content="2024-10-19">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-10-17">
+<meta name="citation_online_date" content="2024-10-19">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Availability of Medications for the Treatment of Alcohol and Opioid Use Disorder in the USA;,citation_abstract=Despite high mortality rates due to opioid overdose and excessive alcohol consumption, medications for the treatment of alcohol and opioid use disorder have not been widely used in the USA. This paper provides an overview of the literature on the availability of alcohol and opioid used disorder medications in the specialty substance use disorder treatment system, other treatment settings and systems, and among providers with a federal waiver to prescribe buprenorphine. We also present the most current data on the availability of alcohol and opioid use disorder medications in the USA. These estimates show steady growth in availability of opioid use disorder medications over the past decade and a decline in availability of alcohol use disorder medications. However, overall use of medications in the USA remains low. In 2017, only 16.3% of specialty treatment programs offered any single medication for alcohol use disorder treatment and 35.5% offered any single medication for opioid use disorder treatment. Availability of buprenorphine-waivered providers has increased significantly since 2002. However, geographic disparities in access to buprenorphine remain. Some of the most promising strategies to increase availability of alcohol and opioid use disorder medications include the following: incorporating substance use disorder training in healthcare education programs, educating the substance use disorder workforce about the benefits of medication treatment, reducing stigma surrounding the use of medications, implementing medications in primary care settings, implementing integrated care models, revising regulations on methadone and buprenorphine, improving health insurance coverage of medications, and developing novel medications for the treatment of substance use disorder.;,citation_author=Amanda J. Abraham;,citation_author=Christina M. Andrews;,citation_author=Samantha J. Harris;,citation_author=Peter D. Friedmann;,citation_publication_date=2020-01;,citation_cover_date=2020-01;,citation_year=2020;,citation_issue=1;,citation_doi=10.1007/s13311-019-00814-4;,citation_issn=1878-7479;,citation_volume=17;,citation_language=en-US;,citation_journal_title=Neurotherapeutics;">
 <meta name="citation_reference" content="citation_title=AFINN;,citation_publication_date=2011-03;,citation_cover_date=2011-03;,citation_year=2011;">
@@ -310,27 +310,41 @@
      <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Leveraging Text Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</h1>
+      <h1 class="title">Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</h1>
           </div>
 
     
     <div class="quarto-title-meta-container">
       <div class="quarto-title-meta-column-start">
+            <div class="quarto-title-meta-author">
+          <div class="quarto-title-meta-heading">Authors</div>
+          <div class="quarto-title-meta-heading">Affiliation</div>
+          
+                <div class="quarto-title-meta-contents">
+            <p class="author">Coco Yu <a href="mailto:jyu274@wisc.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-7731-0563" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        Department of Psychology, University of Wisconsin-Madison
+                      </p>
+                  </div>
+                      <div class="quarto-title-meta-contents">
+            <p class="author">John J. Curtin <a href="mailto:jjcurtin@wisc.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-3286-938X" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        Department of Psychology, University of Wisconsin-Madison
+                      </p>
+                  </div>
+                    </div>
         
         <div class="quarto-title-meta">
 
-                <div>
-            <div class="quarto-title-meta-heading">Authors</div>
-            <div class="quarto-title-meta-contents">
-                        <p>Coco Yu <a href="mailto:jyu274@wisc.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
-                        <p>John J. Curtin <a href="mailto:jjcurtin@wisc.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
-                      </div>
-          </div>
-                
+                      
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">October 17, 2024</p>
+              <p class="date">October 19, 2024</p>
             </div>
           </div>
           
@@ -374,18 +388,25 @@
   <li><a href="#alcohol-lapses" id="toc-alcohol-lapses" class="nav-link" data-scroll-target="#alcohol-lapses">Alcohol Lapses</a></li>
   <li><a href="#sms-messages" id="toc-sms-messages" class="nav-link" data-scroll-target="#sms-messages">SMS Messages</a></li>
   </ul></li>
-  <li><a href="#feature-engineering" id="toc-feature-engineering" class="nav-link" data-scroll-target="#feature-engineering">Feature Engineering</a></li>
-  <li><a href="#candidate-machine-learning-algorithms" id="toc-candidate-machine-learning-algorithms" class="nav-link" data-scroll-target="#candidate-machine-learning-algorithms">Candidate Machine Learning Algorithms</a></li>
-  <li><a href="#model-training-and-performance-evaluation" id="toc-model-training-and-performance-evaluation" class="nav-link" data-scroll-target="#model-training-and-performance-evaluation">Model Training and Performance Evaluation</a></li>
+  <li><a href="#model-training" id="toc-model-training" class="nav-link" data-scroll-target="#model-training">Model Training</a>
+  <ul class="collapse">
+  <li><a href="#feature-engineering-technique" id="toc-feature-engineering-technique" class="nav-link" data-scroll-target="#feature-engineering-technique">Feature Engineering Technique</a></li>
+  <li><a href="#candidate-algorithm" id="toc-candidate-algorithm" class="nav-link" data-scroll-target="#candidate-algorithm">Candidate Algorithm</a></li>
+  <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection">Model Selection</a></li>
+  </ul></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#performance-evaluation" id="toc-performance-evaluation" class="nav-link" data-scroll-target="#performance-evaluation">Performance Evaluation</a></li>
+  <li><a href="#algorithmic-bias" id="toc-algorithmic-bias" class="nav-link" data-scroll-target="#algorithmic-bias">Algorithmic Bias</a></li>
   <li><a href="#feature-importance" id="toc-feature-importance" class="nav-link" data-scroll-target="#feature-importance">Feature Importance</a></li>
-  <li><a href="#model-comparison-and-algorithmic-bias" id="toc-model-comparison-and-algorithmic-bias" class="nav-link" data-scroll-target="#model-comparison-and-algorithmic-bias">Model Comparison and Algorithmic Bias</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
   <ul class="collapse">
   <li><a href="#demographics" id="toc-demographics" class="nav-link" data-scroll-target="#demographics">Demographics</a></li>
   <li><a href="#sample-distribution" id="toc-sample-distribution" class="nav-link" data-scroll-target="#sample-distribution">Sample Distribution</a></li>
   <li><a href="#liwc-features" id="toc-liwc-features" class="nav-link" data-scroll-target="#liwc-features">LIWC Features</a></li>
-  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a></li>
+  <li><a href="#model-evaluation-1" id="toc-model-evaluation-1" class="nav-link" data-scroll-target="#model-evaluation-1">Model Evaluation</a></li>
   <li><a href="#model-fairness" id="toc-model-fairness" class="nav-link" data-scroll-target="#model-fairness">Model Fairness</a></li>
   <li><a href="#model-interpretation" id="toc-model-interpretation" class="nav-link" data-scroll-target="#model-interpretation">Model Interpretation</a></li>
   </ul></li>
@@ -506,7 +527,7 @@
 </section>
 <section id="procedures" class="level2">
 <h2 class="anchored" data-anchor-id="procedures">Procedures</h2>
-<p>The study lasted up to three months with five in-person visits (see <em>Figure 1</em>). Participants completed an in-person screening visit to determine their eligibility, obtain their informed consent, and collect their demographic information and self-report measures. They then completed an intake session one week later and three follow-up visits afterwards spaced at one-month intervals. During each of the follow-up visits, a research assistant downloaded participants’ SMS messages from their phone, verified reports of lapses and queried participants about any additional unreported laspes. Additional self-reported measures were obtained (see https://osf.io/w5h9y/).</p>
+<p>The study lasted up to three months with five in-person visits (see <a href="#fig-simp" class="quarto-xref">Figure&nbsp;1</a>). Participants completed an in-person screening visit to determine their eligibility, obtain their informed consent, and collect their demographic information and self-report measures. They then completed an intake session one week later and three follow-up visits afterwards spaced at one-month intervals. During each of the follow-up visits, a research assistant downloaded participants’ SMS messages from their phone, verified reports of lapses and queried participants about any additional unreported laspes. Additional self-reported measures were obtained (see https://osf.io/w5h9y/).</p>
 <p>Throughout the course of the study, participants were expected to complete four daily EMAs that asked about their alcohol cravings, risky situations, stressful/pleasant events, etc <span class="citation" data-cites="wyantMachineLearningModels2024">(<a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al. 2024</a>)</span>. Notably, in the first item in the EMA survey, participants also reported their past alcohol use. Answer to this item will be used as the predicted outcome (see <em>Section Alcohol Lapses</em>).</p>
 <div id="fig-simp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -726,39 +747,49 @@ Table&nbsp;1: Participant self-reported measures
 </section>
 <section id="alcohol-lapses" class="level3">
 <h3 class="anchored" data-anchor-id="alcohol-lapses">Alcohol Lapses</h3>
-<p>Participants were prompted up to four times daily to report their recent alcohol use. In the first item of each daily EMA survey, dates and times of any unreported past alcohol use were obtained. Reports of past alcohol use are used as a dichotomous outcome variable (Lapse vs.&nbsp;No Lapse). We will predict alcohol lapses in the next 24-hour window (i.e., next day lapse prediction). Every outcome window will start from 4 a.m. everyday and end 24 hours later.</p>
+<p>Participants were prompted up to four times daily to report their recent alcohol use. In the first item of each daily EMA survey, dates and times of any unreported past alcohol use were obtained. Reports of past alcohol use are used as a dichotomous outcome variable (Lapse vs.&nbsp;No Lapse). We predicted alcohol lapses in the next 24-hour window (i.e., next day lapse prediction). Every outcome window started from 4 a.m. everyday and end 24 hours later.</p>
 </section>
 <section id="sms-messages" class="level3">
 <h3 class="anchored" data-anchor-id="sms-messages">SMS Messages</h3>
 <p>At each of the follow-up visits, a research assistant downloaded the participants’ SMS message logs from their phone. These logs included the message type (incoming vs.&nbsp;outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants’ phones. We included only messages from/to important contacts and in group chats.</p>
-<p>For each individual lapse window, we have predictor sets that differ in prediction window length and their analytic unit. We define text prediction windows to be 3-day and 1-week preceding the lapse window. We analyzed the two prediction windows both individually and combined (i.e., three configurations in total).</p>
+<p>For each individual lapse window, we have predictor sets that differ in prediction window length and their analytic unit. We define text prediction windows to be 3-day and 1-week preceding the lapse window (see <strong>?@fig-window</strong>). We analyzed the two prediction windows both individually and combined (i.e., three configurations in total).</p>
+<p><img src="images/prediction_window.png" class="img-fluid" alt="Prediction Window"> {#fig-window}</p>
 </section>
 </section>
-<section id="feature-engineering" class="level2">
-<h2 class="anchored" data-anchor-id="feature-engineering">Feature Engineering</h2>
-<p>Text messages will serve as the only raw source for all feature engineering. The document sets will go through a generic pre-processing step that involves removal of all emojis. Our decision to remove all emojis was due to loss of emoji data in the ios devices during back up. This study used the LIWC dictionary <span class="citation" data-cites="pennebakerDevelopmentPsychometricProperties2015a">(<a href="#ref-pennebakerDevelopmentPsychometricProperties2015a" role="doc-biblioref">Pennebaker et al. 2015</a>)</span> and computed scores by counting frequency of words that belong to each category. We did not remove any stop words. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes <span class="citation" data-cites="brownCharacteristicsRelapseFollowing1989 mckayStudiesFactorsRelapse1999a mckayStudiesFactorsRelapse1999a">(<a href="#ref-brownCharacteristicsRelapseFollowing1989" role="doc-biblioref">Brown, Vik, and Creamer 1989</a>; <a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">J. R. McKay 1999</a>, <a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">1999</a>)</span>.</p>
-<p>We adopted two configurations for analytic units – individual messages and concatenated messages. In the first configuration method, we ran individual messages within the defined prediction window through LIWC. We then normalized LIWC feature scores based on the square root of word counts instead of raw word counts. This normalizatio method was chosen due to the relatively short message length for individual messages. We further obtained the median and 95% percentile of normalized LIWC scores for all messages related to each lapse label.</p>
+<section id="model-training" class="level2">
+<h2 class="anchored" data-anchor-id="model-training">Model Training</h2>
+<section id="feature-engineering-technique" class="level3">
+<h3 class="anchored" data-anchor-id="feature-engineering-technique">Feature Engineering Technique</h3>
+<p>Text messages served as the only raw source for all feature engineering. The document sets went through a generic pre-processing step that involves removal of all emojis. Our decision to remove all emojis was due to loss of emoji data in the ios devices during back up. This study used the LIWC dictionary <span class="citation" data-cites="pennebakerDevelopmentPsychometricProperties2015a">(<a href="#ref-pennebakerDevelopmentPsychometricProperties2015a" role="doc-biblioref">Pennebaker et al. 2015</a>)</span> and computed scores by counting frequency of words that belong to each category. We did not remove any stop words. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes <span class="citation" data-cites="brownCharacteristicsRelapseFollowing1989 mckayStudiesFactorsRelapse1999a mckayStudiesFactorsRelapse1999a">(<a href="#ref-brownCharacteristicsRelapseFollowing1989" role="doc-biblioref">Brown, Vik, and Creamer 1989</a>; <a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">J. R. McKay 1999</a>, <a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">1999</a>)</span>.</p>
+<p>We adopted two configurations for analytic units – individual messages and concatenated messages. In the first configuration method, we ran individual messages within the defined prediction window through LIWC. We then normalized LIWC feature scores based on the square root of word counts instead of raw word counts. This normalization method was chosen due to the relatively short message length for individual messages. We further obtained the median and 95% percentile of normalized LIWC scores for all messages related to each lapse label.</p>
 <p>In the other analytic unit configuration, we first concatenated all messages associated with each lapse label altogether. We then obtained LIWC results for the concatenated messages. We further adopted three configurations for normalization methods – normalized on raw word count, normalized on the square root of word count, and combination of these two.</p>
 </section>
-<section id="candidate-machine-learning-algorithms" class="level2">
-<h2 class="anchored" data-anchor-id="candidate-machine-learning-algorithms">Candidate Machine Learning Algorithms</h2>
-<p>Note that our candidate machine learning algorithms already differ on three configurations: 1) prediction window length (see <em>Section SMS Messages</em>); 2) analytic units (see <em>Section Feature Engineering</em>); and 3) normalization methods (see <em>Section Feature Engineering</em>). We further consider a range of candidate statistical algorithms that vary with regard to their model complexity, model assumptions, and training speed. Candidate algorithms that will be used include glmnet (penalized, parametric linear model), random forest (RF), and XGBoost.</p>
+<section id="candidate-algorithm" class="level3">
+<h3 class="anchored" data-anchor-id="candidate-algorithm">Candidate Algorithm</h3>
+<p>We leveraged the XGBoost algorithm that differed on the above three configurations: 1) prediction window length (see <em>Section SMS Messages</em>); 2) analytic units (see <em>Section Feature Engineering</em>); and 3) normalization methods (see <em>Section Feature Engineering</em>). As we have a fairly imbalanced class labels in our dataset (see <em>Section Sample Distribution</em>), we further considered different resampling strategies including upsampling and downsampling with different ratios. Our decision to use the XGBoost algorithm was based on its two benefits. First, the algorithm has demonstrated satisfying performance in classifying lapse vs.&nbsp;no lapse in our lab’s previous work <span class="citation" data-cites="wyantMachineLearningModels2024">(<a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al. 2024</a>)</span>. We can select the best model from a range of model-specific hyperparameters (mtry, tree depth, and learning rate), on top of the four above manually incorporated configurations. Second, XGBoost is well-suited to calculate Shapley values that can help us understand each feature’s contributions to model output (see <em>Section Feature Importance</em>).</p>
 </section>
-<section id="model-training-and-performance-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="model-training-and-performance-evaluation">Model Training and Performance Evaluation</h2>
-<p>We performed grouped, nested cross-validations to perform hyperparameter tuning and select the best model configuration. The dataset was be participant-grouped so that each individual will be assigned to either held-in or held-out set to avoid bias of predicting participants’ lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds are used as a validation set for model selection. In the outer loop, held-out folds are utilized as a test set for model evaluation. More specifically, we will use one repeat of 10-fold cross-validation in the inner loop for model selection and 3 repeats of 10-fold cross-validation in outer loop for model evaluation.</p>
-<p>The primary performance metrics to select the best model configuration and evaluate the model performance on the test sets will be auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. We will report the median auROCs for the 30 held-out folds. The model with the highest auROC among the ones differing on those eight configurations (see <em>Section SMS Messages</em>) and statistical methods (see <em>Section Candidate Machine Learning Algorithms</em>) will be selected as the best model for each natural language processing technique.</p>
+<section id="model-selection" class="level3">
+<h3 class="anchored" data-anchor-id="model-selection">Model Selection</h3>
+<p>We performed grouped, nested cross-validations to perform hyperparameter tuning and select the best model configuration. The dataset was participant-grouped so that each individual was assigned to either held-in or held-out set to avoid bias of predicting participants’ lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds were used as a validation set for model selection. In the outer loop, held-out folds were utilized as a test set for model evaluation. We presented validation results from the 300 sets in the inner loop.</p>
+<p>The primary performance metric to select the best model configuration and evaluate the model performance on the test sets was auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. We reported the median auROCs for the 30 held-out folds. The model with the highest auROC among the ones differing on the above configurations (see <em>Section Machine Learning Algorithm</em>) was selected as the best prediction model.</p>
 </section>
-<section id="feature-importance" class="level2">
-<h2 class="anchored" data-anchor-id="feature-importance">Feature Importance</h2>
-<p>We also calculated SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output <span class="citation" data-cites="lundbergUnifiedApproachInterpreting2017">(<a href="#ref-lundbergUnifiedApproachInterpreting2017" role="doc-biblioref">Lundberg and Lee 2017</a>)</span>. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability. Local Shapley values explain factors that contribute to a single observation, and global Shapley values represent feature importance across all observations. To compute global Shapley values, we average the absolute value of all local Shapley values.</p>
 </section>
-<section id="model-comparison-and-algorithmic-bias" class="level2">
-<h2 class="anchored" data-anchor-id="model-comparison-and-algorithmic-bias">Model Comparison and Algorithmic Bias</h2>
-<p>We further performed a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. We will regress the 30 auROCs from the held-out test set as a function of feature engineering technique (a total of 10 comparisons for the five NLP methods). The two random intercepts in the models include the repeat and the fold within repeat. We will report the 95% CIs for our models’ auROCs and determine if they include .5 (chance performance). We will also report the 95% CI for the differences in performance with regard to Bayesian comparison. If this CI does not include 0, we can conclude that the feature engineering technique yields better model performance than the other.</p>
-<p>A subset of individual characteristic measures will be used to evaluate model fairness on subgroups. We compared model performance among each sex, racial, age and income subgruops because the populations face increased barriers obtaining AUD treatments. Stigma among older populations and wome, and economic hardship in racial minority groups can all contribute to low treatment-seeking and alcohol treatment completion <span class="citation" data-cites="dibartoloAlcoholUseDisorder2017 jacobsonRacialDisparitiesCompletion2007 mayBarriersTreatmentAlcohol2019">(<a href="#ref-dibartoloAlcoholUseDisorder2017" role="doc-biblioref">DiBartolo and Jarosinski 2017</a>; <a href="#ref-jacobsonRacialDisparitiesCompletion2007" role="doc-biblioref">J. O. Jacobson, Robinson, and Bluthenthal 2007</a>; <a href="#ref-mayBarriersTreatmentAlcohol2019" role="doc-biblioref">May, Nielsen, and Bilberg 2019</a>)</span>. Participants younger than 55 years old were considered as a privileged group. We adopted half of median income in Madison area in 2017 as cut-off to assign participants to income groups.</p>
-<p>We performed a Bayesian hierarchical generalized linear model that regresses the auROCs from the 30 held-out test set as a function of group membership (privileged group vs.&nbsp;unprivileged group in each of above individual characteristics). We reported the 95% CI for model performance differences and examine if they include 0.</p>
+<section id="model-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
+<section id="performance-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="performance-evaluation">Performance Evaluation</h3>
+<p>We further performed a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. The two random intercepts in the models included the repeat and the fold within repeat. We reported the 95% CIs for our models’ auROCs and determine if they include .5 (chance performance). If this CI included 0.5, we would conclude that our model performed no better than random guess.</p>
+</section>
+<section id="algorithmic-bias" class="level3">
+<h3 class="anchored" data-anchor-id="algorithmic-bias">Algorithmic Bias</h3>
+<p>A subset of individual characteristic measures was used to evaluate model fairness on subgroups. We compared model performance among each sex, racial, age and income subgruops because the populations face increased barriers obtaining AUD treatments. Stigma among older populations and wome, and economic hardship in racial minority groups can all contribute to low treatment-seeking and alcohol treatment completion <span class="citation" data-cites="dibartoloAlcoholUseDisorder2017 jacobsonRacialDisparitiesCompletion2007 mayBarriersTreatmentAlcohol2019">(<a href="#ref-dibartoloAlcoholUseDisorder2017" role="doc-biblioref">DiBartolo and Jarosinski 2017</a>; <a href="#ref-jacobsonRacialDisparitiesCompletion2007" role="doc-biblioref">J. O. Jacobson, Robinson, and Bluthenthal 2007</a>; <a href="#ref-mayBarriersTreatmentAlcohol2019" role="doc-biblioref">May, Nielsen, and Bilberg 2019</a>)</span>. Participants younger than 55 years old were considered as a privileged group. We adopted half of median income in Madison area in 2017 as cut-off to assign participants to income groups.</p>
+<p>We performed a Bayesian hierarchical generalized linear model that regressed the auROCs from the 300 validation sets in the inner loop as a function of group membership (privileged group vs.&nbsp;unprivileged group in each of above individual characteristics). We reported the 95% CI for model performance differences and examined if they include 0. If this CI did not include 0, we would conclude that our model was unfair.</p>
+</section>
+<section id="feature-importance" class="level3">
+<h3 class="anchored" data-anchor-id="feature-importance">Feature Importance</h3>
+<p>We also calculated SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output <span class="citation" data-cites="lundbergUnifiedApproachInterpreting2017">(<a href="#ref-lundbergUnifiedApproachInterpreting2017" role="doc-biblioref">Lundberg and Lee 2017</a>)</span>. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability. Local Shapley values explain factors that contribute to a single observation, and global Shapley values represent feature importance across all observations. To compute global Shapley values, we averaged the absolute value of all local Shapley values. We aggregated Shapley values for each LIWC category, regardless of their prediction window and normalization methods.</p>
 <div style="page-break-after: always;"></div>
+</section>
 </section>
 </section>
 <section id="results" class="level1">
@@ -933,7 +964,7 @@ Figure&nbsp;2: Demographic Distribution
 </section>
 <section id="sample-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="sample-distribution">Sample Distribution</h2>
-<p>The final total number of lapse labels in the dataset is 11562. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30.00 - 90.00).</p>
+<p>The final total number of lapse labels in the dataset is 11562. 7.63% of the labels are associated with a lapse episode. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30.00 - 90.00).</p>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-lapse_count">
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-fig-lapse_count" class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">|&gt;</span> </span>
@@ -1483,8 +1514,8 @@ Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 1-Week Prediction W
 </div></div>
 </div>
 </section>
-<section id="model-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
+<section id="model-evaluation-1" class="level2">
+<h2 class="anchored" data-anchor-id="model-evaluation-1">Model Evaluation</h2>
 <div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/auROC_plot.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc">
 <div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-fig-auroc" class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>tpfp_data <span class="op">&lt;-</span> probs <span class="op">|&gt;</span> </span>
@@ -2288,7 +2319,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

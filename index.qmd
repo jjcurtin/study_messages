@@ -1,24 +1,24 @@
 ---
-title: Leveraging Text Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients
+title: Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients
 author:
     #  - Investigation
   - name: Coco Yu
     email: jyu274@wisc.edu
-    #orcid: 0009-0003-7743-3736
-    #corresponding: false
+    orcid: 0000-0002-7731-0563
+    corresponding: false
     #roles: []
-    #affiliations:
-      #- Department of Psychology, University of Wisconsin-Madison
+    affiliations:
+    - Department of Psychology, University of Wisconsin-Madison
   - name: John J. Curtin 
-    #orcid: 0000-0002-3286-938X
-    #corresponding: true
+    orcid: 0000-0002-3286-938X
+    corresponding: true
     email: jjcurtin@wisc.edu
     #roles:
       #- Project administration
       #- Software
       #- Visualization
-    #affiliations:
-      #- Department of Psychology, University of Wisconsin-Madison 
+    affiliations:
+    - Department of Psychology, University of Wisconsin-Madison
 #keywords:
   #- Substance use disorders
   #- Precision mental health 
@@ -165,15 +165,12 @@ Individuals in early recovery from AUD were recruited from Madison and surroundi
 
 ## Procedures
 
-The study lasted up to three months with five in-person visits (see *Figure 1*). Participants completed an in-person screening visit to determine their eligibility, obtain their informed consent, and collect their demographic information and self-report measures. They then completed an intake session one week later and three follow-up visits afterwards spaced at one-month intervals. During each of the follow-up visits, a research assistant downloaded participants' SMS messages from their phone, verified reports of lapses and queried participants about any additional unreported laspes. Additional self-reported measures were obtained (see https://osf.io/w5h9y/).
+The study lasted up to three months with five in-person visits (see @fig-simp). Participants completed an in-person screening visit to determine their eligibility, obtain their informed consent, and collect their demographic information and self-report measures. They then completed an intake session one week later and three follow-up visits afterwards spaced at one-month intervals. During each of the follow-up visits, a research assistant downloaded participants' SMS messages from their phone, verified reports of lapses and queried participants about any additional unreported laspes. Additional self-reported measures were obtained (see https://osf.io/w5h9y/).
 
 Throughout the course of the study, participants were expected to complete four daily EMAs that asked about their alcohol cravings, risky situations, stressful/pleasant events, etc [@wyantMachineLearningModels2024]. Notably, in the first item in the EMA survey, participants also reported their past alcohol use. Answer to this item will be used as the predicted outcome (see *Section Alcohol Lapses*).
 
 ::: {#fig-simp}
 ```{dot}
-#| fig-width: 5
-#| fig-height: 2
-
 
 digraph {
 
@@ -212,9 +209,8 @@ digraph {
   c -> h [minlen = 0.1, color = none]
   d -> i [minlen = 0.1, color = none]
   e -> j [minlen = 0.1, color = none]
-
-  
 }
+
 ```
 
 Flowchart of in-person visits. We obtained participant demographics and alcohol use history from the screening session. SMS messages were downloaded from participant phones at each of the follow-up visit.
@@ -246,43 +242,52 @@ We collected participants' individual characteristics including their demographi
 
 ### Alcohol Lapses
 
-Participants were prompted up to four times daily to report their recent alcohol use. In the first item of each daily EMA survey, dates and times of any unreported past alcohol use were obtained. Reports of past alcohol use are used as a dichotomous outcome variable (Lapse vs. No Lapse). We will predict alcohol lapses in the next 24-hour window (i.e., next day lapse prediction). Every outcome window will start from 4 a.m. everyday and end 24 hours later.
+Participants were prompted up to four times daily to report their recent alcohol use. In the first item of each daily EMA survey, dates and times of any unreported past alcohol use were obtained. Reports of past alcohol use are used as a dichotomous outcome variable (Lapse vs. No Lapse). We predicted alcohol lapses in the next 24-hour window (i.e., next day lapse prediction). Every outcome window started from 4 a.m. everyday and end 24 hours later.
 
 ### SMS Messages
 
 At each of the follow-up visits, a research assistant downloaded the participants' SMS message logs from their phone. These logs included the message type (incoming vs. outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants' phones. We included only messages from/to important contacts and in group chats.
 
-For each individual lapse window, we have predictor sets that differ in prediction window length and their analytic unit. We define text prediction windows to be 3-day and 1-week preceding the lapse window. We analyzed the two prediction windows both individually and combined (i.e., three configurations in total).
+For each individual lapse window, we have predictor sets that differ in prediction window length and their analytic unit. We define text prediction windows to be 3-day and 1-week preceding the lapse window (see @fig-window). We analyzed the two prediction windows both individually and combined (i.e., three configurations in total).
 
-## Feature Engineering
+![Prediction Window](images/prediction_window.png) {#fig-window}
 
-Text messages will serve as the only raw source for all feature engineering. The document sets will go through a generic pre-processing step that involves removal of all emojis. Our decision to remove all emojis was due to loss of emoji data in the ios devices during back up. This study used the LIWC dictionary [@pennebakerDevelopmentPsychometricProperties2015a] and computed scores by counting frequency of words that belong to each category. We did not remove any stop words. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes [@brownCharacteristicsRelapseFollowing1989; @mckayStudiesFactorsRelapse1999a; @mckayStudiesFactorsRelapse1999a].
+## Model Training
 
-We adopted two configurations for analytic units -- individual messages and concatenated messages. In the first configuration method, we ran individual messages within the defined prediction window through LIWC. We then normalized LIWC feature scores based on the square root of word counts instead of raw word counts. This normalizatio method was chosen due to the relatively short message length for individual messages. We further obtained the median and 95% percentile of normalized LIWC scores for all messages related to each lapse label.
+### Feature Engineering Technique
+
+Text messages served as the only raw source for all feature engineering. The document sets went through a generic pre-processing step that involves removal of all emojis. Our decision to remove all emojis was due to loss of emoji data in the ios devices during back up. This study used the LIWC dictionary [@pennebakerDevelopmentPsychometricProperties2015a] and computed scores by counting frequency of words that belong to each category. We did not remove any stop words. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes [@brownCharacteristicsRelapseFollowing1989; @mckayStudiesFactorsRelapse1999a; @mckayStudiesFactorsRelapse1999a].
+
+We adopted two configurations for analytic units -- individual messages and concatenated messages. In the first configuration method, we ran individual messages within the defined prediction window through LIWC. We then normalized LIWC feature scores based on the square root of word counts instead of raw word counts. This normalization method was chosen due to the relatively short message length for individual messages. We further obtained the median and 95% percentile of normalized LIWC scores for all messages related to each lapse label.
 
 In the other analytic unit configuration, we first concatenated all messages associated with each lapse label altogether. We then obtained LIWC results for the concatenated messages. We further adopted three configurations for normalization methods -- normalized on raw word count, normalized on the square root of word count, and combination of these two.
 
-## Candidate Machine Learning Algorithms
+### Candidate Algorithm
 
-Note that our candidate machine learning algorithms already differ on three configurations: 1) prediction window length (see *Section SMS Messages*); 2) analytic units (see *Section Feature Engineering*); and 3) normalization methods (see *Section Feature Engineering*). We further consider a range of candidate statistical algorithms that vary with regard to their model complexity, model assumptions, and training speed. Candidate algorithms that will be used include glmnet (penalized, parametric linear model), random forest (RF), and XGBoost.
+We leveraged the XGBoost algorithm that differed on the above three configurations: 1) prediction window length (see *Section SMS Messages*); 2) analytic units (see *Section Feature Engineering*); and 3) normalization methods (see *Section Feature Engineering*). As we have a fairly imbalanced class labels in our dataset (see *Section Sample Distribution*), we further considered different resampling strategies including upsampling and downsampling with different ratios. Our decision to use the XGBoost algorithm was based on its two benefits. First, the algorithm has demonstrated satisfying performance in classifying lapse vs. no lapse in our lab's previous work [@wyantMachineLearningModels2024]. We can select the best model from a range of model-specific hyperparameters (mtry, tree depth, and learning rate), on top of the four above manually incorporated configurations. Second, XGBoost is well-suited to calculate Shapley values that can help us understand each feature's contributions to model output (see *Section Feature Importance*).
 
-## Model Training and Performance Evaluation
+### Model Selection
 
-We performed grouped, nested cross-validations to perform hyperparameter tuning and select the best model configuration. The dataset was be participant-grouped so that each individual will be assigned to either held-in or held-out set to avoid bias of predicting participants' lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds are used as a validation set for model selection. In the outer loop, held-out folds are utilized as a test set for model evaluation. More specifically, we will use one repeat of 10-fold cross-validation in the inner loop for model selection and 3 repeats of 10-fold cross-validation in outer loop for model evaluation.
+We performed grouped, nested cross-validations to perform hyperparameter tuning and select the best model configuration. The dataset was participant-grouped so that each individual was assigned to either held-in or held-out set to avoid bias of predicting participants' lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds were used as a validation set for model selection. In the outer loop, held-out folds were utilized as a test set for model evaluation. We presented validation results from the 300 sets in the inner loop.
 
-The primary performance metrics to select the best model configuration and evaluate the model performance on the test sets will be auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. We will report the median auROCs for the 30 held-out folds. The model with the highest auROC among the ones differing on those eight configurations (see *Section SMS Messages*) and statistical methods (see *Section Candidate Machine Learning Algorithms*) will be selected as the best model for each natural language processing technique.
+The primary performance metric to select the best model configuration and evaluate the model performance on the test sets was auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. We reported the median auROCs for the 30 held-out folds. The model with the highest auROC among the ones differing on the above configurations (see *Section Machine Learning Algorithm*) was selected as the best prediction model.
 
-## Feature Importance
+## Model Evaluation 
 
-We also calculated SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output [@lundbergUnifiedApproachInterpreting2017]. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability. Local Shapley values explain factors that contribute to a single observation, and global Shapley values represent feature importance across all observations. To compute global Shapley values, we average the absolute value of all local Shapley values.
+### Performance Evaluation
 
-## Model Comparison and Algorithmic Bias
+We further performed a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. The two random intercepts in the models included the repeat and the fold within repeat. We reported the 95% CIs for our models' auROCs and determine if they include .5 (chance performance). If this CI included 0.5, we would conclude that our model performed no better than random guess.
 
-We further performed a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. We will regress the 30 auROCs from the held-out test set as a function of feature engineering technique (a total of 10 comparisons for the five NLP methods). The two random intercepts in the models include the repeat and the fold within repeat. We will report the 95% CIs for our models' auROCs and determine if they include .5 (chance performance). We will also report the 95% CI for the differences in performance with regard to Bayesian comparison. If this CI does not include 0, we can conclude that the feature engineering technique yields better model performance than the other.
+### Algorithmic Bias
 
-A subset of individual characteristic measures will be used to evaluate model fairness on subgroups. We compared model performance among each sex, racial, age and income subgruops because the populations face increased barriers obtaining AUD treatments. Stigma among older populations and wome, and economic hardship in racial minority groups can all contribute to low treatment-seeking and alcohol treatment completion [@dibartoloAlcoholUseDisorder2017; @jacobsonRacialDisparitiesCompletion2007; @mayBarriersTreatmentAlcohol2019]. Participants younger than 55 years old were considered as a privileged group. We adopted half of median income in Madison area in 2017 as cut-off to assign participants to income groups.
+A subset of individual characteristic measures was used to evaluate model fairness on subgroups. We compared model performance among each sex, racial, age and income subgruops because the populations face increased barriers obtaining AUD treatments. Stigma among older populations and wome, and economic hardship in racial minority groups can all contribute to low treatment-seeking and alcohol treatment completion [@dibartoloAlcoholUseDisorder2017; @jacobsonRacialDisparitiesCompletion2007; @mayBarriersTreatmentAlcohol2019]. Participants younger than 55 years old were considered as a privileged group. We adopted half of median income in Madison area in 2017 as cut-off to assign participants to income groups.
 
-We performed a Bayesian hierarchical generalized linear model that regresses the auROCs from the 30 held-out test set as a function of group membership (privileged group vs. unprivileged group in each of above individual characteristics). We reported the 95% CI for model performance differences and examine if they include 0.
+We performed a Bayesian hierarchical generalized linear model that regressed the auROCs from the 300 validation sets in the inner loop as a function of group membership (privileged group vs. unprivileged group in each of above individual characteristics). We reported the 95% CI for model performance differences and examined if they include 0. If this CI did not include 0, we would conclude that our model was unfair.
+
+### Feature Importance
+
+We also calculated SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output [@lundbergUnifiedApproachInterpreting2017]. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability. Local Shapley values explain factors that contribute to a single observation, and global Shapley values represent feature importance across all observations. To compute global Shapley values, we averaged the absolute value of all local Shapley values. We aggregated Shapley values for each LIWC category, regardless of their prediction window and normalization methods.
+
 
 \newpage
 
@@ -325,7 +330,7 @@ The final sample includes `r sprintf("%d", length(unique(labels$subid)))` partic
 
 ## Sample Distribution
 
-The final total number of lapse labels in the dataset is `r sprintf("%d", nrow(labels))`. On average, each participant has `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> mean())` labels (sd = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> sd())`, median = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> median())`, range = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> min())` - `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> max())`).
+The final total number of lapse labels in the dataset is `r sprintf("%d", nrow(labels))`. `r sprintf("%.2f", sum(labels$lapse == "lapse")/nrow(labels)*100)`% of the labels are associated with a lapse episode. On average, each participant has `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> mean())` labels (sd = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> sd())`, median = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> median())`, range = `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> min())` - `r sprintf("%.2f", labels |> group_by(subid) |> summarize(n = n()) |> pull(n) |> max())`; see @fig-lapse_count).
 
 {{< embed notebooks/eda_messages.qmd#fig-lapse_count >}}
 
