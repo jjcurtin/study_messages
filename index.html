@@ -8,7 +8,7 @@
 
 <meta name="author" content="Coco Yu">
 <meta name="author" content="John J. Curtin">
-<meta name="dcterms.date" content="2024-10-19">
+<meta name="dcterms.date" content="2024-10-20">
 
 <title>Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</title>
 <style>
@@ -64,10 +64,10 @@ div.csl-indent {
 <meta name="citation_title" content="Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients">
 <meta name="citation_author" content="Coco Yu">
 <meta name="citation_author" content="John J. Curtin">
-<meta name="citation_publication_date" content="2024-10-19">
-<meta name="citation_cover_date" content="2024-10-19">
+<meta name="citation_publication_date" content="2024-10-20">
+<meta name="citation_cover_date" content="2024-10-20">
 <meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-10-19">
+<meta name="citation_online_date" content="2024-10-20">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Availability of Medications for the Treatment of Alcohol and Opioid Use Disorder in the USA;,citation_abstract=Despite high mortality rates due to opioid overdose and excessive alcohol consumption, medications for the treatment of alcohol and opioid use disorder have not been widely used in the USA. This paper provides an overview of the literature on the availability of alcohol and opioid used disorder medications in the specialty substance use disorder treatment system, other treatment settings and systems, and among providers with a federal waiver to prescribe buprenorphine. We also present the most current data on the availability of alcohol and opioid use disorder medications in the USA. These estimates show steady growth in availability of opioid use disorder medications over the past decade and a decline in availability of alcohol use disorder medications. However, overall use of medications in the USA remains low. In 2017, only 16.3% of specialty treatment programs offered any single medication for alcohol use disorder treatment and 35.5% offered any single medication for opioid use disorder treatment. Availability of buprenorphine-waivered providers has increased significantly since 2002. However, geographic disparities in access to buprenorphine remain. Some of the most promising strategies to increase availability of alcohol and opioid use disorder medications include the following: incorporating substance use disorder training in healthcare education programs, educating the substance use disorder workforce about the benefits of medication treatment, reducing stigma surrounding the use of medications, implementing medications in primary care settings, implementing integrated care models, revising regulations on methadone and buprenorphine, improving health insurance coverage of medications, and developing novel medications for the treatment of substance use disorder.;,citation_author=Amanda J. Abraham;,citation_author=Christina M. Andrews;,citation_author=Samantha J. Harris;,citation_author=Peter D. Friedmann;,citation_publication_date=2020-01;,citation_cover_date=2020-01;,citation_year=2020;,citation_issue=1;,citation_doi=10.1007/s13311-019-00814-4;,citation_issn=1878-7479;,citation_volume=17;,citation_language=en-US;,citation_journal_title=Neurotherapeutics;">
 <meta name="citation_reference" content="citation_title=AFINN;,citation_publication_date=2011-03;,citation_cover_date=2011-03;,citation_year=2011;">
@@ -215,7 +215,7 @@ div.csl-indent {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">October 19, 2024</p>
+              <p class="date">October 20, 2024</p>
             </div>
           </div>
           
@@ -277,7 +277,7 @@ div.csl-indent {
   <li><a href="#demographics" id="toc-demographics" class="nav-link" data-scroll-target="#demographics">Demographics</a></li>
   <li><a href="#sample-distribution" id="toc-sample-distribution" class="nav-link" data-scroll-target="#sample-distribution">Sample Distribution</a></li>
   <li><a href="#liwc-features" id="toc-liwc-features" class="nav-link" data-scroll-target="#liwc-features">LIWC Features</a></li>
-  <li><a href="#model-evaluation-1" id="toc-model-evaluation-1" class="nav-link" data-scroll-target="#model-evaluation-1">Model Evaluation</a></li>
+  <li><a href="#best-model-evaluation" id="toc-best-model-evaluation" class="nav-link" data-scroll-target="#best-model-evaluation">Best Model Evaluation</a></li>
   <li><a href="#model-fairness" id="toc-model-fairness" class="nav-link" data-scroll-target="#model-fairness">Model Fairness</a></li>
   <li><a href="#model-interpretation" id="toc-model-interpretation" class="nav-link" data-scroll-target="#model-interpretation">Model Interpretation</a></li>
   </ul></li>
@@ -623,14 +623,14 @@ Figure&nbsp;2: Prediction Window
 <section id="model-selection" class="level3">
 <h3 class="anchored" data-anchor-id="model-selection">Model Selection</h3>
 <p>We performed grouped, nested cross-validations to perform hyperparameter tuning and select the best model configuration. The dataset was participant-grouped so that each individual was assigned to either held-in or held-out set to avoid bias of predicting participants’ lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds were used as a validation set for model selection. In the outer loop, held-out folds were utilized as a test set for model evaluation. We presented validation results from the 300 sets in the inner loop.</p>
-<p>The primary performance metric to select the best model configuration and evaluate the model performance on the test sets was auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. We reported the median auROCs for the 30 held-out folds. The model with the highest auROC among the ones differing on the above configurations (see <em>Section Machine Learning Algorithm</em>) was selected as the best prediction model.</p>
+<p>The primary performance metric to select the best model configuration and evaluate the model performance on the test sets was auROC. auROC computes the area under the ROC curve which demonstrates the trade-off between sensitivity and specificity across all possible thresholds. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. We reported the median auROCs for the 30 held-out folds. Across all models that differed on the above discussed configurations, the best model was selected based on the highest median auROC across all validation sets (see <em>Section Machine Learning Algorithm</em>).</p>
 </section>
 </section>
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
 <section id="performance-evaluation" class="level3">
 <h3 class="anchored" data-anchor-id="performance-evaluation">Performance Evaluation</h3>
-<p>We further performed a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. The two random intercepts in the models included the repeat and the fold within repeat. We reported the 95% CIs for our models’ auROCs and determine if they include .5 (chance performance). If this CI included 0.5, we would conclude that our model performed no better than random guess.</p>
+<p>We calculated the predicted probability scores for all our observations based on the best model configuration and then obtained the median auROC score across all 300 validation sets in the inner fold. We further performed a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. The two random intercepts in the models included the repeat and the fold within repeat. We reported the 95% CIs for our models’ auROCs and determine if they include .5 (chance performance). If this CI included 0.5, we would conclude that our model performed no better than random guess.</p>
 </section>
 <section id="algorithmic-bias" class="level3">
 <h3 class="anchored" data-anchor-id="algorithmic-bias">Algorithmic Bias</h3>
@@ -668,7 +668,7 @@ Figure&nbsp;3: Demographic Distribution
 </section>
 <section id="sample-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="sample-distribution">Sample Distribution</h2>
-<p>The final total number of lapse labels in the dataset is 11562. 7.63% of the labels are associated with a lapse episode. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30.00 - 90.00; see <a href="#fig-lapse_count" class="quarto-xref">Figure&nbsp;4</a>).</p>
+<p>The final total number of lapse labels in the dataset is 11562. 7.63% of the labels are associated with a lapse episode. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30 - 90; see <a href="#fig-lapse_count" class="quarto-xref">Figure&nbsp;4</a>).</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-lapse_count" class="cell">
 <div class="cell-output cell-output-display">
@@ -685,7 +685,7 @@ Figure&nbsp;4: Distribution of Lapse Label Counts
 </div>
 </div>
 </div>
-<p>The total number of messages in the dataset is 313492. On average, each subject has 2271.68 messages (sd = 2536.60, range = 100.00 - 15884.00). The average message length across all participants is 10.42 words (sd = 14.30, median = 7.00, range = 1.00 - 1266.00). On average, each participant has a mean message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).</p>
+<p>The total number of messages in the dataset is 313492. On average, each subject has 2271.68 messages (sd = 2536.60, range = 100 - 15884). The average message length across all participants is 10.42 words (sd = 14.30, median = 7.00, range = 1 - 1266). On average, each participant has a mean message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-raw" class="cell">
 <div class="cell-output cell-output-display">
@@ -702,7 +702,7 @@ Figure&nbsp;5: Sample Characteristics of Raw Messages
 </div>
 </div>
 </div>
-<p>On average, each lapse label has 79.21 messages (sd = 112.13, median = 40.00, range = 1.00 - 1414.00) during the 3-day prediction window. 11.92% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant’s data missingness is 12.28% (sd = 19.42%, median = 1.14%, range = 0.00% - 77.27%).</p>
+<p>On average, each lapse label has 79.21 messages (sd = 112.13, median = 40.00, range = 1 - 1414) during the 3-day prediction window. 11.92% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant’s data missingness is 12.28% (sd = 19.42%, median = 1.14%, range = 0.00% - 77.27%).</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-3day" class="cell">
 <div class="cell-output cell-output-display">
@@ -719,7 +719,7 @@ Figure&nbsp;6: Sample Characteristics in the 3-Day Prediction Window
 </div>
 </div>
 </div>
-<p>On average, each lapse label has 180.42 messages (sd = 241.30, median = 96.00, range = 1.00 - 2866.00) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant’s data missingness is 8.14% (sd = 16.23%, median = 0.00%, range = 0.00% - 72.73%).</p>
+<p>On average, each lapse label has 180.42 messages (sd = 241.30, median = 96.00, range = 1 - 2866) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant’s data missingness is 8.14% (sd = 16.23%, median = 0.00%, range = 0.00% - 72.73%).</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-1week" class="cell">
 <div class="cell-output cell-output-display">
@@ -739,7 +739,9 @@ Figure&nbsp;7: Sample Characteristics in the 1-Week Prediction Window
 </section>
 <section id="liwc-features" class="level2">
 <h2 class="anchored" data-anchor-id="liwc-features">LIWC Features</h2>
-<p>We obtained LIWC scores from 117 linguistic categories.</p>
+<p>We obtained LIWC scores from 117 linguistic categories. These categories include total word count, number of words per sentence, the four summary categories (analytic, clout, authentic, and tone), and other linguistic categories such as social and pronouns. Notably, LIWC-22 now incorporates a <em>health</em> dimension that includes phrases related to illness, wellness, mental health (diagnoses or behaviors), and substances. For each unit of analysis, we had 468 engineered features.</p>
+<p>When our unit of analysis was on individual messages (see <a href="#tbl-panel" class="quarto-xref">Table&nbsp;2</a> and <a href="#fig-liwc_ind" class="quarto-xref">Figure&nbsp;8</a>), the median of all median LIWC feature scores excluding the six unnormalized categories within each 3-day prediction window ranged from 0.00 to 2.45 (median = 0.00, sd = 0.34. The median of all median LIWC feature scores excluding the six unnormalized categories within each 1-week prediction window ranged from 0.00 to 2.45 (median = 0.00, sd = 0.35. The max of all median LIWC feature scores excluding the six unnormalized categories within each 3-day prediction window ranged from 0.00 to 11.58 (median = 0.80, sd = 1.60. The max of all median LIWC feature scores excluding the six unnormalized categories within each 1-week prediction window ranged from 0.00 to 8.89 (median = 0.63, sd = 1.25.</p>
+<p>The median of all 95% percentile LIWC feature scores excluding the six unnormalized categories within each 3-day prediction window ranged from 0.00 to 4.74 (median = 0.30, sd = 0.70. The median of all 95% percentile LIWC feature scores excluding the six unnormalized categories within each 1-week prediction window ranged from 0.00 to 4.89 (median = 0.34, sd = 0.72. The max of all 95% percentile LIWC feature scores excluding the six unnormalized categories within each 3-day prediction window ranged from 0.36 to 17.51 (median = 1.15, sd = 2.40. The max of all 95% percentile LIWC feature scores excluding the six unnormalized categories within each 1-week prediction window ranged from 0.35 to 18.42 (median = 1.00, sd = 2.47.</p>
 <div id="tbl-panel" class="quarto-layout-panel anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -979,7 +981,7 @@ Figure&nbsp;7: Sample Characteristics in the 1-Week Prediction Window
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Sample Characteristics of Median and 95% Quantile Scores of All Raw Scores from Individual Messages Within Each Prediction Window
+Table&nbsp;2: Sample Characteristics of Engineered Feature Scores (Median and 95% Quantile Scores from Individual Messages) for the Six Unnormalized Categories Within Each Prediction Window
 </figcaption>
 </figure>
 </div>
@@ -989,16 +991,18 @@ Table&nbsp;2: Sample Characteristics of Median and 95% Quantile Scores of All Ra
 <div id="fig-liwc_ind" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;8: Distribution of Engineered Feature Scores (Median or 95% Percentile of Normalized LIWC Score From Individual Messages) Within Each Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_ind-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Window
+Figure&nbsp;8: Distribution of Engineered Feature Scores (Median or 95% Percentile of Normalized LIWC Score From Individual Messages) Within Each Prediction Window
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<p>When our unit of analysis was on concatenated messages (see <a href="#tbl-panel2" class="quarto-xref">Table&nbsp;3</a>, <a href="#fig-liwc_cat_raw" class="quarto-xref">Figure&nbsp;9</a> and <a href="#fig-liwc_cat_norm" class="quarto-xref">Figure&nbsp;10</a>), the median of all raw feature scores within the 3-day prediction window ranged from 0.00 to 91.36 (median = 1.32, sd = 12.64. The median of all raw feature scores within the 1-week prediction window ranged from 0.00 to 91.30 (median = 1.36, sd = 12.63. The max of all raw feature scores within the 3-day prediction window ranged from 3.85 to 166.67 (median = 33.33, sd = 37.64. The max of all raw feature scores within the 1-week prediction window ranged from 1.82 to 166.67 (median = 27.27, sd = 35.21.</p>
+<p>The median of all normalized feature scores within the 3-day prediction window ranged from 0.00 to 20.63 (median = 0.32, sd = 2.85. The median of all normalized feature scores within the 1-week prediction window ranged from 0.00 to 30.69 (median = 0.47, sd = 4.25. The max of all normalized feature scores within the 3-day prediction window ranged from 0.37 to 106.55 (median = 2.95, sd = 15.11. The max of all normalized feature scores within the 1-week prediction window ranged from 0.29 to 143.30 (median = 3.16, sd = 20.31.</p>
 <div id="tbl-panel2" class="quarto-layout-panel anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-panel2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1152,20 +1156,36 @@ Figure&nbsp;8: Descriptives of Normalized LIWC Scores in the 3-Day Prediction Wi
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-panel2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Within Each Prediction Window
+Table&nbsp;3: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Across the Six Linguistic Categories Within Each Prediction Window
 </figcaption>
 </figure>
 </div>
 <div class="quarto-embed-nb-cell">
-<div id="cell-fig-liwc_cat" class="cell">
+<div id="cell-fig-liwc_cat_raw" class="cell">
 <div class="cell-output cell-output-display">
-<div id="fig-liwc_cat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-liwc_cat_raw" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-liwc_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;9: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat-output-1.png" class="img-fluid figure-img"></a>
+<div aria-describedby="fig-liwc_cat_raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat_raw-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;9: Distribution of Raw LIWC Feature Scores From Concatenated Messages Within Each Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat_raw-output-1.png" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Descriptives of Normalized LIWC Scores in the 1-Week Prediction Window
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat_raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Distribution of Raw LIWC Feature Scores From Concatenated Messages Within Each Prediction Window
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-liwc_cat_norm" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-liwc_cat_norm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-liwc_cat_norm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat_norm-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;10: Distribution of Normalized LIWC Feature Scores From Concatenated Messages Within Each Prediction Window"><img src="index_files/figure-html/notebooks-eda_liwc-fig-liwc_cat_norm-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat_norm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Distribution of Normalized LIWC Feature Scores From Concatenated Messages Within Each Prediction Window
 </figcaption>
 </figure>
 </div>
@@ -1173,18 +1193,51 @@ Figure&nbsp;9: Descriptives of Normalized LIWC Scores in the 1-Week Prediction W
 </div>
 </div>
 </section>
-<section id="model-evaluation-1" class="level2">
-<h2 class="anchored" data-anchor-id="model-evaluation-1">Model Evaluation</h2>
+<section id="best-model-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="best-model-evaluation">Best Model Evaluation</h2>
+<p>The best model configuration was the one that leveraged raw LWIC scores from concatenated messages within both the 3-day and 1-week prediction window, and an upsampling technique with a ratio of 1:1. We applied the best configuration on the raw dataset and obtained an auROC score of 0.53 (see <a href="#fig-auroc" class="quarto-xref">Figure&nbsp;11</a> for the ROC curve). We further aggregated predictions by folds, and the median score of all median auROCs across the 300 inner folds was 0.53 (sd = 0.09, range = 0.28 - 0.80; see <a href="#fig-auroc_hist" class="quarto-xref">Figure&nbsp;12</a>). The median posterior distribution of the auROCs was 0.53 (95% CI = [0.52, 0.54]; see <a href="#fig-auroc_posterior" class="quarto-xref">Figure&nbsp;13</a>). As the 95% CI did not include .5, we concluded that our model was better than chance performance.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-auroc" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;10: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;11: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: ROC Curve for the Best Model Configuration
+Figure&nbsp;11: ROC Curve for the Best Model Configuration
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-auroc_hist" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-auroc_hist" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc_hist-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Figure&nbsp;12: Distribution of auROCs Across 300 Inner Folds"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc_hist-output-2.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Distribution of auROCs Across 300 Inner Folds
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-auroc_posterior" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-auroc_posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-auROC_plot-fig-auroc_posterior-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="Figure&nbsp;13: Posterior Distribution of auROC Scores"><img src="index_files/figure-html/notebooks-auROC_plot-fig-auroc_posterior-output-1.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Posterior Distribution of auROC Scores
 </figcaption>
 </figure>
 </div>
@@ -1194,16 +1247,17 @@ Figure&nbsp;10: ROC Curve for the Best Model Configuration
 </section>
 <section id="model-fairness" class="level2">
 <h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
+<p>Our model performed consistently worse in unprivileged group vs.&nbsp;privileged group across all four demographic categories (see <a href="#fig-fairness" class="quarto-xref">Figure&nbsp;14</a> and <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;4</a>). The median of posterior distribution of model performance difference was 0.03 (95%CI = [0.01, 0.06]) for White people compared to People of Color. The posterior distribution of performance differences also indicated that the model performed better in males than in females (median = 0.02, 95%CI = [0.01, 0.04]), in people younger than 55 than people older than 55 (median = 0.04, 95%CI = [0.01, 0.07]), and in people that have higher income than in those who have lower income (median = 0.02, 95%CI = [0.00, 0.04]). All credible intervals did not include 0, indicating that the model significantly worse in unprivileged groups.</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-fairness" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;11: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups"><img src="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Figure&nbsp;14: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups"><img src="index_files/figure-html/notebooks-fairness-fig-fairness-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups
+Figure&nbsp;14: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups
 </figcaption>
 </figure>
 </div>
@@ -1271,16 +1325,17 @@ Table&nbsp;4: Model Performance Difference across different demographic subgroup
 </section>
 <section id="model-interpretation" class="level2">
 <h2 class="anchored" data-anchor-id="model-interpretation">Model Interpretation</h2>
+<p>The top 30 LIWC categories with the highest global shapley values were displayed in <a href="#fig-shaps" class="quarto-xref">Figure&nbsp;15</a>. Three categories appeared to be the most robust in contributing to model output – social processes (e.g., you, we, he, she), social behavior (e.g., said, love, say, care), and second person pronoun (e.g., you, your, yourself). The other less robust categories included total word count, clout (language of leadership), assent (e.g., yeah, yes, okay, ok), social referents (e.g., you, we, he, she), and prosocial behaviors (e.g., care, help, thank, please).</p>
 <div class="quarto-embed-nb-cell">
 <div id="cell-fig-shaps" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-shaps" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Figure&nbsp;12: Shapley Value"><img src="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="img-fluid figure-img"></a>
+<a href="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Figure&nbsp;15: Shapley Value"><img src="index_files/figure-html/notebooks-shaps-fig-shaps-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;12: Shapley Value
+Figure&nbsp;15: Shapley Value
 </figcaption>
 </figure>
 </div>
@@ -1909,7 +1964,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","loop":false,"closeEffect":"zoom","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
