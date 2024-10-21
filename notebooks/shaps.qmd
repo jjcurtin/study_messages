@@ -44,15 +44,18 @@ shaps_grp <- read_rds(file.path(path_models, str_c("inner_shapsgrp_",
 ```
 
 ```{r}
-#| label: fig-shaps
-#| fig-cap: "Shapley Value"
-#| fig-width: 5
-#| fig-height: 4
-shaps_grp |>
+shaps <- shaps_grp |>
   group_by(variable_grp) |> 
   summarize(mean_value = (mean(abs(value)))) |> 
   mutate(group = reorder(variable_grp, mean_value)) |> 
-  arrange(desc(mean_value)) |> 
+  arrange(desc(mean_value))
+```
+
+```{r}
+#| label: fig-shaps
+#| fig-cap: "Shapley Value"
+
+shaps |>
   head(30) |> 
   ggplot() +
   geom_bar(aes(x = group, y = mean_value), stat = "identity", fill = "#af1f21") +

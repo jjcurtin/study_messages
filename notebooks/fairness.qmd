@@ -63,6 +63,7 @@ library(tidyverse)
 library(tidyposterior)
 library(tidymodels)
 library(yardstick)
+library(here)
 
 theme_set(theme_classic())
 
@@ -193,32 +194,32 @@ bayes_output <- function(pp){
 
 
 ```{r}
-if (file.exists("objects/pp_race.rds")){
-  pp_race <- read_rds("objects/pp_race.rds")
+if (file.exists(here(path_messages, "pp", "pp_race.rds"))){
+  pp_race <- read_rds(here(path_messages, "pp", "pp_race.rds"))
 } else{
   pp_race <- bayes_model(auroc_race)
-  pp_race |> write_rds("objects/pp_race.rds")
+  pp_race |> write_rds(here(path_messages, "pp", "pp_auroc.rds"))
 }
 
-if (file.exists("objects/pp_sex.rds")){
-  pp_sex <- read_rds("objects/pp_sex.rds")
+if (file.exists(here(path_messages, "pp", "pp_sex.rds"))){
+  pp_sex <- read_rds(here(path_messages, "pp", "pp_sex.rds"))
 } else{
   pp_sex <- bayes_model(auroc_sex)
-  pp_sex |> write_rds("objects/pp_sex.rds")
+  pp_sex |> write_rds(here(path_messages, "pp", "pp_sex.rds"))
 }
 
-if (file.exists("objects/pp_age.rds")){
-  pp_age <- read_rds("objects/pp_age.rds")
+if (file.exists(here(path_messages, "pp", "pp_age.rds"))){
+  pp_age <- read_rds(here(path_messages, "pp", "pp_age.rds"))
 } else{
   pp_age <- bayes_model(auroc_age)
-  pp_age |> write_rds("objects/pp_age.rds")
+  pp_age |> write_rds(here(path_messages, "pp", "pp_age.rds"))
 }
 
-if (file.exists("objects/pp_income.rds")){
-  pp_income <- read_rds("objects/pp_income.rds")
+if (file.exists(here(path_messages, "pp", "pp_income.rds"))){
+  pp_income <- read_rds(here(path_messages, "pp", "pp_income.rds"))
 } else{
   pp_income <- bayes_model(auroc_income)
-  pp_income |> write_rds("objects/pp_income.rds")
+  pp_income |> write_rds(here(path_messages, "pp", "pp_income.rds"))
 }
 ```
 
@@ -227,8 +228,7 @@ if (file.exists("objects/pp_income.rds")){
 ```{r}
 #| label: fig-fairness
 #| fig-cap: "auROC posterior distribution across different privileged vs. unprivileged groups"
-#| fig-width: 7
-#| fig-height: 5
+
 ggpubr::ggarrange(
   bayes_output(pp_race) |> 
     ggplot(aes(y = factor(model, levels = c("non_white", "white")), 

@@ -61,6 +61,7 @@ options(tibble.print_max = Inf)
 library(tidyverse)
 library(tidyposterior)
 library(yardstick)
+library(here)
 
 theme_set(theme_classic())
 
@@ -71,6 +72,7 @@ devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_p
 ### Absolute paths
 ```{r}
 path_models <- format_path(str_c("studydata/risk/models/", study))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
 ```
 
 
@@ -85,9 +87,8 @@ probs <-
 
 ```{r}
 #| label: fig-auroc
-#| fig-cap: "auROC Plot"
-#| fig-width: 5
-#| fig-height: 3
+#| fig-cap: "ROC Curve for the Best Model Configuration"
+
 
 tpfp_data <- probs |> 
   roc_curve(prob_raw, truth = label)
@@ -111,14 +112,14 @@ tpfp_data |>
 aurocs <- probs |> 
   group_by(inner_split_num, outer_split_num) |> 
   summarize(auroc = roc_auc_vec(truth = label, estimate = prob_raw))
+
+aurocs |> write_csv(here(path_messages, "aurocs.csv"))
 ```
 
 histogram of aurocs
 ```{r}
 #| label: fig-auroc_hist
-#| fig-cap: "Distribution of auROCs across 300 inner folds"
-#| fig-width: 5
-#| fig-height: 3
+#| fig-cap: "Distribution of auROCs Across 300 Inner Folds"
 
 aurocs |> 
   ggplot(aes(x = auroc)) +
@@ -129,8 +130,8 @@ aurocs |>
 ## Posterior Distribution
 
 ```{r}
-if (file.exists("objects/pp_auroc.rds")){
-  pp <- read_rds("objects/pp_auroc.rds")
+if (file.exists(here(path_messages, "pp", "pp_auroc.rds"))){
+  pp <- read_rds(here(path_messages, "pp", "pp_auroc.rds"))
 } else{
   pp <- auroc |> 
     select(outer_split_num, inner_split_num, auroc) |> 
@@ -146,16 +147,14 @@ if (file.exists("objects/pp_auroc.rds")){
              family = gaussian)
   
   pp |> 
-    write_rds("objects/pp_auroc.rds")
+    write_rds(here(path_messages, "pp", "pp_auroc.rds"))
 }
 
 ```
 
 ```{r}
 #| label: fig-auroc_posterior
-#| fig-cap: "Posterior Distribution of auROC scores"
-#| fig-width: 5
-#| fig-height: 3
+#| fig-cap: "Posterior Distribution of auROC Scores"
 
 pp_tidy <- pp |> 
   tidy(seed = 123)
@@ -173,6 +172,8 @@ pp_tidy |>
                 linewidth = .6, width = 2, color = c("#4292C6")) +
   geom_vline(xintercept = median(pp_tidy$posterior), 
              linetype = "dashed", color = "red") +
+  geom_vline(xintercept = .5, 
+             linetype = "dotdash", color = "darkgray") +
   ylab("Posterior Probability Density") +
   xlab("Area Under ROC Curve")
 ```

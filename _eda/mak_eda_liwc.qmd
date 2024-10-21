@@ -1,0 +1,383 @@
+---
+title: "EDA on LIWC Features"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+## Code Status
+
+## Notes
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+
+theme_set(theme_classic())
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+Read in Data
+```{r}
+liwc_ind <- read_csv(
+  here(path_messages, "liwc", "liwc_features_long.csv"),
+  col_types = cols()
+)
+
+liwc_cat <- read_csv(
+  here(path_messages, "liwc", "liwc_features_cat.csv"),
+  col_types = cols()
+)
+```
+
+## EDA on liwc features generated on individual messages
+
+sanity check: number of participants
+```{r}
+liwc_ind |> 
+  pull(subid) |> 
+  unique() |> 
+  length()
+```
+
+sanity check: # of labels
+```{r}
+(nrow(liwc_ind))
+```
+
+sanity check: # of labels per participant (same with raw_message file)
+```{r}
+liwc_ind |> 
+  group_by(subid) |> 
+  summarize(n = n()) |> 
+  summarize(
+    mean = mean(n),
+    sd = sd(n),
+    median = median(n),
+    min = min(n),
+    max = max(n)
+  )
+```
+
+sanity check: # of features for each prediction window
+```{r}
+liwc_ind |> 
+  select(ends_with("3day")) |> 
+  ncol()
+
+liwc_ind |> 
+  select(ends_with("1week")) |> 
+  ncol()
+
+liwc_ind |> 
+  select(ends_with("3day") | ends_with("1week")) |> 
+  ncol()
+```
+
+### sanity check: missingness
+
+> **By lapse labels**
+
+> checked the percentage of labels that lack liwc features match missingness on raw messages for 3day, and 1week prediction windows
+
+> checked that the percentage of labels that lack liwc features in 1week prediction window and combined feature sets match (both 7.83%)
+
+```{r}
+liwc_ind |> 
+  select(ends_with("3day")) |> 
+  rowwise() |> 
+  mutate(na = if_else(all(is.na(across(everything()))), 1, 0)) |> 
+  ungroup() |>
+  pull(na) |> 
+  mean()
+
+liwc_ind |> 
+  select(ends_with("1week")) |> 
+  rowwise() |> 
+  mutate(na = if_else(all(is.na(across(everything()))), 1, 0)) |> 
+  ungroup() |>
+  pull(na) |> 
+  mean()
+
+liwc_ind |> 
+  select(ends_with("3day") | ends_with("1week")) |>
+  rowwise() |> 
+  mutate(na = if_else(all(is.na(across(everything()))), 1, 0)) |> 
+  ungroup() |>
+  pull(na) |> 
+  mean()
+```
+
+> **By subject**
+
+> checked the percentage of missingness per participant match between raw messages and liwc features for 3day and 1week prediction windows separately
+
+> checked that the missingness per participant in 1week prediction window and combined feature sets match
+
+```{r}
+liwc_ind |> 
+  select(ends_with("3day"), subid, day_start) |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    missingness = if_else(all(is.na(across(everything()))), 1, 0)
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_missing = mean(missingness)
+  ) |> 
+  summarize(
+    mean_mean_missing = mean(mean_missing),
+    sd_mean_missing = sd(mean_missing),
+    median_mean_missing = median(mean_missing),
+    min_mean_missing = min(mean_missing),
+    max_mean_missing = max(mean_missing)
+  ) |> 
+  print_kbl()
+
+liwc_ind |> 
+  select(ends_with("1week"), subid, day_start) |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    missingness = if_else(all(is.na(across(everything()))), 1, 0)
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_missing = mean(missingness)
+  ) |> 
+  summarize(
+    mean_mean_missing = mean(mean_missing),
+    sd_mean_missing = sd(mean_missing),
+    median_mean_missing = median(mean_missing),
+    min_mean_missing = min(mean_missing),
+    max_mean_missing = max(mean_missing)
+  ) |> 
+  print_kbl()
+
+liwc_ind |> 
+  select(-label_num, -lapse) |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    missingness = if_else(all(is.na(across(everything()))), 1, 0)
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_missing = mean(missingness)
+  ) |> 
+  summarize(
+    mean_mean_missing = mean(mean_missing),
+    sd_mean_missing = sd(mean_missing),
+    median_mean_missing = median(mean_missing),
+    min_mean_missing = min(mean_missing),
+    max_mean_missing = max(mean_missing)
+  ) |> 
+  print_kbl()
+```
+
+### EDA on features
+
+```{r}
+skim_minimal <- skimr::skim_with(numeric = skimr::sfl(mean = NULL, p25 = NULL, 
+                                                      p75 = NULL, 
+                                                      hist = NULL))
+
+stats_ind <- liwc_ind |> 
+  select(ends_with("3day"), ends_with("1week")) |> 
+  skim_minimal() |> 
+  select(-n_missing)
+
+stats_ind |> 
+  arrange(numeric.sd, numeric.p50) |> 
+  print_kbl()
+
+stats_ind |> 
+  write_csv(here(path_messages, "eda", "eda_liwc_ind.csv"))
+```
+
+## EDA on concatenated messages
+
+sanity check: number of participants
+```{r}
+liwc_cat |> 
+  pull(subid) |> 
+  unique() |> 
+  length()
+```
+
+sanity check: # of labels
+```{r}
+(nrow(liwc_cat))
+```
+
+sanity check: # of labels per participant (same with raw_message file)
+```{r}
+liwc_cat |> 
+  group_by(subid) |> 
+  summarize(n = n()) |> 
+  summarize(
+    mean = mean(n),
+    sd = sd(n),
+    median = median(n),
+    min = min(n),
+    max = max(n)
+  )
+```
+
+sanity check: # of features for each prediction window
+```{r}
+liwc_cat |> 
+  select(ends_with("3day")) |> 
+  ncol()
+
+liwc_cat |> 
+  select(ends_with("1week")) |> 
+  ncol()
+
+liwc_cat |> 
+  select(ends_with("3day") | ends_with("1week")) |> 
+  ncol()
+```
+
+### sanity check: missingness
+
+> **By lapse labels**
+
+> checked the percentage of labels that lack liwc features match missingness on raw messages for 3day, and 1week prediction windows
+
+> checked that the percentage of labels that lack liwc features in 1week prediction window and combined feature sets match (both 7.83%)
+
+```{r}
+liwc_cat |> 
+  select(ends_with("3day")) |> 
+  rowwise() |> 
+  mutate(na = if_else(all(is.na(across(everything()))), 1, 0)) |> 
+  ungroup() |>
+  pull(na) |> 
+  mean()
+
+liwc_cat |> 
+  select(ends_with("1week")) |> 
+  rowwise() |> 
+  mutate(na = if_else(all(is.na(across(everything()))), 1, 0)) |> 
+  ungroup() |>
+  pull(na) |> 
+  mean()
+
+liwc_cat |> 
+  select(ends_with("3day") | ends_with("1week")) |>
+  rowwise() |> 
+  mutate(na = if_else(all(is.na(across(everything()))), 1, 0)) |> 
+  ungroup() |>
+  pull(na) |> 
+  mean()
+```
+
+> **By subject**
+
+> checked the percentage of missingness per participant match between raw messages and liwc features for 3day and 1week prediction windows separately
+
+> checked that the missingness per participant in 1week prediction window and combined feature sets match
+
+```{r}
+liwc_cat |> 
+  select(ends_with("3day"), subid, day_start) |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    missingness = if_else(all(is.na(across(everything()))), 1, 0)
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_missing = mean(missingness)
+  ) |> 
+  summarize(
+    mean_mean_missing = mean(mean_missing),
+    sd_mean_missing = sd(mean_missing),
+    median_mean_missing = median(mean_missing),
+    min_mean_missing = min(mean_missing),
+    max_mean_missing = max(mean_missing)
+  ) |> 
+  print_kbl()
+
+liwc_cat |> 
+  select(ends_with("1week"), subid, day_start) |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    missingness = if_else(all(is.na(across(everything()))), 1, 0)
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_missing = mean(missingness)
+  ) |> 
+  summarize(
+    mean_mean_missing = mean(mean_missing),
+    sd_mean_missing = sd(mean_missing),
+    median_mean_missing = median(mean_missing),
+    min_mean_missing = min(mean_missing),
+    max_mean_missing = max(mean_missing)
+  ) |> 
+  print_kbl()
+
+liwc_cat |> 
+  select(-label_num, -lapse) |> 
+  group_by(subid, day_start) |> 
+  summarize(
+    missingness = if_else(all(is.na(across(everything()))), 1, 0)
+  ) |> 
+  group_by(subid) |> 
+  summarize(
+    mean_missing = mean(missingness)
+  ) |> 
+  summarize(
+    mean_mean_missing = mean(mean_missing),
+    sd_mean_missing = sd(mean_missing),
+    median_mean_missing = median(mean_missing),
+    min_mean_missing = min(mean_missing),
+    max_mean_missing = max(mean_missing)
+  ) |> 
+  print_kbl()
+```
+
+### EDA on features
+
+```{r}
+stats_cat <- liwc_cat |> 
+  select(ends_with("3day"), ends_with("1week")) |> 
+  skim_minimal() |> 
+  select(-n_missing)
+
+stats_cat |> 
+  arrange(numeric.sd, numeric.p50) |> 
+  print_kbl()
+
+stats_cat |> 
+  write_csv(here(path_messages, "eda", "eda_liwc_cat.csv"))
+```
