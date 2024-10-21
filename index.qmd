@@ -151,8 +151,8 @@ The study lasted up to three months with five in-person visits (see @fig-simp). 
 
 Throughout the course of the study, participants were expected to complete four daily EMAs that asked about their alcohol cravings, risky situations, stressful/pleasant events, etc [@wyantMachineLearningModels2024]. Notably, in the first item in the EMA survey, participants also reported their past alcohol use. Answer to this item will be used as the predicted outcome (see *Section Alcohol Lapses*).
 
-::: {#fig-simp width="30%}
-```{dot}
+::: {#fig-simp}
+```{dot, fig.width=6.5, fig.height=0.5}
 
 digraph {
 
