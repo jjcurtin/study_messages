@@ -103,7 +103,7 @@ Find demographic groups
 demographics <- labels |> 
   left_join(screen, by = "subid") |> 
   select(-day_start, -day_end, -lapse) |> 
-  distinct() |>
+  distinct() |> 
   mutate(
     race = case_when(
       dem_3 == "White/Caucasian" & grepl("No", dem_4) ~ "white",

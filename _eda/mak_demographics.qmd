@@ -1,0 +1,124 @@
+---
+title: "Generate Demographic Information"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+# Housekeeping
+
+## Code status
+
+## Notes
+
+# Set Up
+
+## Set Up Environment
+
+### Defaults
+
+```{r}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_ml.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+tidymodels_conflictRules()
+
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+### Packages for script
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(tidyposterior)
+library(tidymodels)
+library(yardstick)
+library(here)
+
+theme_set(theme_classic())
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+```
+
+### Absolute paths
+
+```{r}
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+```
+
+## Data Cleaning
+
+Read in Data
+
+```{r}
+labels <- read_csv(here::here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+
+screen <- read_csv(here::here(path_shared, "screen.csv"),
+                   col_types = cols()) |> 
+  select(subid, starts_with("dem"), starts_with("auh"), starts_with("dsm"),
+         starts_with("yap"), starts_with("assist")) |>
+  glimpse()
+```
+
+Find demographic groups
+
+```{r}
+demographics <- labels |> 
+  left_join(screen, by = "subid") |> 
+  select(-day_start, -day_end, -lapse) |> 
+  distinct() |> 
+  glimpse()
+```
+
+```{r}
+demographics |> 
+  select(starts_with("dsm5")) |> 
+  mutate(count = rowSums(across(everything(), ~ . == "Yes"))) |> 
+  summarize(
+    mean = mean(count),
+    sd = sd(count),
+    min = min(count),
+    max = max(count)
+  )
+```
+
+```{r}
+demographics |> 
+  select(starts_with("yap")) |> 
+  rowwise() |> 
+  mutate(count = 27 - sum(str_detect(c_across(everything()), "No"))) |> 
+  ungroup() |> 
+  summarize(
+    mean = mean(count),
+    sd = sd(count),
+    min = min(count),
+    max = max(count)
+  )
+```
+
+```{r}
+demographics |> 
+  select(starts_with("assist_2")) |> 
+  mutate(across(everything(), ~ . == "Never"))
+```
