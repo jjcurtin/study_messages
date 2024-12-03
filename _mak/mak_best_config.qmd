@@ -1,0 +1,469 @@
+---
+title: "Collect predictions and identify best config"
+author: "John Curtin & Claire Punturieri"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+params:
+  study: "messages"
+  version: "v1"
+  cv: "nested_1_x_10_3_x_10"
+  algorithms: "xgboost"   # "all" or name of specific algorithm
+editor_options: 
+  chunk_output_type: console
+---
+
+# Housekeeping
+
+## Code Status
+
+
+
+# Set Up
+
+## Set Up Environment
+
+### Study parameters
+```{r}
+study <- params$study
+version <- params$version
+cv <- params$cv
+algorithms <- params$algorithms
+```
+
+### Defaults
+```{r}
+#| message: false
+#| warning: false
+
+options(conflicts.policy = "depends.ok")
+
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+### Packages and source
+```{r}
+library(tidyverse)
+
+theme_set(theme_classic())
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+### Paths
+```{r}
+#| message: false
+
+path_input <- format_path(str_c("studydata/risk/chtc/", study))
+path_models <- format_path(str_c("studydata/risk/models/", study))
+path_output <- format_path(str_c("studydata/risk/chtc/", study))
+
+```
+
+# Data checking
+
+## Basic checks
+
+Get batch name from above-specified model parameters.
+```{r}
+batch_name_1 <- str_c("train_", algorithms, "_", cv, "_", version, "_message")
+batch_name_2 <- str_c("train_", algorithms, "_", cv, "_", version, "_doc")
+```
+
+Load in results file.
+```{r}
+results_1 <- read_csv(here::here(path_input, batch_name_1, "output", "batch_results.csv"),
+                        show_col_types = FALSE)
+results_2 <- read_csv(here::here(path_input, batch_name_2, "output", "batch_results.csv"),
+                        show_col_types = FALSE)
+
+results_all <- results_1 |> 
+  bind_rows(results_2)
+```
+
+Conduct final checks -- we expect to see results split evenly among possible hyperparameter combinations, resampling techniques, etc. If these numbers are not even, that suggests there may be a problem.
+```{r}
+  results_all |> tab(outer_split_num) |> print()
+  results_all |> tab(inner_split_num) |> print()
+  results_all |> tab(algorithm) |> print()
+  results_all |> tab(feature_set) |> print()
+  results_all |> tab(hp1) |> print()
+  results_all |> tab(hp2) |> print()
+  results_all |> tab(hp3) |> print()
+  results_all |> tab(resample) |> print()
+```
+
+Following basic checks, save raw metrics file into the models folder on the server.
+```{r}
+results_all |>
+  arrange(split_num, outer_split_num, inner_split_num, algorithm, resample) |> 
+  write_csv(here::here(path_models, str_c("inner_metrics_",
+                                             version, "_",
+                                             cv, ".csv")))
+```
+
+## Identify best configuration
+
+Summarize median auROCs by model parameters.
+```{r}
+metrics_avg <- results_all |> 
+  group_by(algorithm, feature_set, hp1, hp2, hp3, resample) |> 
+   summarize(median_roc_auc = median(roc_auc),
+             n_folds = n(), .groups = "drop") |> 
+  relocate(n_folds) |> 
+  arrange(desc(median_roc_auc)) |> 
+  ungroup()
+```
+
+Check to make sure summarized tibble looks accurate.
+```{r}
+metrics_avg |> 
+  slice(1:50) |> 
+  print_kbl()
+```
+
+Pull out best configuration from metrics_avg and save out results for best configuration into models folder on server.
+```{r}
+best_config <- metrics_avg |> 
+  slice(1) |> 
+  print()
+
+results_all |> 
+  filter(algorithm == best_config$algorithm,
+         feature_set == best_config$feature_set,
+         hp1 == best_config$hp1,
+         hp2 == best_config$hp2,
+         hp3 == best_config$hp3,
+         resample == best_config$resample) |> 
+  write_csv(here::here(path_models, str_c("best_config_",
+                                             version, "_",
+                                             cv, ".csv")))
+```
+
+
+## Plot hyperparameters
+
+Ensure that you have assessed a wide enough range of hyperparameters.
+```{r}
+# update algorithms to actual ones in the tibble
+algorithms <- unique(metrics_avg$algorithm) 
+feature_sets <- unique(metrics_avg$feature_set) 
+
+for (k in algorithms) {
+  
+  results_k <- metrics_avg |> 
+      filter(algorithm == k)
+  
+  for (i in feature_sets) {
+  
+    results_i <- results_k |> 
+      filter(feature_set == i)
+    
+    
+    # glmnet
+    if (k == "glmnet") {
+  
+      plot_title <- str_c("Plotting glmnet hyperparameters for ", i, " feature set")
+  
+  
+      plot_i <- results_i |>
+        mutate(hp1 = factor(hp1, ordered = TRUE),
+               resample = case_when(resample == "none" ~ "none_none",
+                                    TRUE ~ resample)) |> 
+        separate(resample, c("resample", "under_ratio"), "_") |> 
+        mutate(under_ratio = factor(under_ratio)) |> 
+        ggplot(mapping = aes(x = log(hp2), 
+                         y = roc_auc, 
+                         group = hp1, 
+                         color = hp1)) +
+          geom_line() +
+          facet_grid(under_ratio ~ resample) +
+          scale_color_discrete(name = "mixture (alpha)") +
+          labs(title = plot_title, x = "penalty (lambda)", y = "ROC AUC")
+  
+      print(plot_i)
+    }
+
+
+    # random forest
+    if (k == "random_forest") {
+      
+      plot_title <- str_c("Plotting RF hyperparameters for ", i, " feature set")
+      
+      plot_i <- results_i |>
+        mutate(hp2 = factor(hp2, ordered = TRUE)) |> 
+        separate(resample, c("resample", "under_ratio"), "_") |> 
+        mutate(under_ratio = factor(under_ratio)) |> 
+        ggplot(mapping = aes(x = hp1, 
+                         y = roc_auc, 
+                         group = hp2, 
+                         color = hp2)) +
+          geom_line() +
+          facet_grid(under_ratio ~ resample) +
+          scale_color_discrete(name = "min n") +
+          labs(title = plot_title, x = "mtry", y = "ROC AUC")
+      
+       print(plot_i)
+    }  
+    
+    # XGBoost
+    if (k == "xgboost") {
+      
+      # hp1 x axis
+            plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and DOWNSAMPLE")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)), # prob have to change this to factor
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "down")) |> 
+        ggplot(mapping = aes(x = log_hp1, 
+                         y = median_roc_auc, 
+                         group = hp3, 
+                         color = hp3)) +
+          geom_line() +
+          facet_grid(resample ~ hp2) +
+          scale_color_discrete(name = "mtry") +
+          labs(title = plot_title, x = "log10 learning rate", y = "ROC AUC")
+      
+       print(plot_i)
+       
+      plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and UPSAMPLE")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)),
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "up")) |> 
+        ggplot(mapping = aes(x = log_hp1, 
+                         y = median_roc_auc, 
+                         group = hp3, 
+                         color = hp3)) +
+          geom_line() +
+          facet_grid(resample ~ hp2) +
+          scale_color_discrete(name = "mtry") +
+          labs(title = plot_title, x = "log10 learning rate", y = "ROC AUC")
+      
+       print(plot_i)
+       
+        plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and NO RESAMPLING")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)),
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "none")) |> 
+        ggplot(mapping = aes(x = log_hp1, 
+                         y = median_roc_auc, 
+                         group = hp3, 
+                         color = hp3)) +
+          geom_line() +
+          facet_grid(resample ~ hp2) +
+          scale_color_discrete(name = "mtry") +
+          labs(title = plot_title, x = "log10 learning rate", y = "ROC AUC")
+      
+       print(plot_i)
+      
+      # hp2 x axis
+      
+      plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and DOWNSAMPLE")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)), # prob have to change this to factor
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "down")) |> 
+        ggplot(mapping = aes(x = hp2, 
+                         y = median_roc_auc, 
+                         group = log_hp1, 
+                         color = log_hp1)) +
+          geom_line() +
+          facet_grid(resample ~ hp3) +
+          scale_color_discrete(name = "log10 learning rate") +
+          labs(title = plot_title, x = "tree depth", y = "ROC AUC")
+      
+       print(plot_i)
+       
+      plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and UPSAMPLE")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)),
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "up")) |> 
+        ggplot(mapping = aes(x = hp2, 
+                         y = median_roc_auc, 
+                         group = log_hp1, 
+                         color = log_hp1)) +
+          geom_line() +
+          facet_grid(resample ~ hp3) +
+          scale_color_discrete(name = "log10 learning rate") +
+          labs(title = plot_title, x = "tree depth", y = "ROC AUC")
+      
+       print(plot_i)
+       
+        plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and NO RESAMPLING")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)),
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "none")) |> 
+        ggplot(mapping = aes(x = hp2, 
+                         y = median_roc_auc, 
+                         group = log_hp1, 
+                         color = log_hp1)) +
+          geom_line() +
+          facet_grid(resample ~ hp3) +
+          scale_color_discrete(name = "log10 learning rate") +
+          labs(title = plot_title, x = "tree depth", y = "ROC AUC")
+      
+       print(plot_i)
+       
+       # hp3 x axis
+    plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and DOWNSAMPLE")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)), # prob have to change this to factor
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "down")) |> 
+        ggplot(mapping = aes(x = hp3, 
+                         y = median_roc_auc, 
+                         group = hp2, 
+                         color = hp2)) +
+          geom_line() +
+          facet_grid(resample ~ log_hp1) +
+          scale_color_discrete(name = "tree depth") +
+          labs(title = plot_title, x = "mtry", y = "ROC AUC")
+      
+       print(plot_i)
+       
+      plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and UPSAMPLE")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)),
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "up")) |> 
+        ggplot(mapping = aes(x = hp3, 
+                         y = median_roc_auc, 
+                         group = hp2, 
+                         color = hp2)) +
+          geom_line() +
+          facet_grid(resample ~ log_hp1) +
+          scale_color_discrete(name = "tree depth") +
+          labs(title = plot_title, x = "mtry", y = "ROC AUC")
+      
+       print(plot_i)
+       
+        plot_title <- str_c("Plotting XGBoost hyperparameters for ", i, " feature set and NO RESAMPLING")
+      plot_i <- results_i |>
+        mutate(log_hp1 = factor(log10(hp1)),
+               hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "none")) |> 
+        ggplot(mapping = aes(x = hp3, 
+                         y = median_roc_auc, 
+                         group = hp2, 
+                         color = hp2)) +
+          geom_line() +
+          facet_grid(resample ~ log_hp1) +
+          scale_color_discrete(name = "tree depth") +
+          labs(title = plot_title, x = "mtry", y = "ROC AUC")
+      
+       print(plot_i)
+    }  
+    
+    # rda
+    if (k == "rda") {
+      
+      plot_title <- str_c("Plotting RDA hyperparameters for ", i, " feature set")
+      
+      plot_i <- results_i |>
+        mutate(hp2 = factor(hp2, ordered = TRUE),
+               resample = case_when(resample == "none" ~ "none_none",
+                                    TRUE ~ resample)) |> 
+        separate(resample, c("resample", "under_ratio"), "_") |> 
+        mutate(under_ratio = factor(under_ratio)) |> 
+        ggplot(mapping = aes(x = hp1, 
+                         y = roc_auc, 
+                         group = hp2, 
+                         color = hp2)) +
+          geom_line() +
+          facet_grid(under_ratio ~ resample) +
+          scale_color_discrete(name = "frac identity matrix") +
+          labs(title = plot_title, x = "frac common cov", y = "ROC AUC")
+      
+       print(plot_i)
+    }  
+    
+     # nnet
+    if (k == "nnet") {
+      
+      plot_title <- str_c("Plotting nnet hyperparameters for ", i, " feature set and DOWNSAMPLE by HIDDEN UNITS")
+      plot_i <- results_i |>
+        mutate(hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "down")) |> 
+        ggplot(mapping = aes(x = hp1, 
+                         y = roc_auc, 
+                         group = hp2, 
+                         color = hp2)) +
+          geom_line() +
+          facet_grid(resample ~ hp3) +
+          scale_color_discrete(name = "penalty") +
+          labs(title = plot_title, x = "epochs", y = "ROC AUC")
+      
+       print(plot_i)
+       
+      plot_title <- str_c("Plotting nnet hyperparameters for ", i, " feature set and UPSAMPLE by HIDDEN UNITS")
+      plot_i <- results_i |>
+        mutate(hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "down")) |> 
+        ggplot(mapping = aes(x = hp1, 
+                         y = roc_auc, 
+                         group = hp2, 
+                         color = hp2)) +
+          geom_line() +
+          facet_grid(resample ~ hp3) +
+          scale_color_discrete(name = "penalty") +
+          labs(title = plot_title, x = "epochs", y = "ROC AUC")
+      
+       print(plot_i)
+  
+    
+    plot_title <- str_c("Plotting nnet hyperparameters for ", i, " feature set and NO RESAMPLING by HIDDEN UNITS")
+      plot_i <- results_i |>
+        mutate(hp2 = factor(hp2, ordered = TRUE),
+               hp3 = factor(hp3, ordered = TRUE),
+               resample = factor(resample)) |> 
+        filter(str_detect(resample, "none")) |> 
+        ggplot(mapping = aes(x = hp1, 
+                         y = roc_auc, 
+                         group = hp2, 
+                         color = hp2)) +
+          geom_line() +
+          facet_grid(resample ~ hp3) +
+          scale_color_discrete(name = "penalty") +
+          labs(title = plot_title, x = "epochs", y = "ROC AUC")
+      
+       print(plot_i)
+    } 
+  }
+}
+```

@@ -1,0 +1,17 @@
+{
+  "hash": "5c95b137a61c11bb195080bf01b62b5e",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"shaps\"\nauthor: \"Claire & Coco\"\ndate: \"2024-12-03\"\noutput: \n  html_document:\n    toc: true \n    toc_depth: 4\nformat:\n  html:\n    embed-resources: true\nparams:\n  study: \"messages\"\n  version: \"v1\"\n  cv: \"nested_1_x_10_3_x_10\"\n  algorithms: \"xgboost\"   # \"all\" or name of specific algorithm\neditor_options: \n  chunk_output_type: console\n---\n\n\n# Set up environment\n\n\n::: {.cell}\n\n```{.r .cell-code .hidden}\nstudy <- params$study\ncv <- params$cv\nalgorithms <- params$algorithms\nversion <- params$version\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code .hidden}\nlibrary(tidyverse)\n```\n\n::: {.cell-output .cell-output-stderr .hidden}\n\n```\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ purrr::%||%()   masks base::%||%()\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors\n```\n\n\n:::\n\n```{.r .cell-code .hidden}\ntheme_set(theme_classic()) \ndevtools::source_url(\"https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true\",\n                     sha1 = \"a58e57da996d1b70bb9a5b58241325d6fd78890f\")\npath_models <- format_path(str_c(\"studydata/risk/models/\", study))\n#path_mak <- \"mak/risk\"\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code .hidden}\nshaps_grp <- read_rds(file.path(path_models, str_c(\"inner_shapsgrp_\", \n                                           version, \"_\", cv, \".rds\"))) |>\n\n  glimpse()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\nRows: 1,294,679\nColumns: 3\nGroups: id_obs [11,562]\n$ id_obs       <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …\n$ variable_grp <fct> achieve, acquire, adj, adverb, affect, affiliation, all_p…\n$ value        <dbl> 0.000000e+00, 0.000000e+00, -1.508398e-07, 0.000000e+00, …\n```\n\n\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code .hidden}\nshaps <- shaps_grp |>\n  group_by(variable_grp) |> \n  summarize(mean_value = (mean(abs(value)))) |> \n  mutate(group = reorder(variable_grp, mean_value)) |> \n  arrange(desc(mean_value))\n```\n:::\n\n::: {#cell-fig-shaps .cell}\n\n```{.r .cell-code .hidden}\n#| label: fig-shaps\n#| fig-cap: \"Shapley Value\"\n\nshaps |>\n  head(30) |> \n  ggplot() +\n  geom_bar(aes(x = group, y = mean_value), stat = \"identity\", fill = \"#af1f21\") +\n  ylab(\"Mean |SHAP| value (in Log-Odds)\") +\n  xlab(\"\") +\n  coord_flip()\n```\n\n::: {.cell-output-display}\n![Shapley Value](fig_shaps_files/figure-html/fig-shaps-1.png){#fig-shaps width=672}\n:::\n:::",
+    "supporting": [
+      "fig_shaps_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

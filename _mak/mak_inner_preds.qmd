@@ -1,0 +1,395 @@
+---
+title: "get inner preds locally for 300 folds.  Calibrate and calculate SHAPS"
+author: "John Curtin & Kendra Wyant, updated by Claire Punturieri for GPS study"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+params:
+  study: "messages"
+  version: "v1"
+  cv: "nested_1_x_10_3_x_10"
+editor_options: 
+  chunk_output_type: console
+---
+
+### Code Status
+
+Currently being updated for GPS study as of 10/2024.
+
+### Notes
+This script reads in CHTC performance metrics from the inner loops of CV, selects the best model configuration for each outer loop, trains those models and predicts into the inner folds.
+
+Returns metrics, predictions (probabilities) and SHAPs
+
+This script creates the following files in the `models` folder
+
+* outer_metrics_*.rds
+* outer_preds_*.rds
+* outer_shaps_*.rds
+* outer_shapsgrp_*.rds
+
+where * = window_lead_version_cv
+
+
+### To Do
+
+
+
+
+### Set Up Environment
+
+```{r}
+study <- params$study
+version <- params$version
+cv <- params$cv
+```
+
+Function conflicts
+```{r}
+#| message: false
+#| warning: false
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_ml.R?raw=true")
+tidymodels_conflictRules()
+```
+
+Packages for script
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(tidymodels)
+library(probably)
+```
+
+Source support functions
+```{r source_functions}
+# EDA
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+# CHTC support functions
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+```
+
+Absolute paths
+```{r, absolute_paths}
+path_processed <- format_path(str_c("studydata/risk/data_processed/", study))
+path_input <- format_path(str_c("studydata/risk/chtc/", study))
+path_models <- format_path(str_c("studydata/risk/models/", study))
+```
+
+### Script Functions
+
+Function to fit, predict, and calc metrics, preds, shaps
+```{r}
+# should this be outer_split_num and inner_split_num?
+# or: should we add this to our dataframe: split_num = 10 * outer_split_num + (inner_split_num - 10)
+fit_predict_eval <- function(outer_split_num, inner_split_num, splits, config_best){
+
+  # write tmp file to repo to track progress through loop
+  # delete this file when script is complete.  
+  write_csv(tibble(stage = "eval",
+                   outer_split_num = outer_split_num,
+                   inner_split_num = inner_split_num,
+                   start_time = Sys.time()),
+            here::here(path_models, str_c("tmp_metrics_inner_progress")),
+            append = TRUE)
+  
+  ## this might need to be different???
+  d_in <- splits$inner_resamples[[outer_split_num]]$splits[[inner_split_num]] |>
+    training() |> 
+    select(-id_obs)  # not used for training; only needed in d_out to tag for later joins 
+  
+  d_out <- splits$inner_resamples[[outer_split_num]]$splits[[inner_split_num]] |>
+    testing()
+    
+  rec <- build_recipe(d = d_in, config = config_best)
+  rec_prepped <- rec |> 
+    prep(training = d_in, strings_as_factors = FALSE)
+  
+  feat_in <- rec_prepped |> 
+    bake(new_data = NULL)
+  
+  model_best <- fit_best_model(config_best, feat = feat_in, "classification")
+  
+  feat_out <- rec_prepped |> 
+    bake(new_data = d_out)   # no id_obs because not included in d_in
+  
+  # metrics from raw (uncalibrated) predictions for held out fold
+  preds_prob <- predict(model_best, feat_out,
+                        type = "prob")
+  # preds_class <- predict(model_best, feat_out, type = "class")$.pred_class
+
+  # roc <- tibble(truth = feat_out$y, 
+  #               prob = preds_prob[[str_c(".pred_", y_level_pos)]]) %>% 
+  #     roc_auc(prob, truth = truth, event_level = "first") %>% 
+  #     select(metric = .metric, 
+  #            estimate = .estimate)
+  
+  # cm <- tibble(truth = feat_out$y, estimate = preds_class) %>% 
+  #   conf_mat(truth, estimate)
+  #   
+  # metrics_out <- cm |> 
+  #   summary(event_level = "first") |>   
+  #   select(metric = .metric,
+  #          estimate = .estimate) |> 
+  #   filter(metric %in% c("sens", "spec", "ppv", "npv", "accuracy", "bal_accuracy")) |> 
+  #   suppressWarnings() |>  # warning not about metrics we are returning
+  #   bind_rows(roc) |> 
+  #   pivot_wider(names_from = "metric", values_from = "estimate") |>    
+  #   relocate(roc_auc, sens, spec, ppv, npv, accuracy, bal_accuracy) |> 
+  #   bind_cols(config_best) |>
+  #   relocate(outer_split_num, algorithm, feature_set, hp1, hp2, hp3, 
+  #            resample) |> 
+  #   relocate(accuracy_in, bal_accuracy_in, .after = last_col())
+
+  # train calibration model train/test split on held in data
+  # Skip for baseline models
+  set.seed(2468)
+  cal_split <- d_in |> 
+    group_initial_split(group = all_of(cv_group), prop = 3/4)
+  d_cal_in <- training(cal_split) 
+  d_cal_out <- testing(cal_split)
+
+  feat_cal_in <- rec |> 
+    prep(training = d_cal_in, strings_as_factors = FALSE) |>  
+    bake(new_data = NULL) 
+
+  feat_cal_out <- rec |>  
+    prep(training = d_cal_in, strings_as_factors = FALSE) |>  
+    bake(new_data = d_cal_out) 
+
+  model_cal <- fit_best_model(config_best, feat = feat_cal_in, "classification")
+
+  # iso calibration
+  iso <- predict(model_cal, feat_cal_out,
+                 type = "prob") |> 
+    mutate(truth = feat_cal_out$y) |> 
+    cal_estimate_isotonic(truth = truth,
+                          estimate = dplyr::starts_with(".pred_"))
+  preds_prob_iso <- preds_prob |> 
+    cal_apply(iso)
+
+  # logistic calibration
+  logi <- predict(model_cal, feat_cal_out,
+                 type = "prob") |>
+    mutate(truth = feat_cal_out$y) |>
+    cal_estimate_logistic(truth = truth,
+                           estimate = dplyr::starts_with(".pred_"),
+                           smooth = TRUE)
+  preds_prob_logi <- preds_prob |>
+    cal_apply(logi)
+
+  # beta calibration
+  # beta <- predict(model_cal, feat_cal_out,
+  #                type = "prob") |>
+  #   mutate(truth = feat_cal_out$y) |> 
+  #   cal_estimate_beta(truth = truth,
+  #                          estimate = dplyr::starts_with(".pred_"),
+  #                          smooth = TRUE)
+  # preds_prob_beta <- preds_prob |>
+  #   cal_apply(beta)
+
+  # combine raw and calibrated probs
+  probs_out <- tibble(id_obs = d_out$id_obs,
+                      outer_split_num = rep(outer_split_num, nrow(preds_prob)),
+                      inner_split_num = rep(inner_split_num, nrow(preds_prob)),
+                      prob_raw = preds_prob[[str_c(".pred_", y_level_pos)]],
+                      prob_iso = preds_prob_iso[[str_c(".pred_", y_level_pos)]],
+                      prob_logi = preds_prob_logi[[str_c(".pred_", y_level_pos)]],
+                      # prob_beta = preds_prob_beta[[str_c(".pred_", y_level_pos)]],
+                      label = d_out$y) 
+
+  # NOTE SHAPS COMMENTED OUT FOR NOW FOR TESTING
+  # SHAP in held out fold
+  shaps_out <- SHAPforxgboost::shap.prep(xgb_model = extract_fit_engine(model_best),
+                     X_train = feat_out |> select(-y) |>  as.matrix()) |> 
+   # add id_obs by multiple of number of features
+   mutate(id_obs = rep(d_out$id_obs, times = ncol(feat_out) - 1),
+          outer_split_num = outer_split_num,
+          inner_split_num = inner_split_num) |>
+   relocate(id_obs, outer_split_num, inner_split_num) # |> bind_rows()
+
+  return(list(probs_out = probs_out, 
+              shaps_out = shaps_out))
+}
+```
+
+### Read in aggregate CHTC metrics for inner folds
+```{r}
+config_best <- 
+  read_csv(here::here(path_models, str_c("best_config_", version, "_", cv, ".csv"))) |>
+  slice(1) |> 
+  select(algorithm, feature_set, hp1, hp2, hp3, resample) |> 
+    glimpse()
+```
+
+
+
+### Fit best model for each outer fold and get/save metrics, preds, SHAPs
+
+Get data and training controls for best batch
+
+CURRENTLY, THIS IS THE DOC LEVEL CONFIGS
+
+Map over all outer splits to get predicted probabilities, metrics, and SHAPs from held out outer folds.  Then save predicted probs, metrics, and SHAPs
+
+NOTE: Delete `outer_metrics_*` or this code chunk won't run!
+```{r}
+if(!file.exists(here::here(path_models, str_c("inner_preds_", 
+                                  version, "_", 
+                                  cv, ".rds")))){
+  
+  # can source any training control given assumptions above
+  # batch_names <- list.dirs(path_input, full.names = FALSE, recursive = FALSE)
+  # batch_names <- batch_names[str_detect(batch_names, "train") & 
+  #                              str_detect(batch_names, cv) &
+  #                              str_detect(batch_names, version)] #&
+  #                              #str_detect(batch_names, window) &
+  #                              #str_detect(batch_names, 
+  #                                         #str_c(as.character(lead), "lag"))]
+  # 
+  # batch_name <- batch_names[1] # can source any batch given assumptions above
+  
+  batch_name <- "train_xgboost_nested_1_x_10_3_x_10_v1_doc"
+  path_batch <- here::here(path_input, batch_name)
+  source(here::here(path_batch, "input", "training_controls.R"))
+  # NOTE: NEED TO UPDATE PATH PATCH BECAUSE WE CHANGED IT FROM WHEN WE TRAINED   
+  path_batch <- here::here(path_input, batch_name)
+  version <- "v1"
+  
+  chunks <- str_split_fixed(data_trn, "\\.", n = Inf) # parse name from extensions
+  if (length(chunks) == 2) {
+    fn <- str_c("data_trn.", chunks[[2]])
+  } else {
+    fn <- str_c("data_trn.", chunks[[2]], ".", chunks[[3]])
+  }
+    
+  # open based on file type
+  if (str_detect(fn, "csv")) {
+    d <- read_csv(here::here(path_batch, "input", fn), show_col_types = FALSE) 
+  } else {
+    d <- read_rds(here::here(path_batch, "input", fn))
+  }
+  
+  d <- format_data(d) |> 
+    arrange(label_num) |>
+    mutate(id_obs = 1:nrow(d))  # tmp add for linking obs
+  
+  splits <- d |> 
+    make_splits(cv_resample_type, cv_resample, cv_outer_resample, 
+                cv_inner_resample, cv_group, seed_splits)
+  
+  # one option with separate inner and outer lists
+  inner_split_num_list <- rep(1:10, times = 30)
+  outer_split_num_list <- rep(1:30, each = 10)
+
+   
+  all <- map2(inner_split_num_list, outer_split_num_list, \(inner_split_num, outer_split_num)
+       fit_predict_eval(inner_split_num = inner_split_num, outer_split_num = outer_split_num,
+                        splits = splits, 
+                        config_best = config_best))
+  
+  
+  # # one option with mutate split_num column
+  # all <- fit_predict_eval(split_num = 1, splits = splits, configs_best = configs_best)
+  # 
+  # 
+  # all <- configs_best$split_num |> # or 1:300?
+  #   map(\(split_num) fit_predict_eval(split_num = split_num, splits = splits, configs_best = configs_best))
+  # 
+  
+  # original:
+  #all <- configs_best$outer_split_num |> 
+    #map(\(split_num) fit_predict_eval(split_num, splits, configs_best)) 
+  
+  
+  rm(splits)  # save a bit of memory!
+  
+  # write_csv(tibble(stage = "probs_save",
+  #                  outer_split_num = NA, 
+  #                  start_time = Sys.time()),
+  #           here::here(path_models, str_c("tmp_metrics_inner_progress_",window)),
+  #           append = TRUE)  
+  probs_out <- all |> 
+    map(\(l) pluck(l, "probs_out")) |> 
+    list_rbind() |> 
+    write_rds(here::here(path_models, str_c("inner_preds_", 
+                                           version, "_", 
+                                           cv, ".rds")))
+
+  write_csv(tibble(stage = "shaps_save",
+                 outer_split_num = NA, 
+                 start_time = Sys.time()),
+          here::here(path_models, str_c("tmp_metrics_inner_progress_", window)),
+          append = TRUE)    
+  shaps_out <- all |> 
+    map(\(l) pluck(l, "shaps_out")) |>
+    list_rbind() |> 
+    # clean feature names;  See function above
+    # mutate(variable = fct_relabel(variable, clean_feature_names)) |> 
+    # average SHAP metrics across repeats for same id_obs
+    group_by(id_obs, variable) |> 
+    summarize(value = mean(value), 
+              # rfvalue is same across repeats but want included 
+              rfvalue =  mean(rfvalue),  
+              mean_value = mean(mean_value)) |> 
+    write_rds(here::here(path_models, str_c("inner_shaps_", 
+                                           version, "_", 
+                                           cv, ".rds")))
+    
+} else {
+  message("Resampled performance from nested CV previously calculated")
+  shaps_out <- read_rds(here::here(path_models, str_c("inner_shaps_", 
+                                                     version, "_", 
+                                                     cv, ".rds")))
+}
+```
+
+Now group SHAPs
+
+- NOTE: Delete `outer_shapsgrp_*` or this code chunk won't run!
+- NOTE: not run for baseline models
+
+```{r}
+if(!file.exists(here::here(path_models, str_c("inner_shapsgrp_",
+                                            version, "_",
+                                            cv, ".rds")))){
+
+  message("Calculating grouped SHAPs")
+  write_csv(tibble(stage = "shapsgrp_save",
+                   outer_split_num = NA, 
+                   start_time = Sys.time()),
+            here::here(path_models, str_c("tmp_metrics_inner_progress_",window)),
+            append = TRUE)
+  
+  shaps_out_grp <- shaps_out |>  
+    mutate(variable_grp = gsub("(_[^_]*_?[^_]*)$", "", variable)) |> 
+    mutate(variable_grp = factor(variable_grp)) |>  
+    group_by(id_obs, variable_grp) |>  # values are already averaged across repeats
+    summarize(value = sum(value))
+  
+  shaps_out_grp |>  write_rds(here::here(path_models, 
+                                          str_c("inner_shapsgrp_", version, "_",
+                                                cv, ".rds")))
+}
+```
+
+
+```{r}
+# delete tracking file
+if(file.exists(here::here(path_models, str_c("tmp_metrics_inner_progress")))) {
+  file.remove(here::here(path_models, str_c("tmp_metrics_inner_progress")))
+}
+```
+
+IMPORTANT:  We still need to select ONE final best config using the inner resampling approach AND then we need to fit that best config to ALL the data.

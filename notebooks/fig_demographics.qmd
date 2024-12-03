@@ -1,0 +1,216 @@
+---
+title: "EDA on Subject Demographics"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+## Code Status
+
+## Notes
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+
+theme_set(theme_classic())
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+```
+
+## Prepare Data
+
+Read in Data
+```{r}
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+
+screen <- read_csv(here::here(path_shared, "screen.csv"),
+                   col_types = cols()) |>
+  select(c(starts_with("dem"), subid)) |> 
+  glimpse()
+```
+
+Merge dataframes
+```{r}
+demographics <- labels |> 
+  left_join(screen, by = "subid") |> 
+  select(-day_start, -day_end, -lapse) |> 
+  distinct()
+```
+
+Clean up -- rename columns and make binary
+```{r}
+demographics <- demographics |>
+  mutate(
+    race = case_when(
+      dem_3 == "White/Caucasian" & grepl("No", dem_4) ~ "white",
+      dem_3 != "White/Caucasian" | grepl("Yes", dem_4) ~ "non_white"),
+    sex = if_else(dem_2 == "Female", "female", "male"),
+    age = if_else(dem_1 >= 55, "older", "younger"),
+    income = if_else(dem_7 <= .5 * 30000, "below_poverty", "above_poverty")
+  ) |> 
+  select(-starts_with("dem")) |> 
+  glimpse()
+```
+
+```{r}
+output <- rbind(
+  data.frame(table(demographics$sex)),
+  data.frame(table(demographics$race)),
+  data.frame(table(demographics$income)),
+  data.frame(table(demographics$age))
+)
+
+output$demographics <- rep(c("sex", "race", "income", "age"), each = 2)
+output <- output |> 
+  rename(subgroup = Var1, N = Freq) |> 
+  relocate(demographics)
+output <- output[c(2, 1, 4, 3, 5, 6, 8, 7),]
+output |> mutate(percent = N / 138) |> print_kbl()
+```
+
+```{r}
+#| label: fig-demographics
+#| fig-cap: "Demographic Distribution"
+#| fig-width: 10
+output |> 
+  mutate(
+    subgroup = case_when(
+      subgroup == "female" ~ "unprivileged",
+      subgroup == "male" ~ "privileged",
+      subgroup == "white" ~ "privileged",
+      subgroup == "non_white" ~ "unprivileged",
+      subgroup == "above_poverty" ~ "privileged",
+      subgroup == "below_poverty" ~ "unprivileged",
+      subgroup == "younger" ~ "privileged",
+      subgroup == "older" ~ "unprivileged"
+    ),
+    demographics = case_when(
+      demographics == "sex" ~ "Sex",
+      demographics == "race" ~ "Race",
+      demographics == "income" ~ "Income",
+      demographics == "age" ~ "Age"
+    )
+  ) |> 
+ ggplot(aes(x = "", y = N, fill = subgroup)) + 
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0) +
+  scale_fill_manual(values = c("privileged" = "#B5D66E",
+                               "unprivileged" = "#F28072")) +
+  geom_text(aes(label = c(
+    "Male",
+    "Female",
+    "White",
+    "Person of Color",
+    "Above Poverty",
+    "Below Poverty",
+    "Younger",
+    "Older (>55)"
+  )), position = position_stack(vjust = 0.5)) +
+  theme_void() +
+  theme(legend.title=element_blank(), legend.position = "bottom") +
+  facet_wrap(~factor(demographics, levels = c("Race", "Sex", "Income", "Age"))) +
+  theme(strip.text.x = element_text(size = 16, face="bold")) 
+```
+
+```{r}
+data <- labels |> 
+  left_join(demographics, by = "subid")
+```
+
+```{r}
+data |> tabyl(sex, lapse)
+data |> tabyl(race, lapse)
+data |> tabyl(age, lapse) 
+data |> tabyl(income, lapse)
+```
+
+```{r}
+data |> 
+  group_by(lapse, sex) |> 
+  summarize(
+    n = n(),
+    perc = n() / nrow(data)
+  )
+
+data |> 
+  group_by(lapse, race) |> 
+  summarize(
+    n = n(),
+    perc = n() / nrow(data)
+  )
+
+data |> 
+  group_by(lapse, age) |> 
+  summarize(
+    n = n(),
+    perc = n() / nrow(data)
+  )
+
+data |> 
+  group_by(lapse, income) |> 
+  summarize(
+    n = n(),
+    perc = n() / nrow(data)
+  )
+```
+
+
+```{r}
+data |> 
+  group_by(sex) |> 
+  summarize(
+    lapse = sum(lapse == "lapse") / n()
+  )
+
+data |> 
+  group_by(race) |> 
+  summarize(
+    lapse = sum(lapse == "lapse") / n()
+  )
+
+data |> 
+  group_by(age) |> 
+  summarize(
+    lapse = sum(lapse == "lapse") / n()
+  )
+
+data |> 
+  group_by(income) |> 
+  summarize(
+    lapse = sum(lapse == "lapse") / n()
+  )
+```
+

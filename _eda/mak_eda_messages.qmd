@@ -1,0 +1,188 @@
+---
+title: "EDA on Raw Messages"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Code Status
+
+## Notes
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+
+theme_set(theme_classic())
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+Read in Data 
+```{r}
+# raw messages that have been cleaned
+raw_data <- read_csv(
+    here(path_messages, "cleaned_messages.csv"),
+    col_types = cols(
+        subid = "d", address = "c", contact_type = "f", date = "T", type = "f", 
+        body = "c", msg_type = "f", phone_type = "f"
+    )
+)
+
+# individual messages mapped on to prediction windows
+pred_3day <- read_csv(
+    here(path_messages, "predictors/pred_3day.csv"),
+    col_types = cols(
+        subid = "d", day_start = "T", day_end = "T", lapse = "f", pred_onset = "T",
+        address = "c", contact_type = "f", date = "T", type = "f", body = "c",
+        msg_type = "f", phone_type = "f"
+    )
+)
+pred_1week <- read_csv(
+    here(path_messages, "predictors/pred_1week.csv"),
+    col_types = cols(
+        subid = "d", day_start = "T", day_end = "T", lapse = "f", pred_onset = "T",
+        address = "c", contact_type = "f", date = "T", type = "f", body = "c",
+        msg_type = "f", phone_type = "f"
+    )
+)
+
+# concatenated text messages mapped on to prediction windows
+cat_3day <- read_csv(
+    here(path_messages, "predictors/doc_3day.csv"),
+    col_types = cols(
+        subid = "d", day_start = "T", body = "c", lapse = "f"
+    )
+)
+
+cat_1week <- read_csv(
+    here(path_messages, "predictors/doc_1week.csv"),
+    col_types = cols(
+        subid = "d", day_start = "T", body = "c", lapse = "f"
+    )
+)
+
+# labels
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+```
+
+## Prepare raw data
+
+```{r}
+raw_data <- raw_data |> 
+  mutate(
+    text_length = lengths(strsplit(raw_data$body, "\\s+")),
+    id_obs = 1:nrow(raw_data)
+  )  |> 
+  select(id_obs, subid, text_length)
+```
+
+## Prepare prediction window data
+
+prep: add in lapses that don't have any predictors
+```{r}
+pred_3day <- pred_3day |> 
+    full_join(
+        labels,
+        by = c("subid", "day_start", "day_end", "lapse")
+    )
+
+pred_1week <- pred_1week |> 
+    full_join(
+        labels,
+        by = c("subid", "day_start", "day_end", "lapse")
+    )
+
+cat_3day <- cat_3day |> 
+    full_join(
+        labels,
+        by = c("subid", "day_start", "lapse")
+    )
+
+cat_1week <- cat_1week |> 
+    full_join(
+        labels,
+        by = c("subid", "day_start", "lapse")
+    )
+```
+
+sanity check: if percentage of missingness is the same for individual messages and concatenated messages
+```{r}
+sum(
+    pred_3day |> 
+        group_by(subid, day_start) |> 
+        summarize(na = any(is.na(body))) |> 
+        pull(na)
+) == 
+nrow(
+    cat_3day |> 
+        filter(is.na(body))
+)
+
+sum(
+    pred_1week |> 
+        group_by(subid, day_start) |> 
+        summarize(na = any(is.na(body))) |> 
+        pull(na)
+) == 
+nrow(
+    cat_1week |> 
+        filter(is.na(body))
+)
+
+```
+
+```{r}
+pred_3day <- pred_3day |> 
+  mutate(na = is.na(body)) |> 
+  select(subid, day_start, lapse, na) |> 
+  mutate(id_obs = 1:nrow(pred_3day)) |> 
+  relocate(id_obs, subid)
+
+pred_1week <- pred_1week <- pred_1week |> 
+  mutate(na = is.na(body)) |> 
+  select(subid, day_start, lapse, na) |> 
+  mutate(id_obs = 1:nrow(pred_1week)) |> 
+  relocate(id_obs, subid)
+```
+
+```{r}
+raw_data |> write_csv("objects/eda_raw.csv")
+pred_3day |> write_csv("objects/eda_3day.csv")
+pred_1week |> write_csv("objects/eda_1week.csv")
+```
+
+

@@ -1,0 +1,229 @@
+---
+title: "Make LIWC features"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Notes
+
+- Coco removed all OBJs and emojis from the raw text
+
+- Emoji category was removed from LIWC dictionary
+
+- Coco & John decided to use median score and 95% percentile on liwc generated on individual messages
+
+  - Around 80% of feature q_10 score and median score overlap (individual messages)
+
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+
+## Clean LIWC Results and Engineer Features
+
+read in lapse labels
+```{r}
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+```
+
+### Clean up liwc features on individual messages
+
+```{r}
+clean_features <- function(window){
+
+  # read in data
+  data <- read_csv(
+    here(path_messages, str_c("liwc/raw_liwc_", window, ".csv")),
+    col_types = cols()
+  ) |> 
+  janitor::clean_names()
+
+  # remove unnecessary columns
+  data <- data |> 
+    select(
+      -day_end, -pred_onset, -address, -contact_type, -date, -type, -msg_type,
+      -phone_type, -column_id, -segment, -emoji
+    )
+  
+  # normalize liwc scores
+  data <- data |> 
+    mutate(across(
+      -c(subid, day_start, lapse, text, wc, wps, analytic, clout, authentic, tone),
+      ~ (. * wc / 100) / sqrt(wc)
+    ))
+
+  # create new columns
+  data <- data |> 
+    group_by(subid, day_start, lapse) |> 
+    summarize(across(
+      -text,
+      list(
+        median = ~ median(., na.rm = TRUE),
+        q_95 = ~ quantile(., 0.95, na.rm = TRUE)
+      ),
+      .names = str_c("{.col}_{.fn}_", window)
+    ),
+    .groups = "drop")
+  
+  # merge with lapse labels
+  data <- data |> 
+    full_join(
+      labels,
+      by = c("subid", "day_start", "lapse")
+    ) |> 
+    select(-day_end)
+}
+```
+
+create dataframes
+```{r}
+liwc_3day <- clean_features("3day")
+liwc_1week <- clean_features("1week")
+
+liwc_combined <- liwc_3day |> 
+  full_join(liwc_1week, by = c("subid", "day_start", "lapse"))
+```
+
+write-out csv file
+```{r}
+liwc_combined |> 
+ mutate(label_num = 1:nrow(liwc_combined)) |>
+ write_csv(here(path_messages, "liwc", "liwc_features_long.csv"))
+```
+
+### Clean up liwc features on concatenated messages
+
+read in data
+```{r}
+liwc_3day_cat <- read_csv(
+  here(path_messages, "liwc/raw_cat_liwc_3day.csv"),
+  col_types = cols()
+) |> 
+  janitor::clean_names() |> 
+  select(-column_id, -text, -segment, -emoji)
+
+liwc_1week_cat <- read_csv(
+  here(path_messages, "liwc/raw_cat_liwc_1week.csv"),
+  col_types = cols()
+) |> 
+  janitor::clean_names() |> 
+  select(-column_id, -text, -segment, -emoji)
+```
+
+merge with labels
+```{r}
+liwc_3day_cat <- liwc_3day_cat |> 
+  full_join(
+    labels,
+    by = c("subid", "day_start", "lapse")
+  ) |> 
+  select(-day_end)
+
+liwc_1week_cat <- liwc_1week_cat |> 
+  full_join(
+    labels,
+    by = c("subid", "day_start", "lapse")
+  ) |> 
+  select(-day_end)
+```
+
+create normalized variables
+```{r}
+liwc_3day_cat <- liwc_3day_cat |> 
+    mutate(across(
+      -c(subid, day_start, lapse, wc, wps, analytic, clout, authentic, tone),
+      ~ (. * wc / 100) / sqrt(wc),
+      .names = "{.col}_norm"
+    )) |> 
+    rename_with(
+      ~ paste0(., "_raw"), 
+      !ends_with("_norm") & !all_of(c("subid", "day_start", "lapse"))) |> 
+    mutate(
+      wc_norm = wc_raw,
+      wps_norm = wps_raw,
+      analytic_norm = analytic_raw,
+      clout_norm = clout_raw,
+      authentic_norm = authentic_raw,
+      tone_norm = tone_raw
+    )
+
+liwc_1week_cat <- liwc_1week_cat |> 
+    mutate(across(
+      -c(subid, day_start, lapse, wc, wps, analytic, clout, authentic, tone),
+      ~ (. * wc / 100) / sqrt(wc),
+      .names = "{.col}_norm"
+    )) |> 
+    rename_with(
+      ~ paste0(., "_raw"), 
+      !ends_with("_norm") & !all_of(c("subid", "day_start", "lapse"))) |> 
+    mutate(
+      wc_norm = wc_raw,
+      wps_norm = wps_raw,
+      analytic_norm = analytic_raw,
+      clout_norm = clout_raw,
+      authentic_norm = authentic_raw,
+      tone_norm = tone_raw
+    )
+
+
+```
+
+rename column names
+```{r}
+liwc_3day_cat <- liwc_3day_cat |> 
+  rename_with(~ paste0(., "_3day"), -c(subid, day_start, lapse))
+
+liwc_1week_cat <- liwc_1week_cat |> 
+  rename_with(~ paste0(., "_1week"), -c(subid, day_start, lapse))
+```
+
+combine dataframes
+```{r}
+liwc_combined_cat <- liwc_3day_cat |> 
+  full_join(liwc_1week_cat, by = c("subid", "day_start", "lapse"))
+```
+
+write_out csv
+```{r}
+liwc_combined_cat |> 
+ mutate(label_num = 1:nrow(liwc_combined_cat)) |>
+ write_csv(here(path_messages, "liwc", "liwc_features_cat.csv"))
+```
+

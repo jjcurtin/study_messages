@@ -1,0 +1,158 @@
+---
+title: "Make Study Dates for Messages"
+author: "John Curtin & Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Code Status
+
+Complete
+
+This script creates an messages study-level dates file that includes the study start date, which is also called data_start (see below).  It also includes study end and ema_end for use in mak_labels.  
+
+This script is essentially the same as Kendra'  meta script because the EMA study currently includes
+the same sample as the meta study.  The only change is how we handle 74 (who had communications file issue).  They are retained in the EMA study.
+
+We deleted subid 9 due to no text data available.
+
+### Conclusions   
+
+- John and Kendra have decided to drop subid 104's data for the following reasons:   
+  - They had lapses every day on study except one day.    
+  - Only had 75 surveys where a lapse was not reported.   
+  - Viewing their lapse times it appears they were drinking constantly (morning and 
+  night).   
+  - They consistently report being uncertain that their goal is to be abstinent 
+  (uncertain on 125 of 137 lapses. They also report they are uncertain in this goal 
+  at followup 1 and 2.    
+  - They are ultimately discontinued since they were struggling to gain sobriety.   
+  - Unfortunately this drops 109 valid lapses.    
+
+
+- John and Kendra have decided to drop subid 269's data for the following reasons:       
+  - They completed 10-15 surveys on many days on study (avg number of surveys per 
+  day is 6.76).  
+  - Their responses indicate careless responding - they were filling 2-4 surveys out 
+  within an hour of each other and the responses to the questions were completely different.     
+  - They have questionable no lapse labels - they reported no lapses while on study but 
+  according to notes left two messages for study staff where they admitted to drinking 
+  over the weekend.   
+  
+
+- John and Kendra have decided to drop subid 204's data for the following reasons:    
+  - Subid 204 had extremely poor compliance. 33 out of 89 study days had an EMA completed. 
+  They only did a total of 5 surveys between followup 2 and 3.    
+  - We don't trust their lapse labels - They report several lapses during their interviews 
+  but times appear questionable (same time every night). They only report 1 lapse with EMA.
+  - From notes - "Participant did not do many surveys during their second month of participation. 
+  At their Follow-up 2 visit they reported several lapses that were not documented in their 
+  EMAs - estimated lapse days/times in subid's raw data log."  
+  - JC note: "There are issues with 204. They are missing lapses reported by interview. But they  
+  also stopped doing any ema by 5/17 even though their study end date was 6/13. Probably need to 
+  drop them for lapse analyses for anything after 5/17.  Probably also need to add in their 
+  reported lapses at follow-up 2. OR we drop them at the end of follow-up 1 or wherever their 
+  ema gets sketchy"    
+
+
+- John and Kendra have decided to decided to retain 128's data even though they have over 100 lapses for 
+the following reasons:   
+  - Compliance is good (averaged over 3 surveys per day, no days without an EMA).       
+  - completed the study for the full 90 days.    
+  - appeared to still want abstinence as they reported they were uncertain to ema_1_5 
+  on only 3 surveys. They reported they were uncertain that their goal was to remain 
+  abstinent at followup 1 and confirmed their goal was to remain abstinent at followup 2.    
+  - Has more non-lapse surveys than lapse surveys.   
+
+- Coco deleted subid 9 because:
+  - no text data for subid 9
+
+- Coco deleted subid 63, 64, 82, 100, 135, 190, 238, 211, 270, 116 (in mak_study_dates) because:
+  - fewer than 100 messages
+
+- Subid 1 & 84 were deleted because no important contact reported
+  
+- All final timezones are in America/Chicago timezone.    
+
+
+### Set Up Environment
+
+Chunk Defaults
+```{r defaults, include=FALSE}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+
+options(tibble.width = Inf)
+options(tibble.print_max = Inf)
+```
+
+
+Packages for lab workflow 
+```{r, packages_workflow, message=FALSE, warning=FALSE}
+library(conflicted)
+  conflict_prefer("filter", "dplyr")
+  conflict_prefer("select", "dplyr")
+
+library(here) 
+library(tidyverse)
+library(janitor)
+library(lubridate)
+```
+
+Absolute paths
+```{r, absolute paths}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+
+```
+
+### Visit/EMA Dates
+
+visit dates
+```{r}
+dates <- read_csv(here(path_shared, "visit_dates.csv"), 
+                  col_types = cols()) %>%
+  select(subid, start_study, end_study, followup_1) %>% 
+  mutate(start_study = force_tz(start_study, tzone = "America/Chicago"),
+         end_study = force_tz(end_study, tzone = "America/Chicago")) %>% 
+  glimpse()
+```
+
+Filter out subids who did not make it to followup_1
+```{r}
+dates <- dates %>% 
+  filter(!is.na(followup_1)) %>% 
+  select(-followup_1) %>% 
+  glimpse()
+```
+
+Filter out excluded subids for lapse reporting issues
+```{r}
+dates <- dates %>% 
+  filter(!subid %in% c(104, 269, 204)) %>% 
+  glimpse()
+```
+
+Filter out excluded subids for invalid messages
+```{r}
+dates <- dates |> 
+  filter(!subid %in% c(63, 64, 82, 100, 135, 190, 238, 211, 270, 116, 1, 84, 9))
+```
+
+
+### Save
+
+save dates
+```{r}
+dates %>% 
+  write_csv(here(path_messages, "study_dates.csv")) %>% 
+  glimpse()
+```
+

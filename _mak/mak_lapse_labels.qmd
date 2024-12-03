@@ -1,0 +1,239 @@
+---
+title: "Make Lapse Labels"
+author: "Coco Yu & Claire Punturieri"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Code Status
+
+## Notes
+
+- We dropped participants who didn't complete follow-up 1.
+
+- John and Kendra have decided to drop subid 104's data for the following reasons:   
+  - They had lapses every day on study except one day.    
+  - Only had 75 surveys where a lapse was not reported.   
+  - Viewing their lapse times it appears they were drinking constantly (morning and 
+  night).   
+  - They consistently report being uncertain that their goal is to be abstinent 
+  (uncertain on 125 of 137 lapses. They also report they are uncertain in this goal 
+  at followup 1 and 2.    
+  - They are ultimately discontinued since they were struggling to gain sobriety.   
+  - Unfortunately this drops 109 valid lapses.    
+
+
+- John and Kendra have decided to drop subid 269's data for the following reasons:       
+  - They completed 10-15 surveys on many days on study (avg number of surveys per 
+  day is 6.76).  
+  - Their responses indicate careless responding - they were filling 2-4 surveys out 
+  within an hour of each other and the responses to the questions were completely different.     
+  - They have questionable no lapse labels - they reported no lapses while on study but 
+  according to notes left two messages for study staff where they admitted to drinking 
+  over the weekend.   
+  
+
+- John and Kendra have decided to drop subid 204's data for the following reasons:    
+  - Subid 204 had extremely poor compliance. 33 out of 89 study days had an EMA completed. 
+  They only did a total of 5 surveys between followup 2 and 3.    
+  - We don't trust their lapse labels - They report several lapses during their interviews 
+  but times appear questionable (same time every night). They only report 1 lapse with EMA.
+  - From notes - "Participant did not do many surveys during their second month of participation. 
+  At their Follow-up 2 visit they reported several lapses that were not documented in their 
+  EMAs - estimated lapse days/times in subid's raw data log."  
+  - JC note: "There are issues with 204. They are missing lapses reported by interview. But they  
+  also stopped doing any ema by 5/17 even though their study end date was 6/13. Probably need to 
+  drop them for lapse analyses for anything after 5/17.  Probably also need to add in their 
+  reported lapses at follow-up 2. OR we drop them at the end of follow-up 1 or wherever their 
+  ema gets sketchy"
+  
+- hand-edit lapse_start for subid 213
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+## Read in Data
+
+need further cleaning on lapses: for now, NA if NA in start_time
+```{r}
+visit_dates <- read_csv(here(path_messages, "study_dates.csv"),
+                             col_types = cols()) |> 
+  mutate(start_study = as_datetime(start_study, tz = "America/Chicago"),
+         end_study = as_datetime(end_study, tz = "America/Chicago")) |> 
+  glimpse()
+
+lapses <- read_csv(here(path_shared, "lapses_day.csv"),
+                   col_types = cols(subid = "d", exclude = "c",
+                                    lapse_start_date = "c", 
+                                    lapse_start_time = "c",
+                                    lapse_end_date = "c",
+                                    lapse_end_time = "c")) |> 
+  mutate(lapse_start = as_datetime(lapse_start, tz = "America/Chicago")) |> 
+  glimpse()
+
+```
+
+
+```{r}
+labels <- visit_dates |> 
+  rowwise() |>
+  mutate(day_start = list(seq.POSIXt(start_study + days(1), end_study - days(1), by = "day"))) |> 
+  unnest(day_start) |>
+  mutate(day_start = update(day_start, hour = 4, minute = 0)) |> 
+  select(subid, day_start) |> 
+  glimpse()
+```
+
+clean up lapse start
+```{r}
+lapses <- lapses |> 
+  mutate(
+    lapse_end_date = if_else(is.na(lapse_end_date),
+                             format(mdy(lapse_start_date) + days(1), "%m/%d/%Y"),
+                             lapse_end_date),
+    lapse_start_time = if_else(is.na(lapse_start_time), "20:00", lapse_start_time),
+    lapse_end_time = if_else(is.na(lapse_end_time), "2:00", lapse_end_time),
+    lapse_start = mdy_hm(paste(lapse_start_date, lapse_start_time)),
+    lapse_start = force_tz(lapse_start, tzone = ema_1_6),
+    lapse_start = as_datetime(lapse_start, tz = "America/Chicago"),
+    lapse_end = mdy_hm(paste(lapse_end_date, lapse_end_time)),
+    lapse_end = force_tz(lapse_end, tzone = ema_1_6),
+    lapse_end = as_datetime(lapse_end, tz = "America/Chicago")
+    ) |> 
+  glimpse()
+
+any(is.na(lapses$lapse_start))
+any(is.na(lapses$lapse_end))
+```
+
+join lapses to labels\
+
+```{r}
+labels <- labels |> 
+  mutate(day_end = day_start + days(1) - seconds(1),
+         lapse = NA)
+
+lapses_valid <- lapses |> 
+  filter(exclude == "FALSE") |> 
+  filter(!is.na(lapse_start))
+
+for (i in 1:nrow(lapses_valid)){
+  labels <- labels |> 
+    mutate(lapse = if_else(subid == lapses_valid$subid[i] &
+                             day_start <= lapses_valid$lapse_start[i] &
+                             day_end >= lapses_valid$lapse_start[i],
+                           "lapse", lapse))
+}
+
+lapses_exclude <- lapses |> 
+  filter(exclude == "TRUE") |> 
+  filter(!is.na(lapse_start))
+
+for (i in 1:nrow(lapses_exclude)){
+  labels <- labels |> 
+    mutate(lapse = if_else(subid == lapses_exclude$subid[i] &
+                             day_start <= lapses_exclude$lapse_start[i] &
+                             day_end >= lapses_exclude$lapse_start[i],
+                           "exclude", lapse),
+           lapse = if_else(subid == lapses_exclude$subid[i] &
+                             day_start <= lapses_exclude$lapse_end[i] &
+                             day_end >= lapses_exclude$lapse_end[i],
+                           "exclude", lapse))
+}
+
+labels <- labels |> 
+  mutate(lapse = if_else(is.na(lapse), "no lapse", lapse)) |> 
+  filter(lapse != "exclude")
+```
+
+## EDA
+```{r}
+(length(unique(labels$subid)))
+```
+
+```{r}
+labels |> 
+  group_by(subid, lapse) |> 
+  summarize(n = n()) |> 
+  print_kbl()
+```
+
+number of days by participant
+```{r}
+labels |> 
+  group_by(subid) |>
+  summarize(n_days = n()) |>
+  ggplot(aes(x = subid, y = n_days)) +
+  geom_point(size = 1) +
+  geom_text(aes(label = subid), vjust = -0.5, hjust = 0.5) +
+  theme_minimal()
+```
+
+number of lapses by participant
+```{r}
+labels |> 
+  group_by(subid, lapse) |> 
+  summarize(n_lapses = n()) |>
+  filter(lapse == "lapse") |> 
+  ggplot(aes(x = subid, y = n_lapses)) +
+  geom_point(size = 0.5) +
+  geom_text(aes(label = subid), vjust = -1, hjust = 0.5, size = 2) +
+  theme_minimal()
+```
+
+percentage of lapses by participant
+```{r}
+labels |> 
+  group_by(subid, lapse) |> 
+  summarize(n_lapses = n()) |>
+  full_join(labels |> group_by(subid) |> summarize(n_days = n())) |> 
+  filter(lapse == "lapse") |> 
+  ggplot(aes(x = subid, y = n_lapses/n_days)) +
+  geom_point(size = 0.8) +
+  geom_text(aes(label = subid), vjust = -1, hjust = 0.5, size = 2.5) +
+  theme_minimal()
+```
+
+## Write-out csv
+
+```{r}
+labels |> 
+  distinct() |> 
+  write_csv(here(path_messages, "lapses.csv")) |> 
+  glimpse()
+```

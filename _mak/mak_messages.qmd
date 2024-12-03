@@ -1,0 +1,307 @@
+---
+title: "Clean up indiviudal messages"
+author: "Coco Yu"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Code Status
+
+## Notes
+
+- Coco deleted subid 63, 64, 82, 100, 135, 190, 238, 211, 270, 116 (in mak_study_dates) because:
+  - fewer than 100 messages
+
+- Subid 1 & 84 were deleted (in mak_study_dates) because no important contact reported
+
+- Coco filtered out only important contacts
+  - excluding Self, Other, Co-Worker/Business Contact, Irrelevant/Spam 
+  - including Parent, Friend, Sibling, Spouse/Significant Other, Child, Family-Other, Cousin, Grandparent, Counselor, Social Worker/Case Manager
+
+
+## Setup
+
+Chunk Defaults
+```{r}
+knitr::opts_chunk$set(attr.output='style="max-height: 500px;"')
+```
+
+Conflicts
+```{r}
+options(conflicts.policy = "depends.ok")
+```
+
+```{r}
+library(tidyverse)
+library(kableExtra, exclude = "group_rows")
+library(lubridate)
+library(janitor, include.only = c("tabyl", "clean_names"))
+library(here, include.only = c("here"))
+```
+
+Source Functions
+```{r}
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_plots.R?raw=true")
+```
+
+Absolute Paths 
+```{r}
+path_shared <- format_path(str_c("studydata/risk/data_processed/shared"))
+path_messages <- format_path(str_c("studydata/risk/data_processed/messages"))
+```
+
+## Read in Data
+
+```{r}
+data <- read_csv(here(path_shared, "sms.csv"), 
+                 col_types = cols(
+                   subid = "d", start_study = "T", end_study = "T",
+                   address = "c", date = "T", type = "f", body = "c",
+                   msg_type = "f", phone_type = "f"
+                 )) |> 
+  mutate(date = as_datetime(date, tz = "America/Chicago"),
+         start_study = as_datetime(start_study, tz = "America/Chicago"),
+         end_study = as_datetime(end_study, tz = "America/Chicago"))
+```
+
+## Data Cleaning
+
+filter out NA messages
+
+```{r}
+data |> filter(body == "￼") |> nrow()
+
+data <- data |> 
+  mutate(
+    body = str_replace_all(body, "￼", ""),
+    body = str_replace_all(body, "[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF\U00002702-\U000027B0\U000024C2-\U0001F251]+", "")
+  )
+
+data <- data |> 
+  mutate(body = str_squish(body)) |> 
+  filter(!is.na(body)) |> 
+  filter(body != "")
+
+subids <- data$subid |> 
+  unique()
+```
+
+### Add Contact Information
+
+#### Contact information based on self-reports
+
+read in contact data
+```{r}
+contacts <- read_csv(here(path_shared, "contacts.csv"),
+                     col_types = cols(.default = col_character(),
+                                      subid = "d"))
+```
+
+check format of address in contacts.csv
+```{r}
+nchar(contacts$phone_number) |> 
+  tabyl()
+
+```
+
+make address format consistent across contacts and data
+```{r}
+contacts <- contacts |> 
+  mutate(
+    phone_number = if_else(
+      nchar(phone_number) == 10,
+      paste0("1", phone_number),
+      phone_number
+    )
+  ) |> 
+  rename(address = phone_number) |> 
+  select(subid, utc, address, contact_type)
+```
+
+resolve duplicated contacts
+
+```{r}
+contacts <- contacts |> 
+  group_by(subid, address) |> 
+  slice_max(utc, n = 1) |> 
+  ungroup() |> 
+  select(-utc)
+```
+
+see the list of contact type
+
+```{r}
+contacts |> 
+  pull(contact_type) |> 
+  unique()
+```
+
+combine data and contacts
+```{r}
+data <- contacts |> 
+  right_join(data, by = c("subid", "address")) 
+```
+
+
+filter down important contact only
+
+```{r}
+data <- data |> 
+  filter(
+    str_detect(address, "~") |
+    contact_type %in% c("Parent", "Friend", "Sibling", "Spouse/Significant Other", 
+    "Child", "Family-Other", "Cousin", "Grandparent", "Counselor", 
+    "Social Worker/Case Manager")
+  )
+```
+
+```{r}
+data <- data |> 
+  select(-start_study, -end_study)
+```
+
+see what subids were excluded\
+NOTE: The result should return NULL 
+
+```{r}
+subids |> 
+  setdiff(
+    data |> 
+      pull(subid) |> 
+      unique()
+  )
+```
+
+**Write-out raw messages**
+```{r}
+data |> write_csv(
+  here(path_messages, "cleaned_messages.csv")
+)
+```
+
+## Add lapse information
+
+read in lapse labels
+```{r}
+labels <- read_csv(here(path_messages, "lapses.csv"), col_types = cols()) |> 
+  mutate(day_start = as_datetime(day_start, tz = "America/Chicago"),
+         day_end = as_datetime(day_end, tz = "America/Chicago"))
+```
+
+create prediction window
+```{r}
+
+pred_1day <- labels |> 
+  mutate(pred_onset = day_start - days(1)) |> 
+  full_join(data, by = "subid", relationship = "many-to-many") |>
+  filter(date >= pred_onset & date <= day_start) 
+
+pred_3day <- labels |> 
+  mutate(pred_onset = day_start - days(3)) |> 
+  full_join(data, by = "subid", relationship = "many-to-many") |>
+  filter(date >= pred_onset & date <= day_start) 
+
+pred_1week <- labels |> 
+  mutate(pred_onset = day_start - days(7)) |> 
+  full_join(data, by = "subid", relationship = "many-to-many") |>
+  filter(date >= pred_onset & date <= day_start)
+```
+
+
+## Create Predictor Documents
+
+function to combine prediction window
+```{r}
+combine_text <- function(df){
+  df |> 
+    select(subid, day_start, lapse, body) |> 
+    group_by(subid, day_start) |> 
+    summarize(body = str_c(body, collapse = " "),
+              lapse = first(lapse),
+              .groups = "drop")
+}
+```
+
+Combine all messages within same prediction window
+```{r}
+doc_1day <- combine_text(pred_1day)
+doc_3day <- combine_text(pred_3day)
+doc_1week <- combine_text(pred_1week)
+```
+
+Combine documents based no incoming/outgoing
+```{r}
+doc_incoming_1day <- combine_text(filter(pred_1day, type == "received"))
+doc_incoming_3day <- combine_text(filter(pred_3day, type == "received"))
+doc_incoming_1week <- combine_text(filter(pred_1week, type == "received"))
+
+doc_outgoing_1day <- combine_text(filter(pred_1day, type == "sent"))
+doc_outgoing_3day <- combine_text(filter(pred_3day, type == "sent"))
+doc_outgoing_1week <- combine_text(filter(pred_1week, type == "sent"))
+```
+
+## Write-out csv
+
+write out individual messages
+
+```{r}
+pred_1day |> 
+  write_csv(here(path_messages, "predictors/pred_1day.csv"))
+pred_3day |> 
+  write_csv(here(path_messages, "predictors/pred_3day.csv"))
+pred_1week |> 
+  write_csv(here(path_messages, "predictors/pred_1week.csv"))
+
+pred_1day |> 
+  filter(type == "received") |> 
+  write_csv(here(path_messages, "predictors/pred_incoming_1day.csv"))
+pred_3day |> 
+  filter(type == "received") |> 
+  write_csv(here(path_messages, "predictors/pred_incoming_3day.csv"))
+pred_1week |> 
+  filter(type == "received") |> 
+  write_csv(here(path_messages, "predictors/pred_incoming_1week.csv"))
+
+pred_1day |> 
+  filter(type == "sent") |> 
+  write_csv(here(path_messages, "predictors/pred_outgoing_1day.csv"))
+pred_3day |> 
+  filter(type == "sent") |> 
+  write_csv(here(path_messages, "predictors/pred_outgoing_3day.csv"))
+pred_1week |> 
+  filter(type == "sent") |> 
+  write_csv(here(path_messages, "predictors/pred_outgoing_1week.csv"))
+```
+
+write out combined documents
+```{r}
+doc_1day <- doc_1day |> 
+  write_csv(here(path_messages, "predictors/doc_1day.csv"))
+doc_3day <- doc_3day |> 
+  write_csv(here(path_messages, "predictors/doc_3day.csv"))
+doc_1week <- doc_1week |> 
+  write_csv(here(path_messages, "predictors/doc_1week.csv"))
+
+doc_incoming_1day <- doc_incoming_1day |> 
+  write_csv(here(path_messages, "predictors/doc_incoming_1day.csv"))
+doc_incoming_3day <- doc_incoming_3day |> 
+  write_csv(here(path_messages, "predictors/doc_incoming_3day.csv"))
+doc_incoming_1week <- doc_incoming_1week |> 
+  write_csv(here(path_messages, "predictors/doc_incoming_1week.csv"))
+
+doc_outgoing_1day <- doc_outgoing_1day |> 
+  write_csv(here(path_messages, "predictors/doc_outgoing_1day.csv"))
+doc_outgoing_3day <- doc_outgoing_3day |> 
+  write_csv(here(path_messages, "predictors/doc_outgoing_3day.csv"))
+doc_outgoing_1week <- doc_outgoing_1week |> 
+  write_csv(here(path_messages, "predictors/doc_outgoing_1week.csv"))
+```
+
