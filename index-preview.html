@@ -1,52 +1,175 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="generator" content="quarto-1.5.57">
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="author" content="Coco Yu">
+    <meta name="author" content="John J. Curtin">
+    <meta name="dcterms.date" content="2024-12-09">
+    <meta name="keywords" content="Substance use disorders, Text sensing, Machine learning">
 
-<meta name="author" content="Coco Yu">
-<meta name="author" content="John J. Curtin">
-<meta name="dcterms.date" content="2024-12-09">
-<meta name="keywords" content="Substance use disorders, Text sensing, Machine learning">
+    <title>Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</title>
+    <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.columns{display: flex; gap: min(4vw, 1.5em);}
+      div.column{flex: auto; overflow-x: auto;}
+      div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+      ul.task-list{list-style: none;}
+      ul.task-list li input[type="checkbox"] {
+        width: 0.8em;
+        margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+        vertical-align: middle;
+      }
+      /* CSS for syntax highlighting */
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+        }
+      pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+      div.sourceCode
+        {   }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      /* CSS for citations */
+      div.csl-bib-body { }
+      div.csl-entry {
+        clear: both;
+        margin-bottom: 0em;
+      }
+      .hanging-indent div.csl-entry {
+        margin-left:2em;
+        text-indent:-2em;
+      }
+      div.csl-left-margin {
+        min-width:2em;
+        float:left;
+      }
+      div.csl-right-inline {
+        margin-left:2em;
+        padding-left:1em;
+      }
+      div.csl-indent {
+        margin-left: 2em;
+      }    </style>
 
-<title>Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</title>
-<style>
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-  vertical-align: middle;
-}
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+    <style>
+      body.hypothesis-enabled #quarto-embed-header {
+        padding-right: 36px;
+      }
 
+      #quarto-embed-header {
+        height: 3em;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: solid 1px;
+      }
 
+      #quarto-embed-header h6 {
+        font-size: 1.1em;
+        padding-top: 0.6em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-weight: 400;
+      }
+
+      #quarto-embed-header a.quarto-back-link,
+      #quarto-embed-header a.quarto-download-embed {
+        font-size: 0.8em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      .quarto-back-container {
+        padding-left: 0.5em;
+        display: flex;
+      }
+
+      .headroom {
+          will-change: transform;
+          transition: transform 200ms linear;
+      }
+
+      .headroom--pinned {
+          transform: translateY(0%);
+      }
+
+      .headroom--unpinned {
+          transform: translateY(-100%);
+      }      
+    </style>
+
+    <script>
+    window.document.addEventListener("DOMContentLoaded", function () {
+
+      var header = window.document.querySelector("#quarto-embed-header");
+      const titleBannerEl = window.document.querySelector("body > #title-block-header");
+      if (titleBannerEl) {
+        titleBannerEl.style.paddingTop = header.clientHeight + "px";
+      }
+      const contentEl = window.document.getElementById('quarto-content');
+      for (const child of contentEl.children) {
+        child.style.paddingTop = header.clientHeight + "px";
+        child.style.marginTop = "1em";
+      }
+
+      // Use the article root if the `back` call doesn't work. This isn't perfect
+      // but should typically work
+      window.quartoBackToArticle = () => {
+        var currentUrl = window.location.href;
+        window.history.back();
+        setTimeout(() => {
+            // if location was not changed in 100 ms, then there is no history back
+            if(currentUrl === window.location.href){              
+                // redirect to site root
+                window.location.href = "index.html";
+            }
+        }, 100);
+      }
+
+      const headroom = new window.Headroom(header, {
+        tolerance: 5,
+        onPin: function () {
+        },
+        onUnpin: function () {
+        },
+      });
+      headroom.init();
+    });
+    </script>
+
+    
+<script src="site_libs/manuscript-notebook/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -60,9 +183,8 @@ div.csl-indent {
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
-
-
-<meta name="citation_title" content="Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients">
+     
+      <meta name="citation_title" content="Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients">
 <meta name="citation_abstract" content="AUD remains a prevalent, lasting and costly problem in the United States, yet few receive treatment due to barriers. Smart Digital Therapeutics (DTx) are emerging as a promising tool to address these barriers. They can potentially provide continuous risk monitoring and individualized support through personal sensing and algorithms. This study leverages SMS messages both three days and one week preceding a lapse episode to predict next-day alcohol lapse. We recruited 138 participants (65 males; 121 Whites non-Hispanic) in early recovery with a goal of abstinence. Self-reported alcohol use and text messages were obtained during a 3-month period. We enginnered features from LIWC and trained models with XGBoost. We used grouped, nested cross-validation to select the best model configuration. The median auROC was .53 (95% CI [.52, .54]) for the best model across the 300 folds in the inner loop. Our model performed consistently worse for people from different underprivileged groups. We further calculated SHAP values and discovered that social processes, social behaviors and second person pronoun emerge as the most important features. Our study suggests that the LIWC model fails to capture sufficient signal from SMS messages to be clinically useful. Our next step is to use other natural language processing methods to do feature engineering and compare the results with this baseline LIWC model. Future studies should also consider other data sources to improve model performance.
 ">
 <meta name="citation_keywords" content="Substance use disorders,Text sensing,Machine learning">
@@ -180,9 +302,16 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Differences in Perceptions of and Practices Regarding Treatment of Alcohol Use Disorders Among VA Primary Care Providers in Urban and Rural Clinics;,citation_abstract=Background Effective behavioral and pharmacological treatments are available and recommended for patients with alcohol use disorders (AUD) but rarely received. Barriers to receipt and provision of evidence-based AUD treatments delivered by specialists may be greatest in rural areas. Methods A targeted subanalysis of qualitative interview data collected from primary care providers at 5 Veterans Affairs clinics was conducted to identify differences in provider perceptions and practices regarding AUD treatment across urban and rural clinics. Key contacts were used to recruit 24 providers from 3 “urban” clinics at medical centers and 2 “rural” community-based outpatient clinics. Providers completed 30-minute semistructured interviews, which were recorded, transcribed, and analyzed using inductive content analysis. Results Thirteen urban and 11 rural providers participated. Urban and rural providers differed regarding referral practices and in perceptions of availability and utility of specialty addictions treatment. Urban providers described referral to specialty treatment as standard practice, while rural providers reported substantial barriers to specialty care access and infrequent specialty care referral. Urban providers viewed specialty addictions treatment as accessible and comprehensive, and perceived addictions providers as “experts” and collaborators, whereas rural providers perceived inadequate support from the health care system for AUD treatment. Urban providers desired greater integration with specialty addictions care while rural providers wanted access to local addictions treatment resources. Conclusions Providers in rural settings view referral to specialty addictions treatment as impractical and resources inadequate to treat AUD. Additional work is needed to understand the unique needs of rural clinics and decrease barriers to AUD treatment.;,citation_author=Jessica P. Young;,citation_author=Carol E. Achtmeyer;,citation_author=Kara M. Bensley;,citation_author=Eric J. Hawkins;,citation_author=Emily C. Williams;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_issue=4;,citation_doi=10.1111/jrh.12293;,citation_issn=1748-0361;,citation_volume=34;,citation_language=en-US;,citation_journal_title=The Journal of Rural Health;">
 </head>
 
-<body>
+  <body class="quarto-notebook">
+    <div id="quarto-embed-header" class="headroom fixed-top bg-primary">
+      
+      <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link" href=""><i class="bi bi-caret-left"></i> Back to Article</a>
+      <h6><i class="bi bi-journal-code"></i> Article Notebook</h6>
 
-<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+            <a href="./index.qmd" class="btn btn-primary quarto-download-embed" download="index.qmd">Download Source</a>
+          </div>
+
+     <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</h1>
@@ -227,7 +356,7 @@ div.csl-indent {
               </div>
       </div>
       <div class="quarto-title-meta-column-end quarto-other-formats-target">
-      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></p></div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></p></div></div></div>
+      </div>
     </div>
 
     <div>
@@ -294,17 +423,48 @@ div.csl-indent {
   </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks/fig_eda_liwc-preview.html"><i class="bi bi-journal-code"></i>EDA on LIWC Features</a></li><li><a href="notebooks/fig_eda_messages-preview.html"><i class="bi bi-journal-code"></i>EDA on Raw Messages</a></li><li><a href="notebooks/fig_demographics-preview.html"><i class="bi bi-journal-code"></i>EDA on Subject Demographics</a></li><li><a href="notebooks/fig_calibration-preview.html"><i class="bi bi-journal-code"></i>Generate INNER calibration</a></li><li><a href="notebooks/fig_auroc-preview.html"><i class="bi bi-journal-code"></i>Performance plots</a></li><li><a href="notebooks/fig_shaps-preview.html"><i class="bi bi-journal-code"></i>shaps</a></li><li><a href="notebooks/fig_fairness-preview.html"><i class="bi bi-journal-code"></i>Subgroup Analysis</a></li></ul></div></nav>
+</nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">      
 
-
-
-  
-
-
+       <div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">conflicts.policy =</span> <span class="st">"depends.ok"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.3     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(janitor, include.only = c("tabyl", "clean_names"))</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here, <span class="at">include.only =</span> <span class="fu">c</span>(<span class="st">"here"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/yujiachen/Desktop/github/study_messages</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(yardstick, <span class="at">exclude =</span> <span class="st">"spec"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_classic</span>())</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">source_url</span>(<span class="st">"https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ SHA-1 hash of file is "a58e57da996d1b70bb9a5b58241325d6fd78890f"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>path_shared <span class="ot">&lt;-</span> <span class="fu">format_path</span>(<span class="fu">str_c</span>(<span class="st">"studydata/risk/data_processed/shared"</span>))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>path_messages <span class="ot">&lt;-</span> <span class="fu">format_path</span>(<span class="fu">str_c</span>(<span class="st">"studydata/risk/data_processed/messages"</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>path_models <span class="ot">&lt;-</span> <span class="fu">format_path</span>(<span class="fu">str_c</span>(<span class="st">"studydata/risk/models/messages"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>AUD remains a prevalent, lasting and costly problem in the United States. According to 2022 NSDUH <span class="citation" data-cites="nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023 nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023">(<a href="#ref-nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023" role="doc-biblioref">National Institute on Alcohol Abuse and Alcoholism, 2023a</a>, <a href="#ref-nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023" role="doc-biblioref">2023b</a>)</span>, an estimate of 29.5 million (10.5% of the population) individuals aged 12 or older had AUD in 2022, which is consistent with the estimates for 2021. AUD problems have also brought huge economic burdens to the U.S., where excessive alcohol use has cost $223.5 billion in 2006 and $249 billion in 2010 <span class="citation" data-cites="sacks2010NationalState2015a">(<a href="#ref-sacks2010NationalState2015a" role="doc-biblioref">Sacks et al., 2015</a>)</span>.</p>
@@ -498,6 +658,105 @@ Figure&nbsp;2: Prediction Window
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
+<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load objects for results</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(path_messages, <span class="st">"lapses.csv"</span>), <span class="at">col_types =</span> <span class="fu">cols</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">day_start =</span> <span class="fu">as_datetime</span>(day_start, <span class="at">tz =</span> <span class="st">"America/Chicago"</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">day_end =</span> <span class="fu">as_datetime</span>(day_end, <span class="at">tz =</span> <span class="st">"America/Chicago"</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>raw_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">"eda"</span>, <span class="st">"eda_raw.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 313492 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (3): id_obs, subid, text_length
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pred_3day <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">"eda"</span>, <span class="st">"eda_3day.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 915833 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (1): lapse
+dbl  (2): id_obs, subid
+lgl  (1): na
+dttm (1): day_start
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pred_1week <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">"eda"</span>, <span class="st">"eda_1week.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 2086041 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr  (1): lapse
+dbl  (2): id_obs, subid
+lgl  (1): na
+dttm (1): day_start
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>txt_length_by_id <span class="ot">&lt;-</span> raw_data <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subid) <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_length =</span> <span class="fu">mean</span>(text_length),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_length =</span> <span class="fu">median</span>(text_length),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_length =</span> <span class="fu">min</span>(text_length),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_length =</span> <span class="fu">max</span>(text_length)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>stats_ind <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">"eda"</span>, <span class="st">"eda_liwc_ind.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 468 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): skim_type, skim_variable
+dbl (5): complete_rate, numeric.sd, numeric.p0, numeric.p50, numeric.p100
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>stats_cat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(path_messages, <span class="st">"eda"</span>, <span class="st">"eda_liwc_cat.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 468 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): skim_type, skim_variable
+dbl (5): complete_rate, numeric.sd, numeric.p0, numeric.p50, numeric.p100
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>aurocs <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"_csv/aurocs.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 300 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (3): inner_split_num, outer_split_num, auroc
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>probs <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(here<span class="sc">::</span><span class="fu">here</span>(path_models, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">str_c</span>(<span class="st">"inner_preds_"</span>, <span class="st">"v1"</span>, <span class="st">"_"</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"nested_1_x_10_3_x_10"</span>, <span class="st">".rds"</span>)))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="fu">here</span>(path_messages, <span class="st">"pp"</span>, <span class="st">"pp_auroc.rds"</span>))</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>fairness <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"_csv/subgroup_comparison.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 4 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): group
+dbl (4): median, lower, upper, prob
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div></div>
 <section id="demographics" class="level2">
 <h2 class="anchored" data-anchor-id="demographics">Demographics</h2>
 <p>The final sample includes 138 participants. On average, participants are 39.60 years old (SD = 11.17, range = 21-66). 65 (47.10%) participants are females, 121 (87.68%) are White/Caucasian, 3 (2.17%) are American Indiain/Alaska Native, 2 (1.45%) are Asian, 6 (4.35%) are Black/African American, and 6 (4.35%) are Other/Multiracial. See <a href="#tbl-demographics" class="quarto-xref">Table&nbsp;2</a> for more details on participant demographics (education, employment, income, marital status) and their patterns of alcohol use.</p>
@@ -1064,12 +1323,18 @@ Table&nbsp;2: Participant demographics and alcohol use history
 <section id="sample-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="sample-distribution">Sample Distribution</h2>
 <p>The final total number of lapse labels in the dataset is 11562. 7.63% of the labels are associated with a lapse episode. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30 - 90; see <a href="#fig-lapse_count" class="quarto-xref">Figure&nbsp;3</a>).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-lapse_count" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-lapse_count">
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="cell-fig-lapse_count" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  group_by(subid) <span class="op">|&gt;</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  summarize(n <span class="op">=</span> n()) <span class="op">|&gt;</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> n)) <span class="op">+</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>, bins <span class="op">=</span> <span class="dv">70</span>) <span class="op">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  labs(y <span class="op">=</span> <span class="st">"subject counts"</span>, x <span class="op">=</span> <span class="st">"# of lapses"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-lapse_count" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-lapse_count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-lapse_count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_eda_messages-fig-lapse_count-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Distribution of Lapse Label Counts"><img src="index_files/figure-html/notebooks-fig_eda_messages-fig-lapse_count-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lapse_count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1078,15 +1343,16 @@ Figure&nbsp;3: Distribution of Lapse Label Counts
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 <p>The total number of messages in the dataset is 313492. On average, each subject has 2271.68 messages (sd = 2536.60, range = 100 - 15884). The average message length across all participants is 10.42 words (sd = 14.30, median = 7.00, range = 1 - 1266). On average, each participant has a mean message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-raw" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-raw">
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="cell-fig-raw" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(plt1_raw, plt2_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-raw" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_eda_messages-fig-raw-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Sample Characteristics of Raw Messages"><img src="index_files/figure-html/notebooks-fig_eda_messages-fig-raw-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1095,15 +1361,25 @@ Figure&nbsp;4: Sample Characteristics of Raw Messages
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 <p>On average, each lapse label has 79.21 messages (sd = 112.13, median = 40.00, range = 1 - 1414) during the 3-day prediction window. 11.92% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant’s data missingness is 12.28% (sd = 19.42%, median = 1.14%, range = 0.00% - 77.27%).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-3day" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-3day">
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="cell-fig-3day" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1_3day, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2_3day, plt3_3day, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),  </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  nrow <span class="op">=</span> <span class="dv">2</span>, ncol <span class="op">=</span> <span class="dv">1</span>, heights <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>) </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div id="fig-3day" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_eda_messages-fig-3day-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_messages-fig-3day-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1112,15 +1388,25 @@ Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 <p>On average, each lapse label has 180.42 messages (sd = 241.30, median = 96.00, range = 1 - 2866) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant’s data missingness is 8.14% (sd = 16.23%, median = 0.00%, range = 0.00% - 72.73%).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-1week" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_eda_messages.qmd" data-notebook-title="EDA on Raw Messages" data-notebook-cellid="cell-fig-1week">
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-fig-1week" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(NULL, plt1_1week, NULL, ncol <span class="op">=</span> <span class="dv">3</span>, widths <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)), </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  ggpubr::ggarrange(plt2_1week, plt3_1week, ncol <span class="op">=</span> <span class="dv">2</span>, nrow <span class="op">=</span> <span class="dv">1</span>),  </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  nrow <span class="op">=</span> <span class="dv">2</span>, ncol <span class="op">=</span> <span class="dv">1</span>, heights <span class="op">=</span> c(<span class="dv">1</span>, <span class="dv">1</span>) </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div id="fig-1week" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_eda_messages-fig-1week-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_messages-fig-1week-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1129,7 +1415,7 @@ Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 </section>
 <section id="liwc-features" class="level2">
@@ -1380,12 +1666,21 @@ Table&nbsp;3: Sample Characteristics of Engineered Feature Scores (Median and 95
 </figcaption>
 </figure>
 </div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-liwc_ind" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_eda_liwc.qmd" data-notebook-title="EDA on LIWC Features" data-notebook-cellid="cell-fig-liwc_ind">
+<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="cell-fig-liwc_ind" class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plot_grid(plt1_ind <span class="op">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(a) liwc score distribution in 3-day prediction window"</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                       size <span class="op">=</span> <span class="dv">10</span>, x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>          plt2_ind <span class="op">+</span> </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(b) liwc score distribution in 1-week prediction window"</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>                       x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>, size <span class="op">=</span> <span class="dv">10</span>) <span class="op">+</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>          ncol <span class="op">=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-liwc_ind" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_ind-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;7: Distribution of Engineered Feature Scores (Median or 95% Percentile of Normalized LIWC Score From Individual Messages) Within Each Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_ind-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1394,7 +1689,7 @@ Figure&nbsp;7: Distribution of Engineered Feature Scores (Median or 95% Percenti
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 <p>When our unit of analysis was on concatenated messages (see <a href="#tbl-panel2" class="quarto-xref">Table&nbsp;4</a>, <a href="#fig-liwc_cat_raw" class="quarto-xref">Figure&nbsp;8</a> and <a href="#fig-liwc_cat_norm" class="quarto-xref">Figure&nbsp;9</a>), the median of all raw feature scores within the 3-day prediction window ranged from 0.00 to 91.36 (median = 1.32, sd = 12.64). The median of all raw feature scores within the 1-week prediction window ranged from 0.00 to 91.30 (median = 1.36, sd = 12.63). The max of all raw feature scores within the 3-day prediction window ranged from 3.85 to 166.67 (median = 33.33, sd = 37.64). The max of all raw feature scores within the 1-week prediction window ranged from 1.82 to 166.67 (median = 27.27, sd = 35.21).</p>
 <p>The median of all normalized feature scores within the 3-day prediction window ranged from 0.00 to 20.63 (median = 0.32, sd = 2.85). The median of all normalized feature scores within the 1-week prediction window ranged from 0.00 to 30.69 (median = 0.47, sd = 4.25). The max of all normalized feature scores within the 3-day prediction window ranged from 0.37 to 106.55 (median = 2.95, sd = 15.11). The max of all normalized feature scores within the 1-week prediction window ranged from 0.29 to 143.30 (median = 3.16, sd = 20.31).</p>
@@ -1555,12 +1850,21 @@ Table&nbsp;4: Sample Characteristics of Raw LIWC Scores on Concatenated Messages
 </figcaption>
 </figure>
 </div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-liwc_cat_raw" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_eda_liwc.qmd" data-notebook-title="EDA on LIWC Features" data-notebook-cellid="cell-fig-liwc_cat_raw">
+<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="cell-fig-liwc_cat_raw" class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>plot_grid(plt1_cat <span class="op">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(a) feature score distribution in 3-day prediction window"</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                       size <span class="op">=</span> <span class="dv">10</span>, x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>          plt2_cat <span class="op">+</span> </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(b) feature score distribution in 1-week prediction window"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                       x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>, size <span class="op">=</span> <span class="dv">10</span>) <span class="op">+</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>          ncol <span class="op">=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-liwc_cat_raw" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-liwc_cat_raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-liwc_cat_raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_cat_raw-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;8: Distribution of Raw LIWC Feature Scores From Concatenated Messages Within Each Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_cat_raw-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat_raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1569,14 +1873,23 @@ Figure&nbsp;8: Distribution of Raw LIWC Feature Scores From Concatenated Message
 </figure>
 </div>
 </div>
+</div></div>
 </div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-liwc_cat_norm" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_eda_liwc.qmd" data-notebook-title="EDA on LIWC Features" data-notebook-cellid="cell-fig-liwc_cat_norm">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-liwc_cat_norm" class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>plot_grid(plt3_cat <span class="op">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(a) feature score distribution in 3-day prediction window"</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                       size <span class="op">=</span> <span class="dv">10</span>, x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>          plt4_cat <span class="op">+</span> </span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>            draw_label(<span class="st">"(b) feature score distribution in 1-week prediction window"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                       x <span class="op">=</span> <span class="fl">0.5</span>, y <span class="op">=</span> <span class="op">-</span><span class="fl">0.03</span>, hjust <span class="op">=</span> <span class="fl">0.5</span>, vjust <span class="op">=</span> <span class="dv">0</span>, size <span class="op">=</span> <span class="dv">10</span>) <span class="op">+</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>            theme(plot.margin <span class="op">=</span> margin(t <span class="op">=</span> <span class="dv">0</span>, r <span class="op">=</span> <span class="dv">0</span>, b <span class="op">=</span> <span class="dv">15</span>, l <span class="op">=</span> <span class="dv">0</span>)),</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>          ncol <span class="op">=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-liwc_cat_norm" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-liwc_cat_norm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-liwc_cat_norm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_cat_norm-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;9: Distribution of Normalized LIWC Feature Scores From Concatenated Messages Within Each Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_cat_norm-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat_norm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1585,18 +1898,36 @@ Figure&nbsp;9: Distribution of Normalized LIWC Feature Scores From Concatenated 
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 </section>
 <section id="best-model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="best-model-evaluation">Best Model Evaluation</h2>
 <p>The best model configuration was the one that leveraged raw LWIC scores from concatenated messages within both the 3-day and 1-week prediction window, and an upsampling technique with a ratio of 1:1. We applied the best configuration on the raw dataset and obtained an auROC score of 0.53 (see <a href="#fig-auroc" class="quarto-xref">Figure&nbsp;10</a> for the ROC curve). We further aggregated predictions by folds, and the median score of all median auROCs across the 300 inner folds was 0.53 (sd = 0.09, range = 0.28 - 0.80; see <a href="#fig-auroc_hist" class="quarto-xref">Figure&nbsp;11</a>). The median posterior distribution of the auROCs was 0.53 (95% CI = [0.52, 0.54]; see <a href="#fig-auroc_posterior" class="quarto-xref">Figure&nbsp;12</a>). The probability of the posterior auROC larger than .5 was 1.00. We concluded that our model was better than chance performance.</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_auroc.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc">
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-fig-auroc" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>probs <span class="op">|&gt;</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  roc_curve(prob_raw, truth <span class="op">=</span> label) <span class="op">|&gt;</span> </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  mutate(tp <span class="op">=</span> <span class="bu">round</span>(sensitivity, <span class="dv">4</span>),</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>         fp <span class="op">=</span> <span class="bu">round</span>(<span class="dv">1</span> <span class="op">-</span> specificity, <span class="dv">4</span>)) <span class="op">|&gt;</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  group_by(tp, fp) <span class="op">|&gt;</span> </span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  summarise(.threshold <span class="op">=</span> mean(.threshold)) <span class="op">|&gt;</span> </span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> fp, y <span class="op">=</span> tp, color <span class="op">=</span> .threshold)) <span class="op">+</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  geom_path(linewidth <span class="op">=</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  geom_abline(lty <span class="op">=</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  coord_fixed(xlim <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">1</span>), ylim <span class="op">=</span> c(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  labs(x <span class="op">=</span> <span class="st">"False Positive Rate"</span>,</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>       y <span class="op">=</span> <span class="st">"True Positive Rate"</span>) <span class="op">+</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  scale_x_continuous(breaks <span class="op">=</span> seq(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  scale_color_gradient(low<span class="op">=</span><span class="st">"blue"</span>, high <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'tp'. You can override using the `.groups`
+argument.</code></pre>
+</div>
 <div class="cell-output cell-output-display">
 <div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_auroc-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;10: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-fig_auroc-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1605,14 +1936,21 @@ Figure&nbsp;10: ROC Curve for the Best Model Configuration
 </figure>
 </div>
 </div>
+</div></div>
 </div>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_auroc.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc_hist">
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-fig-auroc_hist" class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>aurocs <span class="op">|&gt;</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  ggplot(aes(x <span class="op">=</span> auroc)) <span class="op">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  geom_histogram(fill <span class="op">=</span> <span class="st">"#97C4C5"</span>) <span class="op">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  geom_vline(xintercept <span class="op">=</span> median(aurocs$auroc), linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 </div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc_hist" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-auroc_hist" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_auroc-fig-auroc_hist-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Figure&nbsp;11: Distribution of auROCs Across 300 Inner Folds"><img src="index_files/figure-html/notebooks-fig_auroc-fig-auroc_hist-output-2.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1621,14 +1959,35 @@ Figure&nbsp;11: Distribution of auROCs Across 300 Inner Folds
 </figure>
 </div>
 </div>
+</div></div>
 </div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc_posterior" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_auroc.qmd" data-notebook-title="Performance plots" data-notebook-cellid="cell-fig-auroc_posterior">
+<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-fig-auroc_posterior" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="op">&lt;-</span> pp <span class="op">|&gt;</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  tidy(seed <span class="op">=</span> <span class="dv">123</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>ci <span class="op">&lt;-</span> pp_tidy <span class="op">|&gt;</span> </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  summary() <span class="op">|&gt;</span> </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  mutate(y <span class="op">=</span> <span class="dv">30</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="co"># vertical line for the median</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>pp_tidy <span class="op">|&gt;</span> </span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span> </span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  geom_density(aes(x <span class="op">=</span> posterior), color <span class="op">=</span> c(<span class="st">"#80B1D3"</span>), </span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>               fill <span class="op">=</span> c(<span class="st">"#B3CFE8"</span>), linewidth <span class="op">=</span> <span class="fl">.8</span>, alpha <span class="op">=</span> <span class="fl">.6</span>) <span class="op">+</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  geom_errorbar(data <span class="op">=</span> ci, aes(y <span class="op">=</span> y, xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), </span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>                linewidth <span class="op">=</span> <span class="fl">.6</span>, width <span class="op">=</span> <span class="dv">2</span>, color <span class="op">=</span> c(<span class="st">"#4292C6"</span>)) <span class="op">+</span></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  geom_vline(xintercept <span class="op">=</span> median(pp_tidy$posterior), </span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>             linetype <span class="op">=</span> <span class="st">"dashed"</span>, color <span class="op">=</span> <span class="st">"red"</span>) <span class="op">+</span></span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  geom_vline(xintercept <span class="op">=</span> <span class="fl">.5</span>, </span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>             linetype <span class="op">=</span> <span class="st">"dotdash"</span>, color <span class="op">=</span> <span class="st">"darkgray"</span>) <span class="op">+</span></span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  ylab(<span class="st">"Posterior Probability Density"</span>) <span class="op">+</span></span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">"Area Under ROC Curve"</span>) <span class="op">+</span></span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>  xlim(<span class="fl">.5</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-auroc_posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_auroc-fig-auroc_posterior-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="Figure&nbsp;12: Posterior Distribution of auROC Scores"><img src="index_files/figure-html/notebooks-fig_auroc-fig-auroc_posterior-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1637,18 +1996,56 @@ Figure&nbsp;12: Posterior Distribution of auROC Scores
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 </section>
 <section id="model-fairness" class="level2">
 <h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
 <p>73 (53%) participants are females, 17 (12%) are non-White minorities, 39 (28%) earned less than half of the median income in Madison in Year 2017, and 13 (9%) aged 55 or older (see <a href="#fig-demographics" class="quarto-xref">Figure&nbsp;13</a>). Our model performed consistently worse in unprivileged group vs.&nbsp;privileged group across all four demographic categories (see <a href="#fig-fairness" class="quarto-xref">Figure&nbsp;14</a> and <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;5</a>). The median of posterior distribution of model performance difference was 0.03 (95%CI = [0.01, 0.06]) for White people compared to People of Color. The probability of the performance for the White people higher than for People of Color was 0.99. The posterior distribution of performance differences also indicated that the model performed better in males than in females (median = 0.02, 95%CI = [0.01, 0.04], probability = 1.00), in people younger than 55 than people older than 55 (median = 0.04, 95%CI = [0.01, 0.07], probability = 1.00), and in people that have higher income than in those who have lower income (median = 0.02, 95%CI = [0.00, 0.04], probability = 0.99). We concluded that the model performed significantly worse in unprivileged groups.</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-demographics" class="cell" data-fig-width="10">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_demographics.qmd" data-notebook-title="EDA on Subject Demographics" data-notebook-cellid="cell-fig-demographics">
+<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="cell-fig-demographics" class="cell" data-fig-width="10">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">|&gt;</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  mutate(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    subgroup <span class="op">=</span> case_when(</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"female"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"male"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"white"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"non_white"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"above_poverty"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"below_poverty"</span> <span class="op">~</span> <span class="st">"unprivileged"</span>,</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"younger"</span> <span class="op">~</span> <span class="st">"privileged"</span>,</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>      subgroup <span class="op">==</span> <span class="st">"older"</span> <span class="op">~</span> <span class="st">"unprivileged"</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    demographics <span class="op">=</span> case_when(</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"sex"</span> <span class="op">~</span> <span class="st">"Sex"</span>,</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"race"</span> <span class="op">~</span> <span class="st">"Race"</span>,</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"income"</span> <span class="op">~</span> <span class="st">"Income"</span>,</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>      demographics <span class="op">==</span> <span class="st">"age"</span> <span class="op">~</span> <span class="st">"Age"</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="op">|&gt;</span> </span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a> ggplot(aes(x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> N, fill <span class="op">=</span> subgroup)) <span class="op">+</span> </span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  geom_bar(stat<span class="op">=</span><span class="st">"identity"</span>, width<span class="op">=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>  coord_polar(<span class="st">"y"</span>, start<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>  scale_fill_manual(values <span class="op">=</span> c(<span class="st">"privileged"</span> <span class="op">=</span> <span class="st">"#B5D66E"</span>,</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"unprivileged"</span> <span class="op">=</span> <span class="st">"#F28072"</span>)) <span class="op">+</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>  geom_text(aes(label <span class="op">=</span> c(</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Male"</span>,</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Female"</span>,</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"White"</span>,</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Person of Color"</span>,</span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Above Poverty"</span>,</span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Below Poverty"</span>,</span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Younger"</span>,</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Older (&gt;55)"</span></span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a>  )), position <span class="op">=</span> position_stack(vjust <span class="op">=</span> <span class="fl">0.5</span>)) <span class="op">+</span></span>
+<span id="cb36-35"><a href="#cb36-35" aria-hidden="true" tabindex="-1"></a>  theme_void() <span class="op">+</span></span>
+<span id="cb36-36"><a href="#cb36-36" aria-hidden="true" tabindex="-1"></a>  theme(legend.title<span class="op">=</span>element_blank(), legend.position <span class="op">=</span> <span class="st">"bottom"</span>) <span class="op">+</span></span>
+<span id="cb36-37"><a href="#cb36-37" aria-hidden="true" tabindex="-1"></a>  facet_wrap(<span class="op">~</span>factor(demographics, levels <span class="op">=</span> c(<span class="st">"Race"</span>, <span class="st">"Sex"</span>, <span class="st">"Income"</span>, <span class="st">"Age"</span>))) <span class="op">+</span></span>
+<span id="cb36-38"><a href="#cb36-38" aria-hidden="true" tabindex="-1"></a>  theme(strip.text.x <span class="op">=</span> element_text(size <span class="op">=</span> <span class="dv">16</span>, face<span class="op">=</span><span class="st">"bold"</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-demographics" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_demographics-fig-demographics-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Figure&nbsp;13: Demographic Distribution"><img src="index_files/figure-html/notebooks-fig_demographics-fig-demographics-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1657,14 +2054,56 @@ Figure&nbsp;13: Demographic Distribution
 </figure>
 </div>
 </div>
+</div></div>
 </div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-fairness" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_fairness.qmd" data-notebook-title="Subgroup Analysis" data-notebook-cellid="cell-fig-fairness">
+<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div id="cell-fig-fairness" class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ggpubr::ggarrange(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_race) <span class="op">|&gt;</span> </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"non_white"</span>, <span class="st">"white"</span>)), </span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Race"</span>) <span class="op">+</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_sex) <span class="op">|&gt;</span> </span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"female"</span>, <span class="st">"male"</span>)), </span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Sex"</span>) <span class="op">+</span></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_age) <span class="op">|&gt;</span> </span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"older"</span>, <span class="st">"younger"</span>)), </span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#F28072"</span>, <span class="st">"#B5D66E"</span>)) <span class="op">+</span></span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Age"</span>) <span class="op">+</span></span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>),</span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a>  bayes_output(pp_income) <span class="op">|&gt;</span> </span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a>    ggplot(aes(y <span class="op">=</span> factor(model, levels <span class="op">=</span> c(<span class="st">"below_poverty"</span>, <span class="st">"above_poverty"</span>)), </span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a>               x <span class="op">=</span> median, color <span class="op">=</span> model)) <span class="op">+</span> </span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a>    geom_point() <span class="op">+</span></span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a>    geom_errorbar(aes(xmin <span class="op">=</span> lower, xmax <span class="op">=</span> upper), width <span class="op">=</span> <span class="fl">.2</span>) <span class="op">+</span></span>
+<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a>    scale_color_manual(values <span class="op">=</span> c(<span class="st">"#B5D66E"</span>, <span class="st">"#F28072"</span>)) <span class="op">+</span></span>
+<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a>    labs(x <span class="op">=</span> <span class="st">"auROC"</span>, y <span class="op">=</span> element_blank(), title <span class="op">=</span> <span class="st">"Income"</span>) <span class="op">+</span></span>
+<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a>    scale_x_continuous(limits <span class="op">=</span> c(<span class="fl">0.46</span>, <span class="fl">0.56</span>), </span>
+<span id="cb37-40"><a href="#cb37-40" aria-hidden="true" tabindex="-1"></a>                       breaks <span class="op">=</span> seq(<span class="fl">0.46</span>, <span class="fl">0.58</span>, by <span class="op">=</span> <span class="fl">0.02</span>)) <span class="op">+</span></span>
+<span id="cb37-41"><a href="#cb37-41" aria-hidden="true" tabindex="-1"></a>    theme(legend.position <span class="op">=</span> <span class="st">"none"</span>)</span>
+<span id="cb37-42"><a href="#cb37-42" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_fairness-fig-fairness-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Figure&nbsp;14: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups"><img src="index_files/figure-html/notebooks-fig_fairness-fig-fairness-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1673,7 +2112,7 @@ Figure&nbsp;14: auROC posterior distribution across different privileged vs.&nbs
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 <div id="tbl-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1736,12 +2175,19 @@ Table&nbsp;5: Model Performance Difference across different demographic subgroup
 <section id="model-interpretation" class="level2">
 <h2 class="anchored" data-anchor-id="model-interpretation">Model Interpretation</h2>
 <p>The top 30 LIWC categories with the highest global shapley values were displayed in <a href="#fig-shaps" class="quarto-xref">Figure&nbsp;15</a>. Three categories appeared to be the most robust in contributing to model output – social processes (e.g., you, we, he, she), social behavior (e.g., said, love, say, care), and second person pronoun (e.g., you, your, yourself). The other less robust categories included total word count, clout (language of leadership), assent (e.g., yeah, yes, okay, ok), social referents (e.g., you, we, he, she), and prosocial behaviors (e.g., care, help, thank, please).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-shaps" class="cell">
+<div class="quarto-embed-nb-cell" data-notebook="/Users/yujiachen/Desktop/github/study_messages/notebooks/fig_shaps.qmd" data-notebook-title="shaps" data-notebook-cellid="cell-fig-shaps">
+<div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div id="cell-fig-shaps" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>shaps <span class="op">|&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  head(<span class="dv">30</span>) <span class="op">|&gt;</span> </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  ggplot() <span class="op">+</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  geom_bar(aes(x <span class="op">=</span> group, y <span class="op">=</span> mean_value), stat <span class="op">=</span> <span class="st">"identity"</span>, fill <span class="op">=</span> <span class="st">"#af1f21"</span>) <span class="op">+</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  ylab(<span class="st">"Mean |SHAP| value (in Log-Odds)"</span>) <span class="op">+</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  xlab(<span class="st">""</span>) <span class="op">+</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  coord_flip()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-shaps" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-fig_shaps-fig-shaps-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Figure&nbsp;15: Shapley Value"><img src="index_files/figure-html/notebooks-fig_shaps-fig-shaps-output-1.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1750,7 +2196,7 @@ Figure&nbsp;15: Shapley Value
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 <div style="page-break-after: always;"></div>
 </section>
@@ -1768,10 +2214,7 @@ Figure&nbsp;15: Shapley Value
 <p>Results in this study indicate that text message might not be potentially valuable raw data source in predicting alcohol lapses in AUD patients. Although SMS messages offer the benefits of minimal burden on users, this advantage cannot compensate for their low prediction precision. EMA measures, despite their somewhat higher burden, are capable of capturing robust signals. GPS sensing, which is also not burdensome, can obtain some signals with little feature engineering (see Claire’s FYP). Note that both EMA and GPS sensing are easily accessible across platforms. Nonetheless, as SMS is not currently available in ios platform, we might have diminished further interest in this data source.</p>
 <p>In sum, our machine learning algorithm had minimal increase in performance compared to random guess. The results call for further exploration of other feature engineering techniques to build models that have higher performance, are interpretable and have low algorithmic biases.</p>
 <div style="page-break-after: always;"></div>
-
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-abrahamAvailabilityMedicationsTreatment2020" class="csl-entry" role="listitem">
 Abraham, A. J., Andrews, C. M., Harris, S. J., &amp; Friedmann, P. D. (2020). Availability of <span>Medications</span> for the <span>Treatment</span> of <span>Alcohol</span> and <span>Opioid Use Disorder</span> in the <span>USA</span>. <em>Neurotherapeutics</em>, <em>17</em>(1), 55–69. <a href="https://doi.org/10.1007/s13311-019-00814-4">https://doi.org/10.1007/s13311-019-00814-4</a>
 </div>
@@ -1925,9 +2368,10 @@ Wyant, K., Sant’Ana, S. J., Fronk, G. E., &amp; Curtin, J. J. (2024). Machine 
 <div id="ref-youngDifferencesPerceptionsPractices2018" class="csl-entry" role="listitem">
 Young, J. P., Achtmeyer, C. E., Bensley, K. M., Hawkins, E. J., &amp; Williams, E. C. (2018). Differences in <span>Perceptions</span> of and <span>Practices Regarding Treatment</span> of <span>Alcohol Use Disorders Among VA Primary Care Providers</span> in <span>Urban</span> and <span>Rural Clinics</span>. <em>The Journal of Rural Health</em>, <em>34</em>(4), 359–368. <a href="https://doi.org/10.1111/jrh.12293">https://doi.org/10.1111/jrh.12293</a>
 </div>
-</div></section></div></main>
-<!-- /main column -->
-<script id="quarto-html-after-body" type="application/javascript">
+</div>
+</section>
+     </main>
+<!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -2346,9 +2790,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-</div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
@@ -2379,9 +2821,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   };
   
 })();
-          </script>
-
-
-
-
+          </script> 
+  
 </body></html>
