@@ -107,14 +107,14 @@ probs |>
 ```
 
 ```{r}
-if (file.exists("objects/aurocs.csv")){
-  aurocs <- read_csv("objects/aurocs.csv")
+if (file.exists(here::here("_csv/aurocs.csv"))){
+  aurocs <- read_csv(here("_csv/aurocs.csv"))
 } else{
   aurocs <- probs |> 
     group_by(inner_split_num, outer_split_num) |> 
     summarize(auroc = roc_auc_vec(truth = label, estimate = prob_raw))
   
-  aurocs |> write_csv("objects/aurocs.csv")
+  aurocs |> write_csv(here("_csv/aurocs.csv"))
 }
 ```
 

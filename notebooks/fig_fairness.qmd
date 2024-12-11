@@ -322,6 +322,6 @@ pp_race |>
       mutate(group = "above_poverty vs. below_poverty") |> 
       relocate(group)
   ) |> 
-  write_csv("objects/subgroup_comparison.csv")
+  write_csv(here("_csv/subgroup_comparison.csv"))
 ```
 
