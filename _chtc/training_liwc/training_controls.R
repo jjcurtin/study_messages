@@ -24,7 +24,7 @@ resample <- c("up_1", "up_2", "up_3", "up_4", "up_5",
 # DATA, SPLITS AND OUTCOME-------------------------------------
 feature_set <- c("concat_all", "concat_3day", "concat_7day",
                  "ind_all", "ind_3day", "ind_7day") 
-data_trn <- str_c("features_",batch, "_", window, "_", roll_dur, "h.csv") 
+data_trn <- str_c("features_", batch, "_", window, "_", roll_dur, "h.csv") 
 seed_splits <- 102030
 
 ml_mode <- "classification"   # regression or classification
@@ -39,6 +39,9 @@ cv_resample = NULL # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of
 cv_inner_resample <- "1_x_10" # can also be a single number for bootstrapping (i.e., 100)
 cv_outer_resample <- "3_x_10" # outer resample will always be kfold
 cv_group <- "subid" # set to NULL if not grouping
+stratify <- "any_lapse" # set to NULL if not stratifying - this needs to be constant within grouping variable
+# for example it could be if a participant has any lapse on study vs no lapse on study
+# stratify variable can be added to format_data function in training_controls, example shown below
 
 cv_name <- if_else(cv_resample_type == "nested",
                    str_c(cv_resample_type, "_", cv_inner_resample, "_",
@@ -49,9 +52,9 @@ cv_name <- if_else(cv_resample_type == "nested",
 # the name of the batch of jobs to set folder name
 name_batch <- str_c("train_", algorithm, "_", cv_name, "_", version, "_", batch) 
 # the path to the batch of jobs
-path_batch <- str_c("studydata/risk/chtc/", study, "/", name_batch) 
+path_batch <- format_path(str_c("studydata/risk/chtc/", study, "/", name_batch))
 # location of data set
-path_data <- str_c("studydata/risk/data_processed/shared") 
+path_data <- format_path("studydata/risk/data_processed/shared") 
 
 
 # ALGORITHM-SPECIFIC HYPERPARAMETERS-----------
@@ -81,22 +84,27 @@ hp2_nnet <- seq(0, 0.1, length.out = 100) # penalty
 hp3_nnet <- seq(5, 30, length.out = 5) # hidden units
 
 # CHTC SPECIFIC CONTROLS----------------------------
+username <- "jyu274" # for setting staging directory (until we have group staging folder)
+stage_data <- TRUE # If FALSE .sif will still be staged, just not data_trn
 max_idle <- 1000
 request_cpus <- 1 
 request_memory <- "90000MB"
 request_disk <- "3000MB"
-flock <- TRUE
-glide <- TRUE
+want_campus_pools <- FALSE # previously flock
+want_ospool <- FALSE # previously glide
 
 
 # FORMAT DATA-----------------------------------------
 format_data <- function (df){
   
-  df %>% 
-    rename(y = !!y_col_name) %>% 
+  df |>  
+    rename(y = !!y_col_name) |>  
     mutate(y = factor(y, levels = c(!!y_level_pos, !!y_level_neg)), # set pos class first
-           across(where(is.character), factor)) %>%
-    select(-label_num, -dttm_label)
+           across(where(is.character), factor)) |>  
+    select(-label_num, -dttm_label) |> 
+  # for stratifying
+   mutate(any_lapse = if_else(subid %in% subset(df, lapse == "yes")$subid, "yes", "no"),
+          any_lapse = factor(any_lapse))
   # Now include additional mutates to change classes for columns as needed
   # see https://jjcurtin.github.io/dwt/file_and_path_management.html#using-a-separate-mutate
 }
@@ -190,8 +198,3 @@ build_recipe <- function(d, config) {
   
   return(rec)
 }
-
-# Update paths for OS--------------------------------
-# This does NOT need to be edited.  This will work for Windows, Mac and Linux OSs
-path_batch <- format_path(path_batch)
-path_data <- format_path(path_data)
