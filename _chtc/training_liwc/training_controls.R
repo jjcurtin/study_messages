@@ -12,7 +12,7 @@ roll_dur <- 24
 configs_per_job <- 20  # number of model configurations that will be fit/evaluated within each CHTC
 
 # Source function
-devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
 
 # RESAMPLING FOR OUTCOME-----------------------------------
 # note that ratio is under_ratio, which is used by downsampling as is
