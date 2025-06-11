@@ -9,7 +9,7 @@ algorithm <- "xgboost"
 batch <- "liwc"
 roll_dur <- 24
 
-configs_per_job <- 20  # number of model configurations that will be fit/evaluated within each CHTC
+configs_per_job <- 50  # number of model configurations that will be fit/evaluated within each CHTC
 
 # Source function
 source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
@@ -36,12 +36,11 @@ y_level_neg <- "no"
 # CV SETTINGS---------------------------------
 cv_resample_type <- "nested" # can be boot, kfold, or nested
 cv_resample = NULL # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of bootstraps (e.g., 100)
-cv_inner_resample <- "1_x_10" # can also be a single number for bootstrapping (i.e., 100)
-cv_outer_resample <- "3_x_10" # outer resample will always be kfold
+cv_inner_resample <- "2_x_5" # can also be a single number for bootstrapping (i.e., 100)
+cv_outer_resample <- "6_x_5" # outer resample will always be kfold
 cv_group <- "subid" # set to NULL if not grouping
-stratify <- "any_lapse" # set to NULL if not stratifying - this needs to be constant within grouping variable
-# for example it could be if a participant has any lapse on study vs no lapse on study
-# stratify variable can be added to format_data function in training_controls, example shown below
+cv_strat <- TRUE # set to FALSE if not stratifying - If TRUE you must have a strat variable in your data
+# IMPORTANT - NEED TO REMOVE STRATIFY VARIABLE FROM DATA IN RECIPE - See Recipe below for example code
 
 cv_name <- if_else(cv_resample_type == "nested",
                    str_c(cv_resample_type, "_", cv_inner_resample, "_",
@@ -101,12 +100,7 @@ format_data <- function (df){
     rename(y = !!y_col_name) |>  
     mutate(y = factor(y, levels = c(!!y_level_pos, !!y_level_neg)), # set pos class first
            across(where(is.character), factor)) |>  
-    select(-dttm_label) |> 
-  # for stratifying
-   mutate(any_lapse = if_else(subid %in% subset(df, lapse == "yes")$subid, "yes", "no"),
-          any_lapse = factor(any_lapse))
-  # Now include additional mutates to change classes for columns as needed
-  # see https://jjcurtin.github.io/dwt/file_and_path_management.html#using-a-separate-mutate
+    select(-dttm_label)
 }
 
 
@@ -129,11 +123,17 @@ build_recipe <- function(d, config) {
   
   # Set recipe steps generalizable to all model configurations
   rec <- recipe(y ~ ., data = d) %>%
-    step_rm(subid) %>%
-    step_zv(all_predictors()) %>% 
-    step_impute_median(all_numeric_predictors()) %>% 
-    step_impute_mode(all_nominal_predictors()) 
+    step_rm(subid, matches(cv_strat))
 
+  if(cv_strat) {
+    rec <- rec |> 
+      step_rm(strat) # remove strat variable
+  }
+  
+  rec <- rec |>
+    step_zv(all_predictors()) |> 
+    step_impute_median(all_numeric_predictors()) |> 
+    step_impute_mode(all_nominal_predictors()) 
   
   # resampling options for unbalanced outcome variable
   if (resample == "down") {
@@ -157,22 +157,22 @@ build_recipe <- function(d, config) {
   # select down to features for feature_set
   # no need to select down if feature_set is all
   if (str_detect(config$feature_set, "concat")){
-    rec <- rec |> step_select(-contains("ind"))
+    rec <- rec |> step_rm(contains("ind"))
     if (str_detect(config$feature_set, "3day")){
-      rec <- rec |> step_select(-contains("7day"))
+      rec <- rec |> step_rm(contains("7day"))
     }
     if (str_detect(config$feature_set, "7day")){
-      rec <- rec |> step_select(-contains("3day"))
+      rec <- rec |> step_rm(contains("3day"))
     }
   }
   
   if (str_detect(config$feature_set, "ind")){
-    rec <- rec |> step_select(-contains("concat"))
+    rec <- rec |> step_rm(contains("concat"))
     if (str_detect(config$feature_set, "3day")){
-      rec <- rec |> step_select(-contains("7day"))
+      rec <- rec |> step_rm(contains("7day"))
     }
     if (str_detect(config$feature_set, "7day")){
-      rec <- rec |> step_select(-contains("3day"))
+      rec <- rec |> step_rm(contains("3day"))
     }
   }
   
