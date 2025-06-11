@@ -101,7 +101,7 @@ format_data <- function (df){
     rename(y = !!y_col_name) |>  
     mutate(y = factor(y, levels = c(!!y_level_pos, !!y_level_neg)), # set pos class first
            across(where(is.character), factor)) |>  
-    select(-label_num, -dttm_label) |> 
+    select(-dttm_label) |> 
   # for stratifying
    mutate(any_lapse = if_else(subid %in% subset(df, lapse == "yes")$subid, "yes", "no"),
           any_lapse = factor(any_lapse))
@@ -156,22 +156,26 @@ build_recipe <- function(d, config) {
 
   # select down to features for feature_set
   # no need to select down if feature_set is all
-  if (str_detect(config$feature_set, "3day")){
-    rec <- rec |> 
-      step_select(-ends_with("7day"))
-  }
-  if (str_detect(config$feature_set, "7day")){
-    rec <- rec |> 
-      step_select(-ends_with("3day"))
-  }
   if (str_detect(config$feature_set, "concat")){
-    rec <- rec |> 
-      step_select(-str_detect("ind"))
+    rec <- rec |> step_select(-contains("ind"))
+    if (str_detect(config$feature_set, "3day")){
+      rec <- rec |> step_select(-contains("7day"))
+    }
+    if (str_detect(config$feature_set, "7day")){
+      rec <- rec |> step_select(-contains("3day"))
+    }
   }
+  
   if (str_detect(config$feature_set, "ind")){
-    rec <- rec |> 
-      step_select(-str_detect("concat"))
+    rec <- rec |> step_select(-contains("concat"))
+    if (str_detect(config$feature_set, "3day")){
+      rec <- rec |> step_select(-contains("7day"))
+    }
+    if (str_detect(config$feature_set, "7day")){
+      rec <- rec |> step_select(-contains("3day"))
+    }
   }
+  
 
   
   # algorithm specific steps
