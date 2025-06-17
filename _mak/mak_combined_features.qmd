@@ -1,0 +1,103 @@
+---
+title: "Combining EMA, GPS, Monthly, & Demo Features"
+author: "Madison Herrmann and JJC"
+date: "`r lubridate::today()`"
+format: 
+  html: 
+    embed-resources: true
+    toc: true 
+    toc_depth: 4
+editor_options: 
+  chunk_output_type: console
+params:
+  version: "v1"
+---
+
+## Status and Notes
+
+This file combines GPS, EMA, Monthly, & demographic features
+
+- 5/19/2025 Updated to add in Monthly and various checks by JJC
+- 5/22/2025  dropped diff features from monthly and some gps features
+- 6/12  - returned to 4x daily ema
+
+## Set up
+
+```{r}
+#| include: false
+
+options(conflicts.policy = "depends.ok")
+library(tidyverse) 
+
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+source("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+
+path_shared <- format_path("risk/data_processed/shared")
+path_features <- format_path("risk/data_processed/messages")
+```
+
+Read in feature files
+```{r}
+messages <- read_csv(here::here(path_shared, "features_liwc_day_24h.csv"), 
+                show_col_types = FALSE) 
+demos <- read_csv(here::here(path_shared, "features_demographics.csv"), 
+                  show_col_types = FALSE) 
+strat <- read_csv(here::here(path_shared, "strat_lh.csv"), 
+                    show_col_types = FALSE) 
+```
+
+Check rows
+
+- OK
+```{r}
+nrow(messages)
+nrow(demos)
+nrow(strat)
+```
+
+Verify expected # of subids
+
+- EMA sample (151) for EMA and Monthly
+- GPS sample (154) for GPS
+- Full sample (154) for demos
+
+```{r}
+messages |> distinct(subid) |> nrow() 
+demos |> distinct(subid) |> nrow() 
+strat |> distinct(subid) |> nrow() 
+```
+
+Look at features for each signal
+
+- EMA looks good 
+- GPS looks good
+- Monthly features
+```{r}
+names(messages)[1:700]
+names(messages)[701:1399]
+names(demos)
+names(strat)
+```
+
+Join all files using left joins starting with GPS for that sample
+Also join in strat lh
+```{r}
+nrow(messages)
+all <- messages |> 
+  left_join(demos, by = c("subid")) |>
+  left_join(strat, by = c("subid"))
+
+nrow(all)
+```
+
+Check outcome.  Looks good!
+```{r}
+all |> tab(lapse) 
+```
+
+Write out file
+```{r}
+all |> write_csv(here::here(path_features, 
+                            str_c("features_", 
+                                  params$version, ".csv")))
+```

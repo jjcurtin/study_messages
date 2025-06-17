@@ -24,7 +24,7 @@ resample <- c("up_1", "up_2", "up_3", "up_4", "up_5",
 # DATA, SPLITS AND OUTCOME-------------------------------------
 feature_set <- c("concat_all", "concat_3day", "concat_7day",
                  "ind_all", "ind_3day", "ind_7day") 
-data_trn <- str_c("features_", batch, "_", window, "_", roll_dur, "h.csv") 
+data_trn <- str_c("features_", version, ".csv") 
 seed_splits <- 102030
 
 ml_mode <- "classification"   # regression or classification
@@ -34,13 +34,12 @@ y_level_neg <- "no"
 
 
 # CV SETTINGS---------------------------------
-cv_resample_type <- "nested" # can be boot, kfold, or nested
-cv_resample = NULL # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of bootstraps (e.g., 100)
-cv_inner_resample <- "2_x_5" # can also be a single number for bootstrapping (i.e., 100)
-cv_outer_resample <- "6_x_5" # outer resample will always be kfold
+cv_resample_type <- "kfold" # can be boot, kfold, or nested
+cv_resample = "6_x_5" # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of bootstraps (e.g., 100)
+cv_inner_resample <- NULL # can also be a single number for bootstrapping (i.e., 100)
+cv_outer_resample <- NULL # outer resample will always be kfold
 cv_group <- "subid" # set to NULL if not grouping
 cv_strat <- TRUE # set to FALSE if not stratifying - If TRUE you must have a strat variable in your data
-# IMPORTANT - NEED TO REMOVE STRATIFY VARIABLE FROM DATA IN RECIPE - See Recipe below for example code
 
 cv_name <- if_else(cv_resample_type == "nested",
                    str_c(cv_resample_type, "_", cv_inner_resample, "_",
@@ -51,9 +50,9 @@ cv_name <- if_else(cv_resample_type == "nested",
 # the name of the batch of jobs to set folder name
 name_batch <- str_c("train_", algorithm, "_", cv_name, "_", version, "_", batch) 
 # the path to the batch of jobs
-path_batch <- format_path(str_c("studydata/risk/chtc/", study, "/", name_batch))
+path_batch <- format_path(str_c("risk/chtc/", study, "/", name_batch))
 # location of data set
-path_data <- format_path("studydata/risk/data_processed/shared") 
+path_data <- format_path("risk/data_processed/messages") 
 
 
 # ALGORITHM-SPECIFIC HYPERPARAMETERS-----------
@@ -71,7 +70,7 @@ hp3_rf <- 1500 # trees (10 x's number of predictors)
 
 hp1_xgboost <- c(0.0001, 0.001, 0.01, 0.1, 0.2, 0.3, .4)  # learn_rate
 hp2_xgboost <- c(1, 2, 3, 4, 5) # tree_depth
-hp3_xgboost <- c(20, 30, 40, 50)  # mtry
+hp3_xgboost <- seq(100, 900, 100)  # mtry
 # trees = 500
 # early stopping = 20
 
@@ -84,13 +83,13 @@ hp3_nnet <- seq(5, 30, length.out = 5) # hidden units
 
 # CHTC SPECIFIC CONTROLS----------------------------
 username <- "jyu274" # for setting staging directory (until we have group staging folder)
-stage_data <- TRUE # If FALSE .sif will still be staged, just not data_trn
+stage_data <- FALSE # If FALSE .sif will still be staged, just not data_trn
 max_idle <- 1000
 request_cpus <- 1 
 request_memory <- "90000MB"
 request_disk <- "3000MB"
-want_campus_pools <- FALSE # previously flock
-want_ospool <- FALSE # previously glide
+want_campus_pools <- TRUE # previously flock
+want_ospool <- TRUE # previously glide
 
 
 # FORMAT DATA-----------------------------------------
@@ -123,7 +122,7 @@ build_recipe <- function(d, config) {
   
   # Set recipe steps generalizable to all model configurations
   rec <- recipe(y ~ ., data = d) %>%
-    step_rm(subid, matches(cv_strat))
+    step_rm(subid)
 
   if(cv_strat) {
     rec <- rec |> 
@@ -197,7 +196,7 @@ build_recipe <- function(d, config) {
   # final steps for all algorithms
   rec <- rec %>%
     # drop columns with NA values after imputation (100% NA)
-    step_select(where(~ !any(is.na(.)))) %>%
+    step_rm(where(~ any(is.na(.)))) %>%
     step_nzv()
   
   return(rec)
