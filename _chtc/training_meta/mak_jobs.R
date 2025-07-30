@@ -6,7 +6,7 @@
 # CHANGE ME  -------------------- 
 # Set path for training_controls.R
 # location of study specific training_controls.R (can use relative path if in repo) 
-path_training_controls <- "./messages/chtc/training_meta/training_controls.R" 
+path_training_controls <- "./_chtc/training_meta/training_controls.R" 
 
 # DON'T CHANGE -------------------- 
 library(tidyverse)

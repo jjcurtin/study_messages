@@ -1,6 +1,8 @@
 # Training controls
 
 # FORMAT PATH FUNCTION------
+library(stringr)
+library(dplyr)
 source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
 
 # SET GLOBAL PARAMETERS------
@@ -8,7 +10,7 @@ study <- "messages"
 window <- "day"
 lead <- 0
 version <- "v2"
-algorithm <- "rda"
+algorithm <- "random_forest"
 batch <- "meta_stratified"
 
 
@@ -31,17 +33,17 @@ ml_mode <- "classification"   # regression or classification
 y_col_name <- "lapse" 
 y_level_pos <- "yes" 
 y_level_neg <- "no"
-stratify <- "any_lapse" # set to NULL if not stratifying - this needs to be constant within grouping variable
-# for example it could be if a participant has any lapse on study vs no lapse on study
-# stratify variable can be added to format_data function in training_controls
 
 
 # CV SETTINGS------
 cv_resample_type <- "nested" # can be boot, kfold, or nested
 cv_resample = NULL # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of bootstraps (e.g., 100)
-cv_inner_resample <- "1_x_10" # can also be a single number for bootstrapping (i.e., 100)
-cv_outer_resample <- "3_x_10" # outer resample will always be kfold
+cv_inner_resample <- "2_x_5" # can also be a single number for bootstrapping (i.e., 100)
+cv_outer_resample <- "6_x_5" # outer resample will always be kfold
 cv_group <- "subid" # set to NULL if not grouping
+cv_strat <- TRUE # set to FALSE if not stratifying - If TRUE you must have a strat variable in your data
+# IMPORTANT - NEED TO REMOVE STRATIFY VARIABLE FROM DATA IN RECIPE - See Recipe below for example code
+
 
 cv_name <- if_else(cv_resample_type == "nested",
                    str_c(cv_resample_type, "_", cv_inner_resample, "_",
@@ -52,9 +54,9 @@ cv_name <- if_else(cv_resample_type == "nested",
 # the name of the batch of jobs to set folder name
 name_batch <- str_c("train_", algorithm, "_", cv_name, "_", version, "_", batch) 
 # the path to the batch of jobs
-path_batch <- format_path(str_c("studydata/risk/chtc/", study, "/", name_batch)) 
+path_batch <- format_path(str_c("risk/chtc/", study, "/", name_batch)) 
 # location of data set
-path_data <- format_path("studydata/risk/data_processed/meta/april_2025") 
+path_data <- format_path("risk/data_processed/shared") 
 
 
 # ALGORITHM-SPECIFIC HYPERPARAMETERS------
@@ -90,22 +92,21 @@ max_idle <- 1000
 request_cpus <- 1 
 request_memory <- "90000MB"
 request_disk <- "3000MB"
-flock <- TRUE
-glide <- TRUE
+want_campus_pools <- TRUE # previously flock
+want_ospool <- TRUE # previously glide
 
 
 # FORMAT DATA------
-format_data <- function (df){
+format_data <- function (df, lapse_strat = NULL){
   
-  df |>  
-    rename(y = !!y_col_name) |>  
-    mutate(y = factor(y, levels = c(!!y_level_pos, !!y_level_neg)), # set pos class first
-           across(where(is.character), factor)) |> 
-    select(-label_num, -dttm_label, -day_start, -day_end) |> 
-    mutate(any_lapse = if_else(subid %in% subset(df, lapse == "yes")$subid, "yes", "no"),
-           any_lapse = factor(any_lapse))
-  # Now include additional mutates to change classes for columns as needed
-  # see https://jjcurtin.github.io/dwt/file_and_path_management.html#using-a-separate-mutate
+  df <- df |> 
+    rename(y = !!y_col_name) |> 
+    # set pos class first
+    mutate(y = factor(y, levels = c(!!y_level_pos, !!y_level_neg)), 
+           across(where(is.character), factor)) |>
+    select(-c(dttm_label)) 
+  
+  return(df)
 }
 
 
@@ -129,36 +130,42 @@ build_recipe <- function(d, config) {
   }
   
   # Set recipe steps generalizable to all model configurations
-  rec <- recipe(y ~ ., data = d) %>%
-    step_rm(subid) %>%
-    step_zv(all_predictors()) %>% 
-    step_impute_median(all_numeric_predictors()) %>% 
+  rec <- recipe(y ~ ., data = d) 
+  
+  if(cv_strat) {
+    rec <- rec |> 
+      step_rm(strat) # remove strat variable
+  }
+  
+  rec <- rec |>
+    step_zv(all_predictors()) |> 
+    step_impute_median(all_numeric_predictors()) |> 
     step_impute_mode(all_nominal_predictors()) 
-
+  
   
   # resampling options for unbalanced outcome variable
   if (resample == "down") {
     # under_ratio = ratio.  No conversion needed
-    rec <- rec %>% 
+    rec <- rec |> 
       themis::step_downsample(y, under_ratio = ratio, seed = 10) 
   }
   
   if (resample == "smote") {
     # correct ratio to over_ratio
-    rec <- rec %>% 
+    rec <- rec |> 
       themis::step_smote(y, over_ratio = 1 / ratio, seed = 10) 
   }
   
   if (resample == "up") {
     # correct ratio to over_ratio
-    rec <- rec %>% 
+    rec <- rec |> 
       themis::step_upsample(y, over_ratio = 1 / ratio, seed = 10)
   }
   
   # algorithm specific steps
   if (algorithm == "glmnet") {
-    rec <- rec  %>%
-      step_dummy(all_nominal_predictors()) %>%
+    rec <- rec  |>
+      step_dummy(all_nominal_predictors()) |>
       step_normalize(all_predictors())
   } 
   
@@ -167,14 +174,14 @@ build_recipe <- function(d, config) {
   } 
   
   if (algorithm == "xgboost") {
-    rec <- rec  %>% 
+    rec <- rec  |> 
       step_dummy(all_nominal_predictors())
   } 
   
   # final steps for all algorithms
-  rec <- rec %>%
+  rec <- rec |>
     # drop columns with NA values after imputation (100% NA)
-    step_select(where(~ !any(is.na(.)))) %>%
+    step_select(where(~ !any(is.na(.)))) |>
     step_nzv()
   
   return(rec)
