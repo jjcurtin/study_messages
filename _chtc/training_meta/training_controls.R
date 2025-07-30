@@ -131,7 +131,7 @@ build_recipe <- function(d, config) {
   
   # Set recipe steps generalizable to all model configurations
   rec <- recipe(y ~ ., data = d)  |> 
-    step_rm(day_start, day_end, label_num, subid, dttm_label)
+    step_rm(day_start, day_end, label_num, subid)
   
   if(cv_strat) {
     rec <- rec |> 
