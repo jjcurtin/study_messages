@@ -1,0 +1,133 @@
+---
+title: "Lasso for baseline feature selection"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+This script fits a lasso model to select a set of baseline features related to lapse. This subset of features can then be added to meta/messages features.
+
+## Set Up
+
+
+```{r}
+#| message: false
+
+library(tidyverse)
+library(tidymodels)
+theme_set(theme_classic()) 
+
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+path_shared <- format_path(str_c("risk/data_processed/shared/"))
+path_messages <- format_path(str_c("risk/data_processed/messages/")) 
+```
+
+## Read in data
+```{r}
+study_dates <- read_csv(here::here(path_shared, "study_dates_messages.csv"),
+                  show_col_types = FALSE)
+
+baseline <- read_csv(here::here(path_shared, "features_baseline.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid)
+
+intake <- read_csv(here::here(path_shared, "intake.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid) |> 
+  select(-c(2:6))
+
+screen <- read_csv(here::here(path_shared, "screen.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid) |> 
+  select(-c(2:6)) |> 
+  mutate(across(mps_1:mps_155, ~if_else(.x == TRUE,1, 0)))
+
+feats <- baseline |> 
+  left_join(intake, by = "subid") |> 
+  left_join(screen, by = "subid")
+
+lapses <- read_csv(here::here(path_shared, "lapses.csv"),
+                  show_col_types = FALSE)
+```
+
+Add outcome to features (lapse on study)
+```{r}
+feats <- feats |> 
+  mutate(y = if_else(subid %in% lapses$subid, "lapse", "no lapse"),
+         y = factor(y, levels = c("lapse", "no lapse")))
+```
+
+## Fit LASSO
+
+Recipe
+```{r}
+rec <- recipe(y ~ ., data = feats) |> 
+  step_rm(subid) |> 
+  step_string2factor(all_nominal_predictors()) |>
+  step_novel(all_nominal_predictors()) |> 
+  step_impute_median(all_numeric_predictors()) |> 
+  step_impute_mode(all_nominal_predictors()) |> 
+  step_zv(all_predictors()) |> 
+  step_dummy(all_nominal_predictors()) |>
+  step_zv(all_predictors()) |> 
+  step_normalize(all_predictors())
+  
+```
+
+Splits
+```{r}
+set.seed(102030)
+splits <- vfold_cv(feats, v = 5, strata = y)
+```
+
+Fit models
+```{r}
+tune_grid <- expand.grid(penalty = 10^seq(-4, 0, length = 50),
+                            mixture = seq(.5, 1, length = 5))
+
+models <- logistic_reg(penalty = tune(),
+                       mixture = tune()) |> 
+        set_engine("glmnet") |> 
+        set_mode("classification") |> 
+        tune_grid(preprocessor = rec,
+                  resamples = splits,
+                  grid = tune_grid,
+                  metrics = metric_set(roc_auc))
+```
+
+Get best lambda
+```{r}
+best_model <- select_best(models, metric = "roc_auc")
+```
+
+Fit final model 
+```{r}
+rec_prepped <- rec |> 
+    prep(training = feats)
+
+feat_all <- rec_prepped |> 
+    bake(new_data = feats)
+
+fit_best <- logistic_reg(penalty = best_model$penalty,
+                         mixture = best_model$mixture) |> 
+        set_engine("glmnet") |> 
+        set_mode("classification") |> 
+        fit(y ~ ., data = feat_all)
+```
+
+Get retained features
+```{r}
+tidy(fit_best) |> 
+  filter(term != "(Intercept)", estimate != 0)
+```
+
+

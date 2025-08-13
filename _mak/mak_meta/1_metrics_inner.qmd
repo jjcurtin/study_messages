@@ -11,10 +11,10 @@ format:
     embed-resources: true
 params:
   study: "messages"
-  version: "v2"
-  cv: "nested"
+  version: "v6"
+  cv: "kfold"
   algorithms: "random_forest"   # "all" or name of specific algorithm
-  model: "meta_stratified" # "main" or "baseline"
+  model: "meta_stratified_baseline" # "main" or "baseline"
 editor_options: 
   chunk_output_type: console
 ---
