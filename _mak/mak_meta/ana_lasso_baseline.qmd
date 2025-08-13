@@ -38,7 +38,9 @@ study_dates <- read_csv(here::here(path_shared, "study_dates_messages.csv"),
 
 baseline <- read_csv(here::here(path_shared, "features_baseline.csv"),
                   show_col_types = FALSE) |> 
-  filter(subid %in% study_dates$subid)
+  filter(subid %in% study_dates$subid) |> 
+  # select scaled and other scores not in raw data
+  select(days_abstinent, dsm5_total:efficacy_craving, stress_total:social_support_so)
 
 intake <- read_csv(here::here(path_shared, "intake.csv"),
                   show_col_types = FALSE) |> 
@@ -66,21 +68,37 @@ feats <- feats |>
          y = factor(y, levels = c("lapse", "no lapse")))
 ```
 
+Remove feats with more than 10% missing data
+```{r}
+feats_missing <- naniar::miss_var_summary(feats) |> 
+  filter(pct_miss > 10) |> 
+  pull(variable)
+
+feats <- feats |> 
+  select(-c(contains(feats_missing)))
+```
+
+Convert string variables to factor
+```{r}
+feats <- feats |> 
+  mutate(across(where(is.character), ~factor(.x)))
+```
+
+
+
 ## Fit LASSO
 
 Recipe
 ```{r}
 rec <- recipe(y ~ ., data = feats) |> 
   step_rm(subid) |> 
-  step_string2factor(all_nominal_predictors()) |>
-  step_novel(all_nominal_predictors()) |> 
+  step_zv(all_predictors()) |> 
   step_impute_median(all_numeric_predictors()) |> 
   step_impute_mode(all_nominal_predictors()) |> 
-  step_zv(all_predictors()) |> 
-  step_dummy(all_nominal_predictors()) |>
-  step_zv(all_predictors()) |> 
+  step_dummy(all_nominal_predictors()) |> 
+  step_nzv(all_predictors()) |> 
   step_normalize(all_predictors())
-  
+   
 ```
 
 Splits
@@ -107,6 +125,8 @@ models <- logistic_reg(penalty = tune(),
 Get best lambda
 ```{r}
 best_model <- select_best(models, metric = "roc_auc")
+
+show_best(models, metric = "roc_auc")
 ```
 
 Fit final model 
@@ -127,7 +147,9 @@ fit_best <- logistic_reg(penalty = best_model$penalty,
 Get retained features
 ```{r}
 tidy(fit_best) |> 
-  filter(term != "(Intercept)", estimate != 0)
+  filter(term != "(Intercept)", estimate != 0) |> 
+  arrange(desc(abs(estimate))) |> 
+  print(n = Inf)
 ```
 
 
