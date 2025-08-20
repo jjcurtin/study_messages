@@ -1,0 +1,271 @@
+---
+title: "Lasso for baseline feature selection"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+This script fits a lasso model to select a set of baseline features related to lapse. This subset of features can then be added to meta/messages features.
+
+## Set Up
+
+
+```{r}
+#| message: false
+
+library(grpreg)
+library(tidyverse)
+library(tidymodels)
+
+theme_set(theme_classic()) 
+
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+path_shared <- format_path(str_c("risk/data_processed/shared"))
+path_messages <- format_path(str_c("risk/data_processed/messages")) 
+```
+
+## Read in data
+```{r}
+study_dates <- read_csv(here::here(path_shared, "study_dates_messages.csv"),
+                  show_col_types = FALSE)
+
+baseline <- read_csv(here::here(path_shared, "features_baseline.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid) |>
+  # select scaled and other scores not in raw data
+  select(subid:days_abstinent, dsm5_total:efficacy_craving, stress_total:social_support_so)
+
+intake <- read_csv(here::here(path_shared, "intake.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid) |> 
+  select(-c(2:6))
+
+screen <- read_csv(here::here(path_shared, "screen.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid) |> 
+  select(-c(2:6, contains("auh_8_"))) |> 
+  mutate(across(mps_1:mps_155, ~if_else(.x == TRUE,1, 0)))
+
+feats <- baseline |> 
+  left_join(intake, by = "subid") |> 
+  left_join(screen, by = "subid")
+
+labels <- read_csv(here::here(path_shared, "labels_messages_day_24h.csv"),
+                  show_col_types = FALSE) |> 
+  select(-c(day_start, day_end)) |> 
+  mutate(lapse = factor(lapse, levels = c("no lapse", "lapse")))
+
+strat <- read_csv(here::here(path_shared, "strat_lh.csv"),
+                  show_col_types = FALSE)
+```
+
+
+Remove feats with more than 10% missing data
+```{r}
+feats_missing <- naniar::miss_var_summary(feats) |> 
+  filter(pct_miss > 10) |> 
+  pull(variable)
+
+feats <- feats |> 
+  select(-c(contains(feats_missing)))
+```
+
+Add outcome and strat var
+```{r}
+data <- labels |> 
+  left_join(feats, by = "subid") |> 
+  left_join(strat, by = "subid")
+```
+
+
+Convert string variables to factor
+```{r}
+data <- data |> 
+  mutate(across(where(is.character), ~factor(.x))) |> 
+  rename(y = lapse)
+```
+
+
+## Fit group LASSO
+
+
+Get dummy coded names for group mapping
+```{r}
+rec_dummy <- recipe(y ~ ., data = data) |> 
+  step_rm(subid, dttm_label, strat, all_numeric_predictors()) |> 
+  step_impute_mode(all_nominal_predictors()) |> 
+  step_zv(all_nominal_predictors()) |> 
+  step_dummy(all_nominal_predictors(), one_hot = TRUE)
+
+rec_prep <- prep(rec_dummy, training = data)
+
+dummy_names <- rec_prep |> 
+  bake(new_data = NULL) |> 
+  select(-y) |> 
+  colnames()
+
+dummy_groups <- tibble(
+  var_name = dummy_names,
+  original_var = str_replace(dummy_names, "_[^_]+$", "")
+)
+
+numeric_names <- data |> 
+  select(where(is.numeric), -subid) |> 
+  colnames()
+
+numeric_groups <- tibble(
+  var_name = numeric_names,
+  original_var = numeric_names
+)
+
+groups <- dummy_groups |> 
+  bind_rows(numeric_groups) |> 
+  mutate(id = as.integer(factor(original_var)))
+```
+
+Full Recipe
+```{r}
+rec <- recipe(y ~ ., data = data) |> 
+  step_rm(subid, dttm_label, strat) |> 
+  step_zv(all_predictors()) |> 
+  step_impute_median(all_numeric_predictors()) |> 
+  step_impute_mode(all_nominal_predictors()) |> 
+  step_dummy(all_nominal_predictors(), one_hot = TRUE) |> #for grouping
+  step_nzv(all_predictors()) |> 
+  step_normalize(all_predictors())
+
+rec_prep <- prep(rec, training = data)
+```
+
+Reorder group predictors to match final recipe
+```{r}
+pred_names <- bake(rec_prep, new_data = NULL) |> 
+  select(-y) |> 
+  colnames()
+
+groups <- groups |> 
+  filter(var_name %in% pred_names) |> 
+  mutate(var_name = factor(var_name, levels = pred_names)) |> 
+  arrange(var_name) 
+```
+
+Splits
+```{r}
+set.seed(102030)
+splits <- group_vfold_cv(data, v = 5, group = "subid", strata = strat)
+```
+
+Just tuning on lambda - full lasso model
+```{r}
+lambda_grid <- 10^seq(-6, -1, length = 30)
+```
+
+Function to manually fit group lasso on each split
+```{r}
+compute_fold_auc <- function(split, rec_prep, group_vec, lambda_val) {
+  train_data <- analysis(split)
+  test_data  <- assessment(split)
+  
+  x_train <- bake(rec_prep, new_data = train_data) |> select(-y) |> as.matrix()
+  y_train <- bake(rec_prep, new_data = train_data)$y
+  
+  x_test <- bake(rec_prep, new_data = test_data) |> select(-y) |> as.matrix()
+  y_test <- bake(rec_prep, new_data = test_data)$y
+  
+  fit <- grpreg(
+    X = x_train,
+    y = y_train,
+    group = group_vec,
+    penalty = "grLasso",
+    lambda = lambda_val,
+    family = "binomial"
+  )
+  
+  preds <- predict(fit, x_test, type = "response")
+  yardstick::roc_auc_vec(truth = factor(y_test, 
+                                       levels = c("no lapse","lapse")),
+                         estimate = preds)
+}
+
+mean_auc_for_lambda <- function(lambda_val, splits, rec_prep, group_vec) {
+  fold_aucs <- purrr::map_dbl(splits$splits, compute_fold_auc,
+                               rec_prep = rec_prep,
+                               group_vec = group_vec,
+                               lambda_val = lambda_val)
+  tibble(lambda = lambda_val, mean_auc = mean(fold_aucs))
+}
+
+cv_results <- map_dfr(lambda_grid,
+                      mean_auc_for_lambda,
+                      splits = splits,
+                      rec_prep = rec_prep,
+                      group_vec = groups$id)
+```
+
+best lambda
+```{r}
+best_lambda <- cv_results$lambda[which.max(cv_results$mean_auc)]
+```
+
+
+final model
+```{r}
+x_all <- bake(rec_prep, new_data = data) |> 
+  select(-y) |>  
+  as.matrix()
+y_all <- bake(rec_prep, new_data = data)$y
+
+final_fit <- grpreg(
+  X = x_all,
+  y = y_all,
+  group = groups$id,
+  penalty = "grLasso",
+  lambda = best_lambda,
+  family = "binomial"
+)
+```
+
+coefficients
+```{r}
+coefs <- coef(final_fit) 
+```
+
+```{r}
+coef_tbl <- tibble(
+  var_name = names(coefs),      
+  coef = as.numeric(coefs)) |> 
+  filter(var_name != "(Intercept)") |> 
+  left_join(groups |> select(var_name, original_var), by = "var_name")
+
+retained_groups <- coef_tbl |> 
+  group_by(original_var) |> 
+  summarise(any_nonzero = any(coef != 0)) |> 
+  filter(any_nonzero) |> 
+  pull(original_var)
+
+retained_groups
+
+coef_tbl |> 
+  filter(original_var %in% retained_groups) |> 
+  arrange(original_var, desc(abs(coef)))
+```
+
+save out retained features 
+```{r}
+final_data <- data |> 
+  select(contains(retained_groups)) |> 
+  glimpse()
+
+final_data |> 
+  write_csv(here::here(path_messages, "features_baseline_reduced.csv"))
+```
+

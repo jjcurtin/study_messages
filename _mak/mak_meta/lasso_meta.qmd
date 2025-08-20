@@ -1,0 +1,154 @@
+---
+title: "Lasso for baseline feature selection"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+This script fits a lasso model to select a set of baseline features related to lapse. This subset of features can then be added to meta/messages features.
+
+## Set Up
+
+
+```{r}
+#| message: false
+
+library(tidyverse)
+library(tidymodels)
+theme_set(theme_classic()) 
+
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+path_shared <- format_path(str_c("risk/data_processed/shared"))
+path_messages <- format_path(str_c("risk/data_processed/messages")) 
+```
+
+## Read in data
+```{r}
+data <- read_csv(here::here(path_shared, "features_meta_day_24h_v6.csv"),
+                  show_col_types = FALSE) |> 
+  select(-c(demo_age:demo_race, days_abstinent:stress_total, 
+            day_start, day_end))
+```
+
+
+Convert string variables to factor
+```{r}
+data <- data |> 
+  mutate(across(where(is.character), ~factor(.x))) |> 
+  rename(y = lapse)
+```
+
+
+
+## Fit LASSO
+
+Recipe
+```{r}
+rec <- recipe(y ~ ., data = data) |> 
+  step_rm(subid, dttm_label, strat, label_num) |> 
+  step_zv(all_predictors()) |> 
+  step_impute_median(all_numeric_predictors()) |> 
+  step_impute_mode(all_nominal_predictors()) |> 
+  step_dummy(all_nominal_predictors()) |> 
+  step_nzv(all_predictors()) |> 
+  step_normalize(all_predictors())
+   
+```
+
+Splits
+```{r}
+set.seed(102030)
+splits <- group_vfold_cv(data, v = 5, group = "subid", strata = strat)
+```
+
+Fit models
+```{r}
+tune_grid <- expand.grid(penalty = 10^seq(-4, 0, length = 50),
+                            mixture = seq(.5, 1, length = 5))
+
+models <- logistic_reg(penalty = tune(),
+                       mixture = tune()) |> 
+        set_engine("glmnet") |> 
+        set_mode("classification") |> 
+        tune_grid(preprocessor = rec,
+                  resamples = splits,
+                  grid = tune_grid,
+                  metrics = metric_set(roc_auc))
+```
+
+Get best lambda
+```{r}
+best_model <- select_best(models, metric = "roc_auc")
+
+show_best(models, metric = "roc_auc")
+```
+
+Fit final model 
+```{r}
+rec_prepped <- rec |> 
+    prep(training = data)
+
+feat_all <- rec_prepped |> 
+    bake(new_data = data)
+
+fit_best <- logistic_reg(penalty = best_model$penalty,
+                         mixture = best_model$mixture) |> 
+        set_engine("glmnet") |> 
+        set_mode("classification") |> 
+        fit(y ~ ., data = feat_all)
+```
+
+of 323 features, 159 were retained
+```{r}
+tidy(fit_best) |> 
+  filter(term != "(Intercept)", estimate != 0) |> 
+  nrow()
+```
+ 
+40 features have estimates > |.1|
+
+```{r}
+tidy(fit_best) |> 
+  filter(term != "(Intercept)", estimate != 0) |> 
+  arrange(desc(abs(estimate))) |> 
+  filter(abs(estimate) > .1) |> 
+  print(n = Inf)
+```
+
+
+Save feature set
+```{r}
+feats_retained <- tidy(fit_best) |> 
+  filter(term != "(Intercept)", estimate != 0) |> 
+  # update label_day that is dummy coded
+  mutate(term = if_else(str_detect(term, "label_day"), 
+                        "label_day", term)) |> 
+  # found error in naming due to spaces
+  mutate(term = if_else(str_detect(term, "`"), 
+                        str_remove_all(term, "`"),
+                        term)) |> 
+  filter(abs(estimate) > .1) |> 
+  pull(term) |> 
+  unique()
+
+data <- data |> 
+  select(label_num, subid, dttm_label, 
+         contains(feats_retained), lapse = y, strat) 
+
+(missing_features <- setdiff(feats_retained, colnames(data)))
+```
+
+```{r}
+data |> 
+  write_csv(here::here(path_messages, "features_meta_day_24h_v6_reduced_40.csv"))
+```
+

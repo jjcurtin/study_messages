@@ -9,8 +9,8 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 study <- "messages"
 window <- "day"
 lead <- 0
-version <- "v7"
-algorithm <- "random_forest"
+version <- "v8"
+algorithm <- "xgboost"
 batch <- "meta_stratified"
 
 
@@ -56,7 +56,7 @@ name_batch <- str_c("train_", algorithm, "_", cv_name, "_", version, "_", batch)
 # the path to the batch of jobs
 path_batch <- format_path(str_c("risk/chtc/", study, "/", name_batch)) 
 # location of data set
-path_data <- format_path("risk/data_processed/shared") 
+path_data <- format_path("risk/data_processed/messages") 
 
 
 # ALGORITHM-SPECIFIC HYPERPARAMETERS------
@@ -131,7 +131,7 @@ build_recipe <- function(d, config) {
   
   # Set recipe steps generalizable to all model configurations
   rec <- recipe(y ~ ., data = d)  |> 
-    step_rm(day_start, day_end, label_num, subid)
+    step_rm(label_num, subid)
   
   if(cv_strat) {
     rec <- rec |> 
