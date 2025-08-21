@@ -12,14 +12,22 @@ format:
 params:
   study: "messages"
   batch: "liwc"
-  version: "v1"
+  version: "v5"
   cv: "kfold_6_x_5"
-  algorithms: "xgboost"   # "all" or name of specific algorithm
+  algorithms: "random_forest"   # "all" or name of specific algorithm
 editor_options: 
   chunk_output_type: console
 ---
 
 # Housekeeping
+
+- v1: initial version of all liwc categories (auroc = 0.5677741)
+
+- v3: cut liwc categories in half (auroc = 0.5746350)
+
+- v4: added Sarah's liwc categories (auroc = 0.5560656)
+
+- v4: random forest of v3 (auroc = 0.5786700)
 
 ## Code Status
 

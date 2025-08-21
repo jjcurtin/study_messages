@@ -10,7 +10,7 @@ format:
 editor_options: 
   chunk_output_type: console
 params:
-  version: "v1"
+  version: "v4"
 ---
 
 ## Status and Notes
@@ -37,10 +37,40 @@ Read in feature files
 ```{r}
 messages <- read_csv(here::here(path_shared, "features_liwc_day_24h.csv"), 
                 show_col_types = FALSE) 
+liwc_short <- read_csv(here::here(path_shared, "features_liwc_short_day_24h.csv"), 
+                show_col_types = FALSE) 
 demos <- read_csv(here::here(path_shared, "features_demographics.csv"), 
                   show_col_types = FALSE) 
 strat <- read_csv(here::here(path_shared, "strat_lh.csv"), 
                     show_col_types = FALSE) 
+```
+
+version 3
+```{r}
+messages <- messages |> 
+  select(subid, dttm_label, lapse, contains("liwc"), -contains("raw"),
+         -contains("median"))
+```
+
+version 4 (combining with short)
+```{r}
+messages <- messages |> 
+  filter(!subid %in% c(9, 13, 135))
+
+messages <- messages |> 
+  select(-contains("concat"))
+
+
+messages <- messages |> 
+  full_join(liwc_short |> 
+              mutate(
+                lapse = case_when(lapse == "lapse" ~ "yes",
+                                  lapse == "no lapse" ~ "no")
+              ), 
+            by = c("subid", "dttm_label", "lapse"))
+
+messages <- messages |> 
+  select(-contains("_bi"))
 ```
 
 Check rows
@@ -93,6 +123,6 @@ all |> tab(lapse)
 Write out file
 ```{r}
 all |> write_csv(here::here(path_features, 
-                            str_c("features_", 
+                            str_c("features_liwc_", 
                                   params$version, ".csv")))
 ```
