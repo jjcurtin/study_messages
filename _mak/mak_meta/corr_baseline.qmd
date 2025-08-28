@@ -1,0 +1,173 @@
+---
+title: "Correlations among baseline features and lapse"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+## Set Up
+
+
+```{r}
+#| message: false
+
+library(tidyverse)
+library(tidymodels)
+theme_set(theme_classic()) 
+
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+path_shared <- "/Volumes/studydata/risk/data_processed/shared"
+```
+
+## Read in data
+```{r}
+study_dates <- read_csv(here::here(path_shared, "study_dates_messages.csv"),
+                  show_col_types = FALSE)
+
+baseline <- read_csv(here::here(path_shared, "features_baseline.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid) |> 
+  # select scaled and other scores not in raw data
+  select(subid, days_abstinent, dsm5_total:efficacy_craving, stress_total:social_support_so)
+
+intake <- read_csv(here::here(path_shared, "intake.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid) |> 
+  select(-c(2:6))
+
+screen <- read_csv(here::here(path_shared, "screen.csv"),
+                  show_col_types = FALSE) |> 
+  filter(subid %in% study_dates$subid) |> 
+  select(-c(2:6), -starts_with("mps_"), -starts_with("auh_8"))
+
+feats <- baseline |> 
+  left_join(intake, by = "subid") |> 
+  left_join(screen, by = "subid")
+
+labels <- read_csv(here::here(path_shared, "labels_messages_day_24h.csv"),
+                  show_col_types = FALSE) |> 
+  select(-c(day_start, day_end)) |> 
+  mutate(lapse = factor(lapse, levels = c("lapse", "no lapse")))
+
+strat <- read_csv(here::here(path_shared, "strat_lh.csv"),
+                  show_col_types = FALSE)
+```
+
+
+Remove feats with more than 10% missing data
+```{r}
+feats_missing <- naniar::miss_var_summary(feats) |> 
+  filter(pct_miss > 10) |> 
+  pull(variable)
+
+feats <- feats |> 
+  select(-c(contains(feats_missing)))
+```
+
+Add outcome and strat var
+```{r}
+data <- labels |> 
+  left_join(feats, by = "subid") |> 
+  left_join(strat, by = "subid")
+```
+
+
+Convert string variables to factor
+```{r}
+data <- data |> 
+  mutate(across(where(is.character), ~factor(.x))) |> 
+  rename(y = lapse)
+
+glimpse(data)
+```
+
+
+
+## Make features
+
+Recipe
+```{r}
+rec <- recipe(y ~ ., data = data) |> 
+  step_rm(subid, dttm_label, strat) |> 
+  step_zv(all_predictors()) |> 
+  step_impute_median(all_numeric_predictors()) |> 
+  step_impute_mode(all_nominal_predictors()) |> 
+  step_dummy(all_nominal_predictors()) |> 
+  step_nzv(all_predictors()) |> 
+  step_normalize(all_predictors())
+   
+```
+
+
+```{r}
+rec_prepped <- rec |> 
+    prep(training = data)
+
+feat_all <- rec_prepped |> 
+    bake(new_data = data)
+
+glimpse(feat_all)
+```
+
+## Get correlations
+
+```{r}
+cor_feat <- feat_all |> 
+  mutate(y = if_else(y == "no lapse", 0, 1))  |> 
+  cor() |> 
+  as_tibble(rownames = NA) |> 
+  rownames_to_column() |> 
+  filter(rowname != "y") |> 
+  select(feature = rowname, y) |> 
+  mutate(y = round(y, 3))
+
+cor_feat |> 
+  arrange(desc(abs(y))) |> 
+  print(n = Inf) 
+```
+
+Six of the 8 lasso selected variables are in the top 10:
+
+- yap_1 - Have you driven a car when you knew you had too much to drink to drive safely? (responses include lifetime endorsement and past year frequency)
+- mam_23 - In the next 30 days, how confident are you in your ability to be completely abstinent from alcohol?
+- dass21_15 - In the past month, I felt I was close to panic.
+- mspss_1 - There is a special person who is around when I am in need.
+- mam_22 - Is your goal still to remain abstinent in the future?
+- yap_13 - Have you ever neglected your obligations, your family, your work, or school work for two or more days in a row because of your drinking?
+
+Other 2 lasso selected are in top 28: 
+
+- qol_13 - How satisfied are you with the conditions of your neighborhood?
+- fad_38 - We [my family] resolve most emotional upsets that come up.
+
+Cutoff of correlation of .1 or higher would retain 16 features (from 14 items) out of 1120 features. It would also include all 6/8 originally lasso selected features.
+
+```{r}
+cor_feat |>
+  arrange(desc(abs(y))) |>
+  filter(round(y, 2) >= .1) |> 
+  print(n = Inf)
+```
+
+
+Histogram of correlations
+```{r}
+cor_feat |> 
+  mutate(y = abs(y)) |> 
+  ggplot(aes(x = y)) + 
+  geom_histogram(binwidth = .01, boundary = 0, fill = "light grey", color = "black")
+```
+
+
+
+
