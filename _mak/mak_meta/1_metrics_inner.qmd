@@ -11,9 +11,9 @@ format:
     embed-resources: true
 params:
   study: "messages"
-  version: "v8"
+  version: "v10"
   cv: "kfold"
-  algorithms: "xgboost"   # "all" or name of specific algorithm
+  algorithms: "random_forest"   # "all" or name of specific algorithm
   model: "meta_stratified" # "main" or "baseline"
 editor_options: 
   chunk_output_type: console
