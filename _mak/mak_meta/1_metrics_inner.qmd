@@ -14,7 +14,7 @@ params:
   version: "v10"
   cv: "kfold"
   algorithms: "random_forest"   # "all" or name of specific algorithm
-  model: "meta_stratified" # "main" or "baseline"
+  model: "meta_stratified_lasso" # "main" or "baseline"
 editor_options: 
   chunk_output_type: console
 ---

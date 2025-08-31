@@ -25,11 +25,11 @@ source("training_controls.R")
 
 # set up job ---------
 # for testing:
-#   job_num_arg <- 2
-#   config_start_arg <- 2
-#   config_end_arg <- 2
+#   job_num_arg <- 1
+
 args <- commandArgs(trailingOnly = TRUE) 
-job_num_arg <- args[1]
+job_num_arg <- args[1] 
+job_num_arg <- as.numeric(args[1]) + 1
 
 # Read in data train --------------- 
 fn <- str_subset(list.files(), "^data_trn")
@@ -58,7 +58,8 @@ splits <- d %>%
 d_in <- training(splits$splits[[job_num_arg]])
 
 # set controls ---------------
-penalty_grid <- tibble(penalty = 10^seq(-6, 2, length = 50))
+penalty_grid <- expand.grid(penalty = 10^seq(-6, 2, length = 50),
+                       mixture = seq(.1, 1, .1))
 
 ctrl <- control_grid(save_pred = TRUE,
                      extract = extract_fit_parsnip)
@@ -80,7 +81,7 @@ splits_meta <- group_vfold_cv(d_in_meta, v = 5, repeats = 2,
 
 # Fit models
 models_meta <- logistic_reg(penalty = tune(),
-                            mixture = 1) |>
+                            mixture = tune()) |>
   set_engine("glmnet") |>
   set_mode("classification") |> 
   tune_grid(
@@ -96,7 +97,7 @@ best_penalties_meta <- models_meta |>
   collect_metrics(summarize = FALSE) |>
   group_by(id, id2) |>
   slice_max(.estimate, with_ties = FALSE) |>
-  select(id, id2, penalty)
+  select(id, id2, penalty, mixture)
 
 # tibble to save retained features
 feats_meta <- tibble()
@@ -105,6 +106,7 @@ feats_meta <- tibble()
 # loop over splits to get retained features for each of the 10 models
 for (i in 1:nrow(best_penalties_meta)){
   penalty_val <- best_penalties_meta$penalty[i]
+  mixture_val <- best_penalties_meta$mixture[i]
   
   # Get parsnip object
   parsnip_model <- models_meta$.extracts[[i]]$.extracts[[i]]
@@ -112,7 +114,7 @@ for (i in 1:nrow(best_penalties_meta)){
   # Extract glmnet fit and coefficients
   glmnet_fit <- parsnip_model$fit
   
-  coefs <- coef(glmnet_fit, s = penalty_val) 
+  coefs <- coef(glmnet_fit, s = penalty_val, alpha = mixture_val) 
   
   
   # save retained coefficients
@@ -158,7 +160,7 @@ splits_base <- group_vfold_cv(d_in_base, v = 5, repeats = 2,
 
 # Fit models
 models_base <- logistic_reg(penalty = tune(),
-                            mixture = 1) |>
+                            mixture = tune()) |>
   set_engine("glmnet") |>
   set_mode("classification") |> 
   tune_grid(
@@ -174,7 +176,7 @@ best_penalties_base <- models_base |>
   collect_metrics(summarize = FALSE) |>
   group_by(id, id2) |>
   slice_max(.estimate, with_ties = FALSE) |>
-  select(id, id2, penalty)
+  select(id, id2, penalty, mixture)
 
 # tibble to save retained features
 feats_base <- tibble()
@@ -183,6 +185,7 @@ feats_base <- tibble()
 # loop over splits to get retained features for each of the 10 models
 for (i in 1:nrow(best_penalties_base)){
   penalty_val <- best_penalties_base$penalty[i]
+  mixture_val <- best_penalties_base$mixture[i]
   
   # Get parsnip object
   parsnip_model <- models_base$.extracts[[i]]$.extracts[[i]]
@@ -190,7 +193,7 @@ for (i in 1:nrow(best_penalties_base)){
   # Extract glmnet fit and coefficients
   glmnet_fit <- parsnip_model$fit
   
-  coefs <- coef(glmnet_fit, s = penalty_val) 
+  coefs <- coef(glmnet_fit, s = penalty_val, alpha = mixture_val) 
   
   
   # save retained coefficients
@@ -201,6 +204,8 @@ for (i in 1:nrow(best_penalties_base)){
     coefficient = retained_coefs[,1]
   ) |>  
     filter(coefficient != 0 & feature!= "(Intercept)") |> 
+    arrange(desc(abs(coefficient))) |> 
+    slice_head(n = 20) |> 
     pull(feature)
   
   feats_base <- feats_base |> 
@@ -208,13 +213,14 @@ for (i in 1:nrow(best_penalties_base)){
 }
 
 
-# Retain features retained in at least 50% of splits
+# Retain top 10 features (by prop of splits variables retained in)
 original_base_names <-  d_in_base |> names()
 
 feats_base <- feats_base |> 
   count(feats_base) |> 
   mutate(prop = n/nrow(splits_base)) |> 
-  filter(prop >= .5) |> 
+  arrange(desc(prop)) |> 
+  slice_head(n = 10) |> 
   mutate(feats_base = if_else(!feats_base %in% original_base_names,
                               str_replace(feats_base, "_[^_]+$", ""),
                               feats_base)) |> 

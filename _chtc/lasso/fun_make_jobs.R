@@ -131,14 +131,14 @@ make_jobs <- function(path_training_controls, overwrite_batch = TRUE) {
   write(c(singularity, 
           container,
           "executable = train.sh",
-          "arguments = job_nums.csv $(job_num)",
+          "arguments = $(Process)",
           "  ",
           "log = $(Cluster).log",
-          "error = error/error_$(job_num).err", 
+          "error = error/error_$(Process).err", 
           "  ",
           "should_transfer_files = YES",
           "when_to_transfer_output = ON_EXIT",
-          'transfer_output_remaps = "results_$(job_num).csv = results/results_$(job_num).csv"',
+          'transfer_output_remaps = "results_$(Process).csv = results/results_$(Process).csv"',
           "on_exit_hold = exitcode != 0",
           "max_retries = 1"), 
         file.path(path_batch, "input", "train.sub"), append = TRUE)
@@ -179,6 +179,6 @@ make_jobs <- function(path_training_controls, overwrite_batch = TRUE) {
   write(glide_str, file.path(path_batch, "input", "train.sub"), append = TRUE)
   
   # add queue
-  queue_str <- str_c("queue job_num from job_nums.csv")
+  queue_str <- str_c("queue ", nrow(configs))
   write(queue_str, file.path(path_batch, "input", "train.sub"), append = TRUE)
 }
