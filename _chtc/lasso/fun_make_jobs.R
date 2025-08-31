@@ -138,7 +138,7 @@ make_jobs <- function(path_training_controls, overwrite_batch = TRUE) {
           "  ",
           "should_transfer_files = YES",
           "when_to_transfer_output = ON_EXIT",
-          'transfer_output_remaps = "results_$(Process).csv = results/results_$(Process).csv"',
+          'transfer_output_remaps = "results_*.csv = results/results_*.csv"',
           "on_exit_hold = exitcode != 0",
           "max_retries = 1"), 
         file.path(path_batch, "input", "train.sub"), append = TRUE)

@@ -132,12 +132,13 @@ for (i in 1:nrow(best_penalties_meta)){
 }
 
 
-# Retain features retained in at least 25% of splits
+# Retain top 50 features (determined by how many folds they were retained in)
 
 feats_meta <- feats_meta |> 
   count(feats_meta) |> 
   mutate(prop = n/nrow(splits_meta)) |> 
-  filter(prop >= .25) |> 
+  arrange(desc(prop)) |> 
+  slice_head(n = 50) |> 
   summarise(meta = str_c(feats_meta, collapse = ", ")) |> 
   mutate(split = job_num_arg) |> 
   select(split, meta)
