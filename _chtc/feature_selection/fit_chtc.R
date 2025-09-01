@@ -25,7 +25,7 @@ source("training_controls.R")
 
 # set up job ---------
 # for testing:
-#   job_num_arg <- 1
+#   job_num_arg <- 10
 
 args <- commandArgs(trailingOnly = TRUE) 
 job_num_arg <- args[1] 
@@ -58,7 +58,7 @@ splits <- d %>%
 d_in <- training(splits$splits[[job_num_arg]])
 
 # set controls ---------------
-penalty_grid <- expand.grid(penalty = 10^seq(-6, 2, length = 20),
+penalty_grid <- expand.grid(penalty = 10^seq(-6, 0, length = 20),
                        mixture = seq(.3, 1, .1))
 
 # Lasso on Meta features ---------------
@@ -88,26 +88,12 @@ models_meta <- logistic_reg(penalty = tune(),
   )
 
 # Get best penalties
-# pick best alpha then choose largest lambda with auroc within one standard deviation of best auroc
-choose_1se <- function(models) {
-  models |> 
-    group_by(mixture) |> 
-    mutate(mean = mean(.estimate),
-           se = sd(.estimate) / sqrt(n())) |> 
-    ungroup() |> 
-    group_by(mixture) |> 
-    filter(.estimate >= max(.estimate) - se[which.max(.estimate)]) |> 
-    slice_max(penalty, n = 1) |> 
-    slice_max(mean, n = 1) |> 
-    ungroup() |> 
-    slice_max(mean, n = 1)
-}
-
-# Extract best params per split 
 best_params <- models_meta |> 
   collect_metrics(summarize = FALSE) |> 
+  group_by(id, id2, mixture, penalty) |> 
+  summarise(mean = mean(.estimate), .groups = "drop_last") |> 
   group_by(id, id2) |> 
-  group_modify(~ choose_1se(.x)) |> 
+  slice_max(mean, n = 1, with_ties = FALSE) |> 
   ungroup()
 
 
@@ -153,9 +139,9 @@ stability_meta <- all_coefs |>
             .groups = "drop") |> 
   arrange(desc(prop))
 
-# retain by proportion cutoff .5 (consider different proportions)
+# retain by proportion cutoff .5 (consider different proportions) 
 stability_meta <- stability_meta |>  
-  filter(prop > .5)
+  filter(prop >= .5)
 
 
 
@@ -193,11 +179,12 @@ models_base <- logistic_reg(penalty = tune(),
   )
 
 # Get best penalties
-# pick best alpha then choose largest lambda with auroc within one standard deviation of best auroc
 best_params_base <- models_base |> 
   collect_metrics(summarize = FALSE) |> 
+  group_by(id, id2, mixture, penalty) |> 
+  summarise(mean = mean(.estimate), .groups = "drop_last") |> 
   group_by(id, id2) |> 
-  group_modify(~ choose_1se(.x)) |> 
+  slice_max(mean, n = 1, with_ties = FALSE) |> 
   ungroup()
 
 
@@ -245,7 +232,7 @@ stability_base <- all_coefs |>
 
 # Retain top 10 features (by prop of splits variables retained in)
 stability_base <- stability_base |>  
-  filter(prop > .8)
+  filter(prop >= .8)
 
 original_base_names <-  d_in_base |> names()
 
