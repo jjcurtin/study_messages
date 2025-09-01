@@ -58,12 +58,8 @@ splits <- d %>%
 d_in <- training(splits$splits[[job_num_arg]])
 
 # set controls ---------------
-penalty_grid <- expand.grid(penalty = 10^seq(-6, 2, length = 50),
-                       mixture = seq(.1, 1, .1))
-
-ctrl <- control_grid(save_pred = TRUE,
-                     extract = extract_fit_parsnip)
-
+penalty_grid <- expand.grid(penalty = 10^seq(-6, 2, length = 20),
+                       mixture = seq(.3, 1, .1))
 
 # Lasso on Meta features ---------------
 d_in_meta <- d_in |>
@@ -88,58 +84,83 @@ models_meta <- logistic_reg(penalty = tune(),
     resamples = splits_meta,
     preprocessor = rec_meta,
     grid = penalty_grid,
-    metrics = metric_set(roc_auc),
-    control = ctrl
+    metrics = metric_set(roc_auc)
   )
 
 # Get best penalties
-best_penalties_meta <- models_meta |>
-  collect_metrics(summarize = FALSE) |>
-  group_by(id, id2) |>
-  slice_max(.estimate, with_ties = FALSE) |>
-  select(id, id2, penalty, mixture)
-
-# tibble to save retained features
-feats_meta <- tibble()
-
-
-# loop over splits to get retained features for each of the 10 models
-for (i in 1:nrow(best_penalties_meta)){
-  penalty_val <- best_penalties_meta$penalty[i]
-  mixture_val <- best_penalties_meta$mixture[i]
-  
-  # Get parsnip object
-  parsnip_model <- models_meta$.extracts[[i]]$.extracts[[i]]
-  
-  # Extract glmnet fit and coefficients
-  glmnet_fit <- parsnip_model$fit
-  
-  coefs <- coef(glmnet_fit, s = penalty_val, alpha = mixture_val) 
-  
-  
-  # save retained coefficients
-  retained_coefs <- as.matrix(coefs)
-  
-  feats_meta_retained <- tibble(
-    feature = rownames(retained_coefs),
-    coefficient = retained_coefs[,1]
-  ) |>  
-    filter(coefficient != 0 & feature!= "(Intercept)") |> 
-    pull(feature)
-  
-  feats_meta <- feats_meta |> 
-    bind_rows(tibble(feats_meta = feats_meta_retained))
+# pick best alpha then choose largest lambda with auroc within one standard deviation of best auroc
+choose_1se <- function(models) {
+  models |> 
+    group_by(mixture) |> 
+    mutate(mean = mean(.estimate),
+           se = sd(.estimate) / sqrt(n())) |> 
+    ungroup() |> 
+    group_by(mixture) |> 
+    filter(.estimate >= max(.estimate) - se[which.max(.estimate)]) |> 
+    slice_max(penalty, n = 1) |> 
+    slice_max(mean, n = 1) |> 
+    ungroup() |> 
+    slice_max(mean, n = 1)
 }
 
+# Extract best params per split 
+best_params <- models_meta |> 
+  collect_metrics(summarize = FALSE) |> 
+  group_by(id, id2) |> 
+  group_modify(~ choose_1se(.x)) |> 
+  ungroup()
 
-# Retain top 50 features (determined by how many folds they were retained in)
 
-feats_meta <- feats_meta |> 
-  count(feats_meta) |> 
-  mutate(prop = n/nrow(splits_meta)) |> 
-  arrange(desc(prop)) |> 
-  slice_head(n = 50) |> 
-  summarise(meta = str_c(feats_meta, collapse = ", ")) |> 
+# Refit best models on each analysis split to get coefficients
+all_coefs <- map2_dfr(best_params$id, best_params$id2, function(id, id2) {
+  
+  row <- best_params |>  
+    filter(id == !!id, id2 == !!id2)
+  
+  split_obj <- splits_meta$splits[[which(splits_meta$id == id & splits_meta$id2 == id2)]]
+  
+  split_d_in <- analysis(split_obj)
+  
+  rec_prepped <- rec_meta |> 
+    prep(training = split_d_in)
+  
+  feat_split_d_in <- rec_prepped |> 
+    bake(new_data = NULL)
+  
+  final_model <- logistic_reg(penalty = row$penalty,
+                       mixture = row$mixture) |> 
+    set_engine("glmnet") |> 
+    set_mode("classification") |> 
+    fit(formula = y ~ ., data = feat_split_d_in)
+  
+  coefs <- coef(extract_fit_engine(final_model), s = row$penalty)
+  
+  tibble(term = rownames(coefs),
+         estimate = as.numeric(coefs)) |> 
+    filter(term != "(Intercept)") |> 
+    mutate(
+      selected = estimate != 0,
+      split_id = paste(id, id2, sep = "_"))
+})
+
+
+# Aggregate features retained to assess stability of important features
+stability_meta <- all_coefs |> 
+  group_by(term) |> 
+  summarise(times_present = sum(selected),
+            times_available = n(),
+            prop = times_present / times_available,
+            .groups = "drop") |> 
+  arrange(desc(prop))
+
+# retain by proportion cutoff .5 (consider different proportions)
+stability_meta <- stability_meta |>  
+  filter(prop > .5)
+
+
+
+feats_meta <- stability_meta |> 
+  summarise(meta = str_c(term, collapse = ", ")) |> 
   mutate(split = job_num_arg) |> 
   select(split, meta)
 
@@ -168,63 +189,70 @@ models_base <- logistic_reg(penalty = tune(),
     resamples = splits_base,
     preprocessor = rec_base,
     grid = penalty_grid,
-    metrics = metric_set(roc_auc),
-    control = ctrl
+    metrics = metric_set(roc_auc)
   )
 
 # Get best penalties
-best_penalties_base <- models_base |>
-  collect_metrics(summarize = FALSE) |>
-  group_by(id, id2) |>
-  slice_max(.estimate, with_ties = FALSE) |>
-  select(id, id2, penalty, mixture)
-
-# tibble to save retained features
-feats_base <- tibble()
+# pick best alpha then choose largest lambda with auroc within one standard deviation of best auroc
+best_params_base <- models_base |> 
+  collect_metrics(summarize = FALSE) |> 
+  group_by(id, id2) |> 
+  group_modify(~ choose_1se(.x)) |> 
+  ungroup()
 
 
-# loop over splits to get retained features for each of the 10 models
-for (i in 1:nrow(best_penalties_base)){
-  penalty_val <- best_penalties_base$penalty[i]
-  mixture_val <- best_penalties_base$mixture[i]
+# Refit best models on each analysis split to get coefficients
+all_coefs <- map2_dfr(best_params_base$id, best_params_base$id2, function(id, id2) {
   
-  # Get parsnip object
-  parsnip_model <- models_base$.extracts[[i]]$.extracts[[i]]
+  row <- best_params_base |>  
+    filter(id == !!id, id2 == !!id2)
   
-  # Extract glmnet fit and coefficients
-  glmnet_fit <- parsnip_model$fit
+  split_obj <- splits_base$splits[[which(splits_base$id == id & splits_base$id2 == id2)]]
   
-  coefs <- coef(glmnet_fit, s = penalty_val, alpha = mixture_val) 
+  split_d_in <- analysis(split_obj)
   
+  rec_prepped <- rec_base |> 
+    prep(training = split_d_in)
   
-  # save retained coefficients
-  retained_coefs <- as.matrix(coefs)
+  feat_split_d_in <- rec_prepped |> 
+    bake(new_data = NULL)
   
-  feats_base_retained <- tibble(
-    feature = rownames(retained_coefs),
-    coefficient = retained_coefs[,1]
-  ) |>  
-    filter(coefficient != 0 & feature!= "(Intercept)") |> 
-    arrange(desc(abs(coefficient))) |> 
-    slice_head(n = 20) |> 
-    pull(feature)
+  final_model <- logistic_reg(penalty = row$penalty,
+                              mixture = row$mixture) |> 
+    set_engine("glmnet") |> 
+    set_mode("classification") |> 
+    fit(formula = y ~ ., data = feat_split_d_in)
   
-  feats_base <- feats_base |> 
-    bind_rows(tibble(feats_base = feats_base_retained))
-}
+  coefs <- coef(extract_fit_engine(final_model), s = row$penalty)
+  
+  tibble(term = rownames(coefs),
+         estimate = as.numeric(coefs)) |> 
+    filter(term != "(Intercept)") |> 
+    mutate(
+      selected = estimate != 0,
+      split_id = paste(id, id2, sep = "_"))
+})
 
+
+# Aggregate features retained to assess stability of important features
+stability_base <- all_coefs |> 
+  group_by(term) |> 
+  summarise(times_present = sum(selected),
+            times_available = n(),
+            prop = times_present / times_available,
+            .groups = "drop") |> 
+  arrange(desc(prop))
 
 # Retain top 10 features (by prop of splits variables retained in)
+stability_base <- stability_base |>  
+  filter(prop > .8)
+
 original_base_names <-  d_in_base |> names()
 
-feats_base <- feats_base |> 
-  count(feats_base) |> 
-  mutate(prop = n/nrow(splits_base)) |> 
-  arrange(desc(prop)) |> 
-  slice_head(n = 10) |> 
-  mutate(feats_base = if_else(!feats_base %in% original_base_names,
-                              str_replace(feats_base, "_[^_]+$", ""),
-                              feats_base)) |> 
+feats_base <- stability_base |> 
+  mutate(feats_base = if_else(!term %in% original_base_names,
+                              str_replace(term, "_[^_]+$", ""),
+                              term)) |> 
   summarise(baseline = str_c(feats_base, collapse = ", ")) |> 
   mutate(split = job_num_arg) |> 
   select(split, baseline)
