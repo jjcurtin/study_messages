@@ -263,7 +263,7 @@ feats_base <- prop_base |>
   mutate(split = job_num_arg) |> 
   select(split, baseline = feats_base) |> 
   unique() |> 
-  summarise(baseline = str_c(baseline, collapse = ", ")) |> 
+  summarise(baseline = str_c(baseline, collapse = ", ")) 
   
 
 # Combine features and save---------------
