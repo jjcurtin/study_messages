@@ -260,10 +260,10 @@ feats_base <- prop_base |>
   mutate(feats_base = if_else(!term %in% original_base_names,
                               str_replace(term, "_[^_]+$", ""),
                               term)) |> 
-  mutate(split = job_num_arg) |> 
-  select(split, baseline = feats_base) |> 
+  select(baseline = feats_base) |> 
   unique() |> 
-  summarise(baseline = str_c(baseline, collapse = ", ")) 
+  summarise(baseline = str_c(baseline, collapse = ", ")) |> 
+  mutate(split = job_num_arg)
   
 
 # Combine features and save---------------
