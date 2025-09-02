@@ -25,7 +25,7 @@ source("training_controls.R")
 
 # set up job ---------
 # for testing:
-#   job_num_arg <- 10
+#   job_num_arg <- 12
 
 args <- commandArgs(trailingOnly = TRUE) 
 job_num_arg <- args[1] 
@@ -59,7 +59,7 @@ d_in <- training(splits$splits[[job_num_arg]])
 
 # set controls ---------------
 penalty_grid <- expand.grid(penalty = 10^seq(-6, 0, length = 20),
-                       mixture = seq(.3, 1, .1))
+                       mixture = seq(.3, .8, .1))
 
 # Lasso on Meta features ---------------
 d_in_meta <- d_in |>
@@ -136,16 +136,22 @@ stability_meta <- all_coefs |>
   summarise(times_present = sum(selected),
             times_available = n(),
             prop = times_present / times_available,
-            .groups = "drop") |> 
-  arrange(desc(prop))
+            mean = mean(abs(estimate)), 
+            .groups = "drop") 
 
-# retain by proportion cutoff .5 (consider different proportions) 
-stability_meta <- stability_meta |>  
+# retain by proportion cutoff .5 (consider different proportions) - keep at least 40 feats
+prop_meta <- stability_meta |>  
   filter(prop >= .5)
 
+if (nrow(prop_meta) < 40) {
+  prop_meta <- prop_meta |> 
+    bind_rows(stability_meta |> 
+                filter(prop >= .1 & prop < .5) |> 
+                arrange(desc(prop), desc(mean)) |>
+                slice_head(n = 40 - nrow(prop_meta)))
+}
 
-
-feats_meta <- stability_meta |> 
+feats_meta <- prop_meta |> 
   summarise(meta = str_c(term, collapse = ", ")) |> 
   mutate(split = job_num_arg) |> 
   select(split, meta)
@@ -227,22 +233,38 @@ stability_base <- all_coefs |>
   summarise(times_present = sum(selected),
             times_available = n(),
             prop = times_present / times_available,
-            .groups = "drop") |> 
-  arrange(desc(prop))
+            mean = mean(abs(estimate)), 
+            .groups = "drop") 
 
-# Retain top 10 features (by prop of splits variables retained in)
-stability_base <- stability_base |>  
+# Retain top 5-10 features (by prop of splits variables retained in and coef)
+prop_base <- stability_base |>  
   filter(prop >= .8)
+
+if (nrow(prop_base) < 5) {
+  prop_base <- prop_base |> 
+    bind_rows(stability_base |> 
+                filter(prop >= .7 & prop < .8) |> 
+                arrange(desc(mean)) |> 
+                slice_head(n = 10 - nrow(prop_base)))
+}
+
+if (nrow(prop_base) > 10) {
+  prop_base <- prop_base |> 
+    arrange(desc(mean)) |> 
+    slice_head(n = 10)
+}
 
 original_base_names <-  d_in_base |> names()
 
-feats_base <- stability_base |> 
+feats_base <- prop_base |> 
   mutate(feats_base = if_else(!term %in% original_base_names,
                               str_replace(term, "_[^_]+$", ""),
                               term)) |> 
-  summarise(baseline = str_c(feats_base, collapse = ", ")) |> 
   mutate(split = job_num_arg) |> 
-  select(split, baseline)
+  select(split, baseline = feats_base) |> 
+  unique() |> 
+  summarise(baseline = str_c(baseline, collapse = ", ")) |> 
+  
 
 # Combine features and save---------------
 
