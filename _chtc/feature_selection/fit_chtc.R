@@ -59,7 +59,7 @@ d_in <- training(splits$splits[[job_num_arg]])
 
 # set controls ---------------
 penalty_grid <- expand.grid(penalty = 10^seq(-6, 0, length = 20),
-                       mixture = seq(.3, .8, .1))
+                       mixture = seq(0, 1, .2))
 
 # Lasso on Meta features ---------------
 d_in_meta <- d_in |>
@@ -71,7 +71,7 @@ rec_meta <- build_recipe(d_in_meta)
 
 # Split training data for penalty tuning
 set.seed(102030)
-splits_meta <- group_vfold_cv(d_in_meta, v = 5, repeats = 2, 
+splits_meta <- group_vfold_cv(d_in_meta, v = 10, repeats = 10, 
                               group = "subid", strata = "strat")
 
 
@@ -146,9 +146,15 @@ prop_meta <- stability_meta |>
 if (nrow(prop_meta) < 40) {
   prop_meta <- prop_meta |> 
     bind_rows(stability_meta |> 
-                filter(prop >= .1 & prop < .5) |> 
-                arrange(desc(prop), desc(mean)) |>
+                filter(prop >= .2 & prop < .5) |> 
+                arrange(desc(mean)) |>
                 slice_head(n = 40 - nrow(prop_meta)))
+}
+
+if (nrow(prop_meta) > 100) {
+  prop_meta <- prop_meta |> 
+    arrange(desc(mean)) |>
+    slice_head(n = 100)
 }
 
 feats_meta <- prop_meta |> 
@@ -168,7 +174,7 @@ rec_base <- build_recipe(d_in_base)
 
 # Split training data for penalty tuning
 set.seed(102030)
-splits_base <- group_vfold_cv(d_in_base, v = 5, repeats = 2, 
+splits_base <- group_vfold_cv(d_in_base, v = 10, repeats = 10, 
                               group = "subid", strata = "strat")
 
 
@@ -238,12 +244,12 @@ stability_base <- all_coefs |>
 
 # Retain top 5-10 features (by prop of splits variables retained in and coef)
 prop_base <- stability_base |>  
-  filter(prop >= .8)
+  filter(prop >= .8 & mean > .1)
 
 if (nrow(prop_base) < 5) {
   prop_base <- prop_base |> 
     bind_rows(stability_base |> 
-                filter(prop >= .7 & prop < .8) |> 
+                filter(prop >= .8 & mean < .1) |> 
                 arrange(desc(mean)) |> 
                 slice_head(n = 10 - nrow(prop_base)))
 }
@@ -263,7 +269,7 @@ feats_base <- prop_base |>
   select(baseline = feats_base) |> 
   unique() |> 
   summarise(baseline = str_c(baseline, collapse = ", ")) |> 
-  mutate(split = job_num_arg)
+  mutate(split = job_num_arg) 
   
 
 # Combine features and save---------------

@@ -238,6 +238,142 @@ results_all |>
   geom_histogram(bins = 10)
 ```
 
+
+### feature sets for good vs poor splits
+```{r}
+feats_folds <- results_all |> 
+  filter(algorithm == best_config$algorithm,
+         feature_set == best_config$feature_set,
+         hp1 == best_config$hp1,
+         hp2 == best_config$hp2,
+         hp3 == best_config$hp3,
+         resample == best_config$resample) |> 
+  select(split_num, meta, baseline, roc_auc)
+```
+
+22 folds over .7 auroc
+
+- most had the minimum meta features allowed (40)
+```{r}
+feats_folds |> 
+  filter(roc_auc > .7) |> 
+  mutate(n_meta = lengths(str_split(meta, ","))) |> 
+  pull(n_meta)
+
+feats_folds |> 
+  filter(roc_auc > .7) |> 
+  mutate(n_meta = lengths(str_split(meta, ","))) |> 
+  pull(n_meta) |> 
+  mean()
+```
+
+```{r}
+feats_folds |> 
+  filter(roc_auc < .6) |> 
+  mutate(n_meta = lengths(str_split(meta, ","))) |> 
+  pull(n_meta)
+
+feats_folds |> 
+  filter(roc_auc < .6) |> 
+  mutate(n_meta = lengths(str_split(meta, ","))) |> 
+  pull(n_meta) |> 
+  mean()
+```
+
+```{r}
+feats_folds |> 
+  filter(roc_auc >= .6 & roc_auc <= .7) |> 
+  mutate(n_meta = lengths(str_split(meta, ","))) |> 
+  pull(n_meta) 
+
+feats_folds |> 
+  filter(roc_auc >= .6 & roc_auc <= .7) |> 
+  mutate(n_meta = lengths(str_split(meta, ","))) |> 
+  pull(n_meta) |> 
+  mean()
+```
+
+Baseline feature range
+
+```{r}
+feats_folds |> 
+  filter(roc_auc > .7) |> 
+  mutate(n_base = lengths(str_split(baseline, ","))) |> 
+  pull(n_base)
+
+feats_folds |> 
+  filter(roc_auc > .7) |> 
+  mutate(n_base = lengths(str_split(baseline, ","))) |> 
+  pull(n_base) |> 
+  mean()
+```
+
+```{r}
+feats_folds |> 
+  filter(roc_auc < .6) |> 
+  mutate(n_base = lengths(str_split(baseline, ","))) |> 
+  pull(n_base)
+
+feats_folds |> 
+  filter(roc_auc < .6) |> 
+  mutate(n_base = lengths(str_split(baseline, ","))) |> 
+  pull(n_base) |> 
+  mean()
+```
+
+
+```{r}
+feats_folds |> 
+  filter(roc_auc >= .6 & roc_auc <= .7) |> 
+  mutate(n_base = lengths(str_split(baseline, ","))) |> 
+  pull(n_base) 
+
+feats_folds |> 
+  filter(roc_auc >= .6 & roc_auc <= .7) |> 
+  mutate(n_base = lengths(str_split(baseline, ","))) |> 
+  pull(n_base) |> 
+  mean()
+```
+
+Look at unique baseline features in good folds (auroc > .7)
+```{r}
+feats_folds |> 
+  filter(roc_auc > .7) |> 
+  select(-meta) |> 
+  separate_rows(baseline, sep = ",") 
+```
+
+and bad folds
+```{r}
+feats_folds |> 
+  filter(roc_auc < .6) |> 
+  select(-meta) |> 
+  separate_rows(baseline, sep = ",") 
+```
+
+Number of unique baseline items across all splits is 103
+```{r}
+feats_folds |> 
+  select(-meta) |> 
+  separate_rows(baseline, sep = ",") |> 
+  mutate(baseline = str_remove(baseline, " ")) |> 
+  count(baseline) |> 
+  arrange(desc(n))
+```
+
+
+Number of unique meta items across all splits 
+```{r}
+feats_folds |> 
+  select(-baseline) |> 
+  separate_rows(meta, sep = ",") |> 
+  mutate(meta = str_remove(meta, "^ "),
+         meta = str_remove(meta, "`")) |> 
+  count(meta) |> 
+  arrange(desc(n))
+```
+
+
 ### Plot hyperparameters
 
 ```{r}
