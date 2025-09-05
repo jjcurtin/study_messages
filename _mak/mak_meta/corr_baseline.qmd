@@ -26,7 +26,7 @@ theme_set(theme_classic())
 
 source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
 
-path_shared <- "/Volumes/studydata/risk/data_processed/shared"
+path_shared <- format_path("risk/data_processed/shared")
 ```
 
 ## Read in data
@@ -36,23 +36,22 @@ study_dates <- read_csv(here::here(path_shared, "study_dates_messages.csv"),
 
 baseline <- read_csv(here::here(path_shared, "features_baseline.csv"),
                   show_col_types = FALSE) |> 
-  filter(subid %in% study_dates$subid) |> 
-  # select scaled and other scores not in raw data
-  select(subid, days_abstinent, dsm5_total:efficacy_craving, stress_total:social_support_so)
+  filter(subid %in% study_dates$subid) 
 
-intake <- read_csv(here::here(path_shared, "intake.csv"),
-                  show_col_types = FALSE) |> 
-  filter(subid %in% study_dates$subid) |> 
-  select(-c(2:6))
+# intake <- read_csv(here::here(path_shared, "intake.csv"),
+#                   show_col_types = FALSE) |> 
+#   filter(subid %in% study_dates$subid) |> 
+#   select(-c(2:6))
+# 
+# screen <- read_csv(here::here(path_shared, "screen.csv"),
+#                   show_col_types = FALSE) |> 
+#   filter(subid %in% study_dates$subid) |> 
+#   select(-c(2:6), -starts_with("mps_"), -starts_with("auh_8"))
 
-screen <- read_csv(here::here(path_shared, "screen.csv"),
-                  show_col_types = FALSE) |> 
-  filter(subid %in% study_dates$subid) |> 
-  select(-c(2:6), -starts_with("mps_"), -starts_with("auh_8"))
-
-feats <- baseline |> 
-  left_join(intake, by = "subid") |> 
-  left_join(screen, by = "subid")
+feats <- baseline 
+# |> 
+#   left_join(intake, by = "subid") |> 
+#   left_join(screen, by = "subid")
 
 labels <- read_csv(here::here(path_shared, "labels_messages_day_24h.csv"),
                   show_col_types = FALSE) |> 

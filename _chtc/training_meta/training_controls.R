@@ -9,8 +9,8 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 study <- "messages"
 window <- "day"
 lead <- 0
-version <- "v8"
-algorithm <- "xgboost"
+version <- "v12"
+algorithm <- "random_forest"
 batch <- "meta_stratified"
 
 
@@ -37,7 +37,7 @@ y_level_neg <- "no"
 
 # CV SETTINGS------
 cv_resample_type <- "kfold" # can be boot, kfold, or nested
-cv_resample = "20_x_5" # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of bootstraps (e.g., 100)
+cv_resample = "5_x_5" # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of bootstraps (e.g., 100)
 cv_inner_resample <- NULL # can also be a single number for bootstrapping (i.e., 100)
 cv_outer_resample <- NULL # outer resample will always be kfold
 cv_group <- "subid" # set to NULL if not grouping
@@ -56,7 +56,7 @@ name_batch <- str_c("train_", algorithm, "_", cv_name, "_", version, "_", batch)
 # the path to the batch of jobs
 path_batch <- format_path(str_c("risk/chtc/", study, "/", name_batch)) 
 # location of data set
-path_data <- format_path("risk/data_processed/messages") 
+path_data <- format_path("risk/data_processed/shared") 
 
 
 # ALGORITHM-SPECIFIC HYPERPARAMETERS------
