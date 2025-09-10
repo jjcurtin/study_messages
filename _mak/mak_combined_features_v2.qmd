@@ -1,0 +1,119 @@
+---
+title: "Combining Baseline, Meta & LIWC Features"
+author: "Coco Yu, Kendra Wyant and JJC"
+date: "`r lubridate::today()`"
+format: 
+  html: 
+    embed-resources: true
+    toc: true 
+    toc_depth: 4
+editor_options: 
+  chunk_output_type: console
+params:
+  version: "v1"
+---
+
+## Status and Notes
+
+This file combines best baseline, meta & liwc features
+
+
+## Set up
+
+```{r}
+#| include: false
+
+options(conflicts.policy = "depends.ok")
+library(tidyverse) 
+
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+source("https://github.com/jjcurtin/lab_support/blob/main/fun_eda.R?raw=true")
+
+path_shared <- format_path("studydata/risk/data_processed/shared")
+path_features <- format_path("studydata/risk/data_processed/messages")
+```
+
+Read in feature files
+```{r}
+meta <- read_csv(here::here(path_shared, 
+                            "features_meta_day_24h_v12.csv"))
+messages <- read_csv(here::here(path_shared, "features_liwc_day_24h.csv"), 
+                show_col_types = FALSE) 
+demos <- read_csv(here::here(path_shared, "features_demographics.csv"), 
+                  show_col_types = FALSE) 
+strat <- read_csv(here::here(path_shared, "strat_lh.csv"), 
+                    show_col_types = FALSE) 
+```
+
+version 3
+```{r}
+messages <- messages |> 
+  select(subid, dttm_label, lapse, contains("liwc"),
+         -contains("raw"), -contains("median"), -contains("concat"))
+```
+
+combine meta and messages
+```{r}
+data <- messages |> 
+  full_join(meta, by = c("subid", "dttm_label", "lapse"))
+
+```
+
+
+Check rows
+
+- OK
+```{r}
+nrow(data)
+nrow(demos)
+nrow(strat)
+```
+
+Verify expected # of subids
+
+- Full sample (154) for demos
+- Messages sample (150) for liwc
+
+```{r}
+data |> distinct(subid) |> nrow() 
+demos |> distinct(subid) |> nrow() 
+strat |> distinct(subid) |> nrow() 
+```
+
+Look at features for each signal
+
+- liwc looks good 
+
+```{r}
+names(demos)
+names(strat)
+```
+
+Join messages and demographics
+Also join in strat lh
+```{r}
+nrow(data)
+all <- data |> 
+  left_join(demos, by = c("subid")) |>
+  left_join(strat, by = c("subid"))
+
+nrow(all)
+```
+
+Check outcome.  Looks good!
+```{r}
+all |> tab(lapse) 
+```
+
+```{r}
+all <- all |> 
+  select(-strat.y) |> 
+  rename(strat = strat.x)
+```
+
+Write out file
+```{r}
+all |> write_csv(here::here(path_features, 
+                            str_c("features_combined_", 
+                                  params$version, ".csv")))
+```
