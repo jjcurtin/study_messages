@@ -9,9 +9,9 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 study <- "messages"
 window <- "day"
 lead <- 0
-version <- "v13"
+version <- "v14"
 algorithm <- "random_forest"
-batch <- "meta_stratified"
+batch <- "meta"
 
 
 configs_per_job <- 20  # number of model configurations that will be fit/evaluated within each CHTC
@@ -26,7 +26,7 @@ resample <- c("up_1", "up_2", "up_3", "up_4", "up_5",
 
 # DATA, SPLITS AND OUTCOME------
 feature_set <- c("all") 
-data_trn <- str_c("features_meta_", window, "_1h_", version, ".csv") 
+data_trn <- str_c("features_meta_", window, "_24h_", version, ".csv") 
 seed_splits <- 102030
 
 ml_mode <- "classification"   # regression or classification
@@ -37,7 +37,7 @@ y_level_neg <- "no"
 
 # CV SETTINGS------
 cv_resample_type <- "kfold" # can be boot, kfold, or nested
-cv_resample = "5_x_5" # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of bootstraps (e.g., 100)
+cv_resample = "6_x_5" # can be repeats_x_folds (e.g., 1_x_10, 10_x_10) or number of bootstraps (e.g., 100)
 cv_inner_resample <- NULL # can also be a single number for bootstrapping (i.e., 100)
 cv_outer_resample <- NULL # outer resample will always be kfold
 cv_group <- "subid" # set to NULL if not grouping
