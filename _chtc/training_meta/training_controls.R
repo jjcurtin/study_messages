@@ -9,12 +9,12 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 study <- "messages"
 window <- "day"
 lead <- 0
-version <- "v14"
+version <- "v16"
 algorithm <- "random_forest"
 batch <- "meta"
 
 
-configs_per_job <- 20  # number of model configurations that will be fit/evaluated within each CHTC
+configs_per_job <- 10  # number of model configurations that will be fit/evaluated within each CHTC
 
 
 # RESAMPLING FOR OUTCOME------
