@@ -21,8 +21,13 @@ This script fits a lasso model to select a set of baseline features related to l
 ```{r}
 #| message: false
 
+options(conflicts.policy = "depends.ok")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_ml.R?raw=true")
+tidymodels_conflictRules()
+
 library(tidyverse)
 library(tidymodels)
+library(Matrix, exclude = c("expand", "pack", "unpack"))
 theme_set(theme_classic()) 
 
 source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
@@ -33,10 +38,12 @@ path_messages <- format_path(str_c("risk/data_processed/messages"))
 
 ## Read in data
 ```{r}
-data <- read_csv(here::here(path_shared, "features_liwc_v5.csv"),
+data <- read_csv(here::here(path_messages, "features_liwc_v5.csv"),
                   show_col_types = FALSE) |> 
-  select(-c(demo_age:demo_race, days_abstinent:stress_total, 
-            day_start, day_end))
+  select(-c(demo_age:demo_race))
+
+data <- data |> 
+  select(-contains("concat"))
 ```
 
 
@@ -54,7 +61,7 @@ data <- data |>
 Recipe
 ```{r}
 rec <- recipe(y ~ ., data = data) |> 
-  step_rm(subid, dttm_label, strat, label_num) |> 
+  step_rm(subid, dttm_label, strat) |> 
   step_zv(all_predictors()) |> 
   step_impute_median(all_numeric_predictors()) |> 
   step_impute_mode(all_nominal_predictors()) |> 
@@ -107,14 +114,14 @@ fit_best <- logistic_reg(penalty = best_model$penalty,
         fit(y ~ ., data = feat_all)
 ```
 
-of 323 features, 159 were retained
+of 472 features, 0 were retained
 ```{r}
 tidy(fit_best) |> 
   filter(term != "(Intercept)", estimate != 0) |> 
   nrow()
 ```
  
-40 features have estimates > |.1|
+0 features have estimates > |.1|
 
 ```{r}
 tidy(fit_best) |> 
