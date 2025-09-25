@@ -1,0 +1,136 @@
+---
+title: "Generate INNER calibration"
+author: "John Curtin & Claire Punturieri"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+params:
+  study: "messages"
+  version: "v1"
+  cv: "nested_1_x_10_3_x_10"
+  algorithms: "xgboost"   # "all" or name of specific algorithm
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+study <- params$study
+cv <- params$cv
+algorithms <- params$algorithms
+version <- params$version
+```
+
+Function conflicts
+```{r, packages_workflow}
+#| message: false
+#| warning: false
+
+# source
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/fun_ml.R?raw=true")
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+# handle conflicts
+options(conflicts.policy = "depends.ok")
+tidymodels_conflictRules()
+```
+
+Packages for script
+```{r, packages_script}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(tidymodels)
+library(probably)
+```
+
+```{r}
+path_models <- format_path(str_c("studydata/risk/models/", study))
+```
+
+
+Path
+
+## Functions
+```{r}
+get_brier <- function(split, df){
+  
+  #filter to split
+  probs_split <- df |> 
+    filter(split_num == split)
+
+  raw <- probs_split |>
+    filter(method == "prob_raw") |> 
+    brier_class(label, .pred_Lapse)
+  
+  logi <- probs_split |>
+    filter(method == "prob_logi") |> 
+    brier_class(label, .pred_Lapse)
+  
+  iso <- probs_split |>
+    filter(method == "prob_iso") |> 
+    brier_class(label, .pred_Lapse)
+  
+  #beta <- probs_split |>
+    #filter(method == "prob_beta") |> 
+    #brier_class(label, .pred_Lapse)
+  
+  brier <- tibble(raw = raw$.estimate, 
+                 logi = logi$.estimate, 
+                 iso = iso$.estimate) 
+  #               beta = beta$.estimate)
+  
+  #brier <- tibble(raw = raw$.estimate)
+  
+  return(brier)
+}
+
+```
+
+## Get Probs
+
+```{r}
+probs <- read_rds(here::here(path_models, str_c("inner_preds_", version, "_", cv, ".rds"))) |> 
+  mutate(split_num = 10 * outer_split_num + (inner_split_num - 10)) |> 
+  pivot_longer(cols = starts_with("prob"), 
+               names_to = "method", 
+               values_to = ".pred_Lapse") |>
+  glimpse()
+```
+
+## Brier Scores
+
+```{r}
+
+brier <- 1:300 |>
+  map(\(split_num) get_brier(split_num, probs)) |> 
+  list_rbind()
+
+brier |> head()
+
+brier |> summarize(across(everything(), list(mean, median)))
+                      
+```
+
+## Explore Plots
+```{r}
+
+probs |>
+  mutate(.pred_lapse = .pred_Lapse) |> 
+  cal_plot_breaks(truth = label, 
+                  estimate = .pred_lapse,
+                  .by = method)
+  
+probs |>
+  mutate(.pred_lapse = .pred_Lapse) |> 
+  filter(outer_split_num == 1) |> 
+  cal_plot_windowed(truth = label, 
+                  estimate = .pred_lapse,
+                  .by = method)
+
+```

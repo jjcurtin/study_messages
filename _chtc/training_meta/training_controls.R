@@ -9,8 +9,8 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 study <- "messages"
 window <- "day"
 lead <- 0
-version <- "v16"
-algorithm <- "random_forest"
+version <- "v17"
+algorithm <- "xgboost"
 batch <- "meta"
 
 
@@ -27,7 +27,7 @@ resample <- c("up_1", "up_2", "up_3", "up_4", "up_5",
 # DATA, SPLITS AND OUTCOME------
 feature_set <- c("all") 
 data_trn <- str_c("features_meta_", window, "_24h_", version, ".csv") 
-seed_splits <- 102030
+seed_splits <- 123
 
 ml_mode <- "classification"   # regression or classification
 y_col_name <- "lapse" 
