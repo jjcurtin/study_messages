@@ -13,8 +13,8 @@ params:
   study: "messages"
   version: "v17"
   cv: "kfold"
-  algorithms: "random_forest"   # "all" or name of specific algorithm
-  model: "meta" # "main" or "baseline"
+  algorithms: "glmnet"   # "all" or name of specific algorithm
+  model: "baseline" # "main" or "baseline"
 editor_options: 
   chunk_output_type: console
 ---

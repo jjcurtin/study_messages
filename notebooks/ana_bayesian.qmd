@@ -1,0 +1,183 @@
+---
+title: "Model evaluation"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Set Up Environment
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true"))
+suppressPackageStartupMessages(library(tidyposterior))
+
+path_models <- format_path(str_c("risk/models/messages"))
+
+```
+
+
+```{r}
+test_metrics_full <- read_csv(here::here(path_models, 
+                                         "best_config_v17_kfold_full.csv"), 
+                              show_col_types = FALSE) |> 
+  select(split_num, "full model" = roc_auc) |> 
+  arrange(split_num)
+
+test_metrics_baseline <- read_csv(here::here(path_models, 
+                                  "best_config_v17_kfold_baseline.csv"),
+                                  show_col_types = FALSE) |> 
+  select(split_num, "baseline model" = roc_auc) |> 
+  arrange(split_num)
+
+test_metrics_meta <- read_csv(here::here(path_models, 
+                                       "best_config_v17_kfold_meta.csv"),
+                            show_col_types = FALSE) |> 
+  select(split_num, "metadata model" = roc_auc) |> 
+  arrange(split_num)
+
+test_metrics_passive <- read_csv(here::here(path_models,
+                                    "best_config_v17_kfold_passive.csv"),
+                            show_col_types = FALSE) |>
+  select(split_num, "passive metadata model" = roc_auc) |>
+  arrange(split_num)
+
+
+
+test_metrics_all <- test_metrics_full |> 
+  left_join(test_metrics_baseline, by = c("split_num")) |> 
+  left_join(test_metrics_meta, by = c("split_num")) |>
+  left_join(test_metrics_passive, by = c("split_num")) |>
+  mutate(fold_num = rep(1:5, 6),
+         repeat_num = c(rep(1, 5), rep(2, 5), rep(3, 5), 
+                        rep(4, 5), rep(5, 5), rep(6, 5))) |> 
+  select(-split_num) |> 
+  glimpse()
+```
+
+
+#### Model evaluation
+```{r}
+#| output: false
+
+# Repeated CV (id = repeat, id2 = fold within repeat)
+# with a common variance:  statistic ~ model + (model | id2/id)
+set.seed(101)
+pp <- test_metrics_all |> 
+  rename(id = fold_num,
+         id2 = repeat_num) |> 
+  perf_mod(formula = statistic ~ model + (1 | id2/id),
+         transform = tidyposterior::logit_trans,  # for skewed & bounded AUC
+         iter = 4000, chains = 4, adapt_delta = .99, # increased iteration from 2000 to fix divergence issues
+         family = gaussian, 
+)  
+
+```
+
+```{r}
+pp_tidy <- pp |> 
+  tidy(seed = 123) 
+
+q = c(.025, .5, .975)
+pp_perf_tibble <- pp_tidy |> 
+  group_by(model) |> 
+  summarize(pp_median = quantile(posterior, probs = q[2]),
+            pp_lower = quantile(posterior, probs = q[1]), 
+            pp_upper = quantile(posterior, probs = q[3])) |> 
+  mutate(model = factor(model, levels = c("full model", "baseline model", "metadata model", "passive metadata model"))) |> 
+  arrange(model)
+
+pp_perf_tibble |> 
+  write_csv(here::here(path_models, "pp_perf_tibble.csv"))
+
+pp_tidy |> 
+  write_csv(here::here(path_models, "posteriors.csv"))
+
+pp_perf_tibble
+```
+
+
+
+<!-- ### Model Comparisons -->
+
+<!-- #### Baseline Contrasts -->
+
+<!-- ```{r} -->
+
+
+<!-- ci_baseline <- pp |> -->
+<!--   contrast_models(list("lag24", "lag72", "lag168", "lag336"),  -->
+<!--                   list("lag0", "lag0", "lag0", "lag0")) |>  -->
+<!--   summary(size = 0) |>  -->
+<!--   mutate(contrast = factor(contrast,  -->
+<!--                            levels = c("lag24 vs lag0", "lag72 vs lag0", "lag168 vs lag0",  -->
+<!--                                       "lag336 vs lag0"), -->
+<!--                            labels = c("24 vs. 0", "72 vs. 0",  -->
+<!--                                       "168 vs. 0", "336 vs. 0")), -->
+<!--          probability = 1 - probability) -->
+
+<!-- ci_median_baseline <- pp |>  -->
+<!--   contrast_models(list("lag24", "lag72", "lag168", "lag336"),  -->
+<!--                   list("lag0", "lag0", "lag0", "lag0")) |>   -->
+<!--   group_by(contrast) |>  -->
+<!--   summarize(median = quantile(difference, .5)) |>  -->
+<!--   mutate(contrast = factor(contrast,  -->
+<!--                            levels = c("lag24 vs. lag0", "lag72 vs. lag0", "lag168 vs. lag0",  -->
+<!--                                       "lag336 vs. lag0"), -->
+<!--                            labels = c("24 vs. 0", "72 vs. 0",  -->
+<!--                                       "168 vs. 0", "336 vs. 0"))) -->
+
+
+<!-- ci_baseline <- ci_baseline |>  -->
+<!--   left_join(ci_median_baseline, by = c("contrast"))  -->
+
+<!-- ci_baseline |>  -->
+<!--   write_csv(here::here(path_models, "contrast_baseline.csv")) -->
+
+<!-- ci_baseline -->
+
+<!-- ``` -->
+
+
+<!-- #### Adjacent Contrasts -->
+
+<!-- ```{r} -->
+<!-- ci_lag <- pp |> -->
+<!--   contrast_models(list("lag72", "lag168", "lag336"),  -->
+<!--                   list("lag24", "lag72", "lag168")) |>  -->
+<!--   summary(size = 0) |>  -->
+<!--   mutate(contrast = factor(contrast,  -->
+<!--                            levels = c("lag72 vs lag24", "lag168 vs lag72",  -->
+<!--                                       "lag336 vs lag168"), -->
+<!--                            labels = c("72 vs. 24", "168 vs. 72", "336 vs. 168")), -->
+<!--          probability = 1 - probability) -->
+
+<!-- ci_median_lag <- pp |>  -->
+<!--   contrast_models(list("lag72", "lag168", "lag336"),  -->
+<!--                   list("lag24", "lag72", "lag168")) |>  -->
+<!--   group_by(contrast) |>  -->
+<!--   summarize(median = quantile(difference, .5)) |>  -->
+<!--   mutate(contrast = factor(contrast,  -->
+<!--                            levels = c("lag72 vs. lag24", "lag168 vs. lag72",  -->
+<!--                                       "lag336 vs. lag168"), -->
+<!--                            labels = c("72 vs. 24", "168 vs. 72", "336 vs. 168"))) -->
+
+<!-- ci_lag <- ci_lag |>  -->
+<!--   left_join(ci_median_lag, by = c("contrast")) |>  -->
+<!--   arrange(contrast) -->
+
+<!-- ci_lag |>  -->
+<!--   write_csv(here::here(path_models, "contrast_adjacent.csv")) -->
+
+<!-- ci_lag -->
+<!-- ``` -->
+
+

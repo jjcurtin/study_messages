@@ -1,0 +1,266 @@
+---
+title: "Fairness analyses"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+### Set Up Environment
+
+
+```{r, packages_script}
+#| message: false
+#| warning: false
+
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tidymodels))
+suppressPackageStartupMessages(library(tidyposterior))
+library(kableExtra, exclude = "group_rows")
+library(Rcpp, exclude = "populate")
+library(brms, exclude = c("ar", "mixture"))
+
+
+theme_set(theme_classic()) 
+```
+
+
+```{r source_functions}
+#| output: false
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+# CHTC support functions
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+```
+
+```{r, absolute_paths}
+path_models <- format_path(str_c("risk/models/messages"))
+```
+
+
+### Read in Model Performance Metrics
+
+```{r}
+auroc_full <- read_csv(here::here(path_models, 
+                                  "fairness_auroc_6_x_5_kfold_v17_full.csv"),
+                       show_col_types = FALSE) |> 
+  mutate(fold_num = rep(1:5, 6),
+         repeat_num = c(rep(1, 5), rep(2, 5), rep(3, 5), 
+                        rep(4, 5), rep(5, 5), rep(6, 5)),
+         `not white` = if_else(`not white` < .001, .001, `not white`)) |>
+  select(-split_num)
+
+auroc_meta <- read_csv(here::here(path_models, 
+                                  "fairness_auroc_6_x_5_kfold_v17_meta.csv"),
+                       show_col_types = FALSE) |> 
+  mutate(fold_num = rep(1:5, 6),
+         repeat_num = c(rep(1, 5), rep(2, 5), rep(3, 5), 
+                        rep(4, 5), rep(5, 5), rep(6, 5)),
+         `not white` = if_else(`not white` < .001, .001, `not white`)) |>
+  select(-split_num)
+
+auroc_passive <- read_csv(here::here(path_models, 
+                                  "fairness_auroc_6_x_5_kfold_v17_passive.csv"),
+                       show_col_types = FALSE) |> 
+  mutate(fold_num = rep(1:5, 6),
+         repeat_num = c(rep(1, 5), rep(2, 5), rep(3, 5), 
+                        rep(4, 5), rep(5, 5), rep(6, 5)),
+         `not white` = if_else(`not white` < .001, .001, `not white`)) |>
+  select(-split_num)
+
+auroc_baseline <- read_csv(here::here(path_models, 
+                                  "fairness_auroc_6_x_5_kfold_v17_baseline.csv"),
+                       show_col_types = FALSE) |> 
+  mutate(fold_num = rep(1:5, 6),
+         repeat_num = c(rep(1, 5), rep(2, 5), rep(3, 5), 
+                        rep(4, 5), rep(5, 5), rep(6, 5)),
+         `not white` = if_else(`not white` < .001, .001, `not white`)) |>
+  select(-split_num)
+```
+
+
+
+### Get Median Posterior Probabilities and contrast analyses
+
+function
+```{r}
+calc_pp <- function (data, dem_var) {
+  
+  data <- 
+    if (dem_var == "sex") {
+    data |> 
+    select(id = repeat_num, id2 = fold_num, male, female)
+  } else if (dem_var == "income") {
+    data |> 
+    select(id = repeat_num, id2 = fold_num, `above poverty`, `below poverty`)
+  } else if (dem_var == "race") {
+    data |> 
+    select(id = repeat_num, id2 = fold_num, `non-hispanic white` = white, `not white`)
+  } else {
+    stop(dem_var, " not in data")
+  }
+  
+  
+  set.seed(101)
+  pp <- data |> 
+    perf_mod(formula = statistic ~ model + (1 | id2/id),
+             transform = tidyposterior::logit_trans,  
+             iter = 4000, chains = 4,  
+             adapt_delta = .99,
+             family = gaussian) 
+
+  pp_tidy <- pp |> 
+    tidy(seed = 123) 
+
+  q = c(.025, .5, .975)
+  ci <- pp_tidy |> 
+    group_by(model) |> 
+    summarize(pp_median = quantile(posterior, probs = q[2]),
+              pp_lower = quantile(posterior, probs = q[1]), 
+              pp_upper = quantile(posterior, probs = q[3]))  |> 
+    arrange(model)
+  
+  
+  contrast_lists <- 
+    if (dem_var == "sex") {
+    c(list("female"), list("male"))
+  } else if (dem_var == "income") {
+    c(list("below poverty"), list("above poverty"))
+  } else if (dem_var == "race") {
+    c(list("not white"), list("non-hispanic white"))
+  } else {
+    stop(dem_var, " not in data")
+  }
+      
+  ci_contrast <- pp |>
+    contrast_models(contrast_lists[1],  contrast_lists[2]) |> 
+    summary(size = 0) |> 
+    mutate(probability = 1 - probability)
+  
+  ci_median_contrast <- pp |> 
+    contrast_models(contrast_lists[1],  contrast_lists[2]) |>  
+    group_by(contrast) |> 
+    summarize(median = quantile(difference, .5)) |> 
+    mutate(contrast = str_remove(contrast, "\\."))
+
+
+ci_contrast <- ci_contrast |> 
+    left_join(ci_median_contrast, by = c("contrast")) |> 
+    select(contrast, probability, median, lower, upper) 
+  
+  list(pp = pp_tidy, ci = ci, ci_contrast = ci_contrast)
+}
+```
+
+
+Full model
+```{r}
+sex <- calc_pp(auroc_full, "sex") 
+income <- calc_pp(auroc_full, "income")
+
+# Filter out 2 NA rows prior to calculating race
+auroc_full <- auroc_full|>
+  filter(!is.na(`not white`))
+race <- calc_pp(auroc_full, "race")
+```
+
+Bind all pp/contrast tibbles and save
+```{r}
+list(sex[[1]], income[[1]], race[[1]]) |> 
+  bind_rows() |> 
+  write_csv(here::here(path_models, "posteriors_fairness_full.csv"))
+
+list(sex[[2]], income[[2]], race[[2]]) |> 
+  bind_rows() |> 
+  write_csv(here::here(path_models, "pp_fairness_full.csv"))
+
+list(sex[[3]], income[[3]], race[[3]]) |> 
+  bind_rows() |>
+  write_csv(here::here(path_models, "pp_fairness_contrast_full.csv"))
+```
+
+Meta only model
+```{r}
+sex <- calc_pp(auroc_meta, "sex") 
+income <- calc_pp(auroc_meta, "income")
+
+# Filter out 2 NA rows prior to calculating race
+auroc_meta <- auroc_meta |>
+  filter(!is.na(`not white`))
+race <- calc_pp(auroc_meta, "race")
+```
+
+Bind all pp/contrast tibbles and save
+```{r}
+list(sex[[1]], income[[1]], race[[1]]) |> 
+  bind_rows() |> 
+  write_csv(here::here(path_models, "posteriors_fairness_meta.csv"))
+
+list(sex[[2]], income[[2]], race[[2]]) |> 
+  bind_rows() |> 
+  write_csv(here::here(path_models, "pp_fairness_meta.csv"))
+
+list(sex[[3]], income[[3]], race[[3]]) |> 
+  bind_rows() |>
+  write_csv(here::here(path_models, "pp_fairness_contrast_meta.csv"))
+```
+
+
+Passive model
+```{r}
+sex <- calc_pp(auroc_passive, "sex") 
+income <- calc_pp(auroc_passive, "income")
+
+# Filter out 2 NA rows prior to calculating race
+auroc_passive <- auroc_passive|>
+  filter(!is.na(`not white`))
+race <- calc_pp(auroc_passive, "race")
+```
+
+Bind all pp/contrast tibbles and save
+```{r}
+list(sex[[1]], income[[1]], race[[1]]) |> 
+  bind_rows() |> 
+  write_csv(here::here(path_models, "posteriors_fairness_passive.csv"))
+
+list(sex[[2]], income[[2]], race[[2]]) |> 
+  bind_rows() |> 
+  write_csv(here::here(path_models, "pp_fairness_passive.csv"))
+
+list(sex[[3]], income[[3]], race[[3]]) |> 
+  bind_rows() |>
+  write_csv(here::here(path_models, "pp_fairness_contrast_passive.csv"))
+```
+
+Baseline model
+```{r}
+sex <- calc_pp(auroc_baseline, "sex") 
+income <- calc_pp(auroc_baseline, "income")
+
+# Filter out 2 NA rows prior to calculating race
+auroc_baseline <- auroc_baseline |>
+  filter(!is.na(`not white`))
+race <- calc_pp(auroc_baseline, "race")
+```
+
+Bind all pp/contrast tibbles and save
+```{r}
+list(sex[[1]], income[[1]], race[[1]]) |> 
+  bind_rows() |> 
+  write_csv(here::here(path_models, "posteriors_fairness_baseline.csv"))
+
+list(sex[[2]], income[[2]], race[[2]]) |> 
+  bind_rows() |> 
+  write_csv(here::here(path_models, "pp_fairness_baseline.csv"))
+
+list(sex[[3]], income[[3]], race[[3]]) |> 
+  bind_rows() |>
+  write_csv(here::here(path_models, "pp_fairness_contrast_baseline.csv"))
+```

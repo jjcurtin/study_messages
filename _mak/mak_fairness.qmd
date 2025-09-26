@@ -1,0 +1,145 @@
+---
+title: "Make auROCs for Model Fairness Evaluations"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+params:
+  
+  study: "messages"
+  model: "baseline" 
+  version: "v17"
+editor_options: 
+  chunk_output_type: console
+---
+
+### Set Up Environment
+
+```{r}
+study <- params$study
+model <- params$model
+version <- params$version
+```
+
+
+Packages, functions, and paths
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(tidymodels)
+options(conflicts.policy = "depends.ok")
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+path_shared <- format_path(str_c("risk/data_processed/shared"))
+path_models <- format_path(str_c("risk/models/", study))
+```
+
+
+### Load model predictions
+
+```{r}
+preds <- read_rds(here::here(path_models, str_c("preds_kfold_6_x_5_", version, 
+                                                "_", model, ".rds")))
+```
+
+### Load features and select demographics
+
+```{r}
+feat <- read_csv(here::here(path_shared, str_c("features_meta_day_24h_",
+                                                  version, ".csv")),
+                 show_col_types = FALSE) |> 
+  select(label_num, subid, dttm_label, lapse, demo_age, demo_sex, demo_income, demo_race) |> 
+  arrange(label_num) 
+```
+
+### Link features with predictions
+
+```{r}
+feat_preds <- feat |> 
+  mutate(label = if_else(lapse == "yes", "Lapse", "No lapse"),
+         id_obs = label_num) |>
+  right_join(preds, by = c("id_obs", "label")) |> 
+  select(-c(label_num, lapse)) |> 
+  mutate(label = factor(label, levels = c("Lapse", "No lapse")))
+
+# nrow(feat)
+# nrow(preds_out) # should be nrow(feat) * 6 (number of outer repeats)
+# nrow(feat_preds) # should be same as nrow(preds_out)
+```
+
+### Create dichotomous groups for auROC comparisons
+
+Income, Gender, Race
+```{r}
+feat_preds <- feat_preds |> 
+  mutate(demo_sex = if_else(demo_sex == "Female", "female", "male"),
+         demo_race = if_else(demo_race == "White/Caucasian", "white", "not white"),
+         demo_income = if_else(demo_income < 15060, "below poverty", "above poverty"))
+```
+
+
+### Calculate auROCs by group
+
+This calculates auROC using test sets and raw probabilities.   
+
+function
+```{r}
+get_auroc_by_dem <- function(df, var) {
+  # df should be dataframe with demographic features and predictions
+  # var should be character or factor variable in df
+  
+  var_tmp <- df |> 
+      pull(get(var))
+   
+  var_levels <- 
+     if (class(var_tmp) != "factor") {
+       levels(as.factor(var_tmp))
+     } else levels(var_tmp)
+  
+  # create empty tibble with split nums
+  auroc <- tibble(split_num = unique(df$split_num)) |> 
+    arrange(split_num) 
+    
+  for (level in var_levels) {
+     auroc_level <- df |>
+       filter(get(var) == level) |> 
+       nest(.by = split_num, .key = "preds") |> 
+       mutate(auroc = map(preds, \(preds) roc_auc(preds, prob_raw, 
+                                             truth = label))) |> 
+       select(-preds) |> 
+       unnest(auroc) |> 
+       select(-c(.estimator, .metric)) |> 
+       rename(!!level:=.estimate)
+     
+     auroc <- auroc |> 
+       left_join(auroc_level, by = "split_num")
+  }
+  
+  return(auroc)
+}
+```
+
+
+get auROCs 
+```{r}
+auroc_dem <- get_auroc_by_dem(df = feat_preds, var = "demo_sex") |> 
+  left_join(get_auroc_by_dem(df = feat_preds, var = "demo_race"), by = "split_num") |> 
+  left_join(get_auroc_by_dem(df = feat_preds, var = "demo_income"), by = "split_num")
+```
+
+
+Save auroc_dem
+```{r}
+auroc_dem |> 
+  write_csv(here::here(path_models, str_c("fairness_auroc_6_x_5_kfold_", 
+                                          version, "_", 
+                                          model, ".csv")))  
+```
