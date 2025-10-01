@@ -85,6 +85,18 @@ Throughout the course of the study, participants were expected to complete four 
 
 # Results
 
+## Full Model
+
+
+## Baseline Model
+
+## Model Comparison
+
+
+## Feature Importance
+
+{{< embed notebooks/mak_figures.qmd#fig-1 >}} 
+
 # Discussion
 
 

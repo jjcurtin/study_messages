@@ -1,0 +1,4 @@
+- source: results.qmd
+  quarto-pub:
+    - id: fc45690a-ab92-4e6e-be23-6d9c85ec1176
+      url: https://kendra-wyant.quarto.pub/results-for-communications-study

@@ -1,5 +1,5 @@
 ---
-title: "Results for Communications Study"
+title: "Make All Figures for Main Manuscript"
 author: "Kendra Wyant"
 date: "`r lubridate::today()`"
 number-sections: true
@@ -14,70 +14,30 @@ format:
     toc-depth: 4
 editor_options: 
   chunk_output_type: console
+execute:
+  echo: false
+html-table-processing: none
 ---
 
 ```{r}
 #| message: false
 #| warning: false
-#| echo: false
+
 
 suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tidymodels))
 suppressPackageStartupMessages(source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true"))
-suppressPackageStartupMessages(library(tidyposterior))
-library(kableExtra, exclude = "group_rows")
-library(patchwork)
 
 theme_set(theme_classic())
 
 path_models <- format_path(str_c("risk/models/messages"))
-path_shared <- format_path("risk/data_processed/shared")
-
-ci <- read_csv(here::here(path_models, "pp_perf_tibble.csv"), 
-                                 show_col_types = FALSE)
-
-ci_baseline <- read_csv(here::here(path_models, "contrast_baseline.csv"), 
-                                 show_col_types = FALSE)
-
 
 model_full <- read_rds(here::here(path_models, "best_model_v17_kfold_full.rds"))
 ```
 
 
-## Outline
-
-The results are presented in the following way:
-
-1. Evaluation of the full model posterior distribution 
-
-    - This model uses all meta and context features plus baseline characteristics
-
-
-2. Model comparison between the full model and a baseline model (i.e., a model that only includes baseline features).
-
-    - evaluation of baseline model posterior distribution?
-
-The best model was selected from 3 algorithms: glmnet, xgboost, random forest.   
-
-
-
-## Full Model Evaluation 
-
-### Performance
-
-Median Bayesian posterior probability and credible intervals.    
-
 ```{r}
-#| echo: false 
-
-ci |> 
-  slice_head(n = 1)
-```
-
-
-### Feature Importance
-
-```{r}
-model_full |> 
+feat_imp <- model_full |> 
   tidy() |> 
   mutate(estimate = -1 * estimate) |> 
   filter(abs(estimate) > 0) |> 
@@ -112,19 +72,11 @@ model_full |>
 
 
 
-### Full vs. Baseline Model Comparison
-
-Full and Baseline performance
 ```{r}
-#| echo: false 
+#| label: fig-1
+#| fig-cap: "Global feature importance (glmnet coefficient) for the full model. Features are ordered by absolute coefficient value. Rate counts of communications with friends, non-drinkers, and drinkers were calculated across varying scoring epochs. Standardized coefficients were averaged across retained epochs to produce single aggregate feature importance score. Blue bars indicate higher feature values on average lower lapse risk. Red bars indicate higher feature values on average increase risk."
+#| fig-width: 6
+#| fig-height: 5
 
-ci |> 
-  slice_head(n = 2)
+feat_imp 
 ```
-
-Contrast
-```{r}
-glimpse(ci_baseline)
-```
-
-
