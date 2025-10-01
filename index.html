@@ -6,12 +6,13 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Kendra Wyant">
 <meta name="author" content="Coco Yu">
 <meta name="author" content="John J. Curtin">
-<meta name="dcterms.date" content="2024-12-09">
-<meta name="keywords" content="Substance use disorders, Text sensing, Machine learning">
+<meta name="dcterms.date" content="2025-10-01">
+<meta name="keywords" content="Substance use disorders, Machine learning, Cellular Sensing">
 
-<title>Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</title>
+<title>Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,21 +58,17 @@ div.csl-indent {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
-<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 
 
-<meta name="citation_title" content="Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients">
-<meta name="citation_abstract" content="AUD remains a prevalent, lasting and costly problem in the United States, yet few receive treatment due to barriers. Smart Digital Therapeutics (DTx) are emerging as a promising tool to address these barriers. They can potentially provide continuous risk monitoring and individualized support through personal sensing and algorithms. This study leverages SMS messages both three days and one week preceding a lapse episode to predict next-day alcohol lapse. We recruited 138 participants (65 males; 121 Whites non-Hispanic) in early recovery with a goal of abstinence. Self-reported alcohol use and text messages were obtained during a 3-month period. We enginnered features from LIWC and trained models with XGBoost. We used grouped, nested cross-validation to select the best model configuration. The median auROC was .53 (95% CI [.52, .54]) for the best model across the 300 folds in the inner loop. Our model performed consistently worse for people from different underprivileged groups. We further calculated SHAP values and discovered that social processes, social behaviors and second person pronoun emerge as the most important features. Our study suggests that the LIWC model fails to capture sufficient signal from SMS messages to be clinically useful. Our next step is to use other natural language processing methods to do feature engineering and compare the results with this baseline LIWC model. Future studies should also consider other data sources to improve model performance.
-">
-<meta name="citation_keywords" content="Substance use disorders,Text sensing,Machine learning">
+<meta name="citation_title" content="Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder">
+<meta name="citation_keywords" content="Substance use disorders,Machine learning,Cellular Sensing">
+<meta name="citation_author" content="Kendra Wyant">
 <meta name="citation_author" content="Coco Yu">
 <meta name="citation_author" content="John J. Curtin">
-<meta name="citation_publication_date" content="2024-12-09">
-<meta name="citation_cover_date" content="2024-12-09">
-<meta name="citation_year" content="2024">
-<meta name="citation_online_date" content="2024-12-09">
+<meta name="citation_publication_date" content="2025-10-01">
+<meta name="citation_cover_date" content="2025-10-01">
+<meta name="citation_year" content="2025">
+<meta name="citation_online_date" content="2025-10-01">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Availability of Medications for the Treatment of Alcohol and Opioid Use Disorder in the USA;,citation_abstract=Despite high mortality rates due to opioid overdose and excessive alcohol consumption, medications for the treatment of alcohol and opioid use disorder have not been widely used in the USA. This paper provides an overview of the literature on the availability of alcohol and opioid used disorder medications in the specialty substance use disorder treatment system, other treatment settings and systems, and among providers with a federal waiver to prescribe buprenorphine. We also present the most current data on the availability of alcohol and opioid use disorder medications in the USA. These estimates show steady growth in availability of opioid use disorder medications over the past decade and a decline in availability of alcohol use disorder medications. However, overall use of medications in the USA remains low. In 2017, only 16.3% of specialty treatment programs offered any single medication for alcohol use disorder treatment and 35.5% offered any single medication for opioid use disorder treatment. Availability of buprenorphine-waivered providers has increased significantly since 2002. However, geographic disparities in access to buprenorphine remain. Some of the most promising strategies to increase availability of alcohol and opioid use disorder medications include the following: incorporating substance use disorder training in healthcare education programs, educating the substance use disorder workforce about the benefits of medication treatment, reducing stigma surrounding the use of medications, implementing medications in primary care settings, implementing integrated care models, revising regulations on methadone and buprenorphine, improving health insurance coverage of medications, and developing novel medications for the treatment of substance use disorder.;,citation_author=Amanda J. Abraham;,citation_author=Christina M. Andrews;,citation_author=Samantha J. Harris;,citation_author=Peter D. Friedmann;,citation_publication_date=2020-01;,citation_cover_date=2020-01;,citation_year=2020;,citation_issue=1;,citation_doi=10.1007/s13311-019-00814-4;,citation_issn=1878-7479;,citation_volume=17;,citation_language=en-US;,citation_journal_title=Neurotherapeutics;">
 <meta name="citation_reference" content="citation_title=AFINN;,citation_publication_date=2011-03;,citation_cover_date=2011-03;,citation_year=2011;">
@@ -185,7 +182,7 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Leveraging SMS Messages to Predict Near Real-Time Alcohol Lapse in AUD Patients</h1>
+      <h1 class="title">Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder</h1>
           </div>
 
     
@@ -196,6 +193,14 @@ div.csl-indent {
           <div class="quarto-title-meta-heading">Affiliation</div>
           
                 <div class="quarto-title-meta-contents">
+            <p class="author">Kendra Wyant <a href="mailto:kpaquette2@wisc.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-0767-7589" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        Department of Psychology, University of Wisconsin-Madison
+                      </p>
+                  </div>
+                      <div class="quarto-title-meta-contents">
             <p class="author">Coco Yu <a href="mailto:jyu274@wisc.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-7731-0563" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
           </div>
                 <div class="quarto-title-meta-contents">
@@ -219,7 +224,7 @@ div.csl-indent {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">December 9, 2024</p>
+              <p class="date">October 1, 2025</p>
             </div>
           </div>
           
@@ -230,17 +235,11 @@ div.csl-indent {
       <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></p></div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></p></div></div></div>
     </div>
 
-    <div>
-      <div class="abstract">
-        <div class="block-title">Abstract</div>
-        <p>AUD remains a prevalent, lasting and costly problem in the United States, yet few receive treatment due to barriers. Smart Digital Therapeutics (DTx) are emerging as a promising tool to address these barriers. They can potentially provide continuous risk monitoring and individualized support through personal sensing and algorithms. This study leverages SMS messages both three days and one week preceding a lapse episode to predict next-day alcohol lapse. We recruited 138 participants (65 males; 121 Whites non-Hispanic) in early recovery with a goal of abstinence. Self-reported alcohol use and text messages were obtained during a 3-month period. We enginnered features from LIWC and trained models with XGBoost. We used grouped, nested cross-validation to select the best model configuration. The median auROC was .53 (95% CI [.52, .54]) for the best model across the 300 folds in the inner loop. Our model performed consistently worse for people from different underprivileged groups. We further calculated SHAP values and discovered that social processes, social behaviors and second person pronoun emerge as the most important features. Our study suggests that the LIWC model fails to capture sufficient signal from SMS messages to be clinically useful. Our next step is to use other natural language processing methods to do feature engineering and compare the results with this baseline LIWC model. Future studies should also consider other data sources to improve model performance.</p>
-      </div>
-    </div>
 
     <div>
       <div class="keywords">
         <div class="block-title">Keywords</div>
-        <p>Substance use disorders, Text sensing, Machine learning</p>
+        <p>Substance use disorders, Machine learning, Cellular Sensing</p>
       </div>
     </div>
 
@@ -252,49 +251,17 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
-  <ul class="collapse">
-  <li><a href="#dtx-and-smart-dtx" id="toc-dtx-and-smart-dtx" class="nav-link" data-scroll-target="#dtx-and-smart-dtx">DTx and smart DTx</a></li>
-  <li><a href="#recent-progress-in-smart-dtx" id="toc-recent-progress-in-smart-dtx" class="nav-link" data-scroll-target="#recent-progress-in-smart-dtx">Recent progress in smart DTx</a></li>
-  <li><a href="#incorporating-sms-in-smart-dtx" id="toc-incorporating-sms-in-smart-dtx" class="nav-link" data-scroll-target="#incorporating-sms-in-smart-dtx">Incorporating SMS in smart DTx</a></li>
-  <li><a href="#current-study" id="toc-current-study" class="nav-link" data-scroll-target="#current-study">Current Study</a></li>
-  </ul></li>
-  <li><a href="#approach" id="toc-approach" class="nav-link" data-scroll-target="#approach">Approach</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
   <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">Overview</a></li>
   <li><a href="#participants" id="toc-participants" class="nav-link" data-scroll-target="#participants">Participants</a></li>
   <li><a href="#procedures" id="toc-procedures" class="nav-link" data-scroll-target="#procedures">Procedures</a></li>
-  <li><a href="#measures" id="toc-measures" class="nav-link" data-scroll-target="#measures">Measures</a>
-  <ul class="collapse">
-  <li><a href="#individual-characteristics" id="toc-individual-characteristics" class="nav-link" data-scroll-target="#individual-characteristics">Individual Characteristics</a></li>
-  <li><a href="#alcohol-lapses" id="toc-alcohol-lapses" class="nav-link" data-scroll-target="#alcohol-lapses">Alcohol Lapses</a></li>
-  <li><a href="#sms-messages" id="toc-sms-messages" class="nav-link" data-scroll-target="#sms-messages">SMS Messages</a></li>
   </ul></li>
-  <li><a href="#model-training" id="toc-model-training" class="nav-link" data-scroll-target="#model-training">Model Training</a>
-  <ul class="collapse">
-  <li><a href="#feature-engineering" id="toc-feature-engineering" class="nav-link" data-scroll-target="#feature-engineering">Feature Engineering</a></li>
-  <li><a href="#candidate-algorithm" id="toc-candidate-algorithm" class="nav-link" data-scroll-target="#candidate-algorithm">Candidate Algorithm</a></li>
-  <li><a href="#model-selection" id="toc-model-selection" class="nav-link" data-scroll-target="#model-selection">Model Selection</a></li>
-  </ul></li>
-  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a>
-  <ul class="collapse">
-  <li><a href="#performance-evaluation" id="toc-performance-evaluation" class="nav-link" data-scroll-target="#performance-evaluation">Performance Evaluation</a></li>
-  <li><a href="#algorithmic-bias" id="toc-algorithmic-bias" class="nav-link" data-scroll-target="#algorithmic-bias">Algorithmic Bias</a></li>
-  <li><a href="#feature-importance" id="toc-feature-importance" class="nav-link" data-scroll-target="#feature-importance">Feature Importance</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
-  <ul class="collapse">
-  <li><a href="#demographics" id="toc-demographics" class="nav-link" data-scroll-target="#demographics">Demographics</a></li>
-  <li><a href="#sample-distribution" id="toc-sample-distribution" class="nav-link" data-scroll-target="#sample-distribution">Sample Distribution</a></li>
-  <li><a href="#liwc-features" id="toc-liwc-features" class="nav-link" data-scroll-target="#liwc-features">LIWC Features</a></li>
-  <li><a href="#best-model-evaluation" id="toc-best-model-evaluation" class="nav-link" data-scroll-target="#best-model-evaluation">Best Model Evaluation</a></li>
-  <li><a href="#model-fairness" id="toc-model-fairness" class="nav-link" data-scroll-target="#model-fairness">Model Fairness</a></li>
-  <li><a href="#model-interpretation" id="toc-model-interpretation" class="nav-link" data-scroll-target="#model-interpretation">Model Interpretation</a></li>
-  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks/fig_eda_liwc-preview.html"><i class="bi bi-journal-code"></i>EDA on LIWC Features</a></li><li><a href="notebooks/fig_eda_messages-preview.html"><i class="bi bi-journal-code"></i>EDA on Raw Messages</a></li><li><a href="notebooks/fig_demographics-preview.html"><i class="bi bi-journal-code"></i>EDA on Subject Demographics</a></li><li><a href="notebooks/fig_calibration-preview.html"><i class="bi bi-journal-code"></i>Generate INNER calibration</a></li><li><a href="notebooks/fig_auroc-preview.html"><i class="bi bi-journal-code"></i>Performance plots</a></li><li><a href="notebooks/fig_shaps-preview.html"><i class="bi bi-journal-code"></i>shaps</a></li><li><a href="notebooks/fig_fairness-preview.html"><i class="bi bi-journal-code"></i>Subgroup Analysis</a></li></ul></div></nav>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="notebooks\ana_fairness-preview.html"><i class="bi bi-journal-code"></i>Fairness analyses</a></li><li><a href="notebooks\ana_bayesian-preview.html"><i class="bi bi-journal-code"></i>Model evaluation</a></li></ul></div></nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -305,1487 +272,46 @@ div.csl-indent {
   
 
 
+<!--
+Target Journal: Addiction short report - 2,000 words and 15 references
+
+Backup Journal: JMIR Formative Research-->
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>AUD remains a prevalent, lasting and costly problem in the United States. According to 2022 NSDUH <span class="citation" data-cites="nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023 nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023">(<a href="#ref-nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023" role="doc-biblioref">National Institute on Alcohol Abuse and Alcoholism, 2023a</a>, <a href="#ref-nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023" role="doc-biblioref">2023b</a>)</span>, an estimate of 29.5 million (10.5% of the population) individuals aged 12 or older had AUD in 2022, which is consistent with the estimates for 2021. AUD problems have also brought huge economic burdens to the U.S., where excessive alcohol use has cost $223.5 billion in 2006 and $249 billion in 2010 <span class="citation" data-cites="sacks2010NationalState2015a">(<a href="#ref-sacks2010NationalState2015a" role="doc-biblioref">Sacks et al., 2015</a>)</span>.</p>
-<p>Despite the high prevalence of AUD, limited number of individuals receive alcohol treatments. Only a small portion (7.6%) of individuals aged 12 or older with AUD acquired alcohol use treatment in the past year <span class="citation" data-cites="nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023 nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023">(<a href="#ref-nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023" role="doc-biblioref">National Institute on Alcohol Abuse and Alcoholism, 2023a</a>, <a href="#ref-nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023" role="doc-biblioref">2023b</a>)</span>. This low treatment acquisition rate is even more pronounced for individuals from disadvantaged groups. Disparities in treatment-seeking behavior based on race, gender, and age are evident <span class="citation" data-cites="abrahamAvailabilityMedicationsTreatment2020 dibartoloAlcoholUseDisorder2017 youngDifferencesPerceptionsPractices2018 kaufmannTreatmentSeekingBarriers2014 schulerPerceivedBarriersTreatment2015 verissimoInfluenceGenderRace2017">(<a href="#ref-abrahamAvailabilityMedicationsTreatment2020" role="doc-biblioref">Abraham et al., 2020</a>; <a href="#ref-dibartoloAlcoholUseDisorder2017" role="doc-biblioref">DiBartolo &amp; Jarosinski, 2017</a>; <a href="#ref-kaufmannTreatmentSeekingBarriers2014" role="doc-biblioref">Kaufmann et al., 2014</a>; <a href="#ref-schulerPerceivedBarriersTreatment2015" role="doc-biblioref">Schuler et al., 2015</a>; <a href="#ref-verissimoInfluenceGenderRace2017" role="doc-biblioref">Verissimo &amp; Grella, 2017</a>; <a href="#ref-youngDifferencesPerceptionsPractices2018" role="doc-biblioref">Young et al., 2018</a>)</span>. Only 6.6% of Black or African-American people, 3.8% of people of two or more races, and 4.8% of Hispanic or Latino people with past-year AUD received treatments <span class="citation" data-cites="nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023 nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023">(<a href="#ref-nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023" role="doc-biblioref">National Institute on Alcohol Abuse and Alcoholism, 2023a</a>, <a href="#ref-nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023" role="doc-biblioref">2023b</a>)</span>. Women are less likely to obtain treatments compared to men, even if they have equivalent level of perceived need for help <span class="citation" data-cites="gilbertGenderDifferencesUse2019b">(<a href="#ref-gilbertGenderDifferencesUse2019b" role="doc-biblioref">Gilbert et al., 2019</a>)</span>.</p>
-<p>Several obstacles hinder people’s utilization of treatment options. Previous studies have identified that AUD patients face financial barriers <span class="citation" data-cites="kaufmannTreatmentSeekingBarriers2014 schulerPerceivedBarriersTreatment2015">(<a href="#ref-kaufmannTreatmentSeekingBarriers2014" role="doc-biblioref">Kaufmann et al., 2014</a>; <a href="#ref-schulerPerceivedBarriersTreatment2015" role="doc-biblioref">Schuler et al., 2015</a>)</span>, lack of knowledge or awareness <span class="citation" data-cites="williamsBarriersFacilitatorsAlcohol2018 probstAlcoholUseDisorder2015 mayBarriersTreatmentAlcohol2019">(<a href="#ref-mayBarriersTreatmentAlcohol2019" role="doc-biblioref">May et al., 2019</a>; <a href="#ref-probstAlcoholUseDisorder2015" role="doc-biblioref">Probst et al., 2015</a>; <a href="#ref-williamsBarriersFacilitatorsAlcohol2018" role="doc-biblioref">Williams et al., 2018</a>)</span>, social stigma <span class="citation" data-cites="sedarousCultureStigmaInequities2023 finnPerceivedBarriersSeeking2023 wallhedfinnAlcoholConsumptionDependence2014 mayBarriersTreatmentAlcohol2019">(<a href="#ref-finnPerceivedBarriersSeeking2023" role="doc-biblioref">Finn et al., 2023</a>; <a href="#ref-mayBarriersTreatmentAlcohol2019" role="doc-biblioref">May et al., 2019</a>; <a href="#ref-sedarousCultureStigmaInequities2023" role="doc-biblioref">Sedarous &amp; Flemming, 2023</a>; <a href="#ref-wallhedfinnAlcoholConsumptionDependence2014" role="doc-biblioref">Wallhed Finn et al., 2014</a>)</span>, and geographical barriers <span class="citation" data-cites="gregoryFirstlineMedicationsOutpatient2022">(<a href="#ref-gregoryFirstlineMedicationsOutpatient2022" role="doc-biblioref">Gregory et al., 2022</a>)</span> for accessing care. Individuals with disadvantaged demographic background suffer from even heightened barriers to treatment resources. Women with high severity of alcohol use face larger fear of stigma compared to their male counterparts <span class="citation" data-cites="finnPerceivedBarriersSeeking2023">(<a href="#ref-finnPerceivedBarriersSeeking2023" role="doc-biblioref">Finn et al., 2023</a>)</span>. Provider availability in rural areas, fear of stigma, and economic hardship all contribute to racial, gender and age disparities in treatment seeking <span class="citation" data-cites="abrahamAvailabilityMedicationsTreatment2020 dibartoloAlcoholUseDisorder2017 youngDifferencesPerceptionsPractices2018 kaufmannTreatmentSeekingBarriers2014 schulerPerceivedBarriersTreatment2015 verissimoInfluenceGenderRace2017">(<a href="#ref-abrahamAvailabilityMedicationsTreatment2020" role="doc-biblioref">Abraham et al., 2020</a>; <a href="#ref-dibartoloAlcoholUseDisorder2017" role="doc-biblioref">DiBartolo &amp; Jarosinski, 2017</a>; <a href="#ref-kaufmannTreatmentSeekingBarriers2014" role="doc-biblioref">Kaufmann et al., 2014</a>; <a href="#ref-schulerPerceivedBarriersTreatment2015" role="doc-biblioref">Schuler et al., 2015</a>; <a href="#ref-verissimoInfluenceGenderRace2017" role="doc-biblioref">Verissimo &amp; Grella, 2017</a>; <a href="#ref-youngDifferencesPerceptionsPractices2018" role="doc-biblioref">Young et al., 2018</a>)</span>.</p>
-<section id="dtx-and-smart-dtx" class="level2">
-<h2 class="anchored" data-anchor-id="dtx-and-smart-dtx">DTx and smart DTx</h2>
-<p>DTx is an effective and accessible supplemental tool that may partially address extant challenges AUD patients face. DTx are evidence-based health software that deliver assessments, interventions, and other supports to patients to prevent, or manage a disease or disorder. They can be utilized to provide continuing care for AUD patients after treatment. Available evidence suggests they are generally effective for mental health conditions including AUD and demonstrate clear clinical advantages <span class="citation" data-cites="philippeDigitalHealthInterventions2022 lecomteMobileAppsMental2020 gustafsonSmartphoneApplicationSupport2014b">(<a href="#ref-gustafsonSmartphoneApplicationSupport2014b" role="doc-biblioref">Gustafson et al., 2014</a>; <a href="#ref-lecomteMobileAppsMental2020" role="doc-biblioref">Lecomte et al., 2020</a>; <a href="#ref-philippeDigitalHealthInterventions2022" role="doc-biblioref">Philippe et al., 2022</a>)</span>. Further, DTx may provide better access for hard-to-reach populations, including those from socially marginalized group who encounter increased barriers to access continuing support. They can benefit patients from rural areas with low provider availability as they are accessible remotely via mobile phones <span class="citation" data-cites="bucciTheyAreNot2019 jacobsonUsingDigitalTherapeutics2023">(<a href="#ref-bucciTheyAreNot2019" role="doc-biblioref">Bucci et al., 2019</a>; <a href="#ref-jacobsonUsingDigitalTherapeutics2023" role="doc-biblioref">N. Jacobson et al., 2023</a>)</span>. DTx also have potentials to relieve barriers to seek professional help resulting from stigma concerns as they can facilitate anonymity and shorten the need for in-person interactions. They are of lower costs compared to in person care and have the capacity to be scalable.</p>
-<p>The concept of “smart” DTx is emerging in recent years allowing us to expand the benefits of DTx. Smart DTx comprises two key components. First, they rely on personal sensing methods to collect data. Exemplary measures include EMA, which actively prompts users to complete surveys and can encompass desired questions on moods, social relationships, stressful events, etc. Other relatively lower-burden sensing approaches include the measurement of geolocation, phone call logs and text messages collection. Those measures continuously and passively gather information. They can thus provide longitudinal data that can be temporally precise. Combined with self-reports that acquire contextual information (e.g., levels of support users can obtain from their frequently contacted people), they constitute rich data source for smart DTx.</p>
-<p>Second, smart DTx incorporates the rich dataset extracted from personal sensing to build machine learning algorithms. The goal of such models is to identify <em>who</em> are at heightened risk for alcohol lapses, <em>when</em> they will lapse, and <em>why</em> they are at increased risk. Through the embedded algorithms, smart DTx can achieve two tasks: 1) continuous AUD relapse risk-monitoring; and 2) individualized clinical support when needed.</p>
-<p>To enhance the effectiveness of smart DTx, those predictive modeling should be accurate and temporally precise. In other words, they should be capable of detecting increased lapse risks in a timely manner. These predictions allow windows for subsequent support to prevent lapses targeting a specific person. Notably, these functions are very important given the dynamic nature of alcohol relapse. Some relapse factors (e.g., drinking partner, drinking behavior) are situated and can be fluctuating over time. They usually occurs before an episode of alcohol use <span class="citation" data-cites="chihPredictiveModelingAddiction2014a">(<a href="#ref-chihPredictiveModelingAddiction2014a" role="doc-biblioref">Chih et al., 2014</a>)</span>. They can be elusive to therapists’ attention due to infrequent visits, highlighting importance of sustained monitoring to prevent lapses. AUD is a chronic, dynamic and temporally varying disease where patients face constant challenges of relapsing after abstinence <span class="citation" data-cites="scottPathwaysRelapseTreatment2005 anderssonRelapseInpatientSubstance2019 witkiewitzModelingComplexityPosttreatment2007a">(<a href="#ref-anderssonRelapseInpatientSubstance2019" role="doc-biblioref">Andersson et al., 2019</a>; <a href="#ref-scottPathwaysRelapseTreatment2005" role="doc-biblioref">Scott et al., 2005</a>; <a href="#ref-witkiewitzModelingComplexityPosttreatment2007a" role="doc-biblioref">Witkiewitz &amp; Marlatt, 2007</a>)</span>. This requires constant monitoring over time and timely intervention when necessary.</p>
-<p>Importantly, the machine learning models should also predict well among individuals from disadvantaged groups. One of the key benefits of DTx is that they partially address barriers utilizing professional help by providing 24/7/365, affordable, personalized support. They are particularly beneficial to marginalized groups who have low rates of utilizing treatment options due to these treatment barriers. However, they might exacerbate health inequity if embedded algorithms perform relatively worse for less privileged groups. To improve algorithm fairness among different demographic subgroups, the models can incorporate a diverse representation of sample to complete model training. On the other hand, the models should derive more “fair” features. For example, models might be biased if they leverage theory-driven features only. These features might be biased against disadvantaged groups because they depend on decades of research on White males.</p>
-<p>To develop such algorithms, we must first identify a clinically relevant outcome to predict. This outcome should be clearly and precisely defined across individuals, easy to measure, and with high temporal precision. Relapse, which usually refers to the return of a symptomatic behavior, is hard to quantify due to its multidimensional nature and temporal coarseness <span class="citation" data-cites="millerWhatRelapseFifty1996">(<a href="#ref-millerWhatRelapseFifty1996" role="doc-biblioref">Miller, 1996</a>)</span>. One potential conceptualization of alcohol relapse is linked to problems of use. Nonetheless, negative consequences are multifaceted and can therefore be burdensome to collect. It is also unclear what the onset of problems are. Another possible outcome is quantity of alcohol use. However, this measure is not temporally precise because there will be a time lag between onset of drinking and the last drink completed. Levels of drinking might also mean differently for individuals with different AUD severity, which makes it hardly generalizable across individuals. Alternatively, in this study, we utilize lapse (i.e., a single episode of alcohol use) as our primary outcome variable. Lapses are easy to define, have a clear onset, and are also clinically meaningful. They can serve as an early warning sign of failure to sustain a desired behavioral change <span class="citation" data-cites="chungRelapseAlcoholOther2006a marlattRelapsePreventionMaintenance2005a">(<a href="#ref-chungRelapseAlcoholOther2006a" role="doc-biblioref">Chung &amp; Maisto, 2006</a>; <a href="#ref-marlattRelapsePreventionMaintenance2005a" role="doc-biblioref">Marlatt &amp; Donovan, 2005</a>)</span>. Research has also shown that initial lapse and frequent lapses are the associated with enhanced risk of relapse <span class="citation" data-cites="witkiewitzRelapsePreventionAlcohol2004b hogstrombrandtPredictionSingleEpisodes1999a">(<a href="#ref-hogstrombrandtPredictionSingleEpisodes1999a" role="doc-biblioref">Högström Brandt et al., 1999</a>; <a href="#ref-witkiewitzRelapsePreventionAlcohol2004b" role="doc-biblioref">Witkiewitz &amp; Marlatt, 2004</a>)</span>.</p>
-<p>Next, we need to determine what inputs to use for our prediction model. The features should be easy to measure and feasible. The widespread availability of smartphones has rendered constant data collection with DTx attainable. Data collection procedure should not be unduly burdensome to users to ensure that sensing is sustainable. Previous research has established satisfying acceptability of active self-report measures such as EMA and even more willingness to use passive sensing measures <span class="citation" data-cites="wyantMachineLearningModels2024">(<a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al., 2024</a>)</span>. The features should also be well-validated. For example, GPS tracking has high accuracy in locating individuals and is temporally precise. Text sensing captures precisely the interactions between users and other individuals via SMS.</p>
-<p>Smart DTx algorithms should also incorporate features that are interpretable and can map on to current interventions. Exemplary features that are highly interpretable include those derived from the theory-driven approach. These features are easy to interpret and closely align with established therapies. For example, features related to social relationship might have important implications for family or marital counseling. Affect state features might be informative of emotion-focused therapy. In addition to selecting interpretable features during data training, computational methods can also be used to enhance model interpretability by analyzing feature importance. For instance, we can examine global feature importance to determine which features contribute the most to predict lapses across individuals. Further, examining local feature importance (i.e., features influencing a single observation) in these models might also be helpful for model interpretation. They have benefits of identifying the factors that contribute to lapse risk for any specific person and moment in time.</p>
+<p>One of the biggest challenges in Alcohol Use Disorders (AUD) treatment stems from the chronic relapsing nature of this disease <span class="citation" data-cites="scottPathwaysRelapseTreatment2005">(<a href="#ref-scottPathwaysRelapseTreatment2005" role="doc-biblioref">Scott et al., 2005</a>)</span>. People can relapse days, weeks, and even years after obtaining the goal of abstinence. At least 60% of AUD patients relapse to heavy drinking within 6 months following treatment <span class="citation" data-cites="nguyenPredictingRelapseAlcohol2020a witkiewitzPredictorsHeavyDrinking2011a kirshenbaumQuantitativeReviewUbiquitous2009">(<a href="#ref-nguyenPredictingRelapseAlcohol2020a" role="doc-biblioref"><strong>nguyenPredictingRelapseAlcohol2020a?</strong></a>; <a href="#ref-witkiewitzPredictorsHeavyDrinking2011a" role="doc-biblioref"><strong>witkiewitzPredictorsHeavyDrinking2011a?</strong></a>; <a href="#ref-kirshenbaumQuantitativeReviewUbiquitous2009" role="doc-biblioref"><strong>kirshenbaumQuantitativeReviewUbiquitous2009?</strong></a>)</span>. At most 50% of people with an AUD achieve remission after several years <span class="citation" data-cites="fleuryRemissionSubstanceUse2016 heymanQuittingDrugsQuantitative2013">(<a href="#ref-fleuryRemissionSubstanceUse2016" role="doc-biblioref"><strong>fleuryRemissionSubstanceUse2016?</strong></a>; <a href="#ref-heymanQuittingDrugsQuantitative2013" role="doc-biblioref"><strong>heymanQuittingDrugsQuantitative2013?</strong></a>)</span>.</p>
+<p>Identifying initial lapses in early recovery is critical. Lapses – single episodes of alcohol use – are easy to define, have a clear onset, and are also clinically meaningful. They serve as an early warning sign of returning back to previous drinking behavior inconsistent with desired goals <span class="citation" data-cites="witkiewitzRelapsePreventionAlcohol2004b chungRelapseAlcoholOther2006a marlattRelapsePreventionMaintenance2005a">(<a href="#ref-chungRelapseAlcoholOther2006a" role="doc-biblioref">Chung &amp; Maisto, 2006</a>; <a href="#ref-marlattRelapsePreventionMaintenance2005a" role="doc-biblioref">Marlatt &amp; Donovan, 2005</a>; <a href="#ref-witkiewitzRelapsePreventionAlcohol2004b" role="doc-biblioref">Witkiewitz &amp; Marlatt, 2004</a>)</span>. Lapse predicts future lapses, with more frequent ones resulting in increased risks of relapse <span class="citation" data-cites="hogstrombrandtPredictionSingleEpisodes1999a witkiewitzRelapsePreventionAlcohol2004b">(<a href="#ref-hogstrombrandtPredictionSingleEpisodes1999a" role="doc-biblioref">Högström Brandt et al., 1999</a>; <a href="#ref-witkiewitzRelapsePreventionAlcohol2004b" role="doc-biblioref">Witkiewitz &amp; Marlatt, 2004</a>)</span>.</p>
+<p>Current predictions of alcohol lapses rely heavily on self reports, which can be burdensome to measure in long run. Machine learning models leveraging ecological momentary assessment (EMA) measures have performed relatively well to predict goal-inconsistent alcohol use <span class="citation" data-cites="wyantMachineLearningModels2024">(<a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al., 2024</a>)</span>. The surveys were collected up to four times daily for three months. However, constantly completing surveys makes it burdensome for AUD patients. Although most EMA relevant mental health research demonstrated modest compliance rates, their time windows last from two weeks to three months <span class="citation" data-cites="porras-segoviaSmartphonebasedEcologicalMomentary2020 czyzEcologicalAssessmentDaily2018 vangenugtenExperiencedBurdenAdherence2020a mackesy-amitiFeasibilityEcologicalMomentary2018 hungSmartphonebasedEcologicalMomentary2016">(<a href="#ref-czyzEcologicalAssessmentDaily2018" role="doc-biblioref">Czyz et al., 2018</a>; <a href="#ref-hungSmartphonebasedEcologicalMomentary2016" role="doc-biblioref">Hung et al., 2016</a>; <a href="#ref-mackesy-amitiFeasibilityEcologicalMomentary2018" role="doc-biblioref">Mackesy-Amiti &amp; Boodram, 2018</a>; <a href="#ref-porras-segoviaSmartphonebasedEcologicalMomentary2020" role="doc-biblioref">Porras-Segovia et al., 2020</a>; <a href="#ref-vangenugtenExperiencedBurdenAdherence2020a" role="doc-biblioref">van Genugten et al., 2020</a>)</span>. The study length is insufficient because AUD is a chronic disease that requires constant risk monitoring. As extended period of time is anticipated, users’ perceived burden of answering surveys is presumably larger <span class="citation" data-cites="mogkImplementationWorkflowStrategies2023">(<a href="#ref-mogkImplementationWorkflowStrategies2023" role="doc-biblioref">Mogk et al., 2023</a>)</span>. Although minimizing the number of items in the surveys and the frequency of prompting users to complete the surveys might help mitigate the associated burden, it can inevitably reduce the prediction precision and temporal precision of predictions.</p>
+<p>Passive cellular communication sensing represents new opportunities due to its feasibility, relatively low burden on individuals and continuous data collection. In a smartphone-based sensing platform the primary expense on the individual is the smartphone. Smartphone usage is already widespread. Eighty-five percent of US adults have a smartphone and this number is consistent across all sociodemographic groups, including those in recovery programs for substance use <span class="citation" data-cites="massonHealthrelatedInternetUse2019a pewresearchcenterMobileFactSheet2021a">(<a href="#ref-massonHealthrelatedInternetUse2019a" role="doc-biblioref"><strong>massonHealthrelatedInternetUse2019a?</strong></a>; <a href="#ref-pewresearchcenterMobileFactSheet2021a" role="doc-biblioref"><strong>pewresearchcenterMobileFactSheet2021a?</strong></a>)</span>. Studies collecting passive data have demonstrated high acceptability from participants and higher compliance rates compared to active measures <span class="citation" data-cites="wyantAcceptabilityPersonalSensing2023a beukenhorstUsingSmartphonesReduce2022a">(<a href="#ref-beukenhorstUsingSmartphonesReduce2022a" role="doc-biblioref">Beukenhorst et al., 2022</a>; <a href="#ref-wyantAcceptabilityPersonalSensing2023a" role="doc-biblioref">Wyant et al., 2023</a>)</span>. Further, risk monitoring using cellular sensing is temporally sensitive to fluctuating risks. Analyzing communication patterns can detect potential triggers in time without actively prompting users to reflect on their feelings at the moment or report their environment.</p>
+<p>Cellular communications, with minimal contextual information, is embedded with potentially rich information that align with relapse antecedents. For example, social interactions can have important influences on drinking behavior <span class="citation" data-cites="hunter-reelEmphasizingInterpersonalFactors2009a alvarezSocialNetworkHeavy2021a">(<a href="#ref-hunter-reelEmphasizingInterpersonalFactors2009a" role="doc-biblioref"><strong>hunter-reelEmphasizingInterpersonalFactors2009a?</strong></a>; <a href="#ref-alvarezSocialNetworkHeavy2021a" role="doc-biblioref"><strong>alvarezSocialNetworkHeavy2021a?</strong></a>)</span>. We may be able to capture immediate risk based on who someone is calling or what time of day it is. Decreased interactions may signify isolation common with depressive symptoms, reaching out to people in one’s social network could signify a positive coping strategy, or changes in patterns between a single person in one’s social network could indicate conflict <span class="citation" data-cites="millerHowEffectiveAlcoholism2001a huffordRelapseNonlinearDynamic2003a chihPredictiveModelingAddiction2014a">(<a href="#ref-chihPredictiveModelingAddiction2014a" role="doc-biblioref">Chih et al., 2014</a>; <a href="#ref-huffordRelapseNonlinearDynamic2003a" role="doc-biblioref">Hufford et al., 2003</a>; <a href="#ref-millerHowEffectiveAlcoholism2001a" role="doc-biblioref"><strong>millerHowEffectiveAlcoholism2001a?</strong></a>)</span>.</p>
+<p>This study aims at building machine learning models from cellular communications that identify <em>who</em> are at heightened risk for alcohol lapses, <em>when</em> they will lapse, and <em>why</em> they are at increased risk.</p>
 </section>
-<section id="recent-progress-in-smart-dtx" class="level2">
-<h2 class="anchored" data-anchor-id="recent-progress-in-smart-dtx">Recent progress in smart DTx</h2>
-<p>Machine learning models leveraging ecological momentary assessment (EMA) measures have performed relatively well to predict goal-inconsistent alcohol use (e.g., lapses). Our group developed an XGBoost machine learning model using self-reported craving, affect, efficacy, risky situations, stressful events, pleasant events to predict alcohol lapses in the next hour, day, or week <span class="citation" data-cites="wyantMachineLearningModels2024">(<a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al., 2024</a>)</span>. The surveys were collected up to four times daily for three months. The model achieved exceptional performance when predicting lapses for new individuals, with a mean auROC score of .89, .90 and .93 for the hour-, day-, and week-level model respectively. Global feature importance demonstrated that past alcohol use and future self-efficacy consistently contributed greatly across all models to predict lapses.</p>
-<p>Nonetheless, relying on EMA measures for model building is associated with several limitations. First, constantly completing surveys makes it burdensome for real-world DTx use. Although most EMA relevant mental health research demonstrated modest compliance rates, their time windows last from two weeks to three months <span class="citation" data-cites="porras-segoviaSmartphonebasedEcologicalMomentary2020 czyzEcologicalAssessmentDaily2018 vangenugtenExperiencedBurdenAdherence2020a mackesy-amitiFeasibilityEcologicalMomentary2018 hungSmartphonebasedEcologicalMomentary2016">(<a href="#ref-czyzEcologicalAssessmentDaily2018" role="doc-biblioref">Czyz et al., 2018</a>; <a href="#ref-hungSmartphonebasedEcologicalMomentary2016" role="doc-biblioref">Hung et al., 2016</a>; <a href="#ref-mackesy-amitiFeasibilityEcologicalMomentary2018" role="doc-biblioref">Mackesy-Amiti &amp; Boodram, 2018</a>; <a href="#ref-porras-segoviaSmartphonebasedEcologicalMomentary2020" role="doc-biblioref">Porras-Segovia et al., 2020</a>; <a href="#ref-vangenugtenExperiencedBurdenAdherence2020a" role="doc-biblioref">van Genugten et al., 2020</a>)</span>. The study length is insufficient for real-world DTx use. As extended period of time of app use is anticipated, users’ perceived burden of answering surveys is presumably larger <span class="citation" data-cites="mogkImplementationWorkflowStrategies2023">(<a href="#ref-mogkImplementationWorkflowStrategies2023" role="doc-biblioref">Mogk et al., 2023</a>)</span>. This is particularly problematic as AUD is a chronic disease that requires constant risk monitoring. Although minimizing the number of items in the surveys and the frequency of prompting users to complete the surveys might help mitigate the associated burden, it can inevitably reduce the prediction precision and temporal precision of algorithms.</p>
-<p>Second, decisions regarding what constructs to assess and what items to include to assess these constructs are limited by theory and past data. Given this, we might miss important constructs that predict lapses among individuals from groups that have been less well-studied. Including risk factors solely drawn from decades of research on White, male-dominant samples might even exacerbate health disparities when applied to DTx. Further, our current understanding of alcohol relapse precursors is not comprehensive. For example, Marlatt’s proposed taxonomy characterizes high-risk situational precursors to alcohol relapse such as social pressure and positive/negative emotional state <span class="citation" data-cites="marlattTaxonomyHighriskSituations1996a">(<a href="#ref-marlattTaxonomyHighriskSituations1996a" role="doc-biblioref">Marlatt, 1996</a>)</span>. Nonetheless, replication studies have found this theoretical framework to be somewhat unreliable and have low predictive validity of post-treatment outcomes <span class="citation" data-cites="lowmanReplicationExtensionMarlatt1996a stoutPredictiveValidityMarlatt1996 kaddenMarlattRelapseTaxonomy1996">(<a href="#ref-kaddenMarlattRelapseTaxonomy1996" role="doc-biblioref">Kadden, 1996</a>; <a href="#ref-lowmanReplicationExtensionMarlatt1996a" role="doc-biblioref">Lowman et al., 1996</a>; <a href="#ref-stoutPredictiveValidityMarlatt1996" role="doc-biblioref">Stout et al., 1996</a>)</span>. A review study also suggests that current relapse factors are not well-understood in past research due to methodological constraints and a death of “near real-time” data <span class="citation" data-cites="mckayConceptualMethodologicalAnalytical2006b">(<a href="#ref-mckayConceptualMethodologicalAnalytical2006b" role="doc-biblioref">McKay et al., 2006</a>)</span>.</p>
-</section>
-<section id="incorporating-sms-in-smart-dtx" class="level2">
-<h2 class="anchored" data-anchor-id="incorporating-sms-in-smart-dtx">Incorporating SMS in smart DTx</h2>
-<p>Text sensing technology, which is both feasible and sustainable, represents new opportunities in DTx that might address limitations of the current active reporting approach. Since AUD is a chronic condition requiring ongoing risk monitoring over an extended period, DTx can benefit from SMS sensing because it places a low burden on users and allows for continuous data collection. Studies collecting passive data have demonstrated high acceptability from participants and higher compliance rates compared to active measures <span class="citation" data-cites="wyantAcceptabilityPersonalSensing2023a beukenhorstUsingSmartphonesReduce2022a">(<a href="#ref-beukenhorstUsingSmartphonesReduce2022a" role="doc-biblioref">Beukenhorst et al., 2022</a>; <a href="#ref-wyantAcceptabilityPersonalSensing2023a" role="doc-biblioref">Wyant et al., 2023</a>)</span>. Further, risk monitoring using SMS sensing is temporally sensitive to fluctuating risks. Analyzing text messages can detect potential triggers in time without actively prompting users to reflect on their feelings at the moment or report their environment.</p>
-<p>Linguistic Inquiry and Word Count (LIWC) is a well-established text analysis tool that can potentially work well to predict alcohol lapses. It counts the frequency of words that fall into different categories to analyze a variety texts <span class="citation" data-cites="pennebakerDevelopmentPsychometricProperties2015a">(<a href="#ref-pennebakerDevelopmentPsychometricProperties2015a" role="doc-biblioref">Pennebaker et al., 2015</a>)</span>. LIWC might have good performance because they allow researchers to mine previously established robust construct of alcohol lapse precursors. It involves domain-specific knowledge of known risks for alcohol lapses. For instance, the majority of an inpatient teen sample reported initial relapse to alcohol when offered alcohol, when in negative state, and when in interpersonal conflicts <span class="citation" data-cites="brownCharacteristicsRelapseFollowing1989">(<a href="#ref-brownCharacteristicsRelapseFollowing1989" role="doc-biblioref">Brown et al., 1989</a>)</span>. Other commonly found risk factors include alcohol craving <span class="citation" data-cites="mckayStudiesFactorsRelapse1999a korlakuntaReasonsRelapsePatients2012">(<a href="#ref-korlakuntaReasonsRelapsePatients2012" role="doc-biblioref">Korlakunta et al., 2012-07/2012-12</a>; <a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">McKay, 1999</a>)</span>, negative affect state <span class="citation" data-cites="mckayStudiesFactorsRelapse1999a">(<a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">McKay, 1999</a>)</span>, cognitive factors <span class="citation" data-cites="mckayStudiesFactorsRelapse1999a">(<a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">McKay, 1999</a>)</span>, and interpersonal problem <span class="citation" data-cites="mckayStudiesFactorsRelapse1999a">(<a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">McKay, 1999</a>)</span>. LIWC might be capable of mining those risk-relevant factors because it incorporates a dictionary of words associated with social processes, affect, and substances.</p>
-<p>Models leveraging LIWC can also benefit from the word categories that have not been explored in past research (e.g., pronouns, clout). This approach is less susceptible to our knowledge gap and might even be capable of identifying unrecognized risk factors for alcohol lapses. We might even expect less differential performance under the bottom up approach across privileged vs.&nbsp;unprivileged groups because the features are not drawn from past research dominated by White males with AUD and are thus potentially unbiased towards privileged groups.</p>
-<p>Text analysis also offers avenues for model interpretation to yield valuable insights into treatment recommendations. LIWC can generate features that are highly interpretable and some might even relate to extant interventions. Assessing their feature importance helps us understand how features contribute to the models (i.e., which features are robust in predicting lapses). For example, global feature importance can identify robust predictors across individuals in predicting lapses. Local feature importance provides insights on what contributes to a lapse for a specific person at a specific time. They can be useful in personalized treatment recommendations.</p>
-</section>
-<section id="current-study" class="level2">
-<h2 class="anchored" data-anchor-id="current-study">Current Study</h2>
-<p>In the current study, we ran participants text messages over a period of three months feature engineering techniques through the LIWC program. We used generated features as inputs to models that predict alcohol lapses. We evaluated both model performance and interpretability of each distinct method. Followings are the more specific aims:</p>
-<p><strong>Aim 1: Train and evaluate performance of machine learning models using language features derived from LIWC to predict alcohol lapses.</strong> We used LIWC to engineer features from raw SMS messages. For each distinct feature set derived from a variety of configurations, we trained machine learning models a contemporary statistical algorithms (XGBoost). We evaluated and statistically compared the model performance, quantified as area under the receiver operating characteristic curve (auROC).</p>
-<p><strong>Aim 2: Identify important features and evaluate their interpretability with respect to recommending interventions.</strong> Model interpretation is key to providing treatment recommendations and uncovering potential causes of lapses. We used contemporary approaches to quantify feature importance (e.g., SHAP) of features within each of the NLP techniques used.</p>
-<p><strong>Aim 3: Examine model fairness in historically underprivileged subgroup populations.</strong> It is also important to note that if embedded algorithms perform relatively worse for marginalized groups, their use can exacerbate rather than alleviate treatment disparities. As such, model performance between privileged vs.&nbsp;unprivileged groups should be carefully examined. We evaluated model performance in demographic subgroups that face excessive barriers accessing alcohol treatments or medications, including females, racial minorities, individuals living under poverty, and older population.</p>
-</section>
-</section>
-<section id="approach" class="level1">
-<h1>Approach</h1>
+<section id="methods" class="level1">
+<h1>Methods</h1>
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>This study analyzed data collected from 2017-2019 from a larger grant funded by National Institute of Alcohol Abuse and Alcoholism (R01 AA024391). In this paper, we focus on methods and measures that are relevant to this study. Additional details on broader methods and the full set of measures collected are described elsewhere (see https://osf.io/w5h9y/ and <span class="citation" data-cites="wyantMachineLearningModels2024 wyantAcceptabilityPersonalSensing2023a">(<a href="#ref-wyantAcceptabilityPersonalSensing2023a" role="doc-biblioref">Wyant et al., 2023</a>; <a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al., 2024</a>)</span>).</p>
 </section>
 <section id="participants" class="level2">
 <h2 class="anchored" data-anchor-id="participants">Participants</h2>
-<p>Individuals in early recovery from AUD were recruited from Madison and surrounding area via social media platforms (e.g., Facebook), referrals from clinics, and television and radio advertisements. After initial phone screen, interested individuals came in-person to complete a more in-depth screening to determine their eligibility. We documented their demographic information. Inclusion criteria include that participants: 1) must be at least aged 18 or older; 2) must meet criteria for AUD with at least moderate severity (&gt;four DSM-5 criteria); 3) must be abstinent from alcohol for at least one week and fewer than two months at time of intake; 4) must be able to read and write in English; 5) must be willing to use smartphone and their smartphone is compatible with our study technology. Participants were excluded if they have a lifetime history of severe and persistent mental illness. One hundred sixty-nine participants were eligible and enrolled in the study. After excluding participants who discontinued before the first follow-up session and those with low compliance rates and too few messages (&lt;100 messages), we have a final sample size of 138 participants.</p>
+<p>Individuals in early recovery from AUD were recruited from Madison and surrounding area via social media platforms (e.g., Facebook), referrals from clinics, and television and radio advertisements. After initial phone screen, interested individuals came in-person to complete a more in-depth screening to determine their eligibility. We documented their demographic information. Inclusion criteria include that participants: 1) must be at least aged 18 or older; 2) must meet criteria for AUD with at least moderate severity (&gt;four DSM-5 criteria); 3) must be abstinent from alcohol for at least one week and fewer than two months at time of intake; 4) must be able to read and write in English; 5) must be willing to use smartphone and their smartphone is compatible with our study technology. Participants were excluded if they have a lifetime history of severe and persistent mental illness. One hundred sixty-nine participants were eligible and enrolled in the study. After excluding participants who discontinued before the first follow-up session and those with low compliance rates and too few communications (&lt;100 messages), we have a final sample size of 150 participants.</p>
 </section>
 <section id="procedures" class="level2">
 <h2 class="anchored" data-anchor-id="procedures">Procedures</h2>
-<p>The study lasted up to three months with five in-person visits (see <a href="#fig-simp" class="quarto-xref">Figure&nbsp;1</a>). Participants completed an in-person screening visit to determine their eligibility, obtain their informed consent, and collect their demographic information and self-report measures. They then completed an intake session one week later and three follow-up visits afterwards spaced at one-month intervals. During each of the follow-up visits, a research assistant downloaded participants’ SMS messages from their phone, verified reports of lapses and queried participants about any additional unreported laspes. Additional self-reported measures were obtained (see https://osf.io/w5h9y/).</p>
-<p>Throughout the course of the study, participants were expected to complete four daily EMAs that asked about their alcohol cravings, risky situations, stressful/pleasant events, etc <span class="citation" data-cites="wyantMachineLearningModels2024">(<a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al., 2024</a>)</span>. Notably, in the first item in the EMA survey, participants also reported their past alcohol use. Answer to this item will be used as the predicted outcome (see <em>Section Alcohol Lapses</em>).</p>
-<div id="fig-simp" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-simp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/visits.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Flowchart of in-person visits. We obtained participant demographics and alcohol use history from the screening session. SMS messages were downloaded from participant phones at each of the follow-up visit."><img src="images/visits.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-simp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Flowchart of in-person visits. We obtained participant demographics and alcohol use history from the screening session. SMS messages were downloaded from participant phones at each of the follow-up visit.
-</figcaption>
-</figure>
-</div>
-</section>
-<section id="measures" class="level2">
-<h2 class="anchored" data-anchor-id="measures">Measures</h2>
-<section id="individual-characteristics" class="level3">
-<h3 class="anchored" data-anchor-id="individual-characteristics">Individual Characteristics</h3>
-<p>We collected participants’ individual characteristics including their demographics and their past drinking history during the screening session (see <a href="#tbl-measures" class="quarto-xref">Table&nbsp;1</a>).</p>
-<div id="tbl-measures" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<div aria-describedby="tbl-measures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Log Type</th>
-<th style="text-align: left;">Measure</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Demographics</td>
-<td style="text-align: left;">Age</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Sex</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Race</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Ethnicity</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Highest Education</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Employment Status</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Total Personal Gross Income</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Marital Status</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Alcohol Use</td>
-<td style="text-align: left;">Alcohol Use History</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">DSM-5 Checklist for AUD</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">Young Adult Alcohol Problems Test</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;">WHO-The Alcohol, Smoking and Substance Involvement Screening Test</td>
-</tr>
-</tbody>
-</table>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-measures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Participant self-reported measures
-</figcaption>
-</figure>
-</div>
-</section>
-<section id="alcohol-lapses" class="level3">
-<h3 class="anchored" data-anchor-id="alcohol-lapses">Alcohol Lapses</h3>
-<p>Participants were prompted up to four times daily to report their recent alcohol use. In the first item of each daily EMA survey, dates and times of any unreported past alcohol use were obtained. Reports of past alcohol use were used as a dichotomous outcome variable (Lapse vs.&nbsp;No Lapse). We predicted alcohol lapses in the next 24-hour window (i.e., next day lapse prediction). Every outcome window started from 4 a.m. everyday and end 24 hours later.</p>
-</section>
-<section id="sms-messages" class="level3">
-<h3 class="anchored" data-anchor-id="sms-messages">SMS Messages</h3>
-<p>At each of the follow-up visits, a research assistant downloaded the participants’ SMS message logs from their phone. These logs included the message type (incoming vs.&nbsp;outgoing), date and time sent/received, text body, contact name, whether the participants read the text or not, etc. Images and voice texts were excluded from analysis. Both group messages and one-on-one messages were obtained from participants’ phones. We included only messages from/to important contacts and in group chats.</p>
-<p>For each individual lapse window, we had predictor sets that differ in prediction window length and their analytic unit. We defined text prediction windows to be 3-day and 1-week preceding the lapse window (see <a href="#fig-window" class="quarto-xref">Figure&nbsp;2</a>). We analyzed the two prediction windows both individually and combined (i.e., three configurations in total).</p>
-<div id="fig-window" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-window-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/prediction_window.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Prediction Window"><img src="images/prediction_window.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-window-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Prediction Window
-</figcaption>
-</figure>
-</div>
-</section>
-</section>
-<section id="model-training" class="level2">
-<h2 class="anchored" data-anchor-id="model-training">Model Training</h2>
-<section id="feature-engineering" class="level3">
-<h3 class="anchored" data-anchor-id="feature-engineering">Feature Engineering</h3>
-<p>Text messages served as the only raw source for all feature engineering. The document sets (varying based on unit of analysis) went through a generic pre-processing step that involves removal of all emojis. Our decision to remove all emojis was due to loss of emoji data in the ios devices during back up. This study used the LIWC dictionary <span class="citation" data-cites="pennebakerDevelopmentPsychometricProperties2015a">(<a href="#ref-pennebakerDevelopmentPsychometricProperties2015a" role="doc-biblioref">Pennebaker et al., 2015</a>)</span> and computed scores by counting frequency of words that belong to each category. We did not remove any stop words. LIWC aligns with the current alcohol relapse risk factor literature in that it examines psychometric properties including cognitive state and social processes <span class="citation" data-cites="brownCharacteristicsRelapseFollowing1989 mckayStudiesFactorsRelapse1999a mckayStudiesFactorsRelapse1999a">(<a href="#ref-brownCharacteristicsRelapseFollowing1989" role="doc-biblioref">Brown et al., 1989</a>; <a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">McKay, 1999</a>, <a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">1999</a>)</span>.</p>
-<p>We adopted two configurations for analytic units – individual messages and concatenated messages. In the first configuration method, we ran individual messages within the defined prediction window through LIWC. We then normalized LIWC feature scores based on the square root of word counts instead of raw word counts which was the default choice from the program. We applied the normalization on all LIWC categories other than word count, word per sentence, and the four summary measures – analytic, clout, authenticity, and tone. We excluded the four summary categories because their raw scores were not normalized on raw word counts. Our normalization method was chosen due to the relatively short message length for individual messages. We further obtained the median and 95% percentile of normalized LIWC scores for all messages related to each lapse label.</p>
-<p>In the other analytic unit configuration, we first concatenated all messages associated with each lapse label altogether. We then obtained LIWC results for the concatenated messages. We further adopted three configurations for normalization methods – normalized on raw word count (i.e., default method from the program), normalized on the square root of word count, and a combination of these two.</p>
-</section>
-<section id="candidate-algorithm" class="level3">
-<h3 class="anchored" data-anchor-id="candidate-algorithm">Candidate Algorithm</h3>
-<p>We leveraged the XGBoost algorithm that differed on the above three configurations: 1) prediction window length (see <em>Section SMS Messages</em>); 2) analytic units (see <em>Section Feature Engineering</em>); and 3) normalization methods (see <em>Section Feature Engineering</em>). As we have a fairly imbalanced class labels in our dataset (see <em>Section Sample Distribution</em>), we further considered different resampling strategies including upsampling and downsampling with different ratios. Our decision to use the XGBoost algorithm was based on its two benefits. First, the algorithm has demonstrated satisfying performance in classifying lapse vs.&nbsp;no lapse in our lab’s previous work <span class="citation" data-cites="wyantMachineLearningModels2024">(<a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al., 2024</a>)</span>. We can select the best model from a range of model-specific hyperparameters (mtry, tree depth, and learning rate), on top of the four above manually incorporated configurations. Second, XGBoost is well-suited to calculate Shapley values that can help us understand each feature’s contributions to model output (see <em>Section Feature Importance</em>).</p>
-</section>
-<section id="model-selection" class="level3">
-<h3 class="anchored" data-anchor-id="model-selection">Model Selection</h3>
-<p>We performed grouped, nested cross-validations to perform hyperparameter tuning and select the best model configuration. The dataset was participant-grouped so that each individual was assigned to either held-in or held-out set to avoid bias of predicting participants’ lapses using their own data. The nested cross-validation method uses two nested loops to divide folds. In the inner loop, held-out folds were used as a validation set for model selection. In the outer loop, held-out folds were utilized as a test set for model evaluation. We only presented validation results from the 300 sets in the inner loop in this paper because we are still working on model development. We reserved test set to evaluate the overfitting of final full model.</p>
-<p>The primary performance metric to select the best model configuration and evaluate the model performance on the test sets was auROC. The auROC measures the probability that a randomly chosen positive case is assigned a higher score than a randomly chosen negative case. It reflects the model’s ability to distinguish between the positive and negative cases across all possible thresholds. Values between .70 and .80 are considered fair, values between .80 and .90 are considered good, and values above .90 are considered excellent. Across all models that differed on the above discussed configurations, the best model was selected based on the highest median auROC across all validation sets (see <em>Section Machine Learning Algorithm</em>).</p>
-</section>
-</section>
-<section id="model-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
-<section id="performance-evaluation" class="level3">
-<h3 class="anchored" data-anchor-id="performance-evaluation">Performance Evaluation</h3>
-<p>We calculated the predicted probability scores for all our observations based on the best model configuration and then obtained the median auROC score across all 300 validation sets in the inner fold. We further performed a Bayesian hierarchical generalized linear model to estimate the posterior probability (i.e., the likelihood of achieving the results given out data) distributions of the auROCs. The two random intercepts in the models included the repeat and the fold within repeat. We reported the 95% CIs for our models’ auROCs and determined if they included .5 (chance performance). If this CI included 0.5, we would conclude that our model performed no better than random guess. We also reported the probability that the model auROC is &gt;.05.</p>
-</section>
-<section id="algorithmic-bias" class="level3">
-<h3 class="anchored" data-anchor-id="algorithmic-bias">Algorithmic Bias</h3>
-<p>A subset of individual characteristic measures was used to evaluate model fairness on subgroups. We compared model performance among each sex, racial, age and income subgroups because the populations face increased barriers obtaining AUD treatments. Stigma among older populations and wome, and economic hardship in racial minority groups can all contribute to low treatment-seeking and alcohol treatment completion <span class="citation" data-cites="dibartoloAlcoholUseDisorder2017 jacobsonRacialDisparitiesCompletion2007 mayBarriersTreatmentAlcohol2019">(<a href="#ref-dibartoloAlcoholUseDisorder2017" role="doc-biblioref">DiBartolo &amp; Jarosinski, 2017</a>; <a href="#ref-jacobsonRacialDisparitiesCompletion2007" role="doc-biblioref">J. O. Jacobson et al., 2007</a>; <a href="#ref-mayBarriersTreatmentAlcohol2019" role="doc-biblioref">May et al., 2019</a>)</span>. Participants younger than 55 years old were considered as a privileged group. We adopted half of median income in Madison area in 2017 as cut-off to assign participants to income groups.</p>
-<p>We performed a Bayesian hierarchical generalized linear model that regressed the auROCs from the 300 validation sets in the inner loop as a function of group membership (privileged group vs.&nbsp;unprivileged group within each of above individual characteristics). We reported the 95% CI for model performance differences and examined if they included 0. If this CI did not include 0, we would conclude that our model was unfair. We also reported the probability that the difference is greater than zero.</p>
-</section>
-<section id="feature-importance" class="level3">
-<h3 class="anchored" data-anchor-id="feature-importance">Feature Importance</h3>
-<p>We also calculated SHAP values to interpret the results. SHAP is a game theory based method to explain how each feature influences the model output <span class="citation" data-cites="lundbergUnifiedApproachInterpreting2017">(<a href="#ref-lundbergUnifiedApproachInterpreting2017" role="doc-biblioref">Lundberg &amp; Lee, 2017</a>)</span>. It assigns importance to each feature, where a positive feature importance positively affects the model output. This methodology can be applied to any machine learning algorithm and can increase model transparency and interpretability. Local Shapley values explain factors that contribute to a single observation, and global Shapley values represent feature importance across all observations. To compute global Shapley values, we averaged the absolute value of all local Shapley values. For better understanding, we aggregated Shapley values for each LIWC category, regardless of their prediction window and normalization methods.</p>
-<div style="page-break-after: always;"></div>
-</section>
+<p>The study lasted up to three months with five in-person visits. Participants completed an in-person screening visit to determine their eligibility, obtain their informed consent, and collect their demographic information and self-report measures. They then completed an intake session one week later and three follow-up visits afterwards spaced at one-month intervals. During each of the follow-up visits, a research assistant downloaded participants’ SMS messages from their phone, verified reports of lapses and queried participants about any additional unreported laspes. Additional self-reported measures were obtained (see https://osf.io/w5h9y/).</p>
+<p>Throughout the course of the study, participants were expected to complete four daily EMAs that asked about their alcohol cravings, risky situations, stressful/pleasant events, etc <span class="citation" data-cites="wyantMachineLearningModels2024">(<a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al., 2024</a>)</span>. Notably, in the first item in the EMA survey, participants also reported their past alcohol use. Answer to this item will be used as the predicted outcome.</p>
 </section>
 </section>
 <section id="results" class="level1">
 <h1>Results</h1>
-<section id="demographics" class="level2">
-<h2 class="anchored" data-anchor-id="demographics">Demographics</h2>
-<p>The final sample includes 138 participants. On average, participants are 39.60 years old (SD = 11.17, range = 21-66). 65 (47.10%) participants are females, 121 (87.68%) are White/Caucasian, 3 (2.17%) are American Indiain/Alaska Native, 2 (1.45%) are Asian, 6 (4.35%) are Black/African American, and 6 (4.35%) are Other/Multiracial. See <a href="#tbl-demographics" class="quarto-xref">Table&nbsp;2</a> for more details on participant demographics (education, employment, income, marital status) and their patterns of alcohol use.</p>
-<div id="tbl-demographics" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<div aria-describedby="tbl-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table">
-<colgroup>
-<col style="width: 77%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-<col style="width: 4%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: center;">N</th>
-<th style="text-align: center;">%</th>
-<th style="text-align: center;">M</th>
-<th style="text-align: center;">SD</th>
-<th style="text-align: center;">Range</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>Age</strong></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">39.60</td>
-<td style="text-align: center;">11.17</td>
-<td style="text-align: center;">21-66</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Sex</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Female</em></td>
-<td style="text-align: center;">73</td>
-<td style="text-align: center;">52.90%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Male</em></td>
-<td style="text-align: center;">65</td>
-<td style="text-align: center;">47.10%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Race</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>White/Caucasian</em></td>
-<td style="text-align: center;">121</td>
-<td style="text-align: center;">87.68%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>American Indian/Alaska Native</em></td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">2.17%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Asian</em></td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">1.45%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Black/African American</em></td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">4.35%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Other/Multiracial</em></td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">4.35%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Ethnicity</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Mexican, Mexican American, Chicano</em></td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">2.17%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Another Hispanic, Latino, or Spanish Origin</em></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0.72%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Not Hispanic, Latino, or Spanish Origin</em></td>
-<td style="text-align: center;">134</td>
-<td style="text-align: center;">97.10%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Highest Education</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>2-Year degree</em></td>
-<td style="text-align: center;">13</td>
-<td style="text-align: center;">9.42%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Advanced degree</em></td>
-<td style="text-align: center;">23</td>
-<td style="text-align: center;">16.67%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>College degree</em></td>
-<td style="text-align: center;">54</td>
-<td style="text-align: center;">39.13%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>High school or GED</em></td>
-<td style="text-align: center;">11</td>
-<td style="text-align: center;">7.97%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Less than high school or GED degree</em></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0.72%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Some college</em></td>
-<td style="text-align: center;">36</td>
-<td style="text-align: center;">26.09%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Employment</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Disabled</em></td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">2.90%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Employed</em></td>
-<td style="text-align: center;">96</td>
-<td style="text-align: center;">69.57%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Full-time student</em></td>
-<td style="text-align: center;">7</td>
-<td style="text-align: center;">5.07%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Homemaker</em></td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">0.72%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Other, not otherwise specified</em></td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">5.80%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Retired</em></td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">4.35%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Temporarily laid off, sick leave, or maternity leave</em></td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">2.17%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Unemployed</em></td>
-<td style="text-align: center;">13</td>
-<td style="text-align: center;">9.42%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Total Personal Gross Income</strong></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">36,494.41</td>
-<td style="text-align: center;">32,149.41</td>
-<td style="text-align: center;">0-200,000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Marital Status</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Divorced</em></td>
-<td style="text-align: center;">40</td>
-<td style="text-align: center;">29.90%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Married</em></td>
-<td style="text-align: center;">30</td>
-<td style="text-align: center;">21.74%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Never Married</em></td>
-<td style="text-align: center;">61</td>
-<td style="text-align: center;">44.20%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Separated</em></td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">3.62%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Widowed</em></td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">1.45%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Alcohol Use History</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Age of First Drink Without Family</em></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">14.62</td>
-<td style="text-align: center;">2.98</td>
-<td style="text-align: center;">6-24</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Age of First Regular Drink</em></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">19.39</td>
-<td style="text-align: center;">6.05</td>
-<td style="text-align: center;">11-53</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Age of First Drinking Problem</em></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">27.62</td>
-<td style="text-align: center;">9.42</td>
-<td style="text-align: center;">15-60</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Age of First Quit Attempt</em></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">31.02</td>
-<td style="text-align: center;">10.09</td>
-<td style="text-align: center;">15-61</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Number of Quit Attempts</em></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">5.98</td>
-<td style="text-align: center;">9.83</td>
-<td style="text-align: center;">0-100</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Types of Programs or Services Used</em></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Long-Term Residential Treatment (more than 6 months)</em></td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">4.35%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Short-Term Residential Treatment (less than 6 months)</em></td>
-<td style="text-align: center;">41</td>
-<td style="text-align: center;">29.71%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Outpatient Treatment</em></td>
-<td style="text-align: center;">64</td>
-<td style="text-align: center;">46.38%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Individual Counseling</em></td>
-<td style="text-align: center;">91</td>
-<td style="text-align: center;">65.94%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Group Counseling</em></td>
-<td style="text-align: center;">57</td>
-<td style="text-align: center;">41.30%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Alcoholics Anonymous/Narcotics Anonymous</em></td>
-<td style="text-align: center;">84</td>
-<td style="text-align: center;">60.87%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Other</em></td>
-<td style="text-align: center;">38</td>
-<td style="text-align: center;">27.54%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Even Taken Prescribed Medication</em></td>
-<td style="text-align: center;">53</td>
-<td style="text-align: center;">38.41%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Number of Days per Week Consumed Any Alcohol</em></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">5.24</td>
-<td style="text-align: center;">1.81</td>
-<td style="text-align: center;">1-7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Number of Days per Week Consumed 6 or More Alcoholic Drinks in One Day</em></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">3.94</td>
-<td style="text-align: center;">2.07</td>
-<td style="text-align: center;">0-7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Number of Alcoholic Drinks per Day on Days Drinked</em></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">7.43</td>
-<td style="text-align: center;">4.31</td>
-<td style="text-align: center;">1-25</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>DSM-5 Symptom Count</strong></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">8.89</td>
-<td style="text-align: center;">1.84</td>
-<td style="text-align: center;">4-11</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Young Adult Alcohol Problems Test</strong></td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">19.90</td>
-<td style="text-align: center;">4.60</td>
-<td style="text-align: center;">6-27</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Past 3-Month Drug Use (WHO-The Alcohol, Smoking and Substance Involvement Screening Test)</strong></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;"></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Tobacco products (cigarettes, chewing tobacco, cigars, etc.)</em></td>
-<td style="text-align: center;">75</td>
-<td style="text-align: center;">54.35%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Cannabis (marijuana, pot, grass, hash, etc.)</em></td>
-<td style="text-align: center;">64</td>
-<td style="text-align: center;">46.38%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Cocaine (coke, crack, etc.)</em></td>
-<td style="text-align: center;">17</td>
-<td style="text-align: center;">12.32%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Amphetamine type stimulants (speed, diet pills, ecstasy, etc.)</em></td>
-<td style="text-align: center;">15</td>
-<td style="text-align: center;">10.87%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Inhalants (nitrous, glue, petrol, paint thinner, etc.)</em></td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">2.17%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Sedatives or Sleeping Pills (Valium, Serepax, Rohypnol, etc.)</em></td>
-<td style="text-align: center;">21</td>
-<td style="text-align: center;">15.22%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><em>Hallucinogens (LSD, acid, mushrooms, PCP, Special K, etc.)</em></td>
-<td style="text-align: center;">14</td>
-<td style="text-align: center;">10.14%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><em>Opioids (heroin, morphine, methadone, codeine, etc.)</em></td>
-<td style="text-align: center;">14</td>
-<td style="text-align: center;">10.14%</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-<td style="text-align: center;">—</td>
-</tr>
-</tbody>
-</table>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Participant demographics and alcohol use history
-</figcaption>
-</figure>
-</div>
-</section>
-<section id="sample-distribution" class="level2">
-<h2 class="anchored" data-anchor-id="sample-distribution">Sample Distribution</h2>
-<p>The final total number of lapse labels in the dataset is 11562. 7.63% of the labels are associated with a lapse episode. On average, each participant has 83.78 labels (sd = 11.35, median = 88.00, range = 30 - 90; see <a href="#fig-lapse_count" class="quarto-xref">Figure&nbsp;3</a>).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-lapse_count" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-lapse_count" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-lapse_count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_eda_messages-fig-lapse_count-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Distribution of Lapse Label Counts"><img src="index_files/figure-html/notebooks-fig_eda_messages-fig-lapse_count-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lapse_count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Distribution of Lapse Label Counts
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>The total number of messages in the dataset is 313492. On average, each subject has 2271.68 messages (sd = 2536.60, range = 100 - 15884). The average message length across all participants is 10.42 words (sd = 14.30, median = 7.00, range = 1 - 1266). On average, each participant has a mean message length of 10.87 (sd = 3.97, range = 5.25 - 38.91).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-raw" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-raw" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_eda_messages-fig-raw-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Sample Characteristics of Raw Messages"><img src="index_files/figure-html/notebooks-fig_eda_messages-fig-raw-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Sample Characteristics of Raw Messages
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>On average, each lapse label has 79.21 messages (sd = 112.13, median = 40.00, range = 1 - 1414) during the 3-day prediction window. 11.92% of labels have no associated messages in the previous 3 days. Each participant has an averaged 79.48 messages as predictors per label (sd = 87.12, median = 50.12, range = 2.97 - 529.45). On average, each participant’s data missingness is 12.28% (sd = 19.42%, median = 1.14%, range = 0.00% - 77.27%).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-3day" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-3day" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_eda_messages-fig-3day-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_messages-fig-3day-output-2.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Sample Characteristics in the 3-Day Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>On average, each lapse label has 180.42 messages (sd = 241.30, median = 96.00, range = 1 - 2866) during the 1-week prediction window. 7.83% of labels have no associated messages in the previous week. Each participant has an averaged 181.23 messages as predictors per label (sd = 199.32, median = 113.47, range = 6.75 - 1200.76). On average, each participant’s data missingness is 8.14% (sd = 16.23%, median = 0.00%, range = 0.00% - 72.73%).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-1week" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-1week" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_eda_messages-fig-1week-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_messages-fig-1week-output-2.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Sample Characteristics in the 1-Week Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="liwc-features" class="level2">
-<h2 class="anchored" data-anchor-id="liwc-features">LIWC Features</h2>
-<p>We obtained LIWC scores from 117 linguistic categories. These categories include total word count, number of words per sentence, the four summary categories (analytic, clout, authentic, and tone), and other linguistic categories such as social and pronouns. Notably, LIWC-22 now incorporates a <em>health</em> dimension that includes phrases related to illness, wellness, mental health (diagnoses or behaviors), and substances. For each unit of analysis, we had 468 engineered features after normalization and aggregation (see <em>Section Feature Engineering</em>).</p>
-<p>When our unit of analysis was on individual messages (see <a href="#tbl-panel" class="quarto-xref">Table&nbsp;3</a> and <a href="#fig-liwc_ind" class="quarto-xref">Figure&nbsp;7</a>), the median of all median LIWC feature scores excluding the six unnormalized categories within each 3-day prediction window ranged from 0.00 to 2.45 (median = 0.00, sd = 0.34). The median of all median LIWC feature scores excluding the six unnormalized categories within each 1-week prediction window ranged from 0.00 to 2.45 (median = 0.00, sd = 0.35). The max of all median LIWC feature scores excluding the six unnormalized categories within each 3-day prediction window ranged from 0.00 to 11.58 (median = 0.80, sd = 1.60). The max of all median LIWC feature scores excluding the six unnormalized categories within each 1-week prediction window ranged from 0.00 to 8.89 (median = 0.63, sd = 1.25).</p>
-<p>The median of all 95% percentile LIWC feature scores excluding the six unnormalized categories within each 3-day prediction window ranged from 0.00 to 4.74 (median = 0.30, sd = 0.70). The median of all 95% percentile LIWC feature scores excluding the six unnormalized categories within each 1-week prediction window ranged from 0.00 to 4.89 (median = 0.34, sd = 0.72). The max of all 95% percentile LIWC feature scores excluding the six unnormalized categories within each 3-day prediction window ranged from 0.36 to 17.51 (median = 1.15, sd = 2.40). The max of all 95% percentile LIWC feature scores excluding the six unnormalized categories within each 1-week prediction window ranged from 0.35 to 18.42 (median = 1.00, sd = 2.47).</p>
-<div id="tbl-panel" class="quarto-layout-panel anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<div aria-describedby="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 100.0%;justify-content: center;">
-<div id="tbl-ind_3day" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-tbl figure">
-<div aria-describedby="tbl-ind_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: left;">SD</th>
-<th style="text-align: left;">Median</th>
-<th style="text-align: left;">Min</th>
-<th style="text-align: left;">Max</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">wc_median</td>
-<td style="text-align: left;">5.43</td>
-<td style="text-align: left;">7.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">142.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">wc_q_95</td>
-<td style="text-align: left;">20.31</td>
-<td style="text-align: left;">26.40</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">369.05</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">wps_median</td>
-<td style="text-align: left;">2.45</td>
-<td style="text-align: left;">5.00</td>
-<td style="text-align: left;">0.00</td>
-<td style="text-align: left;">78.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">wps_q_95</td>
-<td style="text-align: left;">5.96</td>
-<td style="text-align: left;">14.75</td>
-<td style="text-align: left;">0.00</td>
-<td style="text-align: left;">78.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">analytic_median</td>
-<td style="text-align: left;">17.11</td>
-<td style="text-align: left;">10.19</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">analytic_q_95</td>
-<td style="text-align: left;">19.24</td>
-<td style="text-align: left;">97.20</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">clout_median</td>
-<td style="text-align: left;">32.72</td>
-<td style="text-align: left;">40.06</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">clout_q_95</td>
-<td style="text-align: left;">12.98</td>
-<td style="text-align: left;">99.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">authentic_median</td>
-<td style="text-align: left;">19.60</td>
-<td style="text-align: left;">89.39</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">authentic_q_95</td>
-<td style="text-align: left;">10.77</td>
-<td style="text-align: left;">99.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">tone_median</td>
-<td style="text-align: left;">17.84</td>
-<td style="text-align: left;">99.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">tone_q_95</td>
-<td style="text-align: left;">9.85</td>
-<td style="text-align: left;">99.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-</tbody>
-</table>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-ind_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) 3-Day Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel" style="flex-basis: 100.0%;justify-content: center;">
-<div id="tbl-ind_1week" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-tbl figure">
-<div aria-describedby="tbl-ind_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: left;">SD</th>
-<th style="text-align: left;">Median</th>
-<th style="text-align: left;">Min</th>
-<th style="text-align: left;">Max</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">wc_median</td>
-<td style="text-align: left;">4.00</td>
-<td style="text-align: left;">7.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">81.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">wc_q_95</td>
-<td style="text-align: left;">17.84</td>
-<td style="text-align: left;">28.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">404.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">wps_median</td>
-<td style="text-align: left;">2.20</td>
-<td style="text-align: left;">5.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">78.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">wps_q_95</td>
-<td style="text-align: left;">5.53</td>
-<td style="text-align: left;">15.10</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">78.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">analytic_median</td>
-<td style="text-align: left;">14.02</td>
-<td style="text-align: left;">10.19</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">analytic_q_95</td>
-<td style="text-align: left;">14.85</td>
-<td style="text-align: left;">98.59</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">clout_median</td>
-<td style="text-align: left;">30.57</td>
-<td style="text-align: left;">40.06</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">clout_q_95</td>
-<td style="text-align: left;">9.94</td>
-<td style="text-align: left;">99.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">authentic_median</td>
-<td style="text-align: left;">15.87</td>
-<td style="text-align: left;">89.39</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">authentic_q_95</td>
-<td style="text-align: left;">7.36</td>
-<td style="text-align: left;">99.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">tone_median</td>
-<td style="text-align: left;">13.85</td>
-<td style="text-align: left;">99.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">tone_q_95</td>
-<td style="text-align: left;">7.27</td>
-<td style="text-align: left;">99.00</td>
-<td style="text-align: left;">1.00</td>
-<td style="text-align: left;">99.00</td>
-</tr>
-</tbody>
-</table>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-ind_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) 1-Week Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Sample Characteristics of Engineered Feature Scores (Median and 95% Quantile Scores from Individual Messages) for the Six Unnormalized Categories Within Each Prediction Window
-</figcaption>
-</figure>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-liwc_ind" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-liwc_ind" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_ind-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;7: Distribution of Engineered Feature Scores (Median or 95% Percentile of Normalized LIWC Score From Individual Messages) Within Each Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_ind-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_ind-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Distribution of Engineered Feature Scores (Median or 95% Percentile of Normalized LIWC Score From Individual Messages) Within Each Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<p>When our unit of analysis was on concatenated messages (see <a href="#tbl-panel2" class="quarto-xref">Table&nbsp;4</a>, <a href="#fig-liwc_cat_raw" class="quarto-xref">Figure&nbsp;8</a> and <a href="#fig-liwc_cat_norm" class="quarto-xref">Figure&nbsp;9</a>), the median of all raw feature scores within the 3-day prediction window ranged from 0.00 to 91.36 (median = 1.32, sd = 12.64). The median of all raw feature scores within the 1-week prediction window ranged from 0.00 to 91.30 (median = 1.36, sd = 12.63). The max of all raw feature scores within the 3-day prediction window ranged from 3.85 to 166.67 (median = 33.33, sd = 37.64). The max of all raw feature scores within the 1-week prediction window ranged from 1.82 to 166.67 (median = 27.27, sd = 35.21).</p>
-<p>The median of all normalized feature scores within the 3-day prediction window ranged from 0.00 to 20.63 (median = 0.32, sd = 2.85). The median of all normalized feature scores within the 1-week prediction window ranged from 0.00 to 30.69 (median = 0.47, sd = 4.25). The max of all normalized feature scores within the 3-day prediction window ranged from 0.37 to 106.55 (median = 2.95, sd = 15.11). The max of all normalized feature scores within the 1-week prediction window ranged from 0.29 to 143.30 (median = 3.16, sd = 20.31).</p>
-<div id="tbl-panel2" class="quarto-layout-panel anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<div aria-describedby="tbl-panel2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel2" style="flex-basis: 50.0%;justify-content: center;">
-<div id="tbl-cat_3day" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-tbl figure">
-<div aria-describedby="tbl-cat_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: left;">SD</th>
-<th style="text-align: left;">Median</th>
-<th style="text-align: left;">Min</th>
-<th style="text-align: left;">Max</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">wc</td>
-<td style="text-align: left;">1175.22</td>
-<td style="text-align: left;">512.00</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">13211</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">wps</td>
-<td style="text-align: left;">9.75</td>
-<td style="text-align: left;">10.76</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">295</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">analytic</td>
-<td style="text-align: left;">16.96</td>
-<td style="text-align: left;">19.05</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">99</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">clout</td>
-<td style="text-align: left;">25.37</td>
-<td style="text-align: left;">50.20</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">99</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">authentic</td>
-<td style="text-align: left;">22.34</td>
-<td style="text-align: left;">77.13</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">99</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">tone</td>
-<td style="text-align: left;">23.28</td>
-<td style="text-align: left;">82.19</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">99</td>
-</tr>
-</tbody>
-</table>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-cat_3day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) 3-Day Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-panel2" style="flex-basis: 50.0%;justify-content: center;">
-<div id="tbl-cat_1week" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-tbl figure">
-<div aria-describedby="tbl-cat_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: left;">SD</th>
-<th style="text-align: left;">Median</th>
-<th style="text-align: left;">Min</th>
-<th style="text-align: left;">Max</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">wc</td>
-<td style="text-align: left;">2484.84</td>
-<td style="text-align: left;">1124.00</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">23702</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">wps</td>
-<td style="text-align: left;">8.73</td>
-<td style="text-align: left;">10.91</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">241</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">analytic</td>
-<td style="text-align: left;">14.30</td>
-<td style="text-align: left;">19.17</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">99</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">clout</td>
-<td style="text-align: left;">22.54</td>
-<td style="text-align: left;">50.15</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">99</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">authentic</td>
-<td style="text-align: left;">19.04</td>
-<td style="text-align: left;">77.10</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">99</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">tone</td>
-<td style="text-align: left;">20.76</td>
-<td style="text-align: left;">82.04</td>
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">99</td>
-</tr>
-</tbody>
-</table>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-cat_1week-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) 1-Week Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-panel2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Sample Characteristics of Raw LIWC Scores on Concatenated Messages Across the Six Linguistic Categories Within Each Prediction Window
-</figcaption>
-</figure>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-liwc_cat_raw" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-liwc_cat_raw" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-liwc_cat_raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_cat_raw-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Figure&nbsp;8: Distribution of Raw LIWC Feature Scores From Concatenated Messages Within Each Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_cat_raw-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat_raw-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Distribution of Raw LIWC Feature Scores From Concatenated Messages Within Each Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-liwc_cat_norm" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-liwc_cat_norm" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-liwc_cat_norm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_cat_norm-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;9: Distribution of Normalized LIWC Feature Scores From Concatenated Messages Within Each Prediction Window"><img src="index_files/figure-html/notebooks-fig_eda_liwc-fig-liwc_cat_norm-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-liwc_cat_norm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Distribution of Normalized LIWC Feature Scores From Concatenated Messages Within Each Prediction Window
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="best-model-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="best-model-evaluation">Best Model Evaluation</h2>
-<p>The best model configuration was the one that leveraged raw LWIC scores from concatenated messages within both the 3-day and 1-week prediction window, and an upsampling technique with a ratio of 1:1. We applied the best configuration on the raw dataset and obtained an auROC score of 0.53 (see <a href="#fig-auroc" class="quarto-xref">Figure&nbsp;10</a> for the ROC curve). We further aggregated predictions by folds, and the median score of all median auROCs across the 300 inner folds was 0.53 (sd = 0.09, range = 0.28 - 0.80; see <a href="#fig-auroc_hist" class="quarto-xref">Figure&nbsp;11</a>). The median posterior distribution of the auROCs was 0.53 (95% CI = [0.52, 0.54]; see <a href="#fig-auroc_posterior" class="quarto-xref">Figure&nbsp;12</a>). The probability of the posterior auROC larger than .5 was 1.00. We concluded that our model was better than chance performance.</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-auroc" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_auroc-fig-auroc-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;10: ROC Curve for the Best Model Configuration"><img src="index_files/figure-html/notebooks-fig_auroc-fig-auroc-output-2.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: ROC Curve for the Best Model Configuration
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc_hist" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-auroc_hist" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_auroc-fig-auroc_hist-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Figure&nbsp;11: Distribution of auROCs Across 300 Inner Folds"><img src="index_files/figure-html/notebooks-fig_auroc-fig-auroc_hist-output-2.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: Distribution of auROCs Across 300 Inner Folds
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-auroc_posterior" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-auroc_posterior" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_auroc-fig-auroc_posterior-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="Figure&nbsp;12: Posterior Distribution of auROC Scores"><img src="index_files/figure-html/notebooks-fig_auroc-fig-auroc_posterior-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-auroc_posterior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;12: Posterior Distribution of auROC Scores
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="model-fairness" class="level2">
-<h2 class="anchored" data-anchor-id="model-fairness">Model Fairness</h2>
-<p>73 (53%) participants are females, 17 (12%) are non-White minorities, 39 (28%) earned less than half of the median income in Madison in Year 2017, and 13 (9%) aged 55 or older (see <a href="#fig-demographics" class="quarto-xref">Figure&nbsp;13</a>). Our model performed consistently worse in unprivileged group vs.&nbsp;privileged group across all four demographic categories (see <a href="#fig-fairness" class="quarto-xref">Figure&nbsp;14</a> and <a href="#tbl-fairness" class="quarto-xref">Table&nbsp;5</a>). The median of posterior distribution of model performance difference was 0.03 (95%CI = [0.01, 0.06]) for White people compared to People of Color. The probability of the performance for the White people higher than for People of Color was 0.99. The posterior distribution of performance differences also indicated that the model performed better in males than in females (median = 0.02, 95%CI = [0.01, 0.04], probability = 1.00), in people younger than 55 than people older than 55 (median = 0.04, 95%CI = [0.01, 0.07], probability = 1.00), and in people that have higher income than in those who have lower income (median = 0.02, 95%CI = [0.00, 0.04], probability = 0.99). We concluded that the model performed significantly worse in unprivileged groups.</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-demographics" class="cell" data-fig-width="10">
-<div class="cell-output cell-output-display">
-<div id="fig-demographics" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_demographics-fig-demographics-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Figure&nbsp;13: Demographic Distribution"><img src="index_files/figure-html/notebooks-fig_demographics-fig-demographics-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-demographics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;13: Demographic Distribution
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-fairness" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_fairness-fig-fairness-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Figure&nbsp;14: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups"><img src="index_files/figure-html/notebooks-fig_fairness-fig-fairness-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;14: auROC posterior distribution across different privileged vs.&nbsp;unprivileged groups
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tbl-fairness" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<div aria-describedby="tbl-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th>median</th>
-<th>lower</th>
-<th>upper</th>
-<th>probability</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>white vs.&nbsp;non_white</td>
-<td>0.03</td>
-<td>0.01</td>
-<td>0.06</td>
-<td>0.99</td>
-</tr>
-<tr class="even">
-<td>male vs.&nbsp;female</td>
-<td>0.02</td>
-<td>0.01</td>
-<td>0.04</td>
-<td>1.00</td>
-</tr>
-<tr class="odd">
-<td>younger vs.&nbsp;older</td>
-<td>0.04</td>
-<td>0.01</td>
-<td>0.07</td>
-<td>1.00</td>
-</tr>
-<tr class="even">
-<td>above_poverty vs.&nbsp;below_poverty</td>
-<td>0.02</td>
-<td>0.00</td>
-<td>0.04</td>
-<td>0.99</td>
-</tr>
-</tbody>
-</table>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-fairness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Model Performance Difference across different demographic subgroups
-</figcaption>
-</figure>
-</div>
-</section>
-<section id="model-interpretation" class="level2">
-<h2 class="anchored" data-anchor-id="model-interpretation">Model Interpretation</h2>
-<p>The top 30 LIWC categories with the highest global shapley values were displayed in <a href="#fig-shaps" class="quarto-xref">Figure&nbsp;15</a>. Three categories appeared to be the most robust in contributing to model output – social processes (e.g., you, we, he, she), social behavior (e.g., said, love, say, care), and second person pronoun (e.g., you, your, yourself). The other less robust categories included total word count, clout (language of leadership), assent (e.g., yeah, yes, okay, ok), social referents (e.g., you, we, he, she), and prosocial behaviors (e.g., care, help, thank, please).</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-shaps" class="cell">
-<div class="cell-output cell-output-display">
-<div id="fig-shaps" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="index_files/figure-html/notebooks-fig_shaps-fig-shaps-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Figure&nbsp;15: Shapley Value"><img src="index_files/figure-html/notebooks-fig_shaps-fig-shaps-output-1.png" class="img-fluid figure-img"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;15: Shapley Value
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div style="page-break-after: always;"></div>
-</section>
 </section>
 <section id="discussion" class="level1">
-<h1>Discussion</h1>
-<p>Overall, our best machine learning model configuration leveraging linguistic categories from SMS messages to predict a single episode of alcohol lapse achieved an auROC score of .53. Our model was able to extract signal from text messages. Nonetheless, the .03 increase beyond chance performance is not sufficient enough for any clinical use.</p>
-<p>Our LIWC model was only planned to serve as a baseline model against which to later compare my sophisticated approaches following the FYP. Clearly, more robust features need to be engineered from SMS messages to achieve better prediction. <!--I think you want to pivot away from liwc pretty quickly.   How can you vary prediction window length furhter?  If you go any shorter than 3 day there is too much missing data.  Are you talking about longer? Not sure that makes sense either--> Our next plan is to explore other more sophisticated natural language processing (NLP) techniques to train our models. In addition to the current configurations varying in prediction window length, we might also incorporate configurations such as message types.</p>
-<p>To improve model performance, we might consider subsetting messages based on their types. For instance, we can analyze incoming and outgoing messages individually. By distinguishing between the two, we might get a more refined understanding of communication dynamics. For example, incoming messages might indicate the level of social support one gets and outgoing messages might reflect their level of self-disclosure and willingness to seek help. In the current study, we have taken a different approach that combined the two message types together. Although it provides an overview of social interactions between participants and their contacts, it might overlook some nuanced distinctions underlying texts from those two message types. On the other hand, it is important to emphasize potential drawbacks to separate the two message types, especially given the limited number of messages (see <em>Section Sample Distribution</em>) associated with each label. It might lead to the problem of data sparsity which might even exacerbate model performance and decrease its generalizability. We might consider extended prediction window (e.g., 1-week window only) to aggregate more data.</p>
-<p>We can further try a variety of other natural language processing (NLP) techniques for feature engineering including topic modeling, sentiment analysis, n-grams approach and word embeddings. Our next and second baseline model can be an n-grams approach. It represents bags-of-words occurrences inside a document. We can leverage term frequency, inverse document frequency and a combination of the two to mine word importance inside a document. As this method yields high-dimensional data, we might also consider combining it with dimension reduction approaches to do feature engineering. Other NLP methods we might try include topic modeling. It is an unsupervised machine learning methods to identify clusters of topics in a body of text. We can also try other Sentiment Analysis methods, beyond LIWC’s native affect and emotion categories which focus mostly on valence. For example, we might infer the emotional underpinning of texts in terms of basic emotion categories (e.g., anger, fear) from SMS messages. There are also other sentiment analysis approaches outside of LIWC that can handle modifier words and provide sentence level rather than word level analysis. We can also utilize word embeddings—vectors that represent relationships of words within a document in a lower-dimension.</p>
-<p>Note that these feature engineering techniques differ in their interpretability. Word embeddings is empirically-driven and its features that are less interpretable. <!--n grams is pretty interpretable.  Depends some on what words predict but I wouldnt offer it up an an exmple of a non-interpretable approahc--> The interpretability of n-grams can depend on the presence of words that contain high global importance. Topic modeling, though data-driven, might yield topic clusters that are interpretable. Sentiment Analysis can yield features that are highly interpretable and might map on to current interventions. Importantly, our desired predictive model should not just be the one that has the highest predictive ability. We should also examine whether our model is interpretable enough to understand intervention-relevant risk factors. This helps us determine if our model can be clinically useful.</p>
-<p>The minimal signal we detected in SMS messages might also reflect that text messages itself is not an effective data source to predict lapses. One potential reason might include that most people do not engage in enough SMS texting behaviors that produce meaningful patterns near the time of lapsing. Some people might also not use text messaging as their main source of communication. Some might have preferences for texting in other platforms (e.g., WhatsApp, Snapchat). The lack of sufficient data points curtails machine learning models’ ability to detect risk-relevant signals. To enhance model performance, we might need increased access to texts from other sources. Additionally, text messages might not convey information indicative of risk-relevant factors such as alcohol cravings <span class="citation" data-cites="mckayStudiesFactorsRelapse1999a korlakuntaReasonsRelapsePatients2012 wyantMachineLearningModels2024">(<a href="#ref-korlakuntaReasonsRelapsePatients2012" role="doc-biblioref">Korlakunta et al., 2012-07/2012-12</a>; <a href="#ref-mckayStudiesFactorsRelapse1999a" role="doc-biblioref">McKay, 1999</a>; <a href="#ref-wyantMachineLearningModels2024" role="doc-biblioref">Wyant et al., 2024</a>)</span>. Communications in SMS messages might involve casual and monotonous interactions which lacks specificity to effectively predict lapses.</p>
-<p>Alternatively, we can explore adoption of metadata from text messages and voice calls as predictive features. Those metadata include number of messages within a prediction window, contextual information related to the contact person, timing of messages or calls, etc. We can mine sudden changes to messaging or calling behaviors from those metadata that might signal enhanced lapse risks. For example, an increased number of late night outgoing messages might indicate a sudden mood change preceding a lapse. Note that we have already witnessed some success in our lab’s previous work (see Kendra’s FYP), with auROCs in mid to upper .60s.</p>
-<p>Surprisingly, despite the low performance score, we still witnessed consistent unfairness in our algorithm for unprivileged demographic subgroups. One key factor that contributed to the model biases might be the disproportionate representation of subgroups such as racial minorities. To address this limitation, we might recruit a sample with a fair distribution of people with diverse backgrounds. Importantly, however, our model still systematically misrepresented other demographic subgroups even if they were well-represented in our training data. The other explanation might be that our features were inherently biased against subgroups. People from different demographic groups might display different language styles, and LIWC might be more attuned to those from the majority groups. As such, we should further try other natural language processing techniques that incorporate more fair features. For example, topic modeling does not rely on theories built upon past, White male-dominated research and might yield more fair features.</p>
-<p>Results in this study indicate that text message might not be potentially valuable raw data source in predicting alcohol lapses in AUD patients. Although SMS messages offer the benefits of minimal burden on users, this advantage cannot compensate for their low prediction precision. EMA measures, despite their somewhat higher burden, are capable of capturing robust signals. GPS sensing, which is also not burdensome, can obtain some signals with little feature engineering (see Claire’s FYP). Note that both EMA and GPS sensing are easily accessible across platforms. Nonetheless, as SMS is not currently available in ios platform, we might have diminished further interest in this data source.</p>
-<p>In sum, our machine learning algorithm had minimal increase in performance compared to random guess. The results call for further exploration of other feature engineering techniques to build models that have higher performance, are interpretable and have low algorithmic biases.</p>
-<div style="page-break-after: always;"></div>
+
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-abrahamAvailabilityMedicationsTreatment2020" class="csl-entry" role="listitem">
-Abraham, A. J., Andrews, C. M., Harris, S. J., &amp; Friedmann, P. D. (2020). Availability of <span>Medications</span> for the <span>Treatment</span> of <span>Alcohol</span> and <span>Opioid Use Disorder</span> in the <span>USA</span>. <em>Neurotherapeutics</em>, <em>17</em>(1), 55–69. <a href="https://doi.org/10.1007/s13311-019-00814-4">https://doi.org/10.1007/s13311-019-00814-4</a>
-</div>
-<div id="ref-anderssonRelapseInpatientSubstance2019" class="csl-entry" role="listitem">
-Andersson, H. W., Wenaas, M., &amp; Nordfjærn, T. (2019). Relapse after inpatient substance use treatment: <span>A</span> prospective cohort study among users of illicit substances. <em>Addictive Behaviors</em>, <em>90</em>, 222–228. <a href="https://doi.org/10.1016/j.addbeh.2018.11.008">https://doi.org/10.1016/j.addbeh.2018.11.008</a>
-</div>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Discussion</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-beukenhorstUsingSmartphonesReduce2022a" class="csl-entry" role="listitem">
 Beukenhorst, A. L., Burke, K. M., Scheier, Z., Miller, T. M., Paganoni, S., Keegan, M., Collins, E., Connaghan, K. P., Tay, A., Chan, J., Berry, J. D., &amp; Onnela, J.-P. (2022). Using smartphones to reduce research burden in a neurodegenerative population and assessing participant adherence: <span>A</span> randomized clinical trial and two observational studies. <em>JMIR Mhealth and Uhealth</em>, <em>10</em>(2), e31877. <a href="https://doi.org/10.2196/31877">https://doi.org/10.2196/31877</a>
-</div>
-<div id="ref-brownCharacteristicsRelapseFollowing1989" class="csl-entry" role="listitem">
-Brown, S. A., Vik, P. W., &amp; Creamer, V. A. (1989). Characteristics of relapse following adolescent substance abuse treatment. <em>Addictive Behaviors</em>, <em>14</em>(3), 291–300. <a href="https://doi.org/10.1016/0306-4603(89)90060-9">https://doi.org/10.1016/0306-4603(89)90060-9</a>
-</div>
-<div id="ref-bucciTheyAreNot2019" class="csl-entry" role="listitem">
-Bucci, S., Berry, N., Morris, R., Berry, K., Haddock, G., Lewis, S., &amp; Edge, D. (2019). <span>“<span class="nocase">They Are Not Hard-to-Reach Clients</span>. <span class="nocase">We Have Just Got Hard-to-Reach Services</span>.”</span> <span>Staff Views</span> of <span>Digital Health Tools</span> in <span>Specialist Mental Health Services</span>. <em>Frontiers in Psychiatry</em>, <em>10</em>. <a href="https://doi.org/10.3389/fpsyt.2019.00344">https://doi.org/10.3389/fpsyt.2019.00344</a>
 </div>
 <div id="ref-chihPredictiveModelingAddiction2014a" class="csl-entry" role="listitem">
 Chih, M.-Y., Patton, T., McTavish, F. M., Isham, A. J., Judkins-Fisher, C. L., Atwood, A. K., &amp; Gustafson, D. H. (2014). Predictive modeling of addiction lapses in a mobile health application. <em>Journal of Substance Abuse Treatment</em>, <em>46</em>(1), 29–35. <a href="https://doi.org/10.1016/j.jsat.2013.08.004">https://doi.org/10.1016/j.jsat.2013.08.004</a>
@@ -1796,134 +322,41 @@ Chung, T., &amp; Maisto, S. A. (2006). Relapse to alcohol and other drug use in 
 <div id="ref-czyzEcologicalAssessmentDaily2018" class="csl-entry" role="listitem">
 Czyz, E. K., King, C. A., &amp; Nahum-Shani, I. (2018). Ecological assessment of daily suicidal thoughts and attempts among suicidal teens after psychiatric hospitalization: <span>Lessons</span> about feasibility and acceptability. <em>Psychiatry Research</em>, <em>267</em>, 566–574. <a href="https://doi.org/10.1016/j.psychres.2018.06.031">https://doi.org/10.1016/j.psychres.2018.06.031</a>
 </div>
-<div id="ref-dibartoloAlcoholUseDisorder2017" class="csl-entry" role="listitem">
-DiBartolo, M. C., &amp; Jarosinski, J. M. (2017). Alcohol <span>Use Disorder</span> in <span>Older Adults</span>: <span>Challenges</span> in <span>Assessment</span> and <span>Treatment</span>. <em>Issues in Mental Health Nursing</em>, <em>38</em>(1), 25–32. <a href="https://doi.org/10.1080/01612840.2016.1257076">https://doi.org/10.1080/01612840.2016.1257076</a>
-</div>
-<div id="ref-finnPerceivedBarriersSeeking2023" class="csl-entry" role="listitem">
-Finn, S. W., Mejldal, A., &amp; Nielsen, A. S. (2023). Perceived barriers to seeking treatment for alcohol use disorders among the general <span>Danish</span> population – a cross sectional study on the role of severity of alcohol use and gender. <em>Archives of Public Health</em>, <em>81</em>(1), 65. <a href="https://doi.org/10.1186/s13690-023-01085-4">https://doi.org/10.1186/s13690-023-01085-4</a>
-</div>
-<div id="ref-gilbertGenderDifferencesUse2019b" class="csl-entry" role="listitem">
-Gilbert, P. A., Pro, G., Zemore, S. E., Mulia, N., &amp; Brown, G. (2019). Gender <span>Differences</span> in <span>Use</span> of <span>Alcohol Treatment Services</span> and <span>Reasons</span> for <span>Non-Use</span> in a <span>National Sample</span>. <em>Alcoholism, Clinical and Experimental Research</em>, <em>43</em>(4), 722–731. <a href="https://doi.org/10.1111/acer.13965">https://doi.org/10.1111/acer.13965</a>
-</div>
-<div id="ref-gregoryFirstlineMedicationsOutpatient2022" class="csl-entry" role="listitem">
-Gregory, C., Chorny, Y., McLeod, S. L., &amp; Mohindra, R. (2022). First-line <span>Medications</span> for the <span>Outpatient Treatment</span> of <span>Alcohol Use Disorder</span>: <span>A Systematic Review</span> of <span>Perceived Barriers</span>. <em>Journal of Addiction Medicine</em>. <a href="https://doi.org/10.1097/ADM.0000000000000918">https://doi.org/10.1097/ADM.0000000000000918</a>
-</div>
-<div id="ref-gustafsonSmartphoneApplicationSupport2014b" class="csl-entry" role="listitem">
-Gustafson, D. H., McTavish, F. M., Chih, M.-Y., Atwood, A. K., A. Johnson, R., G. Boyle, M., S. Levy, M., Driscoll, H., M. Chisholm, S., Dillenburg, L., Isham, A., &amp; Shah, D. (2014). A smartphone application to support recovery from alcoholism: <span>A</span> randomized controlled trial. <em>JAMA Psychiatry</em>, <em>71</em>(5), 566–572. <a href="https://doi.org/10.1001/jamapsychiatry.2013.4642">https://doi.org/10.1001/jamapsychiatry.2013.4642</a>
-</div>
 <div id="ref-hogstrombrandtPredictionSingleEpisodes1999a" class="csl-entry" role="listitem">
 Högström Brandt, A. M., Thorburn, D., Hiltunen, A. J., &amp; Borg, S. (1999). Prediction of single episodes of drinking during the treatment of alcohol-dependent patients. <em>Alcohol (Fayetteville, N.Y.)</em>, <em>18</em>(1), 35–42. <a href="https://doi.org/10.1016/s0741-8329(98)00065-2">https://doi.org/10.1016/s0741-8329(98)00065-2</a>
+</div>
+<div id="ref-huffordRelapseNonlinearDynamic2003a" class="csl-entry" role="listitem">
+Hufford, M. R., Witkiewitz, K., Shields, A. L., Kodya, S., &amp; Caruso, J. C. (2003). Relapse as a nonlinear dynamic system: <span>Application</span> to patients with alcohol use disorders. <em>Journal of Abnormal Psychology</em>, <em>112</em>(2), 219–227. <a href="https://doi.org/10.1037/0021-843X.112.2.219">https://doi.org/10.1037/0021-843X.112.2.219</a>
 </div>
 <div id="ref-hungSmartphonebasedEcologicalMomentary2016" class="csl-entry" role="listitem">
 Hung, S., Li, M.-S., Chen, Y.-L., Chiang, J.-H., Chen, Y.-Y., &amp; Hung, G. C.-L. (2016). Smartphone-based ecological momentary assessment for <span>Chinese</span> patients with depression: <span>An</span> exploratory study in <span>Taiwan</span>. <em>Asian Journal of Psychiatry</em>, <em>23</em>, 131–136. <a href="https://doi.org/10.1016/j.ajp.2016.08.003">https://doi.org/10.1016/j.ajp.2016.08.003</a>
 </div>
-<div id="ref-jacobsonRacialDisparitiesCompletion2007" class="csl-entry" role="listitem">
-Jacobson, J. O., Robinson, P. L., &amp; Bluthenthal, R. N. (2007). Racial <span>Disparities</span> in <span>Completion Rates</span> from <span>Publicly Funded Alcohol Treatment</span>: <span>Economic Resources Explain More Than Demographics</span> and <span>Addiction Severity</span>. <em>Health Services Research</em>, <em>42</em>(2), 773–794. <a href="https://doi.org/10.1111/j.1475-6773.2006.00612.x">https://doi.org/10.1111/j.1475-6773.2006.00612.x</a>
-</div>
-<div id="ref-jacobsonUsingDigitalTherapeutics2023" class="csl-entry" role="listitem">
-Jacobson, N., Quist, R., Lee, C., &amp; Marsch, L. (2023). <em>Using digital therapeutics to target gaps and failures in traditional mental health and addiction treatments</em> (pp. 5–18). <a href="https://doi.org/10.1016/B978-0-323-90045-4.00005-8">https://doi.org/10.1016/B978-0-323-90045-4.00005-8</a>
-</div>
-<div id="ref-kaddenMarlattRelapseTaxonomy1996" class="csl-entry" role="listitem">
-Kadden, R. M. (1996). Is <span>Marlatt</span>’s relapse taxonomy reliable or valid? <em>Addiction</em>, <em>91</em>(12s1), 139–146. <a href="https://doi.org/10.1046/j.1360-0443.91.12s1.4.x">https://doi.org/10.1046/j.1360-0443.91.12s1.4.x</a>
-</div>
-<div id="ref-kaufmannTreatmentSeekingBarriers2014" class="csl-entry" role="listitem">
-Kaufmann, C. N., Chen, L.-Y., Crum, R. M., &amp; Mojtabai, R. (2014). Treatment seeking and barriers to treatment for alcohol use in persons with alcohol use disorders and comorbid mood or anxiety disorders. <em>Social Psychiatry and Psychiatric Epidemiology</em>, <em>49</em>(9), 1489–1499. <a href="https://doi.org/10.1007/s00127-013-0740-9">https://doi.org/10.1007/s00127-013-0740-9</a>
-</div>
-<div id="ref-korlakuntaReasonsRelapsePatients2012" class="csl-entry" role="listitem">
-Korlakunta, A., Chary, S. R. S., &amp; Reddy, P. K. C. (2012-07/2012-12). Reasons for relapse in patients with alcohol dependence. <em>Archives of Mental Health</em>, <em>13</em>(2), 108.
-</div>
-<div id="ref-lecomteMobileAppsMental2020" class="csl-entry" role="listitem">
-Lecomte, T., Potvin, S., Corbière, M., Guay, S., Samson, C., Cloutier, B., Francoeur, A., Pennou, A., &amp; Khazaal, Y. (2020). Mobile <span>Apps</span> for <span>Mental Health Issues</span>: <span>Meta-Review</span> of <span>Meta-Analyses</span>. <em>JMIR mHealth and uHealth</em>, <em>8</em>(5), e17458. <a href="https://doi.org/10.2196/17458">https://doi.org/10.2196/17458</a>
-</div>
-<div id="ref-lowmanReplicationExtensionMarlatt1996a" class="csl-entry" role="listitem">
-Lowman, C., Allen, J., Stout, R. L., &amp; Group, T. R. R. (1996). Replication and extension of <span>Marlatt</span>’s taxonomy of relapse precipitants: Overview of procedures and results. <em>Addiction</em>, <em>91</em>(12s1), 51–72. <a href="https://doi.org/10.1046/j.1360-0443.91.12s1.16.x">https://doi.org/10.1046/j.1360-0443.91.12s1.16.x</a>
-</div>
-<div id="ref-lundbergUnifiedApproachInterpreting2017" class="csl-entry" role="listitem">
-Lundberg, S. M., &amp; Lee, S.-I. (2017). A unified approach to interpreting model predictions. <em>Proceedings of the 31st <span>International Conference</span> on <span>Neural Information Processing Systems</span></em>, 4768–4777.
-</div>
 <div id="ref-mackesy-amitiFeasibilityEcologicalMomentary2018" class="csl-entry" role="listitem">
 Mackesy-Amiti, M. E., &amp; Boodram, B. (2018). Feasibility of ecological momentary assessment to study mood and risk behavior among young people who inject drugs. <em>Drug and Alcohol Dependence</em>, <em>187</em>, 227–235. <a href="https://doi.org/10.1016/j.drugalcdep.2018.03.016">https://doi.org/10.1016/j.drugalcdep.2018.03.016</a>
-</div>
-<div id="ref-marlattTaxonomyHighriskSituations1996a" class="csl-entry" role="listitem">
-Marlatt, G. A. (1996). Taxonomy of high-risk situations for alcohol relapse: Evolution and development of a. <em>Addiction</em>, <em>91</em>(12s1), 37–50. <a href="https://doi.org/10.1046/j.1360-0443.91.12s1.15.x">https://doi.org/10.1046/j.1360-0443.91.12s1.15.x</a>
 </div>
 <div id="ref-marlattRelapsePreventionMaintenance2005a" class="csl-entry" role="listitem">
 Marlatt, G. A., &amp; Donovan, D. M. (Eds.). (2005). <em>Relapse prevention: <span>Maintenance</span> strategies in the treatment of addictive behaviors, 2nd ed</em> (pp. xiv, 416). The Guilford Press.
 </div>
-<div id="ref-mayBarriersTreatmentAlcohol2019" class="csl-entry" role="listitem">
-May, C., Nielsen, A. S., &amp; Bilberg, R. (2019). Barriers to <span>Treatment</span> for <span>Alcohol Dependence</span>. <em>Journal of Drug and Alcohol Research</em>, <em>8</em>(236083). <a href="https://doi.org/10.4303/jdar/236083">https://doi.org/10.4303/jdar/236083</a>
-</div>
-<div id="ref-mckayStudiesFactorsRelapse1999a" class="csl-entry" role="listitem">
-McKay, J. R. (1999). Studies of factors in relapse to alcohol, drug and nicotine use: A critical review of methodologies and findings. <em>Journal of Studies on Alcohol</em>, <em>60</em>(4), 566–576. <a href="https://doi.org/10.15288/jsa.1999.60.566">https://doi.org/10.15288/jsa.1999.60.566</a>
-</div>
-<div id="ref-mckayConceptualMethodologicalAnalytical2006b" class="csl-entry" role="listitem">
-McKay, J. R., Franklin, T. R., Patapis, N., &amp; Lynch, K. G. (2006). Conceptual, methodological, and analytical issues in the study of relapse. <em>Clinical Psychology Review</em>, <em>26</em>(2), 109–127. <a href="https://doi.org/10.1016/j.cpr.2005.11.002">https://doi.org/10.1016/j.cpr.2005.11.002</a>
-</div>
-<div id="ref-millerWhatRelapseFifty1996" class="csl-entry" role="listitem">
-Miller, W. R. (1996). What is a relapse? <span>Fifty</span> ways to leave the wagon. <em>Addiction</em>, <em>91</em>(12s1), 15–28. <a href="https://doi.org/10.1046/j.1360-0443.91.12s1.6.x">https://doi.org/10.1046/j.1360-0443.91.12s1.6.x</a>
-</div>
 <div id="ref-mogkImplementationWorkflowStrategies2023" class="csl-entry" role="listitem">
 Mogk, J. M., Matson, T. E., Caldeiro, R. M., Garza Mcwethy, A. M., Beatty, T., Sevey, B. C., Hsu, C. W., &amp; Glass, J. E. (2023). Implementation and workflow strategies for integrating digital therapeutics for alcohol use disorders into primary care: <span>A</span> qualitative study. <em>Addiction Science &amp; Clinical Practice</em>, <em>18</em>(1). <a href="https://doi.org/10.1186/s13722-023-00387-w">https://doi.org/10.1186/s13722-023-00387-w</a>
-</div>
-<div id="ref-nationalinstituteonalcoholabuseandalcoholismAlcoholTreatmentUnited2023" class="csl-entry" role="listitem">
-National Institute on Alcohol Abuse and Alcoholism. (2023a). <em>Alcohol <span>Treatment</span> in the <span>United States</span> <span></span> <span>National Institute</span> on <span>Alcohol Abuse</span> and <span>Alcoholism</span> (<span>NIAAA</span>)</em>. https://www.niaaa.nih.gov/alcohols-effects-health/alcohol-topics/alcohol-facts-and-statistics/alcohol-treatment-united-states.
-</div>
-<div id="ref-nationalinstituteonalcoholabuseandalcoholismAlcoholUseDisorder2023" class="csl-entry" role="listitem">
-National Institute on Alcohol Abuse and Alcoholism. (2023b). <em>Alcohol <span>Use Disorder</span> (<span>AUD</span>) in the <span>United States</span>: <span>Age Groups</span> and <span>Demographic Characteristics</span> <span></span> <span>National Institute</span> on <span>Alcohol Abuse</span> and <span>Alcoholism</span> (<span>NIAAA</span>)</em>. https://www.niaaa.nih.gov/alcohols-effects-health/alcohol-topics/alcohol-facts-and-statistics/alcohol-use-disorder-aud-united-states-age-groups-and-demographic-characteristics.
-</div>
-<div id="ref-pennebakerDevelopmentPsychometricProperties2015a" class="csl-entry" role="listitem">
-Pennebaker, J. W., Boyd, R. L., Jordan, K., &amp; Blackburn, K. (2015). <em>The <span>Development</span> and <span>Psychometric Properties</span> of <span>LIWC2015</span></em>.
-</div>
-<div id="ref-philippeDigitalHealthInterventions2022" class="csl-entry" role="listitem">
-Philippe, T. J., Sikder, N., Jackson, A., Koblanski, M. E., Liow, E., Pilarinos, A., &amp; Vasarhelyi, K. (2022). Digital <span>Health Interventions</span> for <span>Delivery</span> of <span>Mental Health Care</span>: <span>Systematic</span> and <span>Comprehensive Meta-Review</span>. <em>JMIR Mental Health</em>, <em>9</em>(5), e35159. <a href="https://doi.org/10.2196/35159">https://doi.org/10.2196/35159</a>
 </div>
 <div id="ref-porras-segoviaSmartphonebasedEcologicalMomentary2020" class="csl-entry" role="listitem">
 Porras-Segovia, A., Molina-Madueño, R. M., Berrouiguet, S., López-Castroman, J., Barrigón, M. L., Pérez-Rodríguez, M. S., Marco, J. H., Díaz-Oliván, I., de León, S., Courtet, P., Artés-Rodríguez, A., &amp; Baca-García, E. (2020). Smartphone-based ecological momentary assessment (<span>EMA</span>) in psychiatric patients and student controls: <span>A</span> real-world feasibility study. <em>Journal of Affective Disorders</em>, <em>274</em>, 733–741. <a href="https://doi.org/10.1016/j.jad.2020.05.067">https://doi.org/10.1016/j.jad.2020.05.067</a>
 </div>
-<div id="ref-probstAlcoholUseDisorder2015" class="csl-entry" role="listitem">
-Probst, C., Manthey, J., Martinez, A., &amp; Rehm, J. (2015). Alcohol use disorder severity and reported reasons not to seek treatment: A cross-sectional study in <span>European</span> primary care practices. <em>Substance Abuse Treatment, Prevention, and Policy</em>, <em>10</em>(1), 32. <a href="https://doi.org/10.1186/s13011-015-0028-z">https://doi.org/10.1186/s13011-015-0028-z</a>
-</div>
-<div id="ref-sacks2010NationalState2015a" class="csl-entry" role="listitem">
-Sacks, J. J., Gonzales, K. R., Bouchery, E. E., Tomedi, L. E., &amp; Brewer, R. D. (2015). 2010 <span>National</span> and <span>State Costs</span> of <span>Excessive Alcohol Consumption</span>. <em>American Journal of Preventive Medicine</em>, <em>49</em>(5), e73–e79. <a href="https://doi.org/10.1016/j.amepre.2015.05.031">https://doi.org/10.1016/j.amepre.2015.05.031</a>
-</div>
-<div id="ref-schulerPerceivedBarriersTreatment2015" class="csl-entry" role="listitem">
-Schuler, M. S., Puttaiah, S., Mojtabai, R., &amp; Crum, R. M. (2015). Perceived <span>Barriers</span> to <span>Treatment</span> for <span>Alcohol Problems</span>: <span>A Latent Class Analysis</span>. <em>Psychiatric Services</em>, <em>66</em>(11), 1221–1228. <a href="https://doi.org/10.1176/appi.ps.201400160">https://doi.org/10.1176/appi.ps.201400160</a>
-</div>
 <div id="ref-scottPathwaysRelapseTreatment2005" class="csl-entry" role="listitem">
 Scott, C. K., Foss, M. A., &amp; Dennis, M. L. (2005). Pathways in the relapse–treatment–recovery cycle over 3 years. <em>Journal of Substance Abuse Treatment</em>, <em>28 Suppl 1</em>, S63–72. <a href="https://doi.org/10.1016/j.jsat.2004.09.006">https://doi.org/10.1016/j.jsat.2004.09.006</a>
-</div>
-<div id="ref-sedarousCultureStigmaInequities2023" class="csl-entry" role="listitem">
-Sedarous, M., &amp; Flemming, J. A. (2023). Culture, stigma, and inequities creating barriers in alcohol use disorder management in alcohol-associated liver disease. <em>Clinical Liver Disease</em>, <em>21</em>(5), 130. <a href="https://doi.org/10.1097/CLD.0000000000000026">https://doi.org/10.1097/CLD.0000000000000026</a>
-</div>
-<div id="ref-stoutPredictiveValidityMarlatt1996" class="csl-entry" role="listitem">
-Stout, R. L., Longabaugh, R., &amp; Rubin, A. (1996). Predictive validity of <span>Marlatt</span>’s relapse taxonomy versus a more general relapse code. <em>Addiction</em>, <em>91</em>(12s1), 99–110. <a href="https://doi.org/10.1046/j.1360-0443.91.12s1.20.x">https://doi.org/10.1046/j.1360-0443.91.12s1.20.x</a>
 </div>
 <div id="ref-vangenugtenExperiencedBurdenAdherence2020a" class="csl-entry" role="listitem">
 van Genugten, C. R., Schuurmans, J., Lamers, F., Riese, H., Penninx, B. W. J. H., Schoevers, R. A., Riper, H. M., &amp; Smit, J. H. (2020). Experienced <span>Burden</span> of and <span>Adherence</span> to <span>Smartphone-Based Ecological Momentary Assessment</span> in <span>Persons</span> with <span>Affective Disorders</span>. <em>Journal of Clinical Medicine</em>, <em>9</em>(2), 322. <a href="https://doi.org/10.3390/jcm9020322">https://doi.org/10.3390/jcm9020322</a>
 </div>
-<div id="ref-verissimoInfluenceGenderRace2017" class="csl-entry" role="listitem">
-Verissimo, A. D. O., &amp; Grella, C. E. (2017). Influence of gender and race/ethnicity on perceived barriers to help-seeking for alcohol or drug problems. <em>Journal of Substance Abuse Treatment</em>, <em>75</em>, 54–61. <a href="https://doi.org/10.1016/j.jsat.2016.12.013">https://doi.org/10.1016/j.jsat.2016.12.013</a>
-</div>
-<div id="ref-wallhedfinnAlcoholConsumptionDependence2014" class="csl-entry" role="listitem">
-Wallhed Finn, S., Bakshi, A.-S., &amp; Andréasson, S. (2014). Alcohol <span>Consumption</span>, <span>Dependence</span>, and <span>Treatment Barriers</span>: <span>Perceptions Among Nontreatment Seekers</span> with <span>Alcohol Dependence</span>. <em>Substance Use &amp; Misuse</em>, <em>49</em>(6), 762–769. <a href="https://doi.org/10.3109/10826084.2014.891616">https://doi.org/10.3109/10826084.2014.891616</a>
-</div>
-<div id="ref-williamsBarriersFacilitatorsAlcohol2018" class="csl-entry" role="listitem">
-Williams, E. C., Achtmeyer, C. E., Young, J. P., Berger, D., Curran, G., Bradley, K. A., Richards, J., Siegel, M. B., Ludman, E. J., Lapham, G. T., Forehand, M., &amp; Harris, A. H. S. (2018). Barriers to and <span>Facilitators</span> of <span>Alcohol Use Disorder Pharmacotherapy</span> in <span>Primary Care</span>: <span>A Qualitative Study</span> in <span>Five VA Clinics</span>. <em>Journal of General Internal Medicine</em>, <em>33</em>(3), 258–267. <a href="https://doi.org/10.1007/s11606-017-4202-z">https://doi.org/10.1007/s11606-017-4202-z</a>
-</div>
 <div id="ref-witkiewitzRelapsePreventionAlcohol2004b" class="csl-entry" role="listitem">
 Witkiewitz, K., &amp; Marlatt, G. A. (2004). Relapse prevention for alcohol and drug problems: That was <span>Zen</span>, this is <span>Tao</span>. <em>The American Psychologist</em>, <em>59</em>(4), 224–235. <a href="https://doi.org/10.1037/0003-066X.59.4.224">https://doi.org/10.1037/0003-066X.59.4.224</a>
-</div>
-<div id="ref-witkiewitzModelingComplexityPosttreatment2007a" class="csl-entry" role="listitem">
-Witkiewitz, K., &amp; Marlatt, G. A. (2007). Modeling the complexity of post-treatment drinking: <span>It</span>’s a rocky road to relapse. <em>Clinical Psychology Review</em>, <em>27</em>(6), 724–738. <a href="https://doi.org/10.1016/j.cpr.2007.01.002">https://doi.org/10.1016/j.cpr.2007.01.002</a>
 </div>
 <div id="ref-wyantAcceptabilityPersonalSensing2023a" class="csl-entry" role="listitem">
 Wyant, K., Moshontz, H., Ward, S. B., Fronk, G. E., &amp; Curtin, J. J. (2023). Acceptability of <span>Personal Sensing Among People With Alcohol Use Disorder</span>: <span>Observational Study</span>. <em>JMIR mHealth and uHealth</em>, <em>11</em>, e41833. <a href="https://doi.org/10.2196/41833">https://doi.org/10.2196/41833</a>
 </div>
 <div id="ref-wyantMachineLearningModels2024" class="csl-entry" role="listitem">
 Wyant, K., Sant’Ana, S. J., Fronk, G. E., &amp; Curtin, J. J. (2024). Machine learning models for temporally precise lapse prediction in alcohol use disorder. <em>Journal of Psychopathology and Clinical Science</em>, <em>133</em>(7), 527–540. <a href="https://doi.org/10.1037/abn0000901">https://doi.org/10.1037/abn0000901</a>
-</div>
-<div id="ref-youngDifferencesPerceptionsPractices2018" class="csl-entry" role="listitem">
-Young, J. P., Achtmeyer, C. E., Bensley, K. M., Hawkins, E. J., &amp; Williams, E. C. (2018). Differences in <span>Perceptions</span> of and <span>Practices Regarding Treatment</span> of <span>Alcohol Use Disorders Among VA Primary Care Providers</span> in <span>Urban</span> and <span>Rural Clinics</span>. <em>The Journal of Rural Health</em>, <em>34</em>(4), 359–368. <a href="https://doi.org/10.1111/jrh.12293">https://doi.org/10.1111/jrh.12293</a>
 </div>
 </div></section></div></main>
 <!-- /main column -->
@@ -2348,38 +781,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom"});
-(function() {
-  let previousOnload = window.onload;
-  window.onload = () => {
-    if (previousOnload) {
-      previousOnload();
-    }
-    lightboxQuarto.on('slide_before_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      const href = trigger.getAttribute('href');
-      if (href !== null) {
-        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-        if (imgEl !== null) {
-          const srcAttr = imgEl.getAttribute("src");
-          if (srcAttr && srcAttr.startsWith("data:")) {
-            slideConfig.href = srcAttr;
-          }
-        }
-      } 
-    });
-  
-    lightboxQuarto.on('slide_after_load', (data) => {
-      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(slideNode);
-      }
-    });
-  
-  };
-  
-})();
-          </script>
 
 
 
