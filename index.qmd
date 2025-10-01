@@ -1,6 +1,13 @@
 ---
-title: Title
+title: Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder
 author:
+  - name: Kendra Wyant
+    email: kpaquette2@wisc.edu
+    orcid: 0000-0002-0767-7589
+    corresponding: false
+    #roles: []
+    affiliations:
+    - Department of Psychology, University of Wisconsin-Madison
   - name: Coco Yu
     email: jyu274@wisc.edu
     orcid: 0000-0002-7731-0563
@@ -20,8 +27,8 @@ author:
     - Department of Psychology, University of Wisconsin-Madison
 keywords:
   - Substance use disorders
-  - Text sensing
   - Machine learning
+  - Cellular Sensing
 abstract: |
 
 #plain-language-summary: |
@@ -47,6 +54,19 @@ Target Journal: Addiction short report - 2,000 words and 15 references
 Backup Journal: JMIR Formative Research-->
 
 # Introduction
+
+One of the biggest challenges in Alcohol Use Disorders (AUD) treatment stems from the chronic relapsing nature of this disease [@scottPathwaysRelapseTreatment2005]. People can relapse days, weeks, and even years after obtaining the goal of abstinence. At least 60% of AUD patients relapse to heavy drinking within 6 months following treatment [@nguyenPredictingRelapseAlcohol2020a; @witkiewitzPredictorsHeavyDrinking2011a; @kirshenbaumQuantitativeReviewUbiquitous2009].
+At most 50% of people with an AUD achieve remission after several years [@fleuryRemissionSubstanceUse2016; @heymanQuittingDrugsQuantitative2013].
+
+Identifying initial lapses in early recovery is critical. Lapses -- single episodes of alcohol use -- are easy to define, have a clear onset, and are also clinically meaningful. They serve as an early warning sign of returning back to previous drinking behavior inconsistent with desired goals [@witkiewitzRelapsePreventionAlcohol2004b; @chungRelapseAlcoholOther2006a; @marlattRelapsePreventionMaintenance2005a]. Lapse predicts future lapses, with more frequent ones resulting in increased risks of relapse [@hogstrombrandtPredictionSingleEpisodes1999a; @witkiewitzRelapsePreventionAlcohol2004b].
+
+Current predictions of alcohol lapses rely heavily on self reports, which can be burdensome to measure in long run. Machine learning models leveraging ecological momentary assessment (EMA) measures have performed relatively well to predict goal-inconsistent alcohol use [@wyantMachineLearningModels2024]. The surveys were collected up to four times daily for three months. However, constantly completing surveys makes it burdensome for AUD patients. Although most EMA relevant mental health research demonstrated modest compliance rates, their time windows last from two weeks to three months [@porras-segoviaSmartphonebasedEcologicalMomentary2020; @czyzEcologicalAssessmentDaily2018; @vangenugtenExperiencedBurdenAdherence2020a; @mackesy-amitiFeasibilityEcologicalMomentary2018; @hungSmartphonebasedEcologicalMomentary2016]. The study length is insufficient because AUD is a chronic disease that requires constant risk monitoring. As extended period of time is anticipated, users' perceived burden of answering surveys is presumably larger [@mogkImplementationWorkflowStrategies2023]. Although minimizing the number of items in the surveys and the frequency of prompting users to complete the surveys might help mitigate the associated burden, it can inevitably reduce the prediction precision and temporal precision of predictions.
+
+Passive cellular communication sensing represents new opportunities due to its feasibility, relatively low burden on individuals and continuous data collection. In a smartphone-based sensing platform the primary expense on the individual is the smartphone. Smartphone usage is already widespread. Eighty-five percent of US adults have a smartphone and this number is consistent across all sociodemographic groups, including those in recovery programs for substance use [@massonHealthrelatedInternetUse2019a; @pewresearchcenterMobileFactSheet2021a]. Studies collecting passive data have demonstrated high acceptability from participants and higher compliance rates compared to active measures [@wyantAcceptabilityPersonalSensing2023a; @beukenhorstUsingSmartphonesReduce2022a]. Further, risk monitoring using cellular sensing is temporally sensitive to fluctuating risks. Analyzing communication patterns can detect potential triggers in time without actively prompting users to reflect on their feelings at the moment or report their environment.
+
+Cellular communications, with minimal contextual information, is embedded with potentially rich information that align with relapse antecedents. For example, social interactions can have important influences on drinking behavior [@hunter-reelEmphasizingInterpersonalFactors2009a; @alvarezSocialNetworkHeavy2021a]. We may be able to capture immediate risk based on who someone is calling or what time of day it is. Decreased interactions may signify isolation common with depressive symptoms, reaching out to people in one’s social network could signify a positive coping strategy, or changes in patterns between a single person in one’s social network could indicate conflict [@millerHowEffectiveAlcoholism2001a; @huffordRelapseNonlinearDynamic2003a; @chihPredictiveModelingAddiction2014a].
+
+This study aims at building machine learning models from cellular communications that identify *who* are at heightened risk for alcohol lapses, *when* they will lapse, and *why* they are at increased risk.
 
 # Methods
 
