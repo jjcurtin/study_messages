@@ -49,9 +49,7 @@ editor_options:
 ---
 
 <!--
-Target Journal: Addiction short report - 2,000 words and 15 references
-
-Backup Journal: JMIR Formative Research-->
+Target Journal: JMIR Formative Research (1500 words)-->
 
 # Introduction
 
@@ -70,25 +68,68 @@ This study aims at building machine learning models from cellular communications
 
 # Methods
 
-## Overview
-This study analyzed data collected from 2017-2019 from a larger grant funded by National Institute of Alcohol Abuse and Alcoholism (R01 AA024391). In this paper, we focus on methods and measures that are relevant to this study. Additional details on broader methods and the full set of measures collected are described elsewhere (see https://osf.io/w5h9y/ and [@wyantMachineLearningModels2024; @wyantAcceptabilityPersonalSensing2023a]).
+## Transparency and Openness
+
+We adhere to research transparency principles that are crucial for robust and replicable science. We reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a transparency report in the supplement [@aczelConsensusbasedTransparencyChecklist2019]. Our data, questionnaires, and other study materials are publicly available on our OSF page ([https://osf.io/wgpz9/](https://osf.io/wgpz9/)). Our annotated analysis scripts and results are publicly available on our study website ([https://jjcurtin.github.io/study_messages/](https://jjcurtin.github.io/study_messages/)).
+
 
 ## Participants
 
-Individuals in early recovery from AUD were recruited from Madison and surrounding area via social media platforms (e.g., Facebook), referrals from clinics, and television and radio advertisements. After initial phone screen, interested individuals came in-person to complete a more in-depth screening to determine their eligibility. We documented their demographic information. Inclusion criteria include that participants: 1) must be at least aged 18 or older; 2) must meet criteria for AUD with at least moderate severity (\>four DSM-5 criteria); 3) must be abstinent from alcohol for at least one week and fewer than two months at time of intake; 4) must be able to read and write in English; 5) must be willing to use smartphone and their smartphone is compatible with our study technology. Participants were excluded if they have a lifetime history of severe and persistent mental illness. One hundred sixty-nine participants were eligible and enrolled in the study. After excluding participants who discontinued before the first follow-up session and those with low compliance rates and too few communications (\<100 messages), we have a final sample size of 150 participants.
+We recruited 192 participants in early recovery from AUD in Madison, Wisconsin, USA via print and targeted digital advertisements and partnerships with treatment centers. This sample size was determined based on traditional power analysis methods for logistic regression [@hsiehSampleSizeTables1989]. We required that participants:   
 
-## Procedures
+1.  were age 18 or older,
+2.  could write and read in English,
+3.  had at least moderate AUD (\>= 4 self-reported DSM-5 symptoms), 
+4.  were abstinent from alcohol for 1-8 weeks, and 
+5.  were willing to use a single smartphone (personal or study provided) while on study.
+6.  were not exhibiting severe symptoms of psychosis or paranoia.^[Defined as scores >2.2 or 2.8, respectively, on the psychosis or paranoia scales of the Symptom Checklist–90 [@derogatislBriefSymptomInventory]]
 
-The study lasted up to three months with five in-person visits. Participants completed an in-person screening visit to determine their eligibility, obtain their informed consent, and collect their demographic information and self-report measures. They then completed an intake session one week later and three follow-up visits afterwards spaced at one-month intervals. During each of the follow-up visits, a research assistant downloaded participants' SMS messages from their phone, verified reports of lapses and queried participants about any additional unreported laspes. Additional self-reported measures were obtained (see https://osf.io/w5h9y/).
+One hundred sixty-nine participants were eligible and enrolled in the study. Fifteen participants discontinued before the first monthly follow-up visit. We excluded data from one participant who did not maintain a goal of abstinence during their participation. We also excluded data from two participants due to evidence of careless responding and unusually low compliance. Our final sample consisted of 151 participants. <!--check other exclusions-->
 
-Throughout the course of the study, participants were expected to complete four daily EMAs that asked about their alcohol cravings, risky situations, stressful/pleasant events, etc [@wyantMachineLearningModels2024]. Notably, in the first item in the EMA survey, participants also reported their past alcohol use. Answer to this item will be used as the predicted outcome.
+
+## Procedure
+
+All procedures were approved by the University of Wisconsin-Madison Institutional Review Board (Study #2015-0780). Participants completed 5 study visits over approximately 3 months. Participants attended an in-person screening visit where we determined eligibility, obtained informed consent, and administered a battery of self-report measures. Eligible, consented participants returned approximately 1 week later for an intake visit. Three additional follow-up visits occurred about every 30 days that participants remained on study. At each follow-up visit, we downloaded participants' voice call and SMS text message logs from their smartphone devices, collected contextual self-report information about important contacts, and administered additional self-report measures. 
+
+Participants were expected to complete 4 brief (7-10 questions) daily ecological momentary assessments (EMA) for the duration of their enrollment. The first item on each EMA asked participants to report dates and times of any recent alcohol use. At follow-up visits, we verified lapse reports and queried participants about additional unreported laspes using a timeline followback measure. Additional sensing data streams (geolocation, sleep quality, and audio check-ins) were collected as part of the parent grant's aims (R01 AA024391). 
+
+
+## Measures
+<!--Be sure to include all baseline feature surveys-->
+
+## Cellular Communication Logs
+
+
+## Context 
+Participants were asked <!--X--> contextual questions about important contacts (people whom the partcipant communicated with at least twice by voice call or SMS text message in a one month period). 
+
+
+## Data Analysis Plan
+<!--where to mention data was filtered down to important contacts-->
+
+### Model Configurations
+
+### Feature Engineering
+
+<!--create table of all features and which models they were in-->
+
+### Model Evaluation
+
+
+### Model Comparison
+
+
+### Feature Importance
+
+
 
 # Results
 
-## Full Model
+## Participants
 
+<!--characterization and brief summary stats on communications-->
 
-## Baseline Model
+## Model Evaluation
 
 ## Model Comparison
 
@@ -96,6 +137,10 @@ Throughout the course of the study, participants were expected to complete four 
 ## Feature Importance
 
 {{< embed notebooks/mak_figures.qmd#fig-1 >}} 
+
+
+
+
 
 # Discussion
 
