@@ -190,7 +190,7 @@ Sensing},
 \title{Using Cellular Communication Sensing to Support Early Recovery
 from Alcohol Use Disorder}
 \author{Kendra Wyant \and Coco Yu \and John J. Curtin}
-\date{2025-10-01}
+\date{2025-10-02}
 
 \begin{document}
 \maketitle
@@ -269,65 +269,78 @@ increased risk.
 
 \section{Methods}\label{methods}
 
-\subsection{Overview}\label{overview}
+\subsection{Participants and
+Procedure}\label{participants-and-procedure}
 
-This study analyzed data collected from 2017-2019 from a larger grant
-funded by National Institute of Alcohol Abuse and Alcoholism (R01
-AA024391). In this paper, we focus on methods and measures that are
-relevant to this study. Additional details on broader methods and the
-full set of measures collected are described elsewhere (see
-https://osf.io/w5h9y/ and (Wyant et al., 2023; Wyant et al., 2024)).
+We recruited adults in early recovery from AUD in Madison, Wisconsin,
+via print and digital advertisements and treatment center partnerships.
+We required participants: were age 18 or older, could write and read in
+English, had moderate to severe AUD \footnote{(\textgreater= 4
+  self-reported DSM-5 symptoms)}, were abstinent from alcohol for 1-8
+weeks, were willing to use a single smartphone, and were not exhibiting
+severe symptoms of psychosis or paranoia.\footnote{Defined as scores
+  \textgreater2.2 or 2.8, respectively, on the psychosis or paranoia
+  scales of the Symptom Checklist--90 (Derogatis, L.R., 2000)}
 
-\subsection{Participants}\label{participants}
+Participants completed up to 5 study visits over approximately 3 months:
+a screening visit, intake visit, and 3 monthly follow-up visits. At
+screening we collected self-report information about demographics (age,
+sex at birth, race, ethnicity, education, marital status, employment,
+and income) and clinical characteristics (DSM-5 AUD symptom count,
+alcohol problems (Hurlbut \& Sher, 1992), and presence of psychological
+symptoms (Derogatis, L.R., 2000)). At intake we collected self-report
+information about abstinence self-efficacy (McKIERNAN et al., 2011),
+craving (Flannery et al., 1999), and recent alcohol recovery efforts. At
+each monthly follow-up visit, we downloaded participants' voice call and
+SMS text message metadata logs from their smartphone devices.
+Participants were asked 7 contextual questions about important contacts
+(i.e., people whom the partcipant communicated with at least twice by
+voice call or SMS text message in a one month period). While enrolled,
+participants were expected to complete 4 brief (7-10 questions) daily
+ecological momentary assessments (EMA). The first item asked
+participants to report dates and times of any recent alcohol use. We
+verified lapse reports at follow-up visits with a timeline follow-back
+interview. Additional sensing data streams and self-report measures were
+collected as part of the parent grant's aims (R01 AA024391). Our study
+materials are publicly available (\url{https://osf.io/wgpz9/}).
 
-Individuals in early recovery from AUD were recruited from Madison and
-surrounding area via social media platforms (e.g., Facebook), referrals
-from clinics, and television and radio advertisements. After initial
-phone screen, interested individuals came in-person to complete a more
-in-depth screening to determine their eligibility. We documented their
-demographic information. Inclusion criteria include that participants:
-1) must be at least aged 18 or older; 2) must meet criteria for AUD with
-at least moderate severity (\textgreater four DSM-5 criteria); 3) must
-be abstinent from alcohol for at least one week and fewer than two
-months at time of intake; 4) must be able to read and write in English;
-5) must be willing to use smartphone and their smartphone is compatible
-with our study technology. Participants were excluded if they have a
-lifetime history of severe and persistent mental illness. One hundred
-sixty-nine participants were eligible and enrolled in the study. After
-excluding participants who discontinued before the first follow-up
-session and those with low compliance rates and too few communications
-(\textless100 messages), we have a final sample size of 150
-participants.
+We screened 192 participants. Of these, 169 enrolled and 154 completed
+the first follow-up visit. We excluded data from 3 participants for no
+longer having a goal of abstinence, evidence of careless responding, and
+unusually low compliance. Our final sample included 151 participants.
 
-\subsection{Procedures}\label{procedures}
+\subsection{Data Analysis Plan}\label{data-analysis-plan}
 
-The study lasted up to three months with five in-person visits.
-Participants completed an in-person screening visit to determine their
-eligibility, obtain their informed consent, and collect their
-demographic information and self-report measures. They then completed an
-intake session one week later and three follow-up visits afterwards
-spaced at one-month intervals. During each of the follow-up visits, a
-research assistant downloaded participants' SMS messages from their
-phone, verified reports of lapses and queried participants about any
-additional unreported laspes. Additional self-reported measures were
-obtained (see https://osf.io/w5h9y/).
+\begin{itemize}
+\item
+  Our annotated analysis scripts and results are publicly available on
+  our study website (\url{https://jjcurtin.github.io/study_messages/}).
+\item
+  data was filtered down to important contacts (i.e., communications we
+  had contextual information about.)
+\item
+  Feature Engineering
+\item
+  Model Configurations
+\end{itemize}
 
-Throughout the course of the study, participants were expected to
-complete four daily EMAs that asked about their alcohol cravings, risky
-situations, stressful/pleasant events, etc (Wyant et al., 2024).
-Notably, in the first item in the EMA survey, participants also reported
-their past alcohol use. Answer to this item will be used as the
-predicted outcome.
+\begin{itemize}
+\tightlist
+\item
+  Model Evaluation (including Comparison, and Feature Importance)
+\end{itemize}
+
+\subsection{Ethical Considerations}\label{ethical-considerations}
+
+All procedures were approved by the University of Wisconsin-Madison
+Institutional Review Board (Study \#2015-0780). All participants
+provided written informed consent.
 
 \section{Results}\label{results}
 
-\subsection{Full Model}\label{full-model}
+\subsection{Participants}\label{participants}
 
-\subsection{Baseline Model}\label{baseline-model}
-
-\subsection{Model Comparison}\label{model-comparison}
-
-\subsection{Feature Importance}\label{feature-importance}
+\subsection{Model Evaluation}\label{model-evaluation}
 
 \begin{figure}[H]
 
@@ -397,6 +410,16 @@ after psychiatric hospitalization: {Lessons} about feasibility and
 acceptability. \emph{Psychiatry Research}, \emph{267}, 566--574.
 \url{https://doi.org/10.1016/j.psychres.2018.06.031}
 
+\bibitem[\citeproctext]{ref-derogatislBriefSymptomInventory}
+Derogatis, L.R. (2000). \emph{Brief {Symptom Inventory} 18 -
+{Administration}, scoring, and procedures manual}. NCS Pearson.
+
+\bibitem[\citeproctext]{ref-flanneryPsychometricPropertiesPenn1999}
+Flannery, B. A., Volpicelli, J. R., \& Pettinati, H. M. (1999).
+\href{https://www.ncbi.nlm.nih.gov/pubmed/10470970}{Psychometric
+properties of the {Penn Alcohol Craving Scale}}. \emph{Alcoholism,
+Clinical and Experimental Research}, \emph{23}(8), 1289--1295.
+
 \bibitem[\citeproctext]{ref-fleuryRemissionSubstanceUse2016}
 Fleury, M.-J., Djouini, A., Huỳnh, C., Tremblay, J., Ferland, F.,
 Ménard, J.-M., \& Belleville, G. (2016). Remission from substance use
@@ -437,6 +460,11 @@ interpersonal factors: {An} extension of the {Witkiewitz} and {Marlatt}
 relapse model. \emph{Addiction (Abingdon, England)}, \emph{104}(8),
 1281--1290. \url{https://doi.org/10.1111/j.1360-0443.2009.02611.x}
 
+\bibitem[\citeproctext]{ref-hurlbutAssessingAlcoholProblems1992}
+Hurlbut, S. C., \& Sher, K. J. (1992). Assessing alcohol problems in
+college students. \emph{Journal of American College Health.},
+\emph{41}(2), 49--58.
+
 \bibitem[\citeproctext]{ref-kirshenbaumQuantitativeReviewUbiquitous2009}
 Kirshenbaum, A. P., Olsen, D. M., \& Bickel, W. K. (2009). A
 quantitative review of the ubiquitous relapse curve. \emph{Journal of
@@ -459,6 +487,13 @@ Masson, C. L., Chen, I. Q., Levine, J. A., Shopshire, M. S., \&
 Sorensen, J. L. (2019). Health-related internet use among opioid
 treatment patients. \emph{Addictive Behaviors Reports}, \emph{9},
 100157. \url{https://doi.org/10.1016/j.abrep.2018.100157}
+
+\bibitem[\citeproctext]{ref-mckiernanDevelopmentBriefAbstinence2011}
+McKIERNAN, P., CLOUD, R., PATTERSON, D. A., WOLF (ADELV UNEGV WAYA), S.,
+GOLDER, S., \& BESEL, K. (2011). Development of a {Brief Abstinence
+Self-Efficacy Measure}. \emph{Journal of Social Work Practice in the
+Addictions}, \emph{11}(3), 245--253.
+\url{https://doi.org/10.1080/1533256X.2011.593445}
 
 \bibitem[\citeproctext]{ref-millerHowEffectiveAlcoholism2001a}
 Miller, W. R., Walters, S. T., \& Bennett, M. E. (2001). How effective
@@ -496,7 +531,7 @@ relapse--treatment--recovery cycle over 3 years. \emph{Journal of
 Substance Abuse Treatment}, \emph{28 Suppl 1}, S63--72.
 \url{https://doi.org/10.1016/j.jsat.2004.09.006}
 
-\bibitem[\citeproctext]{ref-vangenugtenExperiencedBurdenAdherence2020a}
+\bibitem[\citeproctext]{ref-vangenugtenExperiencedBurdenAdherence2020}
 van Genugten, C. R., Schuurmans, J., Lamers, F., Riese, H., Penninx, B.
 W. J. H., Schoevers, R. A., Riper, H. M., \& Smit, J. H. (2020).
 Experienced {Burden} of and {Adherence} to {Smartphone-Based Ecological
@@ -510,7 +545,7 @@ Witkiewitz, K. (2011). Predictors of {Heavy Drinking During} and
 of the Society of Psychologists in Addictive Behaviors}, \emph{25}(3),
 426--438. \url{https://doi.org/10.1037/a0022889}
 
-\bibitem[\citeproctext]{ref-witkiewitzRelapsePreventionAlcohol2004b}
+\bibitem[\citeproctext]{ref-witkiewitzRelapsePreventionAlcohol2004a}
 Witkiewitz, K., \& Marlatt, G. A. (2004). Relapse prevention for alcohol
 and drug problems: That was {Zen}, this is {Tao}. \emph{The American
 Psychologist}, \emph{59}(4), 224--235.
