@@ -269,110 +269,80 @@ increased risk.
 
 \section{Methods}\label{methods}
 
-\subsection{Transparency and Openness}\label{transparency-and-openness}
+\subsection{Participants and
+Procedure}\label{participants-and-procedure}
 
-We adhere to research transparency principles that are crucial for
-robust and replicable science. We reported how we determined the sample
-size, all data exclusions, all manipulations, and all study measures. We
-provide a transparency report in the supplement (Aczel et al., 2019).
-Our data, questionnaires, and other study materials are publicly
-available on our OSF page (\url{https://osf.io/wgpz9/}). Our annotated
-analysis scripts and results are publicly available on our study website
-(\url{https://jjcurtin.github.io/study_messages/}).
+We recruited adults in early recovery from AUD in Madison, Wisconsin,
+via print and digital advertisements and treatment center partnerships.
+We required participants: were age 18 or older, could write and read in
+English, had moderate to severe AUD \footnote{(\textgreater= 4
+  self-reported DSM-5 symptoms)}, were abstinent from alcohol for 1-8
+weeks, were willing to use a single smartphone, and were not exhibiting
+severe symptoms of psychosis or paranoia.\footnote{Defined as scores
+  \textgreater2.2 or 2.8, respectively, on the psychosis or paranoia
+  scales of the Symptom Checklist--90 (Derogatis, L.R., 2000)}
 
-\subsection{Participants}\label{participants}
+Participants completed up to 5 study visits over approximately 3 months:
+a screening visit, intake visit, and 3 monthly follow-up visits. At
+screening we collected self-report information about demographics (age,
+sex at birth, race, ethnicity, education, marital status, employment,
+and income) and clinical characteristics (DSM-5 AUD symptom count,
+alcohol problems (\textbf{hurlbutAssessingAlcoholProblems1992?}), and
+presence of psychological symptoms (Derogatis, L.R., 2000)). At intake
+we collected self-report information about abstinence self-efficacy
+(\textbf{mckiernanDevelopmentBriefAbstinence2011?}), craving
+(\textbf{flanneryPsychometricPropertiesPenn1999?}), and recent alcohol
+recovery efforts. At each monthly follow-up visit, we downloaded
+participants' voice call and SMS text message metadata logs from their
+smartphone devices. Participants were asked 7 contextual questions about
+important contacts (i.e., people whom the partcipant communicated with
+at least twice by voice call or SMS text message in a one month period).
+While enrolled, participants were expected to complete 4 brief (7-10
+questions) daily ecological momentary assessments (EMA). The first item
+asked participants to report dates and times of any recent alcohol use.
+We verified lapse reports at follow-up visits with a timeline
+follow-back interview. Additional sensing data streams and self-report
+measures were collected as part of the parent grant's aims (R01
+AA024391). Our study materials are publicly available
+(\url{https://osf.io/wgpz9/}).
 
-We recruited 192 participants in early recovery from AUD in Madison,
-Wisconsin, USA via print and targeted digital advertisements and
-partnerships with treatment centers. This sample size was determined
-based on traditional power analysis methods for logistic regression
-(Hsieh, 1989). We required that participants:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  were age 18 or older,
-\item
-  could write and read in English,
-\item
-  had at least moderate AUD (\textgreater= 4 self-reported DSM-5
-  symptoms),
-\item
-  were abstinent from alcohol for 1-8 weeks, and
-\item
-  were willing to use a single smartphone (personal or study provided)
-  while on study.
-\item
-  were not exhibiting severe symptoms of psychosis or
-  paranoia.\footnote{Defined as scores \textgreater2.2 or 2.8,
-    respectively, on the psychosis or paranoia scales of the Symptom
-    Checklist--90 (Derogatis, L.R., 2000)}
-\end{enumerate}
-
-One hundred sixty-nine participants were eligible and enrolled in the
-study. Fifteen participants discontinued before the first monthly
-follow-up visit. We excluded data from one participant who did not
-maintain a goal of abstinence during their participation. We also
-excluded data from two participants due to evidence of careless
-responding and unusually low compliance. Our final sample consisted of
-151 participants.
-
-\subsection{Procedure}\label{procedure}
-
-All procedures were approved by the University of Wisconsin-Madison
-Institutional Review Board (Study \#2015-0780). Participants completed 5
-study visits over approximately 3 months. Participants attended an
-in-person screening visit where we determined eligibility, obtained
-informed consent, and administered a battery of self-report measures.
-Eligible, consented participants returned approximately 1 week later for
-an intake visit. Three additional follow-up visits occurred about every
-30 days that participants remained on study. At each follow-up visit, we
-downloaded participants' voice call and SMS text message logs from their
-smartphone devices, collected contextual self-report information about
-important contacts, and administered additional self-report measures.
-
-Participants were expected to complete 4 brief (7-10 questions) daily
-ecological momentary assessments (EMA) for the duration of their
-enrollment. The first item on each EMA asked participants to report
-dates and times of any recent alcohol use. At follow-up visits, we
-verified lapse reports and queried participants about additional
-unreported laspes using a timeline followback measure. Additional
-sensing data streams (geolocation, sleep quality, and audio check-ins)
-were collected as part of the parent grant's aims (R01 AA024391).
-
-\subsection{Measures}\label{measures}
-
-\subsection{Cellular Communication
-Logs}\label{cellular-communication-logs}
-
-\subsection{Context}\label{context}
-
-Participants were asked contextual questions about important contacts
-(people whom the partcipant communicated with at least twice by voice
-call or SMS text message in a one month period).
+We screened 192 participants. Of these, 169 enrolled and 154 completed
+the first follow-up visit. We excluded data from 3 participants for no
+longer having a goal of abstinence, evidence of careless responding, and
+unusually low compliance. Our final sample included 151 participants.
 
 \subsection{Data Analysis Plan}\label{data-analysis-plan}
 
-\subsubsection{Model Configurations}\label{model-configurations}
+\begin{itemize}
+\item
+  Our annotated analysis scripts and results are publicly available on
+  our study website (\url{https://jjcurtin.github.io/study_messages/}).
+\item
+  data was filtered down to important contacts (i.e., communications we
+  had contextual information about.)
+\item
+  Feature Engineering
+\item
+  Model Configurations
+\end{itemize}
 
-\subsubsection{Feature Engineering}\label{feature-engineering}
+\begin{itemize}
+\tightlist
+\item
+  Model Evaluation (including Comparison, and Feature Importance)
+\end{itemize}
 
-\subsubsection{Model Evaluation}\label{model-evaluation}
+\subsection{Ethical Considerations}\label{ethical-considerations}
 
-\subsubsection{Model Comparison}\label{model-comparison}
-
-\subsubsection{Feature Importance}\label{feature-importance}
+All procedures were approved by the University of Wisconsin-Madison
+Institutional Review Board (Study \#2015-0780). All participants
+provided written informed consent.
 
 \section{Results}\label{results}
 
-\subsection{Participants}\label{participants-1}
+\subsection{Participants}\label{participants}
 
-\subsection{Model Evaluation}\label{model-evaluation-1}
-
-\subsection{Model Comparison}\label{model-comparison-1}
-
-\subsection{Feature Importance}\label{feature-importance-1}
+\subsection{Model Evaluation}\label{model-evaluation}
 
 \begin{figure}[H]
 
@@ -403,15 +373,6 @@ All Figures for Main Manuscript}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\bibitem[\citeproctext]{ref-aczelConsensusbasedTransparencyChecklist2019}
-Aczel, B., Szaszi, B., Sarafoglou, A., Kekecs, Z., Kucharský, Š.,
-Benjamin, D., Chambers, C. D., Fisher, A., Gelman, A., Gernsbacher, M.
-A., Ioannidis, J. P., Johnson, E., Jonas, K., Kousta, S., Lilienfeld, S.
-O., Lindsay, D. S., Morey, C. C., Monafò, M., Newell, B. R., \ldots{}
-Wagenmakers, E.-J. (2019). A consensus-based transparency checklist.
-\emph{Nature Human Behaviour}, 1--3.
-\url{https://doi.org/10.1038/s41562-019-0772-6}
-
 \bibitem[\citeproctext]{ref-alvarezSocialNetworkHeavy2021a}
 Alvarez, M. J., Richards, D. K., Oviedo Ramirez, S., \& Field, C. A.
 (2021). Social network heavy drinking moderates the effects of a brief
@@ -474,10 +435,6 @@ Högström Brandt, A. M., Thorburn, D., Hiltunen, A. J., \& Borg, S.
 of alcohol-dependent patients. \emph{Alcohol (Fayetteville, N.Y.)},
 \emph{18}(1), 35--42.
 \url{https://doi.org/10.1016/s0741-8329(98)00065-2}
-
-\bibitem[\citeproctext]{ref-hsiehSampleSizeTables1989}
-Hsieh, F. (1989). Sample size tables for logistic regression.
-\emph{Statistics in Medicine}, \emph{8}, 795--802.
 
 \bibitem[\citeproctext]{ref-huffordRelapseNonlinearDynamic2003a}
 Hufford, M. R., Witkiewitz, K., Shields, A. L., Kodya, S., \& Caruso, J.
