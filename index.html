@@ -322,14 +322,286 @@ Goal word counts:
 </section>
 <section id="data-analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-plan">Data Analysis Plan</h2>
-<p>Our models predicted probability of a lapse (i.e., alcohol use) in a 24-hour prediction window. Predictions were made at 4 am each day for up to 3 months. This produced a total of 11,507 labeled prediction timepoints across all participants. Features were engineered using all available data up until the prediction timepoint<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. <strong>?@tbl-1</strong> presents the raw predictors and engineered features included in each model. The full model uses all available features derived from baseline self-report measures (24 features) and cellular communication data (406 features). The baseline model uses only features collected via self-report at baseline.</p>
+<p>Our models predicted probability of a lapse (i.e., alcohol use) in a 24-hour prediction window. Predictions were made at 4 am each day for up to 3 months. This produced a total of 11,507 labeled prediction timepoints across all participants. Features were engineered using all available data up until the prediction timepoint<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. <a href="#tbl-1" class="quarto-xref">Table&nbsp;1</a> presents the raw predictors and engineered features included in each model. The full model uses all available features derived from baseline self-report measures (24 features) and cellular communication data (406 features). The baseline model uses only features collected via self-report at baseline.</p>
 <p>Candidate model configurations differed by statistical algorithm (elastic net, random forest, XGBoost), outcome resampling method, and hyperparemter values. The best model configuration for the full model and baseline model were selected and evaluated using 6 repeats of participant-grouped 5-fold cross-validation. Folds were stratified on a between-subject measure of our outcome (low lapsers/0-9 lapses vs.&nbsp;and high lapsers/10+ lapses).</p>
 <p>We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) from the 30 held-out test sets for our two best models. We used weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> We set two random intercepts to account for our resampling method: one for the repeat, and another for the fold nested within repeat. auROCs were transformed using the logit function and regressed as a function of model to determine the probability that the models’ performances differed systematically from each other.</p>
 <ul>
 <li>Feature Importance</li>
 </ul>
 <p>Our annotated analysis scripts are publicly available on our study website (<a href="https://jjcurtin.github.io/study_messages/">https://jjcurtin.github.io/study_messages/</a>).</p>
-<!--Table 1: create table of all features and which models they were in-->
+<div class="quarto-embed-nb-cell">
+<div class="cell">
+<div id="tbl-1" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<table class="lightable-classic do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Raw.Predictor</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Response.Options</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Feature.Engineering</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Scoring.Epochs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Total.Features</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Full.Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Baseline.Model</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Originated</td>
+<td style="text-align: left;">Incoming, outgoing</td>
+<td style="text-align: left;">Difference and raw rate counts for text messages and voice calls</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Call duration</td>
+<td style="text-align: left;">Duration (in minutes)</td>
+<td style="text-align: left;">Difference and raw rate sums of duration, difference and raw most recent duration</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Call answered</td>
+<td style="text-align: left;">Yes, no</td>
+<td style="text-align: left;">Difference and raw rate counts for unanswered incoming voice calls</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Date/time of communication</td>
+<td style="text-align: left;">Date and time</td>
+<td style="text-align: left;">Difference and raw rate counts for text messages and voice calls at night (10 pm – 6am) and on weekends</td>
+<td style="text-align: left;">24, 48, 72, and 168 hours (night), 168 hours (weekend)</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Phone number</td>
+<td style="text-align: left;">Phone number</td>
+<td style="text-align: left;">Difference and raw rate counts of unique phone numbers</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Type of Relationship</td>
+<td style="text-align: left;">Family, friend, counselor or social worker, co-worker</td>
+<td style="text-align: left;">Difference and raw rate counts of unique phone numbers</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Have you drank alcohol with this person?</td>
+<td style="text-align: left;">Never/almost never, occasionally, almost always/always</td>
+<td style="text-align: left;">Difference and raw rate counts of each response option</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">What is their drinking status?</td>
+<td style="text-align: left;">Drinker, non-drinker, don’t know</td>
+<td style="text-align: left;">Difference and raw rate counts of each response option</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Would you expect them to drink in your presence?</td>
+<td style="text-align: left;">Yes, no, uncertain</td>
+<td style="text-align: left;">Difference and raw rate counts of each response option</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Are they currently in recovery from drugs or alcohol?</td>
+<td style="text-align: left;">Yes, no, don’t know</td>
+<td style="text-align: left;">Difference and raw rate counts of each response option</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Are they supportive about your recovery goals?</td>
+<td style="text-align: left;">Supportive, unsupportive, mixed, neutral, don’t know</td>
+<td style="text-align: left;">Difference and raw rate counts of each response option</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">How are your typical experiences with this person?</td>
+<td style="text-align: left;">Pleasant, unpleasant, mixed, neutral</td>
+<td style="text-align: left;">Difference and raw rate counts of each response option</td>
+<td style="text-align: left;">6, 12, 24, 48, 72, and 168 hours</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DSM-5 symptom count</td>
+<td style="text-align: left;">Numeric (4-11)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Past year alcohol problems</td>
+<td style="text-align: left;">Numeric (0-27)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Craving</td>
+<td style="text-align: left;">Numeric (0-30)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Abstinence self-efficacy: Negative affect, social, physical, and craving subscales</td>
+<td style="text-align: left;">Numeric (0-20)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of individual alcohol counseling sessions attended (past 30 days)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of group alcohol counseling sessions attended (past 30 days)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of self-help group meetings attended (past 30 days)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of other mental health counseling sessions attended (past 30 days)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of days in contact with supportive people (past 30 days)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of days in contact with unsupportive people (past 30 days)</td>
+<td style="text-align: left;">Numeric</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Taken prescribed medication for alcohol use disorder (past 30 days)</td>
+<td style="text-align: left;">Yes, no</td>
+<td style="text-align: left;">Dummy coded</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Taken prescribed medication for other mental health disorder (past 30 days)</td>
+<td style="text-align: left;">Yes, no</td>
+<td style="text-align: left;">Dummy coded</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Satisfaction with progress toward recovery goals (past 30 days)</td>
+<td style="text-align: left;">Numeric (0-4)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Confidence in abstinence ability (next 30 days)</td>
+<td style="text-align: left;">Numeric (0-4)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Has a goal of abstinence</td>
+<td style="text-align: left;">Yes, no, uncertain</td>
+<td style="text-align: left;">Dummy coded</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Model Features
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="ethical-considerations" class="level2">
 <h2 class="anchored" data-anchor-id="ethical-considerations">Ethical Considerations</h2>
@@ -340,7 +612,7 @@ Goal word counts:
 <h1>Results</h1>
 <section id="participants" class="level2">
 <h2 class="anchored" data-anchor-id="participants">Participants</h2>
-<p><a href="#tbl-2" class="quarto-xref">Table&nbsp;1</a> provides the demographic characterization of our sample. We obtained a total of 375,912 contextualized communications across participants. Participants had, on average, 2,610 communications (range = 109-14,225). 56% of participants reported at least one lapse.</p>
+<p><a href="#tbl-2" class="quarto-xref">Table&nbsp;2</a> provides the demographic characterization of our sample. We obtained a total of 375,912 contextualized communications across participants. Participants had, on average, 2,610 communications (range = 109-14,225). 56% of participants reported at least one lapse.</p>
 <div class="quarto-embed-nb-cell">
 <div class="cell">
 <div id="tbl-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -696,7 +968,7 @@ Goal word counts:
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Demographics
+Table&nbsp;2: Demographics
 </figcaption>
 </figure>
 </div>
