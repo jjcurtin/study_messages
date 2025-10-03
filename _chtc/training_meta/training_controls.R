@@ -10,8 +10,8 @@ study <- "messages"
 window <- "day"
 lead <- 0
 version <- "v17"
-algorithm <- "xgboost"
-batch <- "meta"
+algorithm <- "glmnet"
+batch <- "full"
 
 
 configs_per_job <- 10  # number of model configurations that will be fit/evaluated within each CHTC

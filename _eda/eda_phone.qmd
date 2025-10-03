@@ -1,0 +1,100 @@
+---
+title: "Descriptives on phone logs"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+format: 
+  html:
+    toc: true 
+    toc_depth: 4
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+### Set Up Environment
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(lubridate)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+path_shared <- format_path("risk/data_processed/shared")
+path_messages <- format_path("risk/data_processed/messages")
+```
+
+data
+```{r}
+phone <- read_csv(here::here(path_shared, "phone.csv"),
+                  show_col_types = FALSE)
+study_dates <- read_csv(here::here(path_shared, "study_dates_messages.csv"),
+                  show_col_types = FALSE)
+```
+
+filter to subids in `study_dates` and without missing context
+```{r}
+# abbreviate contact_type categories ------------------
+
+phone <- phone |> 
+  mutate(cont_type_abr = case_when(contact_type %in% c("Parent", "Child", "Aunt/Uncle",
+                                                       "Cousin", "Family-Other", "Sibling",
+                                                       "Grandparent", "Spouse/Significant Other") ~ "family",
+                                   contact_type == "Friend" ~ "friend",
+                                   contact_type == "Co-Worker/Business Contact" ~ "coworker",
+                                   contact_type %in% c("Counselor", "Social Worker/Case Manager") ~ "counselor_socialworker",
+                                   contact_type %in% c("Irrelevant/Spam", "Other", "Self") ~ "irrelevant_or_unknown",
+                                   is.na(contact_type) ~ "irrelevant_or_unknown"))
+
+# Filter to only important contacts
+phone <- phone |> 
+  filter(cont_type_abr != "irrelevant_or_unknown")
+
+# Filter to study subids
+phone <- phone |> 
+  filter(subid %in% study_dates$subid)
+```
+
+Filter to study start
+```{r}
+phone <- phone |> 
+  left_join(study_dates |> 
+              select(subid, study_start), by = "subid")
+
+phone <- phone |> 
+  filter(date(dttm_obs) >= study_start)
+```
+
+
+
+### EDA
+
+375912 communications from 146 subids
+```{r}
+nrow(phone)
+
+length(unique(phone$subid))
+```
+
+Descriptives on number of contacts per subid
+```{r}
+phone |> 
+  group_by(subid) |> 
+  count() |> 
+  ungroup() |> 
+  summarise(min = min(n),
+            max = max(n),
+            mean = mean(n),
+            median = median(n))
+
+phone |> 
+  group_by(subid) |> 
+  count() |> 
+  ungroup() |> 
+  ggplot(aes(x = n)) +
+  geom_histogram()
+```
+
+
+

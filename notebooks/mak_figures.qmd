@@ -50,11 +50,12 @@ feat_imp <- model_full |>
                            "demo_income" ~ "Income",
                            "demo_sex_Male" ~ "Male",
                            "indiv_doa" ~ "Individual alcohol counseling",
-                           "group_doa" ~ "Group alcohol counseling",
                            .default = term)) |> 
   mutate(term = if_else(str_detect(term, "cont_type_abr.friend"), "Communications with friends", term),
          term = if_else(str_detect(term, ".NonDrinker"), "Communications with non-drinkers", term),
-         term = if_else(str_detect(term, ".Drinker"), "Communications with drinkers", term)) |> 
+         term = if_else(str_detect(term, "contact_drink_future"), "Communications with people who would drink in their presence", term),
+         term = if_else(str_detect(term, ".Drinker"), "Communications with drinkers", term),
+         term = if_else(str_detect(term, ".phone_number"), "Number of unique contacts", term))|> 
   group_by(term) |> 
   summarise(estimate = mean(estimate)) |> 
   arrange(desc(abs(estimate))) |> 

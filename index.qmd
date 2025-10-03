@@ -49,7 +49,15 @@ editor_options:
 ---
 
 <!--
-Target Journal: JMIR Formative Research (1500 words)-->
+Target Journal: JMIR Formative Research (1500 words)
+
+Goal word counts: 
+
+- Introduction: 400 words
+- Methods: 500 words
+- Results: 300 words
+- Discussion: 500 words
+-->
 
 # Introduction
 
@@ -69,37 +77,37 @@ This study aims at building machine learning models from cellular communications
 # Methods
 
 ## Participants and Procedure
-
 We recruited adults in early recovery from AUD in Madison, Wisconsin, via print and digital advertisements and treatment center partnerships. We required participants: were age 18 or older, could write and read in English, had moderate to severe AUD ^[(\>= 4 self-reported DSM-5 symptoms)], were abstinent from alcohol for 1-8 weeks, were willing to use a single smartphone, and were not exhibiting severe symptoms of psychosis or paranoia.^[Defined as scores >2.2 or 2.8, respectively, on the psychosis or paranoia scales of the Symptom Checklist–90 [@derogatislBriefSymptomInventory]]
 
-Participants completed up to 5 study visits over approximately 3 months: a screening visit, intake visit, and 3 monthly follow-up visits. At screening we collected self-report information about demographics (age, sex at birth, race, ethnicity, education, marital status, employment, and income) and clinical characteristics (DSM-5 AUD symptom count, alcohol problems [@hurlbutAssessingAlcoholProblems1992], and presence of psychological symptoms [@derogatislBriefSymptomInventory]). At intake we collected self-report information about abstinence self-efficacy [@mckiernanDevelopmentBriefAbstinence2011], craving [@flanneryPsychometricPropertiesPenn1999], and recent alcohol recovery efforts. At each monthly follow-up visit, we downloaded participants' voice call and SMS text message metadata logs from their smartphone devices. Participants were asked 7 contextual questions about important contacts (i.e., people whom the partcipant communicated with at least twice by voice call or SMS text message in a one month period). While enrolled, participants were expected to complete 4 brief (7-10 questions) daily ecological momentary assessments (EMA). The first item asked participants to report dates and times of any recent alcohol use. We verified lapse reports at follow-up visits with a timeline follow-back interview. Additional sensing data streams and self-report measures were collected as part of the parent grant's aims (R01 AA024391). Our study materials are publicly available ([https://osf.io/wgpz9/](https://osf.io/wgpz9/)). 
+Participants completed up to 5 study visits over approximately 3 months: a screening visit, intake visit, and 3 monthly follow-up visits. At screening we collected self-report information about demographics (age, sex at birth, race, ethnicity, education, marital status, employment, and income) and clinical characteristics (DSM-5 AUD symptom count, alcohol problems [@hurlbutAssessingAlcoholProblems1992], and presence of psychological symptoms [@derogatislBriefSymptomInventory]). At intake we collected self-report information about abstinence self-efficacy [@mckiernanDevelopmentBriefAbstinence2011], craving [@flanneryPsychometricPropertiesPenn1999], and recent alcohol recovery efforts. At each monthly follow-up visit, we downloaded participants' cellular communications (voice call and SMS text message metadata logs) from their smartphone devices. Participants were asked 7 contextual questions about important contacts (i.e., people whom the partcipant communicated with at least twice by voice call or SMS text message in a one month period). While enrolled, participants were expected to complete 4 brief (7-10 questions) daily ecological momentary assessments (EMA). The first item asked participants to report dates and times of any recent alcohol use. We verified lapse reports at follow-up visits with a timeline follow-back interview. Additional sensing data streams and self-report measures were collected as part of the parent grant's aims (R01 AA024391). Our full study protocol and all measures are publicly available ([https://osf.io/wgpz9/](https://osf.io/wgpz9/)). 
 
-We screened 192 participants. Of these, 169 enrolled and 154 completed the first follow-up visit. We excluded data from 3 participants for no longer having a goal of abstinence, evidence of careless responding, and unusually low compliance. Our final sample included 151 participants.<!--check other exclusions-->
+We screened 192 participants. Of these, 169 enrolled and 154 completed the first follow-up visit. We excluded data from 10 participants for no longer having a goal of abstinence, evidence of careless responding, and unusually low compliance. Our final sample included 144 participants. 
 
 
 ## Data Analysis Plan
-- Our annotated analysis scripts and results are publicly available on our study website ([https://jjcurtin.github.io/study_messages/](https://jjcurtin.github.io/study_messages/)).
+Our models predicted probability of a lapse (i.e., alcohol use) in a 24-hour prediction window. Predictions were made at 4 am each day for up to 3 months. This produced a total of 11,507 labeled prediction timepoints across all participants. Features were engineered using all available data up until the prediction timepoint^[We filtered down the data to only include communications with important contacts (i.e., communications we had contextual information about) prior to feature engineering.]. @tbl-1 presents the raw predictors and engineered features included in each model. The full model uses all available features derived from baseline self-report measures (24 features) and cellular communication data (406 features). The baseline model uses only features collected via self-report at baseline. 
 
-- data was filtered down to important contacts (i.e., communications we had contextual information about.)
-- Feature Engineering
-- Model Configurations
+Candidate model configurations differed by statistical algorithm (elastic net, random forest, XGBoost), outcome resampling method, and hyperparemter values. The best model configuration for the full model and baseline model were selected and evaluated using 6 repeats of participant-grouped 5-fold cross-validation. Folds were stratified on a between-subject measure of our outcome (low lapsers/0-9 lapses vs. and high lapsers/10+ lapses).   
 
-<!--create table of all features and which models they were in-->
+We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) from the 30 held-out test sets for our two best models. We used weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting.^[Priors were set as follows: residual standard deviation ~ normal(location=0, scale=exp(2)), intercept (after centering predictors) ~ normal(location=2.3, scale=1.3), the two coefficients for window width contrasts ~ normal (location=0, scale=2.69), and covariance ~ decov(regularization=1, concentration=1, shape=1, scale=1).] We set two random intercepts to account for our resampling method: one for the repeat, and another for the fold nested within repeat. auROCs were transformed using the logit function and regressed as a function of model to determine the probability that the models’ performances differed systematically from each other. 
 
-- Model Evaluation (including Comparison, and Feature Importance)
+- Feature Importance
 
+Our annotated analysis scripts are publicly available on our study website ([https://jjcurtin.github.io/study_messages/](https://jjcurtin.github.io/study_messages/)).
+
+
+<!--Table 1: create table of all features and which models they were in-->
 
 ## Ethical Considerations
 All procedures were approved by the University of Wisconsin-Madison Institutional Review Board (Study #2015-0780). All participants provided written informed consent.
 
 
-
-
 # Results
 
 ## Participants
+@tbl-2 provides the demographic characterization of our sample. We obtained a total of 375,912 contextualized communications across participants. Participants had, on average, 2,610 communications (range = 109-14,225). 56% of participants reported at least one lapse. 
 
-<!--characterization and brief summary stats on communications-->
+{{< embed notebooks/mak_tables.qmd#tbl-2 >}} 
 
 ## Model Evaluation
 

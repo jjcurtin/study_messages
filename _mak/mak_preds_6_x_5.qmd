@@ -192,21 +192,21 @@ if (str_detect(fn, "csv")) {
 }
   
 
-if(model == "baseline") {
-  d <- d |> 
-    select(label_num:dttm_label, lapse:abstinence_confidence)
-}
-
-if(model == "meta") {
-  d <- d |> 
-    select(-c(dsm5_total:abstinence_confidence), -starts_with("demo_"))
-}
-
-if(model == "passive") {
-  d <- d |> 
-    select(-c(`p6.l0.rratecount.contact_drank_past.Almost Always/Always`:`p168.l0.dratecount.cont_type_abr.friend`),
-         -c(dsm5_total:abstinence_confidence), -starts_with("demo_"))
-}
+# if(model == "baseline") {
+#   d <- d |> 
+#     select(label_num:dttm_label, lapse:abstinence_confidence)
+# }
+# 
+# if(model == "meta") {
+#   d <- d |> 
+#     select(-c(dsm5_total:abstinence_confidence), -starts_with("demo_"))
+# }
+# 
+# if(model == "passive") {
+#   d <- d |> 
+#     select(-c(`p6.l0.rratecount.contact_drank_past.Almost Always/Always`:`p168.l0.dratecount.cont_type_abr.friend`),
+#          -c(dsm5_total:abstinence_confidence), -starts_with("demo_"))
+# }
 
 d <- format_data(d) |> 
   arrange(label_num) 
