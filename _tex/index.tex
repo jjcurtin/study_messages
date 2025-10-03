@@ -190,7 +190,7 @@ Sensing},
 \title{Using Cellular Communication Sensing to Support Early Recovery
 from Alcohol Use Disorder}
 \author{Kendra Wyant \and Coco Yu \and John J. Curtin}
-\date{2025-10-02}
+\date{2025-10-03}
 
 \begin{document}
 \maketitle
@@ -289,46 +289,76 @@ sex at birth, race, ethnicity, education, marital status, employment,
 and income) and clinical characteristics (DSM-5 AUD symptom count,
 alcohol problems (Hurlbut \& Sher, 1992), and presence of psychological
 symptoms (Derogatis, L.R., 2000)). At intake we collected self-report
-information about abstinence self-efficacy (McKIERNAN et al., 2011),
+information about abstinence self-efficacy (McKiernan et al., 2011),
 craving (Flannery et al., 1999), and recent alcohol recovery efforts. At
-each monthly follow-up visit, we downloaded participants' voice call and
-SMS text message metadata logs from their smartphone devices.
-Participants were asked 7 contextual questions about important contacts
-(i.e., people whom the partcipant communicated with at least twice by
-voice call or SMS text message in a one month period). While enrolled,
-participants were expected to complete 4 brief (7-10 questions) daily
-ecological momentary assessments (EMA). The first item asked
-participants to report dates and times of any recent alcohol use. We
-verified lapse reports at follow-up visits with a timeline follow-back
-interview. Additional sensing data streams and self-report measures were
-collected as part of the parent grant's aims (R01 AA024391). Our study
-materials are publicly available (\url{https://osf.io/wgpz9/}).
+each monthly follow-up visit, we downloaded participants' cellular
+communications (voice call and SMS text message metadata logs) from
+their smartphone devices. Participants were asked 7 contextual questions
+about important contacts (i.e., people whom the partcipant communicated
+with at least twice by voice call or SMS text message in a one month
+period). While enrolled, participants were expected to complete 4 brief
+(7-10 questions) daily ecological momentary assessments (EMA). The first
+item asked participants to report dates and times of any recent alcohol
+use. We verified lapse reports at follow-up visits with a timeline
+follow-back interview. Additional sensing data streams and self-report
+measures were collected as part of the parent grant's aims (R01
+AA024391). Our full study protocol and all measures are publicly
+available (\url{https://osf.io/wgpz9/}).
 
 We screened 192 participants. Of these, 169 enrolled and 154 completed
-the first follow-up visit. We excluded data from 3 participants for no
+the first follow-up visit. We excluded data from 8 participants for no
 longer having a goal of abstinence, evidence of careless responding, and
-unusually low compliance. Our final sample included 151 participants.
+unusually low compliance. Our final sample included 146 participants.
 
 \subsection{Data Analysis Plan}\label{data-analysis-plan}
 
-\begin{itemize}
-\item
-  Our annotated analysis scripts and results are publicly available on
-  our study website (\url{https://jjcurtin.github.io/study_messages/}).
-\item
-  data was filtered down to important contacts (i.e., communications we
-  had contextual information about.)
-\item
-  Feature Engineering
-\item
-  Model Configurations
-\end{itemize}
+Our models predicted probability of a lapse (i.e., alcohol use) in a
+24-hour prediction window. Predictions were made at 4 am each day for up
+to 3 months. This produced a total of 11,619 labeled prediction
+timepoints across all participants. Features were engineered using all
+available data up until the prediction timepoint\footnote{We filtered
+  down the data to only include communications with important contacts
+  (i.e., communications we had contextual information about) prior to
+  feature engineering.}. \textbf{?@tbl-1} presents the raw predictors
+and engineered features included in each model. The full model uses all
+available features derived from baseline self-report measures (24
+features) and cellular communication data (324 features). The baseline
+model uses only features collected via self-report at baseline.
+
+Candidate model configurations differed by statistical algorithm
+(elastic net, random forest, XGBoost), outcome resampling method, and
+hyperparemter values. The best model configuration for the full model
+and baseline model were selected and evaluated using 6 repeats of
+participant-grouped 5-fold cross-validation. Folds were stratified on a
+between-subject measure of our outcome (low lapsers/0-9 lapses vs.~and
+high lapsers/10+ lapses).
+
+We used a Bayesian hierarchical generalized linear model to estimate the
+posterior probability distributions and 95\% Bayesian credible intervals
+(CIs) from the 30 held-out test sets for our two best models. We used
+weakly informative, data-dependent priors that take into account the
+order of magnitude of the variables to provide some regularization to
+stabilize computation and avoid over-fitting.\footnote{Priors were set
+  as follows: residual standard deviation \textasciitilde{}
+  normal(location=0, scale=exp(2)), intercept (after centering
+  predictors) \textasciitilde{} normal(location=2.3, scale=1.3), the two
+  coefficients for window width contrasts \textasciitilde{} normal
+  (location=0, scale=2.69), and covariance \textasciitilde{}
+  decov(regularization=1, concentration=1, shape=1, scale=1).} We set
+two random intercepts to account for our resampling method: one for the
+repeat, and another for the fold nested within repeat. auROCs were
+transformed using the logit function and regressed as a function of
+model to determine the probability that the models' performances
+differed systematically from each other.
 
 \begin{itemize}
 \tightlist
 \item
-  Model Evaluation (including Comparison, and Feature Importance)
+  Feature Importance
 \end{itemize}
+
+Our annotated analysis scripts are publicly available on our study
+website (\url{https://jjcurtin.github.io/study_messages/}).
 
 \subsection{Ethical Considerations}\label{ethical-considerations}
 
@@ -339,6 +369,82 @@ provided written informed consent.
 \section{Results}\label{results}
 
 \subsection{Participants}\label{participants}
+
+Table~\ref{tbl-2} provides the demographics of our sample. We obtained a
+total of 417,853 contextualized communications across participants.
+Participants had, on average, 2,862 communications (range = 113-14,952).
+57\% of participants reported at least one lapse.
+
+\begin{longtable}[]{@{}lrrlll@{}}
+
+\toprule\noalign{}
+& N & \% & M & SD & Range \\
+\midrule\noalign{}
+\endhead
+\midrule\noalign{}
+{Note: } & & & & & \\
+\textsuperscript{} N = 146 & & & & & \\
+\bottomrule\noalign{}
+\endlastfoot
+Age & & & 40.5 & 11.8 & 21-72 \\
+Sex at Birth & & & & & \\
+\multicolumn{6}{@{}l@{}}{%
+\textbf{}} \\
+Female & 74 & 50.7 & & & \\
+Male & 72 & 49.3 & & & \\
+Race & & & & & \\
+\multicolumn{6}{@{}l@{}}{%
+\textbf{}} \\
+American Indian/Alaska Native & 3 & 2.1 & & & \\
+Asian & 2 & 1.4 & & & \\
+Black/African American & 8 & 5.5 & & & \\
+White/Caucasian & 127 & 87.0 & & & \\
+Other/Multiracial & 6 & 4.1 & & & \\
+Hispanic, Latino, or Spanish origin & & & & & \\
+\multicolumn{6}{@{}l@{}}{%
+\textbf{}} \\
+Yes & 3 & 2.1 & & & \\
+No & 143 & 97.9 & & & \\
+Education & & & & & \\
+\multicolumn{6}{@{}l@{}}{%
+\textbf{}} \\
+Less than high school or GED degree & 1 & 0.7 & & & \\
+High school or GED & 14 & 9.6 & & & \\
+Some college & 40 & 27.4 & & & \\
+2-Year degree & 13 & 8.9 & & & \\
+College degree & 56 & 38.4 & & & \\
+Advanced degree & 22 & 15.1 & & & \\
+Employment & & & & & \\
+\multicolumn{6}{@{}l@{}}{%
+\textbf{}} \\
+Employed full-time & 71 & 48.6 & & & \\
+Employed part-time & 25 & 17.1 & & & \\
+Full-time student & 7 & 4.8 & & & \\
+Homemaker & 1 & 0.7 & & & \\
+Disabled & 7 & 4.8 & & & \\
+Retired & 8 & 5.5 & & & \\
+Unemployed & 15 & 10.3 & & & \\
+Temporarily laid off, sick leave, or maternity leave & 3 & 2.1 & & & \\
+Other, not otherwise specified & 9 & 6.2 & & & \\
+Personal Income & & & \$34,726 & \$31,978 & \$0-200,000 \\
+Marital Status & & & & & \\
+\multicolumn{6}{@{}l@{}}{%
+\textbf{}} \\
+Never married & 64 & 43.8 & & & \\
+Married & 32 & 21.9 & & & \\
+Divorced & 43 & 29.5 & & & \\
+Separated & 5 & 3.4 & & & \\
+Widowed & 2 & 1.4 & & & \\
+
+
+\caption{\label{tbl-2}Demographics}
+
+\tabularnewline
+\end{longtable}
+
+\textsubscript{Source:
+\href{https://jjcurtin.github.io/study_messages/notebooks/mak_tables-preview.html\#cell-tbl-2}{Make
+All Tables for Main Manuscript}}
 
 \subsection{Model Evaluation}\label{model-evaluation}
 
@@ -489,10 +595,10 @@ treatment patients. \emph{Addictive Behaviors Reports}, \emph{9},
 100157. \url{https://doi.org/10.1016/j.abrep.2018.100157}
 
 \bibitem[\citeproctext]{ref-mckiernanDevelopmentBriefAbstinence2011}
-McKIERNAN, P., CLOUD, R., PATTERSON, D. A., WOLF (ADELV UNEGV WAYA), S.,
-GOLDER, S., \& BESEL, K. (2011). Development of a {Brief Abstinence
-Self-Efficacy Measure}. \emph{Journal of Social Work Practice in the
-Addictions}, \emph{11}(3), 245--253.
+McKiernan, P., Cloud, R., Patterson, D. A., Wolf, S., Golder, S., \&
+Besel, K. (2011). Development of a {Brief Abstinence Self-Efficacy
+Measure}. \emph{Journal of Social Work Practice in the Addictions},
+\emph{11}(3), 245--253.
 \url{https://doi.org/10.1080/1533256X.2011.593445}
 
 \bibitem[\citeproctext]{ref-millerHowEffectiveAlcoholism2001a}
