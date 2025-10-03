@@ -322,9 +322,10 @@ Goal word counts:
 </section>
 <section id="data-analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-plan">Data Analysis Plan</h2>
-<p>Our models predicted probability of a lapse (i.e., alcohol use) in a 24-hour prediction window. Predictions were made at 4 am each day for up to 3 months. This produced a total of 11,507 labeled prediction timepoints across all participants. Features were engineered using all available data up until the prediction timepoint<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. <a href="#tbl-1" class="quarto-xref">Table&nbsp;1</a> presents the raw predictors and engineered features included in each model. The full model uses all available features derived from baseline self-report measures (24 features) and cellular communication data (406 features). The baseline model uses only features collected via self-report at baseline.</p>
+<p>Our models predicted the probability of an alcohol lapse occurring any time in a 24-hour prediction window. Predictions were made daily at 4 am starting on participants second day on study and rolled forward day-by-day for up to 3 months. There were a total of 11,507 labeled prediction windows across all participants.</p>
+<p>Features were engineered using all available data up until the start of the prediction window<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Our primary model feature set (i.e., the full model) consisted of all available features from the cellular communication data (406 features) and baseline self-report measures (24 features). We also evaluated a baseline comparison model that used only features from the baseline self-report measures. <a href="#tbl-1" class="quarto-xref">Table&nbsp;1</a> presents our raw predictors and feature engineering methods for these models.</p>
 <p>Candidate model configurations differed by statistical algorithm (elastic net, random forest, XGBoost), outcome resampling method, and hyperparemter values. The best model configuration for the full model and baseline model were selected and evaluated using 6 repeats of participant-grouped 5-fold cross-validation. Folds were stratified on a between-subject measure of our outcome (low lapsers/0-9 lapses vs.&nbsp;and high lapsers/10+ lapses).</p>
-<p>We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) from the 30 held-out test sets for our two best models. We used weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> We set two random intercepts to account for our resampling method: one for the repeat, and another for the fold nested within repeat. auROCs were transformed using the logit function and regressed as a function of model to determine the probability that the models’ performances differed systematically from each other.</p>
+<p>We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) from the 30 held-out test sets for our two best models. We used weakly informative, data-dependent priors to provide some regularization to provide stabilization and avoid over-fitting.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> We set two random intercepts to account for our resampling method: one for the repeat, and another for the fold nested within repeat. auROCs were transformed using the logit function and regressed as a function of model to determine the probability that the models’ performances differed systematically from each other.</p>
 <ul>
 <li>Feature Importance</li>
 </ul>
@@ -338,13 +339,13 @@ Goal word counts:
 <table class="lightable-classic do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Raw.Predictor</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Response.Options</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Feature.Engineering</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Scoring.Epochs</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Total.Features</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Full.Model</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Baseline.Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Raw Predictor</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Response Options</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Feature Engineering</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Scoring Epochs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Total Features</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Full Model</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Baseline Model</th>
 </tr>
 </thead>
 <tbody>
@@ -591,12 +592,66 @@ Goal word counts:
 <td style="text-align: left;">Yes</td>
 <td style="text-align: left;">Yes</td>
 </tr>
+<tr class="even">
+<td style="text-align: left;">Age</td>
+<td style="text-align: left;">Numeric (years)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sex at birth</td>
+<td style="text-align: left;">Male, female</td>
+<td style="text-align: left;">Dummy coded</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Race</td>
+<td style="text-align: left;">Non-Hispanic White, non-White and/or Hispanic</td>
+<td style="text-align: left;">Dummy coded</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Education</td>
+<td style="text-align: left;">High school or less, some college, college degree</td>
+<td style="text-align: left;">Dummy coded</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Income</td>
+<td style="text-align: left;">Numeric (dollars)</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Marital Status</td>
+<td style="text-align: left;">Married, not married, other</td>
+<td style="text-align: left;">Dummy coded</td>
+<td style="text-align: left;"></td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Model Features
+Table&nbsp;1: Feature Engineering of Raw Predictors
 </figcaption>
 </figure>
 </div>
