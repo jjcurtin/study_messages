@@ -318,11 +318,11 @@ Goal word counts:
 <h2 class="anchored" data-anchor-id="participants-and-procedure">Participants and Procedure</h2>
 <p>We recruited adults in early recovery from AUD in Madison, Wisconsin, via print and digital advertisements and treatment center partnerships. We required participants: were age 18 or older, could write and read in English, had moderate to severe AUD <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, were abstinent from alcohol for 1-8 weeks, were willing to use a single smartphone, and were not exhibiting severe symptoms of psychosis or paranoia.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>Participants completed up to 5 study visits over approximately 3 months: a screening visit, intake visit, and 3 monthly follow-up visits. At screening we collected self-report information about demographics (age, sex at birth, race, ethnicity, education, marital status, employment, and income) and clinical characteristics (DSM-5 AUD symptom count, alcohol problems <span class="citation" data-cites="hurlbutAssessingAlcoholProblems1992">(<a href="#ref-hurlbutAssessingAlcoholProblems1992" role="doc-biblioref">Hurlbut &amp; Sher, 1992</a>)</span>, and presence of psychological symptoms <span class="citation" data-cites="derogatislBriefSymptomInventory">(<a href="#ref-derogatislBriefSymptomInventory" role="doc-biblioref">Derogatis, L.R., 2000</a>)</span>). At intake we collected self-report information about abstinence self-efficacy <span class="citation" data-cites="mckiernanDevelopmentBriefAbstinence2011">(<a href="#ref-mckiernanDevelopmentBriefAbstinence2011" role="doc-biblioref">McKiernan et al., 2011</a>)</span>, craving <span class="citation" data-cites="flanneryPsychometricPropertiesPenn1999">(<a href="#ref-flanneryPsychometricPropertiesPenn1999" role="doc-biblioref">Flannery et al., 1999</a>)</span>, and recent alcohol recovery efforts. At each monthly follow-up visit, we downloaded participants’ cellular communications (voice call and SMS text message metadata logs) from their smartphone devices. Participants were asked 7 contextual questions about important contacts (i.e., people whom the partcipant communicated with at least twice by voice call or SMS text message in a one month period). While enrolled, participants were expected to complete 4 brief (7-10 questions) daily ecological momentary assessments (EMA). The first item asked participants to report dates and times of any recent alcohol use. We verified lapse reports at follow-up visits with a timeline follow-back interview. Additional sensing data streams and self-report measures were collected as part of the parent grant’s aims (R01 AA024391). Our full study protocol and all measures are publicly available (<a href="https://osf.io/wgpz9/">https://osf.io/wgpz9/</a>).</p>
-<p>We screened 192 participants. Of these, 169 enrolled and 154 completed the first follow-up visit. We excluded data from 8 participants for no longer having a goal of abstinence, evidence of careless responding, and unusually low compliance. Our final sample included 146 participants.</p>
+<p>We screened 192 participants. Of these, 169 enrolled and 154 completed the first follow-up visit. We excluded data from 10 participants for no longer having a goal of abstinence, evidence of careless responding, and unusually low compliance. Our final sample included 144 participants.</p>
 </section>
 <section id="data-analysis-plan" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-plan">Data Analysis Plan</h2>
-<p>Our models predicted probability of a lapse (i.e., alcohol use) in a 24-hour prediction window. Predictions were made at 4 am each day for up to 3 months. This produced a total of 11,619 labeled prediction timepoints across all participants. Features were engineered using all available data up until the prediction timepoint<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. <strong>?@tbl-1</strong> presents the raw predictors and engineered features included in each model. The full model uses all available features derived from baseline self-report measures (24 features) and cellular communication data (324 features). The baseline model uses only features collected via self-report at baseline.</p>
+<p>Our models predicted probability of a lapse (i.e., alcohol use) in a 24-hour prediction window. Predictions were made at 4 am each day for up to 3 months. This produced a total of 11,507 labeled prediction timepoints across all participants. Features were engineered using all available data up until the prediction timepoint<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. <strong>?@tbl-1</strong> presents the raw predictors and engineered features included in each model. The full model uses all available features derived from baseline self-report measures (24 features) and cellular communication data (406 features). The baseline model uses only features collected via self-report at baseline.</p>
 <p>Candidate model configurations differed by statistical algorithm (elastic net, random forest, XGBoost), outcome resampling method, and hyperparemter values. The best model configuration for the full model and baseline model were selected and evaluated using 6 repeats of participant-grouped 5-fold cross-validation. Folds were stratified on a between-subject measure of our outcome (low lapsers/0-9 lapses vs.&nbsp;and high lapsers/10+ lapses).</p>
 <p>We used a Bayesian hierarchical generalized linear model to estimate the posterior probability distributions and 95% Bayesian credible intervals (CIs) from the 30 held-out test sets for our two best models. We used weakly informative, data-dependent priors that take into account the order of magnitude of the variables to provide some regularization to stabilize computation and avoid over-fitting.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> We set two random intercepts to account for our resampling method: one for the repeat, and another for the fold nested within repeat. auROCs were transformed using the logit function and regressed as a function of model to determine the probability that the models’ performances differed systematically from each other.</p>
 <ul>
@@ -340,7 +340,7 @@ Goal word counts:
 <h1>Results</h1>
 <section id="participants" class="level2">
 <h2 class="anchored" data-anchor-id="participants">Participants</h2>
-<p><a href="#tbl-2" class="quarto-xref">Table&nbsp;1</a> provides the demographics of our sample. We obtained a total of 417,853 contextualized communications across participants. Participants had, on average, 2,862 communications (range = 113-14,952). 57% of participants reported at least one lapse.</p>
+<p><a href="#tbl-2" class="quarto-xref">Table&nbsp;1</a> provides the demographic characterization of our sample. We obtained a total of 375,912 contextualized communications across participants. Participants had, on average, 2,610 communications (range = 109-14,225). 56% of participants reported at least one lapse.</p>
 <div class="quarto-embed-nb-cell">
 <div class="cell">
 <div id="tbl-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -363,7 +363,7 @@ Goal word counts:
 <td style="text-align: left;">Age</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: left;">40.5</td>
+<td style="text-align: left;">40.4</td>
 <td style="text-align: left;">11.8</td>
 <td style="text-align: left;">21-72</td>
 </tr>
@@ -381,15 +381,15 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Female</td>
 <td style="text-align: right;">74</td>
-<td style="text-align: right;">50.7</td>
+<td style="text-align: right;">51.4</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Male</td>
-<td style="text-align: right;">72</td>
-<td style="text-align: right;">49.3</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">48.6</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -424,15 +424,15 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Black/African American</td>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">5.5</td>
+<td style="text-align: right;">5.6</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">White/Caucasian</td>
-<td style="text-align: right;">127</td>
-<td style="text-align: right;">87.0</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">86.8</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -440,7 +440,7 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Other/Multiracial</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">4.1</td>
+<td style="text-align: right;">4.2</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -466,7 +466,7 @@ Goal word counts:
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">No</td>
-<td style="text-align: right;">143</td>
+<td style="text-align: right;">141</td>
 <td style="text-align: right;">97.9</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -494,15 +494,15 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">High school or GED</td>
 <td style="text-align: right;">14</td>
-<td style="text-align: right;">9.6</td>
+<td style="text-align: right;">9.7</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Some college</td>
-<td style="text-align: right;">40</td>
-<td style="text-align: right;">27.4</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">27.1</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -510,15 +510,15 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">2-Year degree</td>
 <td style="text-align: right;">13</td>
-<td style="text-align: right;">8.9</td>
+<td style="text-align: right;">9.0</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">College degree</td>
-<td style="text-align: right;">56</td>
-<td style="text-align: right;">38.4</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">38.2</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -526,7 +526,7 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Advanced degree</td>
 <td style="text-align: right;">22</td>
-<td style="text-align: right;">15.1</td>
+<td style="text-align: right;">15.3</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -544,7 +544,7 @@ Goal word counts:
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Employed full-time</td>
-<td style="text-align: right;">71</td>
+<td style="text-align: right;">70</td>
 <td style="text-align: right;">48.6</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -553,7 +553,7 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Employed part-time</td>
 <td style="text-align: right;">25</td>
-<td style="text-align: right;">17.1</td>
+<td style="text-align: right;">17.4</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -561,7 +561,7 @@ Goal word counts:
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Full-time student</td>
 <td style="text-align: right;">7</td>
-<td style="text-align: right;">4.8</td>
+<td style="text-align: right;">4.9</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -577,7 +577,7 @@ Goal word counts:
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Disabled</td>
 <td style="text-align: right;">7</td>
-<td style="text-align: right;">4.8</td>
+<td style="text-align: right;">4.9</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -585,7 +585,7 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Retired</td>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">5.5</td>
+<td style="text-align: right;">5.6</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -593,7 +593,7 @@ Goal word counts:
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Unemployed</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: right;">10.3</td>
+<td style="text-align: right;">10.4</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -608,8 +608,8 @@ Goal word counts:
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Other, not otherwise specified</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">6.2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">5.6</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -618,8 +618,8 @@ Goal word counts:
 <td style="text-align: left;">Personal Income</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
-<td style="text-align: left;">$34,726</td>
-<td style="text-align: left;">$31,978</td>
+<td style="text-align: left;">$35,050</td>
+<td style="text-align: left;">$32,069</td>
 <td style="text-align: left;">$0-200,000</td>
 </tr>
 <tr class="odd">
@@ -635,7 +635,7 @@ Goal word counts:
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Never married</td>
-<td style="text-align: right;">64</td>
+<td style="text-align: right;">63</td>
 <td style="text-align: right;">43.8</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -644,15 +644,15 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Married</td>
 <td style="text-align: right;">32</td>
-<td style="text-align: right;">21.9</td>
+<td style="text-align: right;">22.2</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Divorced</td>
-<td style="text-align: right;">43</td>
-<td style="text-align: right;">29.5</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">29.2</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -660,7 +660,7 @@ Goal word counts:
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Separated</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">3.4</td>
+<td style="text-align: right;">3.5</td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
@@ -683,7 +683,7 @@ Goal word counts:
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: left; padding: 0;"><sup></sup> N = 146</td>
+<td style="text-align: left; padding: 0;"><sup></sup> N = 144</td>
 <td style="text-align: right;"></td>
 <td style="text-align: right;"></td>
 <td style="text-align: left;"></td>
