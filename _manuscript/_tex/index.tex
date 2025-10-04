@@ -312,18 +312,22 @@ unusually low compliance. Our final sample included 144 participants.
 
 \subsection{Data Analysis Plan}\label{data-analysis-plan}
 
-Our models predicted probability of a lapse (i.e., alcohol use) in a
-24-hour prediction window. Predictions were made at 4 am each day for up
-to 3 months. This produced a total of 11,507 labeled prediction
-timepoints across all participants. Features were engineered using all
-available data up until the prediction timepoint\footnote{We filtered
-  down the data to only include communications with important contacts
-  (i.e., communications we had contextual information about) prior to
-  feature engineering.}. \textbf{?@tbl-1} presents the raw predictors
-and engineered features included in each model. The full model uses all
-available features derived from baseline self-report measures (24
-features) and cellular communication data (406 features). The baseline
-model uses only features collected via self-report at baseline.
+Our models predicted the probability of an alcohol lapse occurring any
+time in a 24-hour prediction window. Predictions were made daily at 4 am
+starting on participants second day on study and rolled forward
+day-by-day for up to 3 months. There were a total of 11,507 labeled
+prediction windows across all participants.
+
+Features were engineered using all available data up until the start of
+the prediction window\footnote{We filtered down the data to only include
+  communications with important contacts (i.e., communications we had
+  contextual information about) prior to feature engineering.}. Our
+primary model feature set (i.e., the full model) consisted of all
+available features from the cellular communication data (406 features)
+and baseline self-report measures (24 features). We also evaluated a
+baseline comparison model that used only features from the baseline
+self-report measures. Table~\ref{tbl-1} presents our raw predictors and
+feature engineering methods for these models.
 
 Candidate model configurations differed by statistical algorithm
 (elastic net, random forest, XGBoost), outcome resampling method, and
@@ -336,10 +340,9 @@ high lapsers/10+ lapses).
 We used a Bayesian hierarchical generalized linear model to estimate the
 posterior probability distributions and 95\% Bayesian credible intervals
 (CIs) from the 30 held-out test sets for our two best models. We used
-weakly informative, data-dependent priors that take into account the
-order of magnitude of the variables to provide some regularization to
-stabilize computation and avoid over-fitting.\footnote{Priors were set
-  as follows: residual standard deviation \textasciitilde{}
+weakly informative, data-dependent priors to provide some regularization
+to provide stabilization and avoid over-fitting.\footnote{Priors were
+  set as follows: residual standard deviation \textasciitilde{}
   normal(location=0, scale=exp(2)), intercept (after centering
   predictors) \textasciitilde{} normal(location=2.3, scale=1.3), the two
   coefficients for window width contrasts \textasciitilde{} normal
@@ -359,6 +362,100 @@ differed systematically from each other.
 
 Our annotated analysis scripts are publicly available on our study
 website (\url{https://jjcurtin.github.io/study_messages/}).
+
+\begin{longtable}[]{@{}llllrll@{}}
+
+\toprule\noalign{}
+Raw Predictor & Response Options & Feature Engineering & Scoring Epochs
+& Total Features & Full Model & Baseline Model \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Originated & Incoming, outgoing & Difference and raw rate counts for
+text messages and voice calls & 6, 12, 24, 48, 72, and 168 hours & 48 &
+Yes & No \\
+Call duration & Duration (in minutes) & Difference and raw rate sums of
+duration, difference and raw most recent duration & 6, 12, 24, 48, 72,
+and 168 hours & 14 & Yes & No \\
+Call answered & Yes, no & Difference and raw rate counts for unanswered
+incoming voice calls & 6, 12, 24, 48, 72, and 168 hours & 12 & Yes &
+No \\
+Date/time of communication & Date and time & Difference and raw rate
+counts for text messages and voice calls at night (10 pm -- 6am) and on
+weekends & 24, 48, 72, and 168 hours (night), 168 hours (weekend) & 20 &
+Yes & No \\
+Phone number & Phone number & Difference and raw rate counts of unique
+phone numbers & 6, 12, 24, 48, 72, and 168 hours & 12 & Yes & No \\
+Type of Relationship & Family, friend, counselor or social worker,
+co-worker & Difference and raw rate counts of unique phone numbers & 6,
+12, 24, 48, 72, and 168 hours & 48 & Yes & No \\
+Have you drank alcohol with this person? & Never/almost never,
+occasionally, almost always/always & Difference and raw rate counts of
+each response option & 6, 12, 24, 48, 72, and 168 hours & 36 & Yes &
+No \\
+What is their drinking status? & Drinker, non-drinker, don't know &
+Difference and raw rate counts of each response option & 6, 12, 24, 48,
+72, and 168 hours & 36 & Yes & No \\
+Would you expect them to drink in your presence? & Yes, no, uncertain &
+Difference and raw rate counts of each response option & 6, 12, 24, 48,
+72, and 168 hours & 36 & Yes & No \\
+Are they currently in recovery from drugs or alcohol? & Yes, no, don't
+know & Difference and raw rate counts of each response option & 6, 12,
+24, 48, 72, and 168 hours & 36 & Yes & No \\
+Are they supportive about your recovery goals? & Supportive,
+unsupportive, mixed, neutral, don't know & Difference and raw rate
+counts of each response option & 6, 12, 24, 48, 72, and 168 hours & 60 &
+Yes & No \\
+How are your typical experiences with this person? & Pleasant,
+unpleasant, mixed, neutral & Difference and raw rate counts of each
+response option & 6, 12, 24, 48, 72, and 168 hours & 48 & Yes & No \\
+DSM-5 symptom count & Numeric (4-11) & & & 1 & Yes & Yes \\
+Past year alcohol problems & Numeric (0-27) & & & 1 & Yes & Yes \\
+Craving & Numeric (0-30) & & & 1 & Yes & Yes \\
+Abstinence self-efficacy: Negative affect, social, physical, and craving
+subscales & Numeric (0-20) & & & 4 & Yes & Yes \\
+Number of individual alcohol counseling sessions attended (past 30 days)
+& Numeric & & & 1 & Yes & Yes \\
+Number of group alcohol counseling sessions attended (past 30 days) &
+Numeric & & & 1 & Yes & Yes \\
+Number of self-help group meetings attended (past 30 days) & Numeric & &
+& 1 & Yes & Yes \\
+Number of other mental health counseling sessions attended (past 30
+days) & Numeric & & & 1 & Yes & Yes \\
+Number of days in contact with supportive people (past 30 days) &
+Numeric & & & 1 & Yes & Yes \\
+Number of days in contact with unsupportive people (past 30 days) &
+Numeric & & & 1 & Yes & Yes \\
+Taken prescribed medication for alcohol use disorder (past 30 days) &
+Yes, no & Dummy coded & & 1 & Yes & Yes \\
+Taken prescribed medication for other mental health disorder (past 30
+days) & Yes, no & Dummy coded & & 1 & Yes & Yes \\
+Satisfaction with progress toward recovery goals (past 30 days) &
+Numeric (0-4) & & & 1 & Yes & Yes \\
+Confidence in abstinence ability (next 30 days) & Numeric (0-4) & & & 1
+& Yes & Yes \\
+Has a goal of abstinence & Yes, no, uncertain & Dummy coded & & 2 & Yes
+& Yes \\
+Age & Numeric (years) & & & 1 & Yes & Yes \\
+Sex at birth & Male, female & Dummy coded & & 1 & Yes & Yes \\
+Race & Non-Hispanic White, non-White and/or Hispanic & Dummy coded & & 1
+& Yes & Yes \\
+Education & High school or less, some college, college degree & Dummy
+coded & & 2 & Yes & Yes \\
+Income & Numeric (dollars) & & & 1 & Yes & Yes \\
+Marital Status & Married, not married, other & Dummy coded & & 2 & Yes &
+Yes \\
+
+
+\caption{\label{tbl-1}Feature Engineering of Raw Predictors}
+
+\tabularnewline
+\end{longtable}
+
+\textsubscript{Source:
+\href{https://jjcurtin.github.io/study_messages/notebooks/mak_tables-preview.html\#cell-tbl-1}{Make
+All Tables for Main Manuscript}}
 
 \subsection{Ethical Considerations}\label{ethical-considerations}
 

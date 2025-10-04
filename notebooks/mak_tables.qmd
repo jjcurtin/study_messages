@@ -26,6 +26,7 @@ suppressPackageStartupMessages(source("https://github.com/jjcurtin/lab_support/b
 library(kableExtra)
 
 path_shared <- format_path("risk/data_processed/shared")
+path_messages <- format_path("risk/data_processed/messages")
 
 options(knitr.kable.NA = '')
 ```
@@ -34,7 +35,13 @@ options(knitr.kable.NA = '')
 
 ## Data and calculations
 
-Table 1 
+Table 1
+```{r}
+feats <- read_csv(here::here(path_messages, "feature_engineering_table.csv"),
+                        show_col_types = FALSE)
+```
+
+Table 2
 ```{r}
 study_dates <- read_csv(here::here(path_shared, "study_dates_messages.csv"),
                         show_col_types = FALSE)
@@ -164,136 +171,16 @@ table_dem <- dem_age |>
 ```
 
 
+
+
+
 ### Table 1: Features
 
 ```{r}
-library(knitr)
-
-df <- data.frame(
-  `Raw Predictor` = c(
-    "Originated",
-    "Call duration",
-    "Call answered",
-    "Date/time of communication",
-    "Phone number",
-    "Type of Relationship",
-    "Have you drank alcohol with this person?",
-    "What is their drinking status?",
-    "Would you expect them to drink in your presence?",
-    "Are they currently in recovery from drugs or alcohol?",
-    "Are they supportive about your recovery goals?",
-    "How are your typical experiences with this person?",
-    "DSM-5 symptom count",
-    "Past year alcohol problems",
-    "Craving",
-    "Abstinence self-efficacy: Negative affect, social, physical, and craving subscales",
-    "Number of individual alcohol counseling sessions attended (past 30 days)",
-    "Number of group alcohol counseling sessions attended (past 30 days)",
-    "Number of self-help group meetings attended (past 30 days)",
-    "Number of other mental health counseling sessions attended (past 30 days)",
-    "Number of days in contact with supportive people (past 30 days)",
-    "Number of days in contact with unsupportive people (past 30 days)",
-    "Taken prescribed medication for alcohol use disorder (past 30 days)",
-    "Taken prescribed medication for other mental health disorder (past 30 days)",
-    "Satisfaction with progress toward recovery goals (past 30 days)",
-    "Confidence in abstinence ability (next 30 days)",
-    "Has a goal of abstinence"
-  ),
-  
-  `Response Options` = c(
-    "Incoming, outgoing",
-    "Duration (in minutes)",
-    "Yes, no",
-    "Date and time",
-    "Phone number",
-    "Family, friend, counselor or social worker, co-worker",
-    "Never/almost never, occasionally, almost always/always",
-    "Drinker, non-drinker, don’t know",
-    "Yes, no, uncertain",
-    "Yes, no, don’t know",
-    "Supportive, unsupportive, mixed, neutral, don’t know",
-    "Pleasant, unpleasant, mixed, neutral",
-    "Numeric (4-11)",
-    "Numeric (0-27)",
-    "Numeric (0-30)",
-    "Numeric (0-20)",
-    "Numeric",
-    "Numeric",
-    "Numeric",
-    "Numeric",
-    "Numeric",
-    "Numeric",
-    "Yes, no",
-    "Yes, no",
-    "Numeric (0-4)",
-    "Numeric (0-4)",
-    "Yes, no, uncertain"
-  ),
-  
-  `Feature Engineering` = c(
-    "Difference and raw rate counts for text messages and voice calls",
-    "Difference and raw rate sums of duration, difference and raw most recent duration",
-    "Difference and raw rate counts for unanswered incoming voice calls",
-    "Difference and raw rate counts for text messages and voice calls at night (10 pm – 6am) and on weekends",
-    "Difference and raw rate counts of unique phone numbers",
-    "Difference and raw rate counts of unique phone numbers",
-    "Difference and raw rate counts of each response option",
-    "Difference and raw rate counts of each response option",
-    "Difference and raw rate counts of each response option",
-    "Difference and raw rate counts of each response option",
-    "Difference and raw rate counts of each response option",
-    "Difference and raw rate counts of each response option",
-    "", "", "", "",
-    "", "", "", "",
-    "", "",
-    "Dummy coded",
-    "Dummy coded",
-    "",
-    "",
-    "Dummy coded"
-  ),
-  
-  `Scoring Epochs` = c(
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "24, 48, 72, and 168 hours (night), 168 hours (weekend)",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "6, 12, 24, 48, 72, and 168 hours",
-    "", "", "", "",
-    "", "", "", "",
-    "", "",
-    "", "",
-    "", "",
-    ""
-  ),
-  
-  `Total Features` = c(
-    48, 14, 12, 20, 12, 48, 36, 36, 36, 36, 60, 48,
-    1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2
-  ),
-  
-  `Full Model` = rep("Yes", 27),
-  
-  `Baseline Model` = c(
-    rep("No", 12),
-    rep("Yes", 15)
-  )
-)
-```
-
-
-```{r}
 #| label: tbl-1
-#| tbl-cap: "Model Features"
+#| tbl-cap: "Feature Engineering of Raw Predictors"
 
-df |> 
+feats |> 
   knitr::kable() |> 
   kable_classic() 
 ```

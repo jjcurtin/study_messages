@@ -11,7 +11,7 @@ window <- "day"
 lead <- 0
 version <- "v17"
 algorithm <- "glmnet"
-batch <- "full"
+batch <- "baseline"
 
 
 configs_per_job <- 10  # number of model configurations that will be fit/evaluated within each CHTC

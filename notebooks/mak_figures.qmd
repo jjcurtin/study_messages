@@ -27,12 +27,18 @@ html-table-processing: none
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(tidymodels))
 suppressPackageStartupMessages(source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true"))
+suppressPackageStartupMessages(library(patchwork))
 
 theme_set(theme_classic())
 
 path_models <- format_path(str_c("risk/models/messages"))
 
 model_full <- read_rds(here::here(path_models, "best_model_v17_kfold_full.rds"))
+
+pp <- read_csv(here::here(path_models, "posteriors.csv"),
+                    show_col_types = FALSE)
+
+model_base <- read_rds(here::here(path_models, "best_model_v17_kfold_baseline.rds"))
 ```
 
 
@@ -43,19 +49,20 @@ feat_imp <- model_full |>
   filter(abs(estimate) > 0) |> 
   filter(term != "(Intercept)") |> 
   mutate(term = case_match(term,
-                           "abstinence_confidence" ~ "Abstinence confidence", 
-                           "abstinence_goal_Yes" ~ "Goal of abstinence",
-                           "efficacy_neg_affect" ~ "Negative affect efficacy",
-                           "craving_total" ~ "Craving",
-                           "demo_income" ~ "Income",
-                           "demo_sex_Male" ~ "Male",
-                           "indiv_doa" ~ "Individual alcohol counseling",
+                           "abstinence_confidence" ~ "Abstinence confidence (baseline)", 
+                           "abstinence_goal_Yes" ~ "Goal of abstinence (baseline)",
+                           "efficacy_neg_affect" ~ "Negative affect efficacy (baseline)",
+                           "craving_total" ~ "Craving (baseline)",
+                           "demo_income" ~ "Income (baseline)",
+                           "demo_sex_Male" ~ "Male (baseline)",
+                           "indiv_doa" ~ "Individual alcohol counseling (baseline)",
                            .default = term)) |> 
-  mutate(term = if_else(str_detect(term, "cont_type_abr.friend"), "Communications with friends", term),
-         term = if_else(str_detect(term, ".NonDrinker"), "Communications with non-drinkers", term),
-         term = if_else(str_detect(term, "contact_drink_future"), "Communications with people who would drink in their presence", term),
-         term = if_else(str_detect(term, ".Drinker"), "Communications with drinkers", term),
-         term = if_else(str_detect(term, ".phone_number"), "Number of unique contacts", term))|> 
+  mutate(term = if_else(str_detect(term, "cont_type_abr.friend"), "Friends (communications)", term),
+         term = if_else(str_detect(term, ".NonDrinker"), "Non-drinkers (communications)", term),
+         term = if_else(str_detect(term, ".support_status.Dont"), "Doesn't know about recovery (communications)", term),
+         term = if_else(str_detect(term, ".Drinker"), "Drinkers (communications)", term),
+         term = if_else(str_detect(term, ".phone_number"), "Number of unique contacts (communications)", term),
+         term = if_else(str_detect(term, "experience.Unpleasant"), "Unpleasant interactions (communications)", term))|> 
   group_by(term) |> 
   summarise(estimate = mean(estimate)) |> 
   arrange(desc(abs(estimate))) |> 
@@ -71,12 +78,29 @@ feat_imp <- model_full |>
   theme(legend.position = "none")
 ```
 
+```{r}
+# pp |> 
+#   mutate(model = factor(model, levels = c("full model", "baseline model"),
+#                         labels = c("Full model", "Baseline model"))) |> 
+#   ggplot(aes(x = posterior)) +
+#   geom_histogram(bins = 50, color = "black", fill = "light grey") +
+#   facet_wrap(~model, ncol = 1)+
+#   geom_vline(xintercept = .5, linetype = "dashed") +
+#   geom_vline(xintercept = median(pp$posterior))
+
+# post <- pp |> 
+#   filter(model == "full model") |> 
+#   ggplot(aes(x = posterior)) +
+#   geom_histogram(bins = 30, color = "black", fill = "light grey") +
+#   geom_vline(xintercept = .5, linetype = "dashed") +
+#   geom_vline(xintercept = median(pp$posterior), linewidth = .6)
+```
 
 
 ```{r}
 #| label: fig-1
-#| fig-cap: "Global feature importance (glmnet coefficient) for the full model. Features are ordered by absolute coefficient value. Rate counts of communications with friends, non-drinkers, and drinkers were calculated across varying scoring epochs. Standardized coefficients were averaged across retained epochs to produce single aggregate feature importance score. Blue bars indicate higher feature values on average lower lapse risk. Red bars indicate higher feature values on average increase risk."
-#| fig-width: 6
+#| fig-cap: "Global feature importance (elastic net coefficient) for the full model. Features are ordered by absolute coefficient value. Blue bars indicate higher feature values, on average, lower lapse risk. Red bars indicate higher feature values, on average, increase risk."
+#| fig-width: 7
 #| fig-height: 5
 
 feat_imp 

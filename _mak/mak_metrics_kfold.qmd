@@ -14,7 +14,7 @@ params:
   version: "v17"
   cv: "kfold"
   algorithms: "glmnet"   # "all" or name of specific algorithm
-  model: "full" # full, baseline, meta, or passive
+  model: "baseline" # full, baseline, meta, or passive
 editor_options: 
   chunk_output_type: console
 ---

@@ -13,7 +13,7 @@ params:
   study: "messages"
   version: "v17"
   cv: "kfold"
-  model: "full" # full, baseline, meta, or passive
+  model: "baseline" # full, baseline, meta, or passive
 editor_options: 
   chunk_output_type: console
 ---
