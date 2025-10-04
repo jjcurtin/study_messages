@@ -339,7 +339,7 @@ stratified by a between-subject measure of our outcome (low lapsers: 0-9
 lapses; high lapsers: 10+ lapses).
 
 We evaluated model performance with a Bayesian hierarchical generalized
-linear model. Posterior distributions with 95\% credible intervals (CIs)
+linear model. Posterior distributions with 95\% credible intervals (CI)
 were estimated from the 30 held-out test sets using weakly informative,
 data-dependent priors to regularize and reduce overfitting.\footnote{Residual
   SD \textasciitilde{} normal(0, exp(2)); intercept (centered
@@ -541,15 +541,15 @@ All Tables for Main Manuscript}}
 
 \subsection{Model Evaluation}\label{model-evaluation}
 
-The median posterior probability for auROC for the full model was 0.68.
-The 95\% CIs were relatively narrow ({[}0.64, 0.71{]}) and did not
-contain .5, providing strong evidence that the model is capturing signal
-in the data. The final model retained 13 features (Figure~\ref{fig-1}).
-The top four features were baseline measures of abstinence confidence,
-having a goal of abstinence, abstinence self-efficacy when experiencing
-negative affect, and craving. Communication frequency with people who
-don't know about the individual's recovery goals also appeared to be an
-important feature for increasing lapse risk.
+The median posterior auROC for the full model was 0.68, with relatively
+narrow 95\% CI ({[}0.64, 0.71{]}) that did not contain .5. This provides
+strong evidence that the model is capturing signal in the data. The
+final model retained 13 features (Figure~\ref{fig-1}). The top four were
+baseline measures of abstinence confidence, having a goal of abstinence,
+abstinence self-efficacy when experiencing negative affect, and craving.
+Communication frequency with people unaware of the individual's recovery
+goals also emerged as an important feature associated with increased
+lapse risk.
 
 \begin{figure}[H]
 
@@ -575,14 +575,13 @@ All Figures for Main Manuscript}}
 
 \subsection{Model Comparison}\label{model-comparison}
 
-We evaluated a comparison model to determine the extent that cellular
-communications were adding predictive value above and beyond the
-baseline features. The baseline model retained 5 features and obtained
-performance nearly identical to the full model (median auROC 0.68, 95\%
-CIs {[}0.64, 0.71{]}). There was a median difference in auROC of the
-full and baseline models of less than .01, yielding no evidence (52\%
-probability) that the posterior distributions were meaningfully
-different.
+We evaluated a comparison model to assess the incremental predictive
+value of cellular communication features beyond baseline measures. The
+baseline model retained 5 features and achieved performance nearly
+identical to the full model (median auROC = 0.68, 95\% CI {[}0.64,
+0.71{]}). The median difference in auROC between the full and baseline
+models was less than .01, providing no evidence (52\% probability) that
+their posterior distributions were meaningfully different.
 
 \section{Discussion}\label{discussion}
 
