@@ -53,9 +53,9 @@ Target Journal: JMIR Formative Research (1500 words)
 
 Goal word counts: 
 
-- Introduction: 400 words
-- Methods: 500 words
-- Results: 300 words
+- Introduction: 400 words (currently 600 words)
+- Methods: 600 words (currently 600 words)
+- Results: 200 words
 - Discussion: 500 words
 -->
 
@@ -81,7 +81,7 @@ We recruited adults in early recovery from AUD in Madison, Wisconsin, through pr
 
 Participants completed up to 5 study visits over approximately 3 months: a screening visit, intake visit, and 3 monthly follow-up visits. At screening we collected demographic information (age, sex at birth, race, ethnicity, education, marital status, employment, and income) and clinical characteristics (DSM-5 AUD symptom count, alcohol problems [@hurlbutAssessingAlcoholProblems1992], and presence of psychological symptoms [@derogatislBriefSymptomInventory]). At intake we collected additional self-report data on abstinence self-efficacy [@mckiernanDevelopmentBriefAbstinence2011], craving [@flanneryPsychometricPropertiesPenn1999], and recent recovery efforts. At each monthly follow-up, we downloaded cellular communication metadata (voice calls and SMS text message logs) from participants' smartphones. We identified important contacts (i.e., individuals they had communicated with at least twice by call or text in the past month) and asked 7 contextual questions about these contacts.
 
-While enrolled, participants were expected to complete 4 brief daily ecological momentary assessments (7-10 questions). The first item assessed alcohol use (date and time of any unreported drinking episodes). Lapse reports were verified at follow-up visits using a timeline follow-back interview. Additional sensing data streams and self-report measures were collected for the parent grant (R01 AA024391). The full study protocol and measures are available on our Open Science Framework page ([https://osf.io/wgpz9/](https://osf.io/wgpz9/)). 
+While enrolled, participants completed 4 brief daily ecological momentary assessments (7-10 questions). The first item assessed alcohol use (date and time of any unreported drinking episodes). Lapse reports were verified at follow-up visits using a timeline follow-back interview. Additional sensing data streams and self-report measures were collected for the parent grant. The full study protocol is available on our Open Science Framework page ([https://osf.io/wgpz9/](https://osf.io/wgpz9/)). 
 
 We screened 192 participants. Of these, 169 enrolled and 154 completed the first follow-up. Data from 10 participants were excluded due to loss of abstinence goals, careless responding, or unusually low compliance. The final analytic sample included 144 participants.
 
@@ -91,7 +91,7 @@ Our models predicted the probability of an alcohol lapse within a 24-hour window
 
 Features were engineered from all available data up to the start of each window.^[We filtered the data to include only communications with known context prior to feature engineering.] The full model included 406 features from cellular communication data plus 24 features from baseline self-report measures. We also evaluated a comparison model that used only the baseline features. @tbl-1 details the raw predictors and feature engineering procedures. 
 
-Candidate model configurations differed by algorithm (elastic net, random forest, XGBoost), outcome resampling method, and hyperparemter values. The best configuration for each model was selected using 6 repeats of participant-grouped 5-fold cross-validation. Folds were stratified by a between-subject measure of our outcome (low lapsers: 0-9 lapses; and high lapsers: 10+ lapses).   
+Candidate model configurations differed by algorithm (elastic net, random forest, XGBoost), outcome resampling method, and hyperparemter values. The best configuration for each model was selected using 6 repeats of participant-grouped 5-fold cross-validation. Folds were stratified by a between-subject measure of our outcome (low lapsers: 0-9 lapses; high lapsers: 10+ lapses).   
 
 We evaluated model performance with a Bayesian hierarchical generalized linear model. Posterior distributions with 95% credible intervals (CIs) were estimated from the 30 held-out test sets using weakly informative, data-dependent priors to regularize and reduce overfitting.^[Residual SD ~ normal(0, exp(2)); intercept (centered predictors) ~ normal(2.3, 1.3); window-width contrasts ~ normal(0, 2.69); covariance ~ decov(1,1,1,1).] Random intercepts were included for repeat and fold (nested within repeat). auROCs were logit-transformed and regressed on model type to estimate the probability that model performances differed systematically. 
 
