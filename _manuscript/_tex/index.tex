@@ -543,13 +543,13 @@ All Tables for Main Manuscript}}
 
 The median posterior probability for auROC for the full model was 0.68.
 The 95\% CIs were relatively narrow ({[}0.64, 0.71{]}) and did not
-contain .5, or chance performance. The final model retained 13 features
-(Figure~\ref{fig-1}). The top four features were baseline measures of
-abstinence confidence, having a goal of abstinence, abstinence
-self-efficacy when experiencing negative affect, and craving.
-Communication frequency with people who don't know about the
-individual's recovery goals also appeared to be an important feature for
-increasing lapse risk.
+contain .5, providing strong evidence that the model is capturing signal
+in the data. The final model retained 13 features (Figure~\ref{fig-1}).
+The top four features were baseline measures of abstinence confidence,
+having a goal of abstinence, abstinence self-efficacy when experiencing
+negative affect, and craving. Communication frequency with people who
+don't know about the individual's recovery goals also appeared to be an
+important feature for increasing lapse risk.
 
 \begin{figure}[H]
 
@@ -563,7 +563,9 @@ increasing lapse risk.
 coefficient) for the full model. Features are ordered by absolute
 coefficient value. Blue bars indicate higher feature values, on average,
 lower lapse risk. Red bars indicate higher feature values, on average,
-increase risk.}
+increase risk. Baseline features were collected from self-report
+measures at the start of the study. Communication features were
+engineered from the contexualized cellular communications.}
 
 \end{figure}%
 
@@ -578,7 +580,7 @@ communications were adding predictive value above and beyond the
 baseline features. The baseline model retained 5 features and obtained
 performance nearly identical to the full model (median auROC 0.68, 95\%
 CIs {[}0.64, 0.71{]}). There was a median difference in auROC of the
-full and baseline models of less than .01, yeilding no evidence (52\%
+full and baseline models of less than .01, yielding no evidence (52\%
 probability) that the posterior distributions were meaningfully
 different.
 
