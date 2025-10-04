@@ -331,7 +331,7 @@ that used only the baseline features. Table~\ref{tbl-1} details the raw
 predictors and feature engineering procedures.
 
 Candidate model configurations differed by algorithm (elastic net,
-random forest, XGBoost), outcome resampling method, and hyperparemter
+random forest, XGBoost), outcome resampling method, and hyperparameter
 values. The best configuration for each model was selected using 6
 repeats of participant-grouped 5-fold cross-validation. Our performance
 metric was area under the receiver operating curve (auROC). Folds were
@@ -551,6 +551,14 @@ Communication frequency with people unaware of the individual's recovery
 goals also emerged as an important feature associated with increased
 lapse risk.
 
+We evaluated a comparison model to assess the incremental predictive
+value of cellular communication features beyond baseline measures. The
+baseline model retained 5 features and achieved performance nearly
+identical to the full model (median auROC = 0.68, 95\% CI {[}0.64,
+0.71{]}). The median difference in auROC between the full and baseline
+models was less than .01, providing no evidence (52\% probability) that
+their posterior distributions were meaningfully different.
+
 \begin{figure}[H]
 
 \centering{
@@ -572,16 +580,6 @@ engineered from the contexualized cellular communications.}
 \textsubscript{Source:
 \href{https://jjcurtin.github.io/study_messages/notebooks/mak_figures-preview.html\#cell-fig-1}{Make
 All Figures for Main Manuscript}}
-
-\subsection{Model Comparison}\label{model-comparison}
-
-We evaluated a comparison model to assess the incremental predictive
-value of cellular communication features beyond baseline measures. The
-baseline model retained 5 features and achieved performance nearly
-identical to the full model (median auROC = 0.68, 95\% CI {[}0.64,
-0.71{]}). The median difference in auROC between the full and baseline
-models was less than .01, providing no evidence (52\% probability) that
-their posterior distributions were meaningfully different.
 
 \section{Discussion}\label{discussion}
 

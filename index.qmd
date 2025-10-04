@@ -53,10 +53,10 @@ Target Journal: JMIR Formative Research (1500 words)
 
 Goal word counts: 
 
-- Introduction: 400 words or about 3 paragraphs (currently 539 words)
+- Introduction: 300 words or about 3 paragraphs (currently 539 words)
 - Methods: 600 words (currently 614 words)
 - Results: 200 words (currently 194)
-- Discussion: 500 words
+- Discussion: 400 words
 -->
 
 ```{r}
