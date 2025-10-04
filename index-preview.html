@@ -1,53 +1,176 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="generator" content="quarto-1.6.39">
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.39">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="author" content="Kendra Wyant">
+    <meta name="author" content="Coco Yu">
+    <meta name="author" content="John J. Curtin">
+    <meta name="dcterms.date" content="2025-10-04">
+    <meta name="keywords" content="Substance use disorders, Machine learning, Cellular Sensing">
 
-<meta name="author" content="Kendra Wyant">
-<meta name="author" content="Coco Yu">
-<meta name="author" content="John J. Curtin">
-<meta name="dcterms.date" content="2025-10-04">
-<meta name="keywords" content="Substance use disorders, Machine learning, Cellular Sensing">
+    <title>Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder</title>
+    <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.columns{display: flex; gap: min(4vw, 1.5em);}
+      div.column{flex: auto; overflow-x: auto;}
+      div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+      ul.task-list{list-style: none;}
+      ul.task-list li input[type="checkbox"] {
+        width: 0.8em;
+        margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+        vertical-align: middle;
+      }
+      /* CSS for syntax highlighting */
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+        }
+      pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+      div.sourceCode
+        {   }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+      /* CSS for citations */
+      div.csl-bib-body { }
+      div.csl-entry {
+        clear: both;
+        margin-bottom: 0em;
+      }
+      .hanging-indent div.csl-entry {
+        margin-left:2em;
+        text-indent:-2em;
+      }
+      div.csl-left-margin {
+        min-width:2em;
+        float:left;
+      }
+      div.csl-right-inline {
+        margin-left:2em;
+        padding-left:1em;
+      }
+      div.csl-indent {
+        margin-left: 2em;
+      }    </style>
 
-<title>Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder</title>
-<style>
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
-  vertical-align: middle;
-}
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+    <style>
+      body.hypothesis-enabled #quarto-embed-header {
+        padding-right: 36px;
+      }
 
+      #quarto-embed-header {
+        height: 3em;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: solid 1px;
+      }
 
+      #quarto-embed-header h6 {
+        font-size: 1.1em;
+        padding-top: 0.6em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-weight: 400;
+      }
+
+      #quarto-embed-header a.quarto-back-link,
+      #quarto-embed-header a.quarto-download-embed {
+        font-size: 0.8em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      .quarto-back-container {
+        padding-left: 0.5em;
+        display: flex;
+      }
+
+      .headroom {
+          will-change: transform;
+          transition: transform 200ms linear;
+      }
+
+      .headroom--pinned {
+          transform: translateY(0%);
+      }
+
+      .headroom--unpinned {
+          transform: translateY(-100%);
+      }      
+    </style>
+
+    <script>
+    window.document.addEventListener("DOMContentLoaded", function () {
+
+      var header = window.document.querySelector("#quarto-embed-header");
+      const titleBannerEl = window.document.querySelector("body > #title-block-header");
+      if (titleBannerEl) {
+        titleBannerEl.style.paddingTop = header.clientHeight + "px";
+      }
+      const contentEl = window.document.getElementById('quarto-content');
+      for (const child of contentEl.children) {
+        child.style.paddingTop = header.clientHeight + "px";
+        child.style.marginTop = "1em";
+      }
+
+      // Use the article root if the `back` call doesn't work. This isn't perfect
+      // but should typically work
+      window.quartoBackToArticle = () => {
+        var currentUrl = window.location.href;
+        window.history.back();
+        setTimeout(() => {
+            // if location was not changed in 100 ms, then there is no history back
+            if(currentUrl === window.location.href){              
+                // redirect to site root
+                window.location.href = "index.html";
+            }
+        }, 100);
+      }
+
+      const headroom = new window.Headroom(header, {
+        tolerance: 5,
+        onPin: function () {
+        },
+        onUnpin: function () {
+        },
+      });
+      headroom.init();
+    });
+    </script>
+
+    
+<script src="site_libs/manuscript-notebook/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -61,9 +184,8 @@ div.csl-indent {
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
-
-
-<meta name="citation_title" content="Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder">
+     
+      <meta name="citation_title" content="Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder">
 <meta name="citation_keywords" content="Substance use disorders,Machine learning,Cellular Sensing">
 <meta name="citation_author" content="Kendra Wyant">
 <meta name="citation_author" content="Coco Yu">
@@ -194,9 +316,16 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Differences in Perceptions of and Practices Regarding Treatment of Alcohol Use Disorders Among VA Primary Care Providers in Urban and Rural Clinics;,citation_abstract=Background Effective behavioral and pharmacological treatments are available and recommended for patients with alcohol use disorders (AUD) but rarely received. Barriers to receipt and provision of evidence-based AUD treatments delivered by specialists may be greatest in rural areas. Methods A targeted subanalysis of qualitative interview data collected from primary care providers at 5 Veterans Affairs clinics was conducted to identify differences in provider perceptions and practices regarding AUD treatment across urban and rural clinics. Key contacts were used to recruit 24 providers from 3 “urban” clinics at medical centers and 2 “rural” community-based outpatient clinics. Providers completed 30-minute semistructured interviews, which were recorded, transcribed, and analyzed using inductive content analysis. Results Thirteen urban and 11 rural providers participated. Urban and rural providers differed regarding referral practices and in perceptions of availability and utility of specialty addictions treatment. Urban providers described referral to specialty treatment as standard practice, while rural providers reported substantial barriers to specialty care access and infrequent specialty care referral. Urban providers viewed specialty addictions treatment as accessible and comprehensive, and perceived addictions providers as “experts” and collaborators, whereas rural providers perceived inadequate support from the health care system for AUD treatment. Urban providers desired greater integration with specialty addictions care while rural providers wanted access to local addictions treatment resources. Conclusions Providers in rural settings view referral to specialty addictions treatment as impractical and resources inadequate to treat AUD. Additional work is needed to understand the unique needs of rural clinics and decrease barriers to AUD treatment.;,citation_author=Jessica P. Young;,citation_author=Carol E. Achtmeyer;,citation_author=Kara M. Bensley;,citation_author=Eric J. Hawkins;,citation_author=Emily C. Williams;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_issue=4;,citation_doi=10.1111/jrh.12293;,citation_issn=1748-0361;,citation_volume=34;,citation_language=en-US;,citation_journal_title=The Journal of Rural Health;">
 </head>
 
-<body>
+  <body class="quarto-notebook">
+    <div id="quarto-embed-header" class="headroom fixed-top bg-primary">
+      
+      <a onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link" href=""><i class="bi bi-caret-left"></i> Back to Article</a>
+      <h6><i class="bi bi-journal-code"></i> Article Notebook</h6>
 
-<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+            <a href="./index.qmd" class="btn btn-primary quarto-download-embed" download="index.qmd">Download Source</a>
+          </div>
+
+     <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder</h1>
@@ -249,7 +378,7 @@ div.csl-indent {
               </div>
       </div>
       <div class="quarto-title-meta-column-end quarto-other-formats-target">
-      <div class="quarto-alternate-formats"><div class="quarto-title-meta-heading">Other Formats</div><div class="quarto-title-meta-contents"><p><a href="index.docx"><i class="bi bi-file-word"></i>MS Word</a></p></div><div class="quarto-title-meta-contents"><p><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></p></div></div></div>
+      </div>
     </div>
 
 
@@ -283,18 +412,13 @@ div.csl-indent {
   </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
   </ul>
-<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="index-preview.html"><i class="bi bi-journal-code"></i>Article Notebook</a></li><li><a href="notebooks\mak_figures-preview.html"><i class="bi bi-journal-code"></i>Make All Figures for Main Manuscript</a></li><li><a href="notebooks\mak_tables-preview.html"><i class="bi bi-journal-code"></i>Make All Tables for Main Manuscript</a></li><li><a href="notebooks\ana_bayesian-preview.html"><i class="bi bi-journal-code"></i>Model evaluation</a></li></ul></div></nav>
+</nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">      
 
-
-
-  
-
-
-<!--
+       <!--
 Target Journal: JMIR Formative Research (1500 words)
 
 Goal word counts: 
@@ -304,6 +428,31 @@ Goal word counts:
 - Results: 200 words
 - Discussion: 500 words
 -->
+<div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">source</span>(<span class="st">"https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true"</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>path_models <span class="ot">&lt;-</span> <span class="fu">format_path</span>(<span class="st">"risk/models/messages"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>pp_perf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(path_models, <span class="st">"pp_perf_tibble.csv"</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>contrast <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(path_models, </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"contrast_baseline.csv"</span>),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                    <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>One of the biggest challenges in Alcohol Use Disorders (AUD) treatment stems from the chronic relapsing nature of this disease <span class="citation" data-cites="scottPathwaysRelapseTreatment2005">(<a href="#ref-scottPathwaysRelapseTreatment2005" role="doc-biblioref">Scott et al., 2005</a>)</span>. People can relapse days, weeks, and even years after obtaining the goal of abstinence. At least 60% of AUD patients relapse to heavy drinking within 6 months following treatment <span class="citation" data-cites="nguyenPredictingRelapseAlcohol2020a witkiewitzPredictorsHeavyDrinking2011a kirshenbaumQuantitativeReviewUbiquitous2009">(<a href="#ref-kirshenbaumQuantitativeReviewUbiquitous2009" role="doc-biblioref">Kirshenbaum et al., 2009</a>; <a href="#ref-nguyenPredictingRelapseAlcohol2020a" role="doc-biblioref">Nguyen et al., 2020</a>; <a href="#ref-witkiewitzPredictorsHeavyDrinking2011a" role="doc-biblioref">Witkiewitz, 2011</a>)</span>. At most 50% of people with an AUD achieve remission after several years <span class="citation" data-cites="fleuryRemissionSubstanceUse2016 heymanQuittingDrugsQuantitative2013">(<a href="#ref-fleuryRemissionSubstanceUse2016" role="doc-biblioref">Fleury et al., 2016</a>; <a href="#ref-heymanQuittingDrugsQuantitative2013" role="doc-biblioref">Heyman, 2013</a>)</span>.</p>
@@ -329,9 +478,12 @@ Goal word counts:
 <p>Candidate model configurations differed by algorithm (elastic net, random forest, XGBoost), outcome resampling method, and hyperparemter values. The best configuration for each model was selected using 6 repeats of participant-grouped 5-fold cross-validation. Our performance metric was area under the receiver operating curve (auROC). Folds were stratified by a between-subject measure of our outcome (low lapsers: 0-9 lapses; high lapsers: 10+ lapses).</p>
 <p>We evaluated model performance with a Bayesian hierarchical generalized linear model. Posterior distributions with 95% credible intervals (CIs) were estimated from the 30 held-out test sets using weakly informative, data-dependent priors to regularize and reduce overfitting.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Random intercepts were included for repeat and fold (nested within repeat). auROCs were logit-transformed and regressed on model type to estimate the probability that model performances differed systematically.</p>
 <p>Our best performing models used an elastic net algorithm. We quantified feature importance by examining the retained features (i.e., coefficient value &gt; 0) in the full model and ordering them by absolute coefficient value. These values provide an estimate of the direction and magnitude of association between each predictor and the outcome, conditional on the other features retained. All our annotated analysis scripts are publicly available on our study website (<a href="https://jjcurtin.github.io/study_messages/">https://jjcurtin.github.io/study_messages/</a>).</p>
-<div class="quarto-embed-nb-cell">
-<div class="cell">
-<div id="tbl-1" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<div class="quarto-embed-nb-cell" data-notebook="C:\Users\kpaquette2\study_messages\notebooks\mak_tables.qmd" data-notebook-title="Make All Tables for Main Manuscript" data-notebook-cellid="cell-tbl-1">
+<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
+
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>feats <span class="op">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  knitr::kable() <span class="op">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  kable_classic() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-1" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -653,8 +805,8 @@ Goal word counts:
 Table&nbsp;1: Feature Engineering of Raw Predictors
 </figcaption>
 </figure>
-</div>
-</div>
+</div></div></div>
+</div></div>
 </div>
 </section>
 <section id="ethical-considerations" class="level2">
@@ -667,9 +819,22 @@ Table&nbsp;1: Feature Engineering of Raw Predictors
 <section id="participants" class="level2">
 <h2 class="anchored" data-anchor-id="participants">Participants</h2>
 <p><a href="#tbl-2" class="quarto-xref">Table&nbsp;2</a> provides the demographic characterization of our sample. We obtained a total of 375,912 contextualized communications across participants. Participants had, on average, 2,610 communications (range = 109-14,225). 56% of participants reported at least one lapse.</p>
-<div class="quarto-embed-nb-cell">
-<div class="cell">
-<div id="tbl-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<div class="quarto-embed-nb-cell" data-notebook="C:\Users\kpaquette2\study_messages\notebooks\mak_tables.qmd" data-notebook-title="Make All Tables for Main Manuscript" data-notebook-cellid="cell-tbl-2">
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
+
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>footnote_table_dem_a <span class="op">&lt;-</span> <span class="st">"N = 144"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>table_dem <span class="op">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  knitr::kable() <span class="op">|&gt;</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  kable_classic() <span class="op">|&gt;</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  kableExtra::group_rows(start_row <span class="op">=</span> <span class="dv">3</span>, end_row <span class="op">=</span> <span class="dv">4</span>) <span class="op">|&gt;</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  kableExtra::group_rows(start_row <span class="op">=</span> <span class="dv">6</span>, end_row <span class="op">=</span> <span class="dv">10</span>) <span class="op">|&gt;</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  kableExtra::group_rows(start_row <span class="op">=</span> <span class="dv">12</span>, end_row <span class="op">=</span> <span class="dv">13</span>) <span class="op">|&gt;</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  kableExtra::group_rows(start_row <span class="op">=</span> <span class="dv">15</span>, end_row <span class="op">=</span> <span class="dv">20</span>) <span class="op">|&gt;</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  kableExtra::group_rows(start_row <span class="op">=</span> <span class="dv">22</span>, end_row <span class="op">=</span> <span class="dv">30</span>) <span class="op">|&gt;</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  kableExtra::group_rows(start_row <span class="op">=</span> <span class="dv">33</span>, end_row <span class="op">=</span> <span class="dv">37</span>) <span class="op">|&gt;</span> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  kableExtra::footnote(general <span class="op">=</span> c(footnote_table_dem_a), escape<span class="op">=</span>FALSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -1025,19 +1190,20 @@ Table&nbsp;1: Feature Engineering of Raw Predictors
 Table&nbsp;2: Demographics
 </figcaption>
 </figure>
-</div>
-</div>
+</div></div></div>
+</div></div>
 </div>
 </section>
 <section id="model-evaluation" class="level2">
 <h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
 <p>The median posterior probability for auROC for the full model was 0.68. The 95% CIs were relatively narrow ([0.64, 0.71]) and did not contain .5, or chance performance. The final model retained 13 features (<a href="#fig-1" class="quarto-xref">Figure&nbsp;1</a>). The top four features were baseline measures of abstinence confidence, having a goal of abstinence, abstinence self-efficacy when experiencing negative affect, and craving. Communication frequency with people who don’t know about the individual’s recovery goals also appeared to be an important feature for increasing lapse risk.</p>
-<div class="quarto-embed-nb-cell">
-<div id="cell-fig-1" class="cell" data-fig-width="7" data-fig-height="5">
+<div class="quarto-embed-nb-cell" data-notebook="C:\Users\kpaquette2\study_messages\notebooks\mak_figures.qmd" data-notebook-title="Make All Figures for Main Manuscript" data-notebook-cellid="cell-fig-1">
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="cell-fig-1" class="cell" data-fig-width="7" data-fig-height="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>feat_imp </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
 <a href="index_files/figure-html/notebooks-mak_figures-fig-1-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Global feature importance (elastic net coefficient) for the full model. Features are ordered by absolute coefficient value. Blue bars indicate higher feature values, on average, lower lapse risk. Red bars indicate higher feature values, on average, increase risk."><img src="index_files/figure-html/notebooks-mak_figures-fig-1-output-1.png" width="672" height="480" class="figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1046,7 +1212,7 @@ Figure&nbsp;1: Global feature importance (elastic net coefficient) for the full 
 </figure>
 </div>
 </div>
-</div>
+</div></div>
 </div>
 </section>
 <section id="model-comparison" class="level2">
@@ -1057,11 +1223,7 @@ Figure&nbsp;1: Global feature importance (elastic net coefficient) for the full 
 <section id="discussion" class="level1">
 <h1>Discussion</h1>
 <div style="page-break-after: always;"></div>
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-alvarezSocialNetworkHeavy2021a" class="csl-entry" role="listitem">
 Alvarez, M. J., Richards, D. K., Oviedo Ramirez, S., &amp; Field, C. A. (2021). Social network heavy drinking moderates the effects of a brief motivational intervention for alcohol use among injured patients. <em>Addictive Behaviors</em>, <em>112</em>, 106594. <a href="https://doi.org/10.1016/j.addbeh.2020.106594">https://doi.org/10.1016/j.addbeh.2020.106594</a>
 </div>
@@ -1152,17 +1314,19 @@ Wyant, K., Moshontz, H., Ward, S. B., Fronk, G. E., &amp; Curtin, J. J. (2023). 
 <div id="ref-wyantMachineLearningModels2024" class="csl-entry" role="listitem">
 Wyant, K., Sant’Ana, S. J., Fronk, G. E., &amp; Curtin, J. J. (2024). Machine learning models for temporally precise lapse prediction in alcohol use disorder. <em>Journal of Psychopathology and Clinical Science</em>, <em>133</em>(7), 527–540. <a href="https://doi.org/10.1037/abn0000901">https://doi.org/10.1037/abn0000901</a>
 </div>
-</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
 <ol>
 <li id="fn1"><p>(≥4 self-reported DSM-5 symptoms)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Defined as scores &gt;2.2 or 2.8, respectively, on the psychosis or paranoia scales of the Symptom Checklist–90 <span class="citation" data-cites="derogatislBriefSymptomInventory">(<a href="#ref-derogatislBriefSymptomInventory" role="doc-biblioref">Derogatis, L.R., 2000</a>)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>We filtered the data to include only communications with known context prior to feature engineering.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Residual SD ~ normal(0, exp(2)); intercept (centered predictors) ~ normal(2.3, 1.3); window-width contrasts ~ normal(0, 2.69); covariance ~ decov(1,1,1,1).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section></div></main>
-<!-- /main column -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section>
+     </main>
+<!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1578,9 +1742,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-</div> <!-- /content -->
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
@@ -1611,9 +1773,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   };
   
 })();
-          </script>
-
-
-
-
+          </script> 
+  
 </body></html>

@@ -190,11 +190,15 @@ Sensing},
 \title{Using Cellular Communication Sensing to Support Early Recovery
 from Alcohol Use Disorder}
 \author{Kendra Wyant \and Coco Yu \and John J. Curtin}
-\date{2025-10-03}
+\date{2025-10-04}
 
 \begin{document}
 \maketitle
 
+
+\textsubscript{Source:
+\href{https://jjcurtin.github.io/study_messages/index.qmd.html}{Article
+Notebook}}
 
 \section{Introduction}\label{introduction}
 
@@ -329,7 +333,8 @@ predictors and feature engineering procedures.
 Candidate model configurations differed by algorithm (elastic net,
 random forest, XGBoost), outcome resampling method, and hyperparemter
 values. The best configuration for each model was selected using 6
-repeats of participant-grouped 5-fold cross-validation. Folds were
+repeats of participant-grouped 5-fold cross-validation. Our performance
+metric was area under the receiver operating curve (auROC). Folds were
 stratified by a between-subject measure of our outcome (low lapsers: 0-9
 lapses; high lapsers: 10+ lapses).
 
@@ -536,6 +541,16 @@ All Tables for Main Manuscript}}
 
 \subsection{Model Evaluation}\label{model-evaluation}
 
+The median posterior probability for auROC for the full model was 0.68.
+The 95\% CIs were relatively narrow ({[}0.64, 0.71{]}) and did not
+contain .5, or chance performance. The final model retained 13 features
+(Figure~\ref{fig-1}). The top four features were baseline measures of
+abstinence confidence, having a goal of abstinence, abstinence
+self-efficacy when experiencing negative affect, and craving.
+Communication frequency with people who don't know about the
+individual's recovery goals also appeared to be an important feature for
+increasing lapse risk.
+
 \begin{figure}[H]
 
 \centering{
@@ -555,6 +570,17 @@ increase risk.}
 \textsubscript{Source:
 \href{https://jjcurtin.github.io/study_messages/notebooks/mak_figures-preview.html\#cell-fig-1}{Make
 All Figures for Main Manuscript}}
+
+\subsection{Model Comparison}\label{model-comparison}
+
+We evaluated a comparison model to determine the extent that cellular
+communications were adding predictive value above and beyond the
+baseline features. The baseline model retained 5 features and obtained
+performance nearly identical to the full model (median auROC 0.68, 95\%
+CIs {[}0.64, 0.71{]}). There was a median difference in auROC of the
+full and baseline models of less than .01, yeilding no evidence (52\%
+probability) that the posterior distributions were meaningfully
+different.
 
 \section{Discussion}\label{discussion}
 
