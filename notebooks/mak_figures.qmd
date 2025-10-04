@@ -31,7 +31,7 @@ suppressPackageStartupMessages(library(patchwork))
 
 theme_set(theme_classic())
 
-path_models <- format_path(str_c("risk/models/messages"))
+path_models <- format_path("risk/models/messages")
 
 model_full <- read_rds(here::here(path_models, "best_model_v17_kfold_full.rds"))
 
@@ -99,7 +99,7 @@ feat_imp <- model_full |>
 
 ```{r}
 #| label: fig-1
-#| fig-cap: "Global feature importance (elastic net coefficient) for the full model. Features are ordered by absolute coefficient value. Blue bars indicate higher feature values, on average, lower lapse risk. Red bars indicate higher feature values, on average, increase risk."
+#| fig-cap: "Global feature importance (elastic net coefficient) for the full model. Features are ordered by absolute coefficient value. Blue bars indicate higher feature values, on average, lower lapse risk. Red bars indicate higher feature values, on average, increase risk. Baseline features were collected from self-report measures at the start of the study. Communication features were engineered from the contexualized cellular communications."
 #| fig-width: 7
 #| fig-height: 5
 

@@ -130,24 +130,13 @@ All procedures were approved by the University of Wisconsin-Madison Institutiona
 {{< embed notebooks/mak_tables.qmd#tbl-2 >}} 
 
 ## Model Evaluation
-The median posterior probability for auROC for the full model was `r round(subset(pp_perf, model == "full model")$pp_median, 2)`. The 95% CIs were relatively narrow ([`r round(subset(pp_perf, model == "full model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "full model")$pp_upper, 2)`]) and did not contain .5, providing strong evidence that the model is capturing signal in the data. The final model retained 13 features (@fig-1). The top four features were baseline measures of abstinence confidence, having a goal of abstinence, abstinence self-efficacy when experiencing negative affect, and craving. Communication frequency with people who don't know about the individual's recovery goals also appeared to be an important feature for increasing lapse risk.
-
-<!-- Retained communication features:
-Interesting they are all over the longer period durations - features become more meaningful with more data?
-
-p168.l0.dratecount.phone_number,
-p72.l0.rratecount.drink_status.NonDrinker,
-p168.l0.rratecount.drink_status.Drinker,
-p168.l0.rratecount.support_status.Dont Know,
-p168.l0.rratecount.contact_experience.Unpleasant,
-p168.l0.rratecount.cont_type.friend   
--->
+The median posterior probability for auROC for the full model was `r round(subset(pp_perf, model == "full model")$pp_median, 2)`. The 95% CIs were relatively narrow ([`r round(subset(pp_perf, model == "full model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "full model")$pp_upper, 2)`]) and did not contain .5, or chance performance. The final model retained 13 features (@fig-1). The top four features were baseline measures of abstinence confidence, having a goal of abstinence, abstinence self-efficacy when experiencing negative affect, and craving. Communication frequency with people who don't know about the individual's recovery goals also appeared to be an important feature for increasing lapse risk.
 
 {{< embed notebooks/mak_figures.qmd#fig-1 >}} 
 
 
 ## Model Comparison
-We evaluated a comparison model to determine the extent that cellular communications were adding predictive value above and beyond the baseline features. The baseline model retained 5 features and obtained performance nearly identical to the full model (median auROC `r round(subset(pp_perf, model == "baseline model")$pp_median, 2)`, 95% CIs [`r round(subset(pp_perf, model == "baseline model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "baseline model")$pp_upper, 2)`]). There was a median difference in auROC of the full and baseline models of less than .01, yielding no evidence (52% probability) that the posterior distributions were meaningfully different.
+We evaluated a comparison model to determine the extent that cellular communications were adding predictive value above and beyond the baseline features. The baseline model retained 5 features and obtained performance nearly identical to the full model (median auROC `r round(subset(pp_perf, model == "baseline model")$pp_median, 2)`, 95% CIs [`r round(subset(pp_perf, model == "baseline model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "baseline model")$pp_upper, 2)`]). There was a median difference in auROC of the full and baseline models of less than .01, yeilding no evidence (52% probability) that the posterior distributions were meaningfully different.
 
 # Discussion
 
