@@ -190,86 +190,64 @@ Sensing},
 \title{Using Cellular Communication Sensing to Support Early Recovery
 from Alcohol Use Disorder}
 \author{Kendra Wyant \and Coco Yu \and John J. Curtin}
-\date{2025-10-04}
+\date{2025-10-07}
 
 \begin{document}
 \maketitle
 
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/index.qmd.html}{Article
+\href{https://jjcurtin.github.io/study_messages/index-preview.html}{Article
 Notebook}}
 
 \section{Introduction}\label{introduction}
 
-One of the biggest challenges in Alcohol Use Disorders (AUD) treatment
-stems from the chronic relapsing nature of this disease (Scott et al.,
-2005). People can relapse days, weeks, and even years after obtaining
-the goal of abstinence. At least 60\% of AUD patients relapse to heavy
-drinking within 6 months following treatment (Kirshenbaum et al., 2009;
-Nguyen et al., 2020; Witkiewitz, 2011). At most 50\% of people with an
-AUD achieve remission after several years (Fleury et al., 2016; Heyman,
-2013).
+Alcohol Use Disorder (AUD) is a chronic, relapsing disease (Dennis \&
+Scott, 2007; McLellan et al., 2000; Rounsaville, 2010). Lapses, single
+episodes of alcohol use, and relapse, a full return to harmful drinking,
+can occur at any point in recovery (Kirshenbaum et al., 2009; Nguyen et
+al., 2020; Scott et al., 2005; Witkiewitz, 2011). As with other chronic
+health conditions where symptoms fluctuate, sometimes unexpectedly,
+sustained AUD recovery requires ongoing monitoring of lapse risk.
 
-Identifying initial lapses in early recovery is critical. Lapses --
-single episodes of alcohol use -- are easy to define, have a clear
-onset, and are also clinically meaningful. They serve as an early
-warning sign of returning back to previous drinking behavior
-inconsistent with desired goals (Chung \& Maisto, 2006; Marlatt \&
-Donovan, 2005; Witkiewitz \& Marlatt, 2004). Lapse predicts future
-lapses, with more frequent ones resulting in increased risks of relapse
-(Högström Brandt et al., 1999; Witkiewitz \& Marlatt, 2004).
+Machine learning--guided recovery systems may now assist with the
+inherently difficult task of identifying when and why someone is at
+increased risk. Personal sensing of densely sampled data from
+individuals' day-to-day lives can provide the inputs necessary for
+temporally dynamic lapse predictions (Mohr et al., 2017). Early models
+using ecological momentary assessment data have achieved excellent
+accuracy (Chih et al., 2014; Wyant et al., 2024, under review). Still,
+questions remain about the long-term feasibility of self-report sensing
+methods and whether new, important risk factors might emerge from
+sensing methods that passively collect smartphone data without user
+input.
 
-Current predictions of alcohol lapses rely heavily on self reports,
-which can be burdensome to measure in long run. Machine learning models
-leveraging ecological momentary assessment (EMA) measures have performed
-relatively well to predict goal-inconsistent alcohol use (Wyant et al.,
-2024). The surveys were collected up to four times daily for three
-months. However, constantly completing surveys makes it burdensome for
-AUD patients. Although most EMA relevant mental health research
-demonstrated modest compliance rates, their time windows last from two
-weeks to three months (Czyz et al., 2018; Hung et al., 2016;
-Mackesy-Amiti \& Boodram, 2018; Porras-Segovia et al., 2020; van
-Genugten et al., 2020). The study length is insufficient because AUD is
-a chronic disease that requires constant risk monitoring. As extended
-period of time is anticipated, users' perceived burden of answering
-surveys is presumably larger (Mogk et al., 2023). Although minimizing
-the number of items in the surveys and the frequency of prompting users
-to complete the surveys might help mitigate the associated burden, it
-can inevitably reduce the prediction precision and temporal precision of
-predictions.
+Cellular communication sensing may be one promising method. It offers
+the potential for greater temporal specificity in capturing fluctuations
+in risk compared with self-report data. Collecting communication data in
+near real time could allow an algorithm to detect potential triggers as
+they occur, without prompting users to reflect on their feelings or
+waiting for users to report about their environement at a later point.
+For example, late night phone calls could indicate an emergency, ``drunk
+dialing'', or other risk-relevant interactions, while an expanding or
+shrinking social circle could be characterized by the number of unique
+contacts someone has communicated with.
 
-Passive cellular communication sensing represents new opportunities due
-to its feasibility, relatively low burden on individuals and continuous
-data collection. In a smartphone-based sensing platform the primary
-expense on the individual is the smartphone. Smartphone usage is already
-widespread. Eighty-five percent of US adults have a smartphone and this
-number is consistent across all sociodemographic groups, including those
-in recovery programs for substance use (Center, 2021; Masson et al.,
-2019). Studies collecting passive data have demonstrated high
-acceptability from participants and higher compliance rates compared to
-active measures (Beukenhorst et al., 2022; Wyant et al., 2023). Further,
-risk monitoring using cellular sensing is temporally sensitive to
-fluctuating risks. Analyzing communication patterns can detect potential
-triggers in time without actively prompting users to reflect on their
-feelings at the moment or report their environment.
+These data may become even more powerful when communication contacts are
+contextualized with personal meaning for a given participant (e.g., Who
+is this contact to them? How pleasant or unpleasant is a typical
+interaction with them? Have they drank with them in the past?). In this
+scenario, contextualized communication logs might reveal that the
+late-night phone call was to a sponsor, or that the shrinking social
+circle was due to reduced contact with people who are unsupportive of
+their recovery.
 
-Cellular communications, with minimal contextual information, is
-embedded with potentially rich information that align with relapse
-antecedents. For example, social interactions can have important
-influences on drinking behavior (Alvarez et al., 2021; Hunter-Reel et
-al., 2009). We may be able to capture immediate risk based on who
-someone is calling or what time of day it is. Decreased interactions may
-signify isolation common with depressive symptoms, reaching out to
-people in one's social network could signify a positive coping strategy,
-or changes in patterns between a single person in one's social network
-could indicate conflict (Chih et al., 2014; Hufford et al., 2003; Miller
-et al., 2001).
-
-This study aims at building machine learning models from cellular
-communications that identify \emph{who} are at heightened risk for
-alcohol lapses, \emph{when} they will lapse, and \emph{why} they are at
-increased risk.
+In this study, we evaluated the performance of a machine learning model
+that predicts the probability of a next-day lapse using contextualized
+cellular communication data. We also describe the most important
+features contributing to these predictions, with the goal of identifying
+new, clinically meaningful features emerging from communication-based
+sensing.
 
 \section{Methods}\label{methods}
 
@@ -587,44 +565,18 @@ All Figures for Main Manuscript}}
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\bibitem[\citeproctext]{ref-alvarezSocialNetworkHeavy2021a}
-Alvarez, M. J., Richards, D. K., Oviedo Ramirez, S., \& Field, C. A.
-(2021). Social network heavy drinking moderates the effects of a brief
-motivational intervention for alcohol use among injured patients.
-\emph{Addictive Behaviors}, \emph{112}, 106594.
-\url{https://doi.org/10.1016/j.addbeh.2020.106594}
-
-\bibitem[\citeproctext]{ref-beukenhorstUsingSmartphonesReduce2022a}
-Beukenhorst, A. L., Burke, K. M., Scheier, Z., Miller, T. M., Paganoni,
-S., Keegan, M., Collins, E., Connaghan, K. P., Tay, A., Chan, J., Berry,
-J. D., \& Onnela, J.-P. (2022). Using smartphones to reduce research
-burden in a neurodegenerative population and assessing participant
-adherence: {A} randomized clinical trial and two observational studies.
-\emph{JMIR Mhealth and Uhealth}, \emph{10}(2), e31877.
-\url{https://doi.org/10.2196/31877}
-
-\bibitem[\citeproctext]{ref-pewresearchcenterMobileFactSheet2021a}
-Center, P. R. (2021). \emph{Mobile {Fact Sheet}}. Pew Research Center.
-
-\bibitem[\citeproctext]{ref-chihPredictiveModelingAddiction2014a}
+\bibitem[\citeproctext]{ref-chihPredictiveModelingAddiction2014}
 Chih, M.-Y., Patton, T., McTavish, F. M., Isham, A. J., Judkins-Fisher,
 C. L., Atwood, A. K., \& Gustafson, D. H. (2014). Predictive modeling of
 addiction lapses in a mobile health application. \emph{Journal of
 Substance Abuse Treatment}, \emph{46}(1), 29--35.
 \url{https://doi.org/10.1016/j.jsat.2013.08.004}
 
-\bibitem[\citeproctext]{ref-chungRelapseAlcoholOther2006a}
-Chung, T., \& Maisto, S. A. (2006). Relapse to alcohol and other drug
-use in treated adolescents: {Review} and reconsideration of relapse as a
-change point in clinical course. \emph{Clinical Psychology Review},
-\emph{26}(2), 149--161. \url{https://doi.org/10.1016/j.cpr.2005.11.004}
-
-\bibitem[\citeproctext]{ref-czyzEcologicalAssessmentDaily2018}
-Czyz, E. K., King, C. A., \& Nahum-Shani, I. (2018). Ecological
-assessment of daily suicidal thoughts and attempts among suicidal teens
-after psychiatric hospitalization: {Lessons} about feasibility and
-acceptability. \emph{Psychiatry Research}, \emph{267}, 566--574.
-\url{https://doi.org/10.1016/j.psychres.2018.06.031}
+\bibitem[\citeproctext]{ref-dennisManagingAddictionChronic2007}
+Dennis, M., \& Scott, C. K. (2007).
+\href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2797101}{Managing
+{Addiction} as a {Chronic Condition}}. \emph{Addiction Science \&
+Clinical Practice}, \emph{4}(1), 45--55.
 
 \bibitem[\citeproctext]{ref-derogatislBriefSymptomInventory}
 Derogatis, L.R. (2000). \emph{Brief {Symptom Inventory} 18 -
@@ -635,46 +587,6 @@ Flannery, B. A., Volpicelli, J. R., \& Pettinati, H. M. (1999).
 \href{https://www.ncbi.nlm.nih.gov/pubmed/10470970}{Psychometric
 properties of the {Penn Alcohol Craving Scale}}. \emph{Alcoholism,
 Clinical and Experimental Research}, \emph{23}(8), 1289--1295.
-
-\bibitem[\citeproctext]{ref-fleuryRemissionSubstanceUse2016}
-Fleury, M.-J., Djouini, A., Huỳnh, C., Tremblay, J., Ferland, F.,
-Ménard, J.-M., \& Belleville, G. (2016). Remission from substance use
-disorders: {A} systematic review and meta-analysis. \emph{Drug and
-Alcohol Dependence}, \emph{168}, 293--306.
-\url{https://doi.org/10.1016/j.drugalcdep.2016.08.625}
-
-\bibitem[\citeproctext]{ref-heymanQuittingDrugsQuantitative2013}
-Heyman, G. M. (2013). Quitting {Drugs}: {Quantitative} and {Qualitative
-Features}. \emph{Annual Review of Clinical Psychology}, \emph{9}(Volume
-9, 2013), 29--59.
-\url{https://doi.org/10.1146/annurev-clinpsy-032511-143041}
-
-\bibitem[\citeproctext]{ref-hogstrombrandtPredictionSingleEpisodes1999a}
-Högström Brandt, A. M., Thorburn, D., Hiltunen, A. J., \& Borg, S.
-(1999). Prediction of single episodes of drinking during the treatment
-of alcohol-dependent patients. \emph{Alcohol (Fayetteville, N.Y.)},
-\emph{18}(1), 35--42.
-\url{https://doi.org/10.1016/s0741-8329(98)00065-2}
-
-\bibitem[\citeproctext]{ref-huffordRelapseNonlinearDynamic2003a}
-Hufford, M. R., Witkiewitz, K., Shields, A. L., Kodya, S., \& Caruso, J.
-C. (2003). Relapse as a nonlinear dynamic system: {Application} to
-patients with alcohol use disorders. \emph{Journal of Abnormal
-Psychology}, \emph{112}(2), 219--227.
-\url{https://doi.org/10.1037/0021-843X.112.2.219}
-
-\bibitem[\citeproctext]{ref-hungSmartphonebasedEcologicalMomentary2016}
-Hung, S., Li, M.-S., Chen, Y.-L., Chiang, J.-H., Chen, Y.-Y., \& Hung,
-G. C.-L. (2016). Smartphone-based ecological momentary assessment for
-{Chinese} patients with depression: {An} exploratory study in {Taiwan}.
-\emph{Asian Journal of Psychiatry}, \emph{23}, 131--136.
-\url{https://doi.org/10.1016/j.ajp.2016.08.003}
-
-\bibitem[\citeproctext]{ref-hunter-reelEmphasizingInterpersonalFactors2009a}
-Hunter-Reel, D., McCrady, B., \& Hildebrandt, T. (2009). Emphasizing
-interpersonal factors: {An} extension of the {Witkiewitz} and {Marlatt}
-relapse model. \emph{Addiction (Abingdon, England)}, \emph{104}(8),
-1281--1290. \url{https://doi.org/10.1111/j.1360-0443.2009.02611.x}
 
 \bibitem[\citeproctext]{ref-hurlbutAssessingAlcoholProblems1992}
 Hurlbut, S. C., \& Sher, K. J. (1992). Assessing alcohol problems in
@@ -687,23 +599,6 @@ quantitative review of the ubiquitous relapse curve. \emph{Journal of
 Substance Abuse Treatment}, \emph{36}(1), 8--17.
 \url{https://doi.org/10.1016/j.jsat.2008.04.001}
 
-\bibitem[\citeproctext]{ref-mackesy-amitiFeasibilityEcologicalMomentary2018}
-Mackesy-Amiti, M. E., \& Boodram, B. (2018). Feasibility of ecological
-momentary assessment to study mood and risk behavior among young people
-who inject drugs. \emph{Drug and Alcohol Dependence}, \emph{187},
-227--235. \url{https://doi.org/10.1016/j.drugalcdep.2018.03.016}
-
-\bibitem[\citeproctext]{ref-marlattRelapsePreventionMaintenance2005a}
-Marlatt, G. A., \& Donovan, D. M. (Eds.). (2005). \emph{Relapse
-prevention: {Maintenance} strategies in the treatment of addictive
-behaviors, 2nd ed} (pp. xiv, 416). The Guilford Press.
-
-\bibitem[\citeproctext]{ref-massonHealthrelatedInternetUse2019a}
-Masson, C. L., Chen, I. Q., Levine, J. A., Shopshire, M. S., \&
-Sorensen, J. L. (2019). Health-related internet use among opioid
-treatment patients. \emph{Addictive Behaviors Reports}, \emph{9},
-100157. \url{https://doi.org/10.1016/j.abrep.2018.100157}
-
 \bibitem[\citeproctext]{ref-mckiernanDevelopmentBriefAbstinence2011}
 McKiernan, P., Cloud, R., Patterson, D. A., Wolf, S., Golder, S., \&
 Besel, K. (2011). Development of a {Brief Abstinence Self-Efficacy
@@ -711,19 +606,17 @@ Measure}. \emph{Journal of Social Work Practice in the Addictions},
 \emph{11}(3), 245--253.
 \url{https://doi.org/10.1080/1533256X.2011.593445}
 
-\bibitem[\citeproctext]{ref-millerHowEffectiveAlcoholism2001a}
-Miller, W. R., Walters, S. T., \& Bennett, M. E. (2001). How effective
-is alcoholism treatment in the {United States}? \emph{Journal of Studies
-on Alcohol}, \emph{62}(2), 211--220.
-\url{https://doi.org/10.15288/jsa.2001.62.211}
+\bibitem[\citeproctext]{ref-mclellanDrugDependenceChronic2000}
+McLellan, A. T., Lewis, D. C., O'Brien, C. P., \& Kleber, H. D. (2000).
+Drug dependence, a chronic medical illness: Implications for treatment,
+insurance, and outcomes evaluation. \emph{JAMA}, \emph{284}(13),
+1689--1695. \url{https://doi.org/10.1001/jama.284.13.1689}
 
-\bibitem[\citeproctext]{ref-mogkImplementationWorkflowStrategies2023}
-Mogk, J. M., Matson, T. E., Caldeiro, R. M., Garza Mcwethy, A. M.,
-Beatty, T., Sevey, B. C., Hsu, C. W., \& Glass, J. E. (2023).
-Implementation and workflow strategies for integrating digital
-therapeutics for alcohol use disorders into primary care: {A}
-qualitative study. \emph{Addiction Science \& Clinical Practice},
-\emph{18}(1). \url{https://doi.org/10.1186/s13722-023-00387-w}
+\bibitem[\citeproctext]{ref-mohrPersonalSensingUnderstanding2017}
+Mohr, D. C., Zhang, M., \& Schueller, S. M. (2017). Personal {Sensing}:
+{Understanding Mental Health Using Ubiquitous Sensors} and {Machine
+Learning}. \emph{Annual Review of Clinical Psychology}, \emph{13}(1),
+23--47. \url{https://doi.org/10.1146/annurev-clinpsy-032816-044949}
 
 \bibitem[\citeproctext]{ref-nguyenPredictingRelapseAlcohol2020a}
 Nguyen, L.-C., Durazzo, T. C., Dwyer, C. L., Rauch, A. A., Humphreys,
@@ -732,14 +625,10 @@ Alcohol Use Disorder Treatment} in a {High-Risk Cohort}: {The Roles} of
 {Anhedonia} and {Smoking}. \emph{Journal of Psychiatric Research},
 \emph{126}, 1--7. \url{https://doi.org/10.1016/j.jpsychires.2020.04.003}
 
-\bibitem[\citeproctext]{ref-porras-segoviaSmartphonebasedEcologicalMomentary2020}
-Porras-Segovia, A., Molina-Madueño, R. M., Berrouiguet, S.,
-López-Castroman, J., Barrigón, M. L., Pérez-Rodríguez, M. S., Marco, J.
-H., Díaz-Oliván, I., de León, S., Courtet, P., Artés-Rodríguez, A., \&
-Baca-García, E. (2020). Smartphone-based ecological momentary assessment
-({EMA}) in psychiatric patients and student controls: {A} real-world
-feasibility study. \emph{Journal of Affective Disorders}, \emph{274},
-733--741. \url{https://doi.org/10.1016/j.jad.2020.05.067}
+\bibitem[\citeproctext]{ref-rounsavilleLapseRelapseChasing2010}
+Rounsaville, D. B. (2010). \emph{Lapse, {Relapse}, and {Chasing} the
+{Wagon}: {Post-Treatment Drinking} and {Recovery}} {[}PhD thesis{]}.
+University of Maryland, Baltimore County.
 
 \bibitem[\citeproctext]{ref-scottPathwaysRelapseTreatment2005}
 Scott, C. K., Foss, M. A., \& Dennis, M. L. (2005). Pathways in the
@@ -747,31 +636,15 @@ relapse--treatment--recovery cycle over 3 years. \emph{Journal of
 Substance Abuse Treatment}, \emph{28 Suppl 1}, S63--72.
 \url{https://doi.org/10.1016/j.jsat.2004.09.006}
 
-\bibitem[\citeproctext]{ref-vangenugtenExperiencedBurdenAdherence2020}
-van Genugten, C. R., Schuurmans, J., Lamers, F., Riese, H., Penninx, B.
-W. J. H., Schoevers, R. A., Riper, H. M., \& Smit, J. H. (2020).
-Experienced {Burden} of and {Adherence} to {Smartphone-Based Ecological
-Momentary Assessment} in {Persons} with {Affective Disorders}.
-\emph{Journal of Clinical Medicine}, \emph{9}(2), 322.
-\url{https://doi.org/10.3390/jcm9020322}
-
-\bibitem[\citeproctext]{ref-witkiewitzPredictorsHeavyDrinking2011a}
-Witkiewitz, K. (2011). Predictors of {Heavy Drinking During} and
-{Following Treatment}. \emph{Psychology of Addictive Behaviors : Journal
-of the Society of Psychologists in Addictive Behaviors}, \emph{25}(3),
+\bibitem[\citeproctext]{ref-witkiewitzPredictorsHeavyDrinking2011}
+Witkiewitz, K. (2011). Predictors of heavy drinking during and following
+treatment. \emph{Psychology of Addictive Behaviors}, \emph{25}(3),
 426--438. \url{https://doi.org/10.1037/a0022889}
 
-\bibitem[\citeproctext]{ref-witkiewitzRelapsePreventionAlcohol2004a}
-Witkiewitz, K., \& Marlatt, G. A. (2004). Relapse prevention for alcohol
-and drug problems: That was {Zen}, this is {Tao}. \emph{The American
-Psychologist}, \emph{59}(4), 224--235.
-\url{https://doi.org/10.1037/0003-066X.59.4.224}
-
-\bibitem[\citeproctext]{ref-wyantAcceptabilityPersonalSensing2023a}
-Wyant, K., Moshontz, H., Ward, S. B., Fronk, G. E., \& Curtin, J. J.
-(2023). Acceptability of {Personal Sensing Among People With Alcohol Use
-Disorder}: {Observational Study}. \emph{JMIR mHealth and uHealth},
-\emph{11}, e41833. \url{https://doi.org/10.2196/41833}
+\bibitem[\citeproctext]{ref-wyantForecastingRiskAlcoholunderreview}
+Wyant, K., Fronk, G. E., Yu, C., Punturieri, C. E., \& Curtin, J. J.
+(under review). \emph{Forecasting {Risk} of {Alcohol Lapse} up to {Two
+Weeks} in {Advance} using {Time-lagged Machine Learning Models}}.
 
 \bibitem[\citeproctext]{ref-wyantMachineLearningModels2024}
 Wyant, K., Sant'Ana, S. J., Fronk, G. E., \& Curtin, J. J. (2024).
