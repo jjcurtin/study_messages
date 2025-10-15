@@ -56,7 +56,7 @@ Goal word counts:
 - Introduction: 350 words (currently 366 words)
 - Methods: 600 words (currently 614 words)
 - Results: 200 words (currently 194)
-- Discussion: 350 words
+- Discussion: 350 words (currently 370)
 -->
 
 ```{r}
@@ -115,6 +115,7 @@ Our best performing models used an elastic net algorithm. We quantified feature 
 
 {{< embed notebooks/mak_tables.qmd#tbl-1 >}} 
 
+<!--Coco: It feels a little weird to have the last two columns. How about separating the tables so that we have one for baseline-only and one for additional communication features?-->
 
 ## Ethical Considerations
 All procedures were approved by the University of Wisconsin-Madison Institutional Review Board (Study #2015-0780). All participants provided written informed consent.
@@ -150,7 +151,13 @@ p168.l0.rratecount.cont_type.friend
 
 # Discussion
 
+Our machine learning model incorporating cellular communications achieved fair performance with an auROC of `r round(subset(pp_perf, model == "full model")$pp_median, 2)`, indicating slight signals in our data. Nonetheless, we found near none incremental predictive value when we compared it to a baseline model using only demographic variables and self-report measures. Results suggest that cellular communication data might not provide sufficient information to improve lapse prediction beyond what can be obtained from a few demographics and brief self-report measures such as cravings.
 
+Analysis of feature importance revealed four baseline self-report measures as the most important predictors of lapse risk: abstinence confidence, having a goal of abstinence, abstinence self-efficacy when experiencing negative affect, and craving. Among the communication features, interactions with people unaware of the participant's recovery goal, with non-drinkers, and with people who were unplesant to interact with emerged as most robust in predicting lapse risk. Raw counts of calls and text messages and call durations were minimally informative, suggesting that the quantity of communications alone may not be a strong indicator of lapse risk. Contextual information about who the individuals interact with might provide more useful information. Notably, however, all associations appear to be relatively small in magnitude, suggesting that these features might only weakly relate to alcohol lapse risk. 
+
+One important limitation of our study is that we only collected communications over phone calls and SMS text messages. In recent years, people report preference for communications on private messaging apps (e.g., WhatsApp, Signal) or social media platforms (e.g., Facebook Messenger, Instagram) compared to traditional native apps. Thus, our communication data may not have captured the full range of participants' social interactions [@mcdowellPreferencesAttitudesDigital2025]. Future research could explore whether communication data from these other platforms might provide more robust signals of lapse risk.
+
+Overall, our findings suggest that models leveraging passive cellular sensing capture little to none signal beyond individual characteristics and self-report measures. Contextual information around communication partners might be more informative compared to raw counts and durations of communications, but these effects appear to be small. Future research might explore other communication modalities to determine whether they provide more robust signals of lapse risk.
 
 
 
