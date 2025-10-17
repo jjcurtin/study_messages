@@ -227,18 +227,17 @@ the potential for greater temporal specificity in capturing fluctuations
 in risk compared with self-report data. Collecting communication data in
 near real time could allow an algorithm to detect potential triggers as
 they occur, without prompting users to reflect on their feelings or
-waiting for users to report about their environement at a later point.
+waiting for users to report about their environment at a later point.
 For example, late night phone calls could indicate an emergency, ``drunk
-dialing'', or other risk-relevant interactions, while an expanding or
-shrinking social circle could be characterized by the number of unique
-contacts someone has communicated with.
+dialing'', or other risk-relevant interaction, while changes in the
+number of unique contacts someone is interacting with could indicate an
+expanding or shrinking social circle.
 
-These data may become even more powerful when communication contacts are
+These data may become even more powerful when communications are
 contextualized with personal meaning for a given participant (e.g., Who
-is this contact to them? How pleasant or unpleasant is a typical
-interaction with them? Have they drank with them in the past?). In this
-scenario, contextualized communication logs might reveal that the
-late-night phone call was to a sponsor, or that the shrinking social
+is this contact to them? What is a typical interaction with them like?).
+In this scenario, contextualized communication data might reveal that
+the late-night phone call was to a sponsor, or that the shrinking social
 circle was due to reduced contact with people who are unsupportive of
 their recovery.
 
@@ -565,52 +564,48 @@ Our machine learning model incorporating cellular communications
 achieved fair performance, with an auROC of 0.68, indicating that some
 predictive signal was present. However, it did not offer incremental
 value beyond a baseline model that included only demographic and
-self-report measures.
+self-report measures. Consistent with this, the four most important
+predictors in our model were all self-report variables: abstinence
+confidence, abstinence goal, negative affect efficacy, and craving.
 
-Consistent with this, the four most important predictors in our model
-were all self-report variables: abstinence confidence, abstinence goal,
-negative affect efficacy, and craving. Nonetheless, several
-communication features were retained in the final model with moderately
-sized coefficients. These included communications with people unaware of
-the participant's recovery status, non-drinkers, friends, and
-individuals who were unpleasant to interact with. Thus, the context
-surrounding communications may still offer some insight into lapse
-vulnerability.
-
-In contrast, raw counts of calls and text messages and call durations
-were not retained in the final model. This implies that the quantity of
+Nonetheless, several communication features were retained in the final
+model with moderately sized coefficients. These included communications
+with people unaware of the participant's recovery status, non-drinkers,
+friends, and individuals who were unpleasant to interact with. In
+contrast, raw counts of calls and text messages and call durations were
+not retained in the final model. This implies that the quantity of
 communication may be less informative than the quality and social
 significance. Future research may benefit from collecting richer
 contextual data about communication contacts to better understand the
-social dynamics contributing to lapse risk. Even with highly
-contextualized communication data, however, prediction may be limited by
-data sparsity. Many participants had few daily communications, and some
-had extended periods with no recorded interactions at all.
+social dynamics contributing to lapse risk.
 
-Our study design may have further contributed to this limitation. We
-collected only phone and SMS text communications through the native
-smartphone app. Yet, in recent years, many individuals have shifted
-their primary communication to private messaging apps (e.g., WhatsApp,
-Signal) or social media platforms (e.g., Facebook Messenger, Instagram)
-(McDowell et al., 2025). As a result, our dataset likely missed a
-substantial portion of participants' social interactions. Future studies
-could explore whether data from these platforms yield stronger
-predictive signal.
+Even with highly contextualized communication data, however, prediction
+may be limited by data sparsity. Many participants had few daily
+communications, and some had extended periods with no recorded
+interactions at all. Our study design may have further contributed to
+this limitation. We collected only phone and SMS text communications
+through the native smartphone app. Yet, in recent years, many
+individuals have shifted their primary communication to private
+messaging apps (e.g., WhatsApp, Signal) or social media platforms (e.g.,
+Facebook Messenger, Instagram) (McDowell et al., 2025). As a result, our
+dataset likely missed a substantial portion of participants' social
+interactions. Future studies could explore whether data from these
+platforms yield stronger predictive signals.
 
-We can not entirely dismiss the potential value of cellular
-communication data for risk prediction. For example, researchers have
-successfully incorporated communication data with other sensing methods,
-such as accelerometer, geolocation, and device useage data to predict
-alcohol use episodes (S. Bae et al., 2017; S. W. Bae et al., 2023).
-However, even in these instances, the contribution of cellular
-communications is questionable and other sensing methods like
-geolocation appear to be more promising. Other practical challenges for
-collecting call and text message (e.g., Apple heavily restricts the
-collection of these data from apps in their app store) further limit the
-feasibility of using this sensing method. These findings lead us to
-conclude that other forms of social interaction characterization (e.g.,
-engineering time spent with supportive contacts from geolocation data)
-are more worthwhile to pursue in future research.
+We cannot entirely dismiss the potential value of cellular communication
+data for risk prediction. For example, researchers have successfully
+incorporated communication data with other sensing methods, such as
+accelerometer, geolocation, and device usage data to predict alcohol use
+episodes (S. Bae et al., 2017; S. W. Bae et al., 2023). However, even in
+these instances, the contribution of cellular communications is
+questionable and other sensing methods like geolocation appear to be
+more promising. Other practical challenges for collecting call and text
+message data (e.g., Apple heavily restricts the collection of these data
+from apps in their app store) further limit the feasibility of using
+this sensing method. These findings lead us to conclude that other forms
+of social interaction characterization (e.g., engineering time spent
+with supportive contacts from geolocation data) are more worthwhile to
+pursue in future research.
 
 \newpage
 
