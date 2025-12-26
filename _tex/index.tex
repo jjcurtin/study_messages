@@ -175,7 +175,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder},
+  pdftitle={Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder},
   pdfauthor={Kendra Wyant; Coco Yu; John J. Curtin},
   pdfkeywords={Substance use disorders, Machine learning, Cellular
 Sensing},
@@ -187,10 +187,10 @@ Sensing},
   pdfcreator={LaTeX via pandoc}}
 
 
-\title{Using Cellular Communication Sensing to Support Early Recovery
-from Alcohol Use Disorder}
+\title{Evaluating Cellular Communication Sensing for Lapse Risk
+Prediction During Early Recovery from Alcohol Use Disorder}
 \author{Kendra Wyant \and Coco Yu \and John J. Curtin}
-\date{2025-10-17}
+\date{2025-12-26}
 
 \begin{document}
 \maketitle
@@ -204,49 +204,55 @@ Notebook}}
 
 Alcohol Use Disorder (AUD) is a chronic, relapsing disease (Dennis \&
 Scott, 2007; McLellan et al., 2000; Rounsaville, 2010). Lapses, single
-episodes of alcohol use, and relapse, a full return to harmful drinking,
-can occur at any point in recovery (Kirshenbaum et al., 2009; Nguyen et
-al., 2020; Scott et al., 2005; Witkiewitz, 2011). As with other chronic
-health conditions where symptoms fluctuate, sometimes unexpectedly,
-sustained AUD recovery requires ongoing monitoring of lapse risk.
+episodes of alcohol use, are among the strongest predictors (and a
+necessary precursor) for relapse, a full return to harmful drinking
+(\textbf{marlattRelapsePreventionMaintenance1985?};
+\textbf{marlattRelapsePreventionSecond2007?}). While lapses can occur at
+any point in recovery, they are particularly risky during early recovery
+(\textbf{daleyReducingRiskRelapse2019?}). Protective coping mechanisms
+and socio-environmental resources that support recovery are dynamic and
+accumulate over time (\textbf{clevelandRecoveryRecoveryCapital2021?}).
+As a result, early recovery represents a critical window of
+vulnerability during which a lapse is more likely to escalate into
+relapse.
 
-Machine learning--guided recovery systems may now assist with the
-inherently difficult task of identifying when and why someone is at
-increased risk. Personal sensing of densely sampled data from
-individuals' day-to-day lives can provide the inputs necessary for
-temporally dynamic lapse predictions (Mohr et al., 2017). Early models
-using ecological momentary assessment data have achieved excellent
-accuracy (Chih et al., 2014; Wyant et al., 2024, under review). Still,
-questions remain about the long-term feasibility of self-report sensing
-methods and whether new, important risk factors might emerge from
-sensing methods that passively collect smartphone data without user
-input.
+An automated recovery support system powered by personal sensing and
+machine learning may assist with the inherently difficult task of
+identifying when and why someone is at increased risk for lapse.
+Personal sensing of densely sampled data from individuals' day-to-day
+lives can provide the inputs necessary for temporally dynamic lapse
+predictions (Mohr et al., 2017). Early machine learning models using
+ecological momentary assessment data have achieved excellent accuracy
+(Chih et al., 2014; Wyant et al., 2024, under review). Still, questions
+remain about the long-term feasibility of self-report sensing methods
+and whether new, important risk factors might emerge from sensing
+methods that passively collect smartphone data without user input.
 
 Cellular communication sensing may be one promising method. It offers
 the potential for greater temporal specificity in capturing fluctuations
-in risk compared with self-report data. Collecting communication data in
-near real time could allow an algorithm to detect potential triggers as
-they occur, without prompting users to reflect on their feelings or
-waiting for users to report about their environment at a later point.
-For example, late night phone calls could indicate an emergency, ``drunk
-dialing'', or other risk-relevant interaction, while changes in the
+in risk compared with self-report data (e.g., as they occur
+vs.~prompting users to make reports the next day). Late night phonecalls
+could indicate an emergency, ``drunk dialing'', or other risk-relevant
+interactions. Cellular communications can also capture risk-relevant
+constructs more difficult for people to self report. A change in the
 number of unique contacts someone is interacting with could indicate an
 expanding or shrinking social circle.
 
-These data may become even more powerful when communications are
+These passive data may become even more powerful when communications are
 contextualized with personal meaning for a given participant (e.g., Who
 is this contact to them? What is a typical interaction with them like?).
-In this scenario, contextualized communication data might reveal that
-the late-night phone call was to a sponsor, or that the shrinking social
-circle was due to reduced contact with people who are unsupportive of
-their recovery.
+In the above examples, contextualized communication data might reveal
+that the late-night phone call was to a sponsor, or that the shrinking
+social circle was due to reduced contact with people who are
+unsupportive of their recovery.
 
 In this study, we evaluated the performance of a machine learning model
-that predicts the probability of a next-day lapse using contextualized
-cellular communication data. We also describe the most important
-features contributing to these predictions, with the goal of identifying
-new, clinically meaningful features emerging from communication-based
-sensing.
+that predicts the probability of a next-day alcohol lapse amobg
+individuals in early recovery from alcohol use disorder using
+contextualized cellular communication data. We also describe the most
+important features contributing to these predictions, with the goal of
+identifying new, clinically meaningful features emerging from
+communication-based sensing.
 
 \section{Methods}\label{methods}
 
@@ -652,12 +658,6 @@ Hurlbut, S. C., \& Sher, K. J. (1992). Assessing alcohol problems in
 college students. \emph{Journal of American College Health.},
 \emph{41}(2), 49--58.
 
-\bibitem[\citeproctext]{ref-kirshenbaumQuantitativeReviewUbiquitous2009}
-Kirshenbaum, A. P., Olsen, D. M., \& Bickel, W. K. (2009). A
-quantitative review of the ubiquitous relapse curve. \emph{Journal of
-Substance Abuse Treatment}, \emph{36}(1), 8--17.
-\url{https://doi.org/10.1016/j.jsat.2008.04.001}
-
 \bibitem[\citeproctext]{ref-mcdowellPreferencesAttitudesDigital2025}
 McDowell, B., Dumais, K. M., Gary, S. T., de Gooijer, I., \& Ward, T.
 (2025). Preferences and {Attitudes Towards Digital Communication} and
@@ -684,28 +684,10 @@ Mohr, D. C., Zhang, M., \& Schueller, S. M. (2017). Personal {Sensing}:
 Learning}. \emph{Annual Review of Clinical Psychology}, \emph{13}(1),
 23--47. \url{https://doi.org/10.1146/annurev-clinpsy-032816-044949}
 
-\bibitem[\citeproctext]{ref-nguyenPredictingRelapseAlcohol2020a}
-Nguyen, L.-C., Durazzo, T. C., Dwyer, C. L., Rauch, A. A., Humphreys,
-K., Williams, L. M., \& Padula, C. B. (2020). Predicting {Relapse After
-Alcohol Use Disorder Treatment} in a {High-Risk Cohort}: {The Roles} of
-{Anhedonia} and {Smoking}. \emph{Journal of Psychiatric Research},
-\emph{126}, 1--7. \url{https://doi.org/10.1016/j.jpsychires.2020.04.003}
-
 \bibitem[\citeproctext]{ref-rounsavilleLapseRelapseChasing2010}
 Rounsaville, D. B. (2010). \emph{Lapse, {Relapse}, and {Chasing} the
 {Wagon}: {Post-Treatment Drinking} and {Recovery}} {[}PhD thesis{]}.
 University of Maryland, Baltimore County.
-
-\bibitem[\citeproctext]{ref-scottPathwaysRelapseTreatment2005}
-Scott, C. K., Foss, M. A., \& Dennis, M. L. (2005). Pathways in the
-relapse--treatment--recovery cycle over 3 years. \emph{Journal of
-Substance Abuse Treatment}, \emph{28 Suppl 1}, S63--72.
-\url{https://doi.org/10.1016/j.jsat.2004.09.006}
-
-\bibitem[\citeproctext]{ref-witkiewitzPredictorsHeavyDrinking2011}
-Witkiewitz, K. (2011). Predictors of heavy drinking during and following
-treatment. \emph{Psychology of Addictive Behaviors}, \emph{25}(3),
-426--438. \url{https://doi.org/10.1037/a0022889}
 
 \bibitem[\citeproctext]{ref-wyantForecastingRiskAlcoholunderreview}
 Wyant, K., Fronk, G. E., Yu, C., Punturieri, C. E., \& Curtin, J. J.
