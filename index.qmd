@@ -52,12 +52,12 @@ Target Journal: JMIR Formative Research (1500 words)
 
 Goal word counts: 
 
-- Introduction: 350 words (currently 364 words)
+- Introduction: 350 words (currently 432 words)
 - Methods: 600 words (currently 613 words)
 - Results: 200 words (currently 194)
 - Discussion: 350 words (currently 383)
 
-total: 1554 words
+total: 1624 words
 -->
 
 ```{r}
@@ -88,7 +88,7 @@ Cellular communication sensing may be one promising method. It offers the potent
 
 These passive data may become even more powerful when communications are contextualized with personal meaning for a given participant (e.g., Who is this contact to them? What is a typical interaction with them like?). In the above examples, contextualized communication data might reveal that the late-night phone call was to a sponsor, or that the shrinking social circle was due to reduced contact with people who are unsupportive of their recovery.
 
-In this study, we evaluated the performance of a machine learning model that predicts the probability of a next-day alcohol lapse amobg individuals in early recovery from alcohol use disorder using contextualized cellular communication data. We also describe the most important features contributing to these predictions, with the goal of identifying new, clinically meaningful features emerging from communication-based sensing.
+In this study, we evaluated the performance of a machine learning model that predicts the probability of a next-day alcohol lapse amobg individuals in early recovery from AUD using contextualized cellular communication data. We also describe the most important features contributing to these predictions, with the goal of identifying new, clinically meaningful features emerging from communication-based sensing.
 
 
 # Methods
