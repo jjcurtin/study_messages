@@ -1,5 +1,5 @@
 ---
-title: Using Cellular Communication Sensing to Support Early Recovery from Alcohol Use Disorder
+title: Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder
 author:
   - name: Kendra Wyant
     email: kpaquette2@wisc.edu
@@ -30,7 +30,6 @@ keywords:
   - Machine learning
   - Cellular Sensing
 abstract: |
-
 #plain-language-summary: |
   #To be filled in.
 #key-points:
@@ -81,15 +80,15 @@ contrast <- read_csv(here::here(path_models,
 
 # Introduction
 
-Alcohol Use Disorder (AUD) is a chronic, relapsing disease [@mclellanDrugDependenceChronic2000;@dennisManagingAddictionChronic2007; @rounsavilleLapseRelapseChasing2010]. Lapses, single episodes of alcohol use, and relapse, a full return to harmful drinking, can occur at any point in recovery [@scottPathwaysRelapseTreatment2005;@nguyenPredictingRelapseAlcohol2020a; @witkiewitzPredictorsHeavyDrinking2011; @kirshenbaumQuantitativeReviewUbiquitous2009]. As with other chronic health conditions where symptoms fluctuate, sometimes unexpectedly, sustained AUD recovery requires ongoing monitoring of lapse risk.
+Alcohol Use Disorder (AUD) is a chronic, relapsing disease [@mclellanDrugDependenceChronic2000;@dennisManagingAddictionChronic2007; @rounsavilleLapseRelapseChasing2010]. Lapses, single episodes of alcohol use, are among the strongest predictors (and a necessary precursor) for relapse, a full return to harmful drinking [@marlattRelapsePreventionMaintenance1985; @marlattRelapsePreventionSecond2007]. While lapses can occur at any point in recovery, they are particularly risky during early recovery [@daleyReducingRiskRelapse2019]. Protective coping mechanisms and socio-environmental resources that support recovery are dynamic and accumulate over time [@clevelandRecoveryRecoveryCapital2021]. As a result, early recovery represents a critical window of vulnerability during which a lapse is more likely to escalate into relapse.
 
-Machine learning–guided recovery systems may now assist with the inherently difficult task of identifying when and why someone is at increased risk. Personal sensing of densely sampled data from individuals' day-to-day lives can provide the inputs necessary for temporally dynamic lapse predictions [@mohrPersonalSensingUnderstanding2017]. Early models using ecological momentary assessment data have achieved excellent accuracy [@chihPredictiveModelingAddiction2014; @wyantMachineLearningModels2024; @wyantForecastingRiskAlcoholunderreview]. Still, questions remain about the long-term feasibility of self-report sensing methods and whether new, important risk factors might emerge from sensing methods that passively collect smartphone data without user input.
+An automated recovery support system powered by personal sensing and machine learning may assist with the inherently difficult task of identifying when and why someone is at increased risk for lapse. Personal sensing of densely sampled data from individuals' day-to-day lives can provide the inputs necessary for temporally dynamic lapse predictions [@mohrPersonalSensingUnderstanding2017]. Early machine learning models using ecological momentary assessment data have achieved excellent accuracy [@chihPredictiveModelingAddiction2014; @wyantMachineLearningModels2024; @wyantForecastingRiskAlcoholunderreview]. Still, questions remain about the long-term feasibility of self-report sensing methods and whether new, important risk factors might emerge from sensing methods that passively collect smartphone data without user input.
 
-Cellular communication sensing may be one promising method. It offers the potential for greater temporal specificity in capturing fluctuations in risk compared with self-report data. Collecting communication data in near real time could allow an algorithm to detect potential triggers as they occur, without prompting users to reflect on their feelings or waiting for users to report about their environment at a later point. For example, late night phone calls could indicate an emergency, "drunk dialing", or other risk-relevant interaction, while changes in the number of unique contacts someone is interacting with could indicate an expanding or shrinking social circle.
+Cellular communication sensing may be one promising method. It offers the potential for greater temporal specificity in capturing fluctuations in risk compared with self-report data (e.g., as they occur vs. prompting users to make reports the next day). Late night phonecalls could indicate an emergency, "drunk dialing", or other risk-relevant interactions. Cellular communications can also capture risk-relevant constructs more difficult for people to self report. A change in the number of unique contacts someone is interacting with could indicate an expanding or shrinking social circle.
 
-These data may become even more powerful when communications are contextualized with personal meaning for a given participant (e.g., Who is this contact to them? What is a typical interaction with them like?). In this scenario, contextualized communication data might reveal that the late-night phone call was to a sponsor, or that the shrinking social circle was due to reduced contact with people who are unsupportive of their recovery.
+These passive data may become even more powerful when communications are contextualized with personal meaning for a given participant (e.g., Who is this contact to them? What is a typical interaction with them like?). In the above examples, contextualized communication data might reveal that the late-night phone call was to a sponsor, or that the shrinking social circle was due to reduced contact with people who are unsupportive of their recovery.
 
-In this study, we evaluated the performance of a machine learning model that predicts the probability of a next-day lapse using contextualized cellular communication data. We also describe the most important features contributing to these predictions, with the goal of identifying new, clinically meaningful features emerging from communication-based sensing.
+In this study, we evaluated the performance of a machine learning model that predicts the probability of a next-day alcohol lapse amobg individuals in early recovery from alcohol use disorder using contextualized cellular communication data. We also describe the most important features contributing to these predictions, with the goal of identifying new, clinically meaningful features emerging from communication-based sensing.
 
 
 # Methods
