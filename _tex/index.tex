@@ -668,29 +668,37 @@ platforms (e.g., Facebook Messenger, Instagram) as their primary
 communication method (McDowell et al., 2025). Therefore, our dataset
 likely missed a substantial portion of participants' communications.
 Notably, the communication features that were retained in the final
-model were scored over our longest scoring epochs (72 and 168 hours),
-suggesting that with more communications these features may be become
-more important. Future studies could explore whether increasing
-communication data from these alternative platforms yield stronger
-predictive signals.
+model were scored over the longest scoring epochs (72 and 168 hours),
+suggesting that when more data are available (i.e., more communications)
+these features may be become more important. Future studies could
+explore whether increasing communication data from these alternative
+platforms yield stronger predictive signals.
 
 We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
 incorporated communication data into models with other sensing data
-(e.g., accelerometer, geolocation, and device usage) to predict alcohol
-use episodes (S. Bae et al., 2017; S. W. Bae et al., 2023). However,
-even in these instances, the contribution of cellular communications is
-questionable and other sensing methods like geolocation appear to be
-more promising . Other practical challenges in collecting call and text
-message data further limit the feasibility of this sensing method. For
-example, we obtained participants' cellular communication data by
-downloading backups of their communication logs in person during their
-monthly follow-up visits. However, Apple heavily restricts apps in its
-app store from accessing call and text message data, making real-time
-sensing of communications challenging (if not impossible) for IOS users.
-We conclude that other forms of social interaction characterization
-(e.g., engineering time spent with supportive contacts from geolocation
-data) are more worthwhile to pursue in future research.
+(e.g., accelerometer, geolocation, and device usage) to detect current
+(S. Bae et al., 2017) and predict future (S. W. Bae et al., 2023) heavy
+drinking episondes in non-treatment seeking young adult populations.
+However, even in these instances, the unique contribution of cellular
+communications is unclear. Some communication features, such as outgoing
+call duration and the number of outgoing calls emerged in the top 20
+important features for detecting current drinking episodes. Conversely,
+when predicting future drinking episodes, no communication features
+appeared in the top 20. Other sensing methods, like geolocation and
+accelerometer data, appeared to be more robustly important for both
+detection and prediction.
+
+Other practical challenges in collecting call and text message data
+further limit the feasibility of this sensing method. For example, we
+obtained participants' cellular communication data by downloading
+backups of their communication logs in person during their monthly
+follow-up visits. However, Apple heavily restricts apps in its app store
+from accessing call and text message data, making real-time sensing of
+communications challenging (if not impossible) for IOS users. We
+conclude that other forms of social interaction characterization (e.g.,
+engineering time spent with supportive contacts from geolocation data)
+are more worthwhile to pursue in future research.
 
 \newpage
 
