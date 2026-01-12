@@ -49,10 +49,10 @@ editor_options:
 ---
 
 <!--
-Target Journal: JMIR Formative Research (1500 words)
+Target Journal: JMIR Formative Research 
 
 
-total: 1788 words without intro
+word count: 2336 
 -->
 
 ```{r}
@@ -79,7 +79,7 @@ Alcohol Use Disorder (AUD) is a chronic, relapsing disease [@mclellanDrugDepende
 
 An automated recovery support system powered by personal sensing and machine learning may assist with the inherently difficult task of identifying when and why someone is at increased risk for lapse. Personal sensing of densely sampled data from individuals' day-to-day lives can provide the inputs necessary for temporally dynamic lapse predictions [@mohrPersonalSensingUnderstanding2017]. Early machine learning models using ecological momentary assessment (EMA) data have achieved excellent accuracy in predicting future lapses back to alcohol use in treatment seeking populations [@chihPredictiveModelingAddiction2014; @wyantMachineLearningModels2024; @wyantForecastingRiskAlcoholunderreview]. 
 
-Despite the high predictive success of EMA, questions remain about the long-term feasibility of self-report sensing method. EMA has been shown to be well-tolerated among substance use populations over relatively short periods of time [@jonesComplianceEcologicalMomentary2019; @wyantAcceptabilityPersonalSensing2023]. It is unclear whether individuals would be willing and able to adhere to an extensive EMA protocol (e.g., 4 prompts per day) indefinitely. Moreover, EMA items are chosen using domain expertise from decades of research on the self-report factors that predict lapse. It is possible, however, that there are several alterntive precipitators of lapse not yet discovered due to small subtle changes in one's environment, social circle, or lifestyle that can be easily pinpointed in self-report. 
+Despite the high predictive success of EMA, questions remain about the long-term feasibility of a self-report sensing method. EMA has been shown to be well-tolerated among substance use populations over relatively short periods of time [@jonesComplianceEcologicalMomentary2019; @wyantAcceptabilityPersonalSensing2023]. It is unclear whether individuals would be willing and able to adhere to an extensive EMA protocol (e.g., 4 prompts per day) indefinitely. Moreover, EMA items are chosen using domain expertise from decades of research on the self-report factors that predict lapse. It is possible, however, that there are several alternative precipitators of lapse not yet discovered due to small subtle changes in one's environment, social circle, or lifestyle that can be easily pinpointed in self-report. 
 
 Cellular communication sensing may be a promising alternative to EMA. Whereas EMA is limited to at most several assessments per day, communication sensing is mostly passive and can be monitored moment-by-moment. Cellular communication patterns also appear to capture clear, risk-relevant constructs. Late-night phone calls could indicate an emergency, “drunk dialing,” or interpersonal conflict. A decrease in the number of contacts an individual communicates with could reflect a shrinking social circle, isolation, or disengagement.
 
