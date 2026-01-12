@@ -97,4 +97,50 @@ phone |>
 ```
 
 
+Contacts per day
+```{r}
+phone |> 
+  group_by(subid, date(dttm_obs)) |> 
+  count() |> 
+  group_by(subid) |> 
+  summarise(mean = mean(n)) |> 
+  ungroup() |> 
+  summarise(min = min(mean),
+            max = max(mean),
+            mean = mean(mean),
+            median = median(mean))
 
+phone |> 
+  group_by(subid, date(dttm_obs)) |> 
+  count() |> 
+  group_by(subid) |> 
+  summarise(mean = mean(n)) |> 
+  ungroup() |> 
+  ggplot(aes(x = mean)) +
+  geom_histogram() 
+
+phone |> 
+  group_by(subid, date(dttm_obs)) |> 
+  count() |> 
+  group_by(subid) |> 
+  summarise(mean = mean(n)) |> 
+  ungroup() |> 
+  filter(mean < 5) |> 
+  nrow()
+```
+
+
+Number of contacts
+```{r}
+phone |> 
+  group_by(subid, phone_number) |> 
+  count() |> 
+  select(-n) |> 
+  group_by(subid) |> 
+  count() |> 
+  ungroup() |> 
+  summarise(min = min(n),
+            max = max(n),
+            mean = mean(n),
+            median = median(n))
+```
