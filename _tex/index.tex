@@ -249,38 +249,51 @@ identifying when and why someone is at increased risk for lapse.
 Personal sensing of densely sampled data from individuals' day-to-day
 lives can provide the inputs necessary for temporally dynamic lapse
 predictions (Mohr et al., 2017). Early machine learning models using
-ecological momentary assessment data have achieved excellent accuracy
-(Chih et al., 2014; Wyant et al., 2024, under review).
+ecological momentary assessment (EMA) data have achieved excellent
+accuracy in predicting future lapses back to alcohol use in treatment
+seeking populations (Chih et al., 2014; Wyant et al., 2024, under
+review).
 
-Still, questions remain about the long-term feasibility of self-report
-sensing methods and whether new, important risk factors might emerge
-from sensing methods that passively collect smartphone data without user
-input.
+Despite the high predictive success of EMA, questions remain about the
+long-term feasibility of self-report sensing method. EMA has been shown
+to be well-tolerated among substance use populations over relatively
+short periods of time (Wyant et al., 2023;
+\textbf{jonesComplianceEcologicalMomentary2019?}). It is unclear whether
+individuals would be willing and able to adhere to an extensive EMA
+protocol (e.g., 4 prompts per day) indefinitely. Moreover, EMA items are
+chosen using domain expertise from decades of research on the
+self-report factors that predict lapse. It is possible, however, that
+there are several alterntive precipitators of lapse not yet discovered
+due to small subtle changes in one's environment, social circle, or
+lifestyle that can be easily pinpointed in self-report.
 
-Cellular communication sensing may be one promising method. It offers
-the potential for greater temporal specificity for capturing
-fluctuations in risk compared with self-report data (i.e., as it occurs
-vs.~prompting users to make reports the next day). Late night phone
-calls could indicate an emergency, ``drunk dialing'', or interpersonal
-conflict. It can also capture risk-relevant constructs difficult for
-people to self report, such as slow changing social patterns. A decrease
-in the number of contacts someone is communicating with could indicate a
-shrinking social circle, isolation, or disengagement.
+Cellular communication sensing may be a promising alternative to EMA.
+Whereas EMA is limited to at most several assessments per day,
+communication sensing is mostly passive and can be monitored
+moment-by-moment. Cellular communication patterns also appear to capture
+clear, risk-relevant constructs. Late-night phone calls could indicate
+an emergency, ``drunk dialing,'' or interpersonal conflict. A decrease
+in the number of contacts an individual communicates with could reflect
+a shrinking social circle, isolation, or disengagement.
 
-These passive data may become more powerful still when communications
-are contextualized with personal meaning for a given participant (e.g.,
-Who is this contact to them?). In the above examples, contextualized
-communication data might reveal that late-night phone calls are to a
-sponsor or that a shrinking social circle is due to reduced contact with
-people unsupportive of their recovery.
+These data may become even more powerful when communication patterns are
+contextualized with participant-specific meaning. For instance, knowing
+a participant's relationship to their contacts, whether they have
+previously drank alcohol with a given contact, or whether that contact
+supports their recovery goals could substantially alter interpretation.
+In the examples above, contextualized communication data might reveal
+that late-night calls are made to a sponsor, or that a shrinking social
+circle reflects reduced contact with individuals unsupportive of their
+recovery. In this way, the same communication patterns may reflect
+protective processes rather than increased lapse risk.
 
-In this study, we evaluated the performance of a machine learning model
-that predicts the probability of a next-day alcohol lapse among
-individuals in early recovery from AUD using contextualized cellular
-communication data. We also describe the most important features
-contributing to these predictions, with the goal of identifying new,
-clinically meaningful features emerging from communication-based
-sensing.
+In this study, we assessed whether contextualized cellular communication
+features contain clinically meaningful signals for predicting next-day
+alcohol lapse risk among individuals in early recovery from AUD. Using a
+machine learning model, we evaluated the predictive utility of these
+features and identified the most important communication features, with
+the goal of uncovering new, clinically meaningful predictors of lapse
+risk.
 
 \section{Methods}\label{methods}
 
@@ -807,6 +820,12 @@ University of Maryland, Baltimore County.
 Wyant, K., Fronk, G. E., Yu, C., Punturieri, C. E., \& Curtin, J. J.
 (under review). \emph{Forecasting {Risk} of {Alcohol Lapse} up to {Two
 Weeks} in {Advance} using {Time-lagged Machine Learning Models}}.
+
+\bibitem[\citeproctext]{ref-wyantAcceptabilityPersonalSensing2023}
+Wyant, K., Moshontz, H., Ward, S. B., Fronk, G. E., \& Curtin, J. J.
+(2023). Acceptability of {Personal Sensing Among People With Alcohol Use
+Disorder}: {Observational Study}. \emph{JMIR mHealth and uHealth},
+\emph{11}(1), e41833. \url{https://doi.org/10.2196/41833}
 
 \bibitem[\citeproctext]{ref-wyantMachineLearningModels2024}
 Wyant, K., Sant'Ana, S. J., Fronk, G. E., \& Curtin, J. J. (2024).
