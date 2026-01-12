@@ -226,7 +226,7 @@ sensing method may outweigh their added value.
 
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/index.qmd.html}{Article
+\href{https://jjcurtin.github.io/study_messages/index-preview.html}{Article
 Notebook}}
 
 \section{Introduction}\label{introduction}
@@ -419,6 +419,18 @@ Raw Predictor & Response Options & Feature Engineering & Scoring Epochs
 & Total Features & Full Model & Baseline Model \\
 \midrule\noalign{}
 \endhead
+\midrule\noalign{}
+{Note: } & & & & & & \\
+\textsuperscript{} Cellular communication features were scored over six
+scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the
+prediction window). Within each scoring epoch we calculated two types of
+features: raw and difference features. Raw features represent the raw
+feature value calculated within a scoring epoch (e.g., the rate count of
+text messages during the 48 hours immediately preceding the start of the
+prediction window). Difference features capture participant-level
+changes from their baseline scores (e.g., the participant's average rate
+count of text messages across all time on study subtracted from the rate
+count in the preceding 48 hours). & & & & & & \\
 \bottomrule\noalign{}
 \endlastfoot
 Originated & Incoming, outgoing & Difference and raw rate counts for
@@ -497,7 +509,9 @@ Marital Status & Married, not married, other & Dummy coded & & 2 & Yes &
 Yes \\
 
 
-\caption{\label{tbl-1}Feature Engineering of Raw Predictors}
+\caption{\label{tbl-1}Raw Predictors, Response Options, Feature
+Engineering Methods, Scoring Epochs, Total Number of Features, and
+Indication of Inclusion in Full and Baseline Models}
 
 \tabularnewline
 \end{longtable}
@@ -591,7 +605,7 @@ Separated & 5 & 3.5 & & & \\
 Widowed & 2 & 1.4 & & & \\
 
 
-\caption{\label{tbl-2}Demographics}
+\caption{\label{tbl-2}Demographic Characterization}
 
 \tabularnewline
 \end{longtable}
