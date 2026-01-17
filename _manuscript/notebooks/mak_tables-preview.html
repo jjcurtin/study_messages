@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
     <meta name="author" content="Kendra Wyant">
-    <meta name="dcterms.date" content="2025-10-03">
+    <meta name="dcterms.date" content="2026-01-12">
 
     <title>Make All Tables for Main Manuscript</title>
     <style>
@@ -1351,7 +1351,7 @@ border: 0;
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">October 3, 2025</p>
+              <p class="date">January 12, 2026</p>
             </div>
           </div>
           
@@ -1542,18 +1542,29 @@ Attaching package: &#39;kableExtra&#39;</code></pre>
 <section id="table-1-features" class="level3">
 <h3 class="anchored" data-anchor-id="table-1-features">Table 1: Features</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
-
-<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>feats <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-1" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>footnote_table_feat <span class="ot">&lt;-</span> <span class="st">&quot;Cellular communication features were scored over six scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the prediction window). Within each scoring epoch we calculated two types of features: raw and difference features. Raw features represent the raw feature value calculated within a scoring epoch (e.g., the rate count of text messages during the 48 hours immediately preceding the start of the prediction window). Difference features capture participant-level changes from their baseline scores (e.g., the participant’s average rate count of text messages across all time on study subtracted from the rate count in the preceding 48 hours).&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>feats <span class="sc">|&gt;</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>()  <span class="sc">|&gt;</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">footnote</span>(<span class="at">general =</span> <span class="fu">c</span>(footnote_table_feat), <span class="at">escape=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
+Use &#39;xfun::attr2()&#39; instead.
+See help(&quot;Deprecated&quot;)
+Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
+Use &#39;xfun::attr2()&#39; instead.
+See help(&quot;Deprecated&quot;)</code></pre>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="tbl-1" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Feature Engineering of Raw Predictors
+Raw Predictors, Response Options, Feature Engineering Methods, Scoring Epochs, Total Number of Features, and Indication of Inclusion in Full and Baseline Models
 </figcaption>
 <div aria-describedby="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<table class="lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
+<table class="lightable-classic" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;border-bottom: 0;">
  <thead>
   <tr>
    <th style="text-align:left;"> Raw Predictor </th>
@@ -1864,35 +1875,48 @@ Feature Engineering of Raw Predictors
    <td style="text-align:left;"> Yes </td>
   </tr>
 </tbody>
+<tfoot>
+<tr><td style="padding: 0; " colspan="100%"><span style="font-style: italic;">Note: </span></td></tr>
+<tr><td style="padding: 0; " colspan="100%">
+<sup></sup> Cellular communication features were scored over six scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the prediction window). Within each scoring epoch we calculated two types of features: raw and difference features. Raw features represent the raw feature value calculated within a scoring epoch (e.g., the rate count of text messages during the 48 hours immediately preceding the start of the prediction window). Difference features capture participant-level changes from their baseline scores (e.g., the participant’s average rate count of text messages across all time on study subtracted from the rate count in the preceding 48 hours).</td></tr>
+</tfoot>
 </table>
 
 </div>
 </div>
 </figure>
-</div></div></div>
+</div></div>
 </div></div>
 </section>
 <section id="table-2-demographics" class="level3">
 <h3 class="anchored" data-anchor-id="table-2-demographics">Table 2: Demographics</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
-
-<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>footnote_table_dem_a <span class="ot">&lt;-</span> <span class="st">&quot;N = 144&quot;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>table_dem <span class="sc">|&gt;</span> </span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">3</span>, <span class="at">end_row =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">6</span>, <span class="at">end_row =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">12</span>, <span class="at">end_row =</span> <span class="dv">13</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">15</span>, <span class="at">end_row =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">22</span>, <span class="at">end_row =</span> <span class="dv">30</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">33</span>, <span class="at">end_row =</span> <span class="dv">37</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">footnote</span>(<span class="at">general =</span> <span class="fu">c</span>(footnote_table_dem_a), <span class="at">escape=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div><div id="tbl-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>footnote_table_dem_a <span class="ot">&lt;-</span> <span class="st">&quot;N = 144&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>table_dem <span class="sc">|&gt;</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">3</span>, <span class="at">end_row =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">6</span>, <span class="at">end_row =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">12</span>, <span class="at">end_row =</span> <span class="dv">13</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">15</span>, <span class="at">end_row =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">22</span>, <span class="at">end_row =</span> <span class="dv">30</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">33</span>, <span class="at">end_row =</span> <span class="dv">37</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">footnote</span>(<span class="at">general =</span> <span class="fu">c</span>(footnote_table_dem_a), <span class="at">escape=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
+Use &#39;xfun::attr2()&#39; instead.
+See help(&quot;Deprecated&quot;)
+Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
+Use &#39;xfun::attr2()&#39; instead.
+See help(&quot;Deprecated&quot;)</code></pre>
+</div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="tbl-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Demographics
+Demographic Characterization
 </figcaption>
 <div aria-describedby="tbl-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -2221,7 +2245,7 @@ Demographics
 </div>
 </div>
 </figure>
-</div></div></div>
+</div></div>
 </div></div>
 </section>
 </section>

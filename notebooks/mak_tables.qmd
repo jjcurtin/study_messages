@@ -38,7 +38,8 @@ options(knitr.kable.NA = '')
 Table 1
 ```{r}
 feats <- read_csv(here::here(path_messages, "feature_engineering_table.csv"),
-                        show_col_types = FALSE)
+                        show_col_types = FALSE) |> 
+  rename(`Feature Scoring Epochs` = `Scoring Epochs`)
 ```
 
 Table 2
@@ -180,7 +181,7 @@ table_dem <- dem_age |>
 #| label: tbl-1
 #| tbl-cap: "Raw Predictors, Response Options, Feature Engineering Methods, Scoring Epochs, Total Number of Features, and Indication of Inclusion in Full and Baseline Models"
 
-footnote_table_feat <- "Cellular communication features were scored over six scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the prediction window). Within each scoring epoch we calculated two types of features: raw and difference features. Raw features represent the raw feature value calculated within a scoring epoch (e.g., the rate count of text messages during the 48 hours immediately preceding the start of the prediction window). Difference features capture participant-level changes from their baseline scores (e.g., the participant’s average rate count of text messages across all time on study subtracted from the rate count in the preceding 48 hours)."
+footnote_table_feat <- "Cellular communication features were scored over six feature scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the prediction window). Within each feature scoring epoch we calculated two types of features: raw and difference features. Raw features represent the raw feature value calculated within a scoring epoch (e.g., the rate count of text messages during the 48 hours immediately preceding the start of the prediction window). Difference features capture participant-level changes from their baseline scores (e.g., the participant’s average rate count of text messages across all time on study subtracted from the rate count in the preceding 48 hours)."
 
 feats |> 
   knitr::kable() |> 
