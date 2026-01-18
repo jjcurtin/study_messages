@@ -176,7 +176,7 @@
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
   pdftitle={Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder},
-  pdfauthor={Kendra Wyant; Coco Yu; John J. Curtin},
+  pdfauthor={Kendra Wyant; Jiachen Yu; John J. Curtin},
   pdfkeywords={Substance use disorders, Precision Medicine, Machine
 learning, Digital Phenotyping, Relapse Prevention},
   colorlinks=true,
@@ -189,7 +189,7 @@ learning, Digital Phenotyping, Relapse Prevention},
 
 \title{Evaluating Cellular Communication Sensing for Lapse Risk
 Prediction During Early Recovery from Alcohol Use Disorder}
-\author{Kendra Wyant \and Coco Yu \and John J. Curtin}
+\author{Kendra Wyant \and Jiachen Yu \and John J. Curtin}
 \date{2026-01-18}
 
 \begin{document}
@@ -296,30 +296,46 @@ risk.
 
 \section{Methods}\label{methods}
 
+\subsection{Transparency and Openness}\label{transparency-and-openness}
+
+We adhere to research transparency principles that are crucial for
+robust and replicable science. First, we reported how we determined the
+sample size, all data exclusions, all manipulations, and all study
+measures. We provide a Transparency Report\textsuperscript{14} in the
+supplement. Second, our features, labels, questionnaires, and other
+study materials are publicly available on our Open Science Framework
+(OSF) page (\url{https://osf.io/wgpz9/}). Finally, the annotated
+analysis scripts are publicly available on our study website
+(\url{https://jjcurtin.github.io/study_messages/}).
+
 \subsection{Participants and
 Procedure}\label{participants-and-procedure}
 
-We recruited adults in early recovery from AUD in Madison, Wisconsin,
-through print and digital advertisements and partnerships with treatment
-centers. Eligibility criteria required that participants were age 18 or
-older, able to read and write in English, had moderate to severe AUD
-\footnote{(≥4 self-reported DSM-5 symptoms)}, had a goal of abstinence
-from alcohol at the time of the screening visit, had been abstinent for
-1--8 weeks, were willing to use a single smartphone, and were not
-exhibiting severe psychosis or paranoia.\footnote{Defined as scores
-  \textgreater2.2 or 2.8, respectively, on the psychosis or paranoia
-  scales of the Symptom Checklist--90\textsuperscript{14}.}
+We recruited 192 adults in early recovery from AUD in Madison,
+Wisconsin, through print and digital advertisements and partnerships
+with treatment centers. This sample size was determined based on
+traditional power analysis methods for logistic
+regression\textsuperscript{15} because comparable approaches for machine
+learning models have not yet been validated. Eligibility criteria
+required that participants were age 18 or older, able to read and write
+in English, had moderate to severe AUD \footnote{(≥4 self-reported DSM-5
+  symptoms)}, had a goal of abstinence from alcohol at the time of the
+screening visit, had been abstinent for 1--8 weeks, were willing to use
+a single smartphone, and were not exhibiting severe psychosis or
+paranoia.\footnote{Defined as scores \textgreater2.2 or 2.8,
+  respectively, on the psychosis or paranoia scales of the Symptom
+  Checklist--90\textsuperscript{16}.}
 
 Participants completed up to 5 study visits over approximately 3 months:
 a screening visit, intake visit, and 3 monthly follow-up visits. At
 screening we determined eligibility and collected demographic
 information (age, sex at birth, race, ethnicity, education, marital
 status, employment, and income) and clinical characteristics (DSM-5 AUD
-symptom count, alcohol problems\textsuperscript{15}, and presence of
-psychological symptoms\textsuperscript{14}). At the intake visit,
+symptom count, alcohol problems\textsuperscript{17}, and presence of
+psychological symptoms\textsuperscript{16}). At the intake visit,
 roughly two weeks after screening, we collected additional self-report
-data on abstinence self-efficacy\textsuperscript{16},
-craving\textsuperscript{17}, and recent recovery efforts and goals.
+data on abstinence self-efficacy\textsuperscript{18},
+craving\textsuperscript{19}, and recent recovery efforts and goals.
 
 At each monthly follow-up, we downloaded backups of participants'
 cellular communication metadata directly from their smartphones.
@@ -342,8 +358,11 @@ use (date and time of any unreported drinking episodes). The remaining
 EMA questions were used as features in other
 studies\textsuperscript{10,11}, but were outside the scope of this
 cellular communication sensing study. Additional sensing data streams
-and self-report measures were collected for the parent grant. The full
-study protocol is available on our Open Science Framework page
+and self-report measures were collected for the parent grant.
+Participants were compensated up to \$115 per month for completing study
+tasks (i.e., EMAs, monthly follow-up visits and sharing sensing data)
+and were paid \$66 per month to offset the cost of maintaining a
+cellphone plan. The full study protocol is available on our OSF page
 (\url{https://osf.io/wgpz9/}).
 
 \subsection{Data Analysis Plan}\label{data-analysis-plan}
@@ -536,9 +555,7 @@ quantified feature importance by examining the retained features (i.e.,
 coefficient value \textgreater{} 0) in the full model and ordering them
 by absolute coefficient value. These values provide an estimate of the
 direction and magnitude of association between each predictor and the
-outcome, conditional on the other features retained. All our annotated
-analysis scripts are publicly available on our study website
-(\url{https://jjcurtin.github.io/study_messages/}).
+outcome, conditional on the other features retained.
 
 \section{Results}\label{results}
 
@@ -707,7 +724,7 @@ this limitation. We collected only phone and SMS text communications
 through the native smartphone app. In recent years, many individuals use
 private messaging apps (e.g., WhatsApp, Signal) or social media
 platforms (e.g., Facebook Messenger, Instagram) as their primary
-communication method\textsuperscript{18}. Therefore, our dataset likely
+communication method\textsuperscript{20}. Therefore, our dataset likely
 missed a substantial portion of participants' communications. Notably,
 the communication features retained in the final model were scored over
 the longest feature scoring epochs (72 and 168 hours), suggesting that
@@ -723,7 +740,7 @@ We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
 incorporated communication data into models with other sensing data
 (e.g., accelerometer, geolocation, and device usage) to detect
-current\textsuperscript{19} and predict future\textsuperscript{20} heavy
+current\textsuperscript{21} and predict future\textsuperscript{22} heavy
 drinking episondes in non-treatment seeking young adult populations. It
 is possible, that in certain populations cellular communications may
 hold more signal. Young adults may have more frequent communications
@@ -902,34 +919,45 @@ assessment protocols in substance users: A meta-analysis}.
 Among People With Alcohol Use Disorder}: {Observational Study}}.
 \emph{JMIR mHealth and uHealth} 2023; 11: e41833.}
 
-\bibitem[\citeproctext]{ref-derogatislBriefSymptomInventory}
+\bibitem[\citeproctext]{ref-aczelConsensusbasedTransparencyChecklist2019}
 \CSLLeftMargin{14. }%
+\CSLRightInline{Aczel B, Szaszi B, Sarafoglou A, et al.
+\href{https://doi.org/10.1038/s41562-019-0772-6}{A consensus-based
+transparency checklist}. \emph{Nature Human Behaviour} 2019; 1--3.}
+
+\bibitem[\citeproctext]{ref-hsiehSampleSizeTables1989}
+\CSLLeftMargin{15. }%
+\CSLRightInline{Hsieh F. Sample size tables for logistic regression.
+\emph{Statistics in Medicine} 1989; 8: 795--802.}
+
+\bibitem[\citeproctext]{ref-derogatislBriefSymptomInventory}
+\CSLLeftMargin{16. }%
 \CSLRightInline{Derogatis, L.R. \emph{Brief {Symptom Inventory} 18 -
 {Administration}, scoring, and procedures manual}. Minneapolis: NCS
 Pearson, 2000.}
 
 \bibitem[\citeproctext]{ref-hurlbutAssessingAlcoholProblems1992}
-\CSLLeftMargin{15. }%
+\CSLLeftMargin{17. }%
 \CSLRightInline{Hurlbut SC, Sher KJ. Assessing alcohol problems in
 college students. \emph{Journal of American College Health} 1992; 41:
 49--58.}
 
 \bibitem[\citeproctext]{ref-mckiernanDevelopmentBriefAbstinence2011}
-\CSLLeftMargin{16. }%
+\CSLLeftMargin{18. }%
 \CSLRightInline{McKiernan P, Cloud R, Patterson DA, et al.
 \href{https://doi.org/10.1080/1533256X.2011.593445}{Development of a
 {Brief Abstinence Self-Efficacy Measure}}. \emph{Journal of social work
 practice in the addictions} 2011; 11: 245--253.}
 
 \bibitem[\citeproctext]{ref-flanneryPsychometricPropertiesPenn1999}
-\CSLLeftMargin{17. }%
+\CSLLeftMargin{19. }%
 \CSLRightInline{Flannery BA, Volpicelli JR, Pettinati HM.
 \href{https://www.ncbi.nlm.nih.gov/pubmed/10470970}{Psychometric
 properties of the {Penn Alcohol Craving Scale}}. \emph{Alcoholism,
 clinical and experimental research} 1999; 23: 1289--1295.}
 
 \bibitem[\citeproctext]{ref-mcdowellPreferencesAttitudesDigital2025}
-\CSLLeftMargin{18. }%
+\CSLLeftMargin{20. }%
 \CSLRightInline{McDowell B, Dumais KM, Gary ST, et al.
 \href{https://doi.org/10.2147/PPA.S474535}{Preferences and {Attitudes
 Towards Digital Communication} and {Symptom Reporting Methods} in
@@ -937,7 +965,7 @@ Towards Digital Communication} and {Symptom Reporting Methods} in
 255--263.}
 
 \bibitem[\citeproctext]{ref-baeDetectingDrinkingEpisodes2017}
-\CSLLeftMargin{19. }%
+\CSLLeftMargin{21. }%
 \CSLRightInline{Bae S, Ferreira D, Suffoletto B, et al.
 \href{https://doi.org/10.1145/3090051}{Detecting {Drinking Episodes} in
 {Young Adults Using Smartphone-based Sensors}}. \emph{Proceedings of the
@@ -945,7 +973,7 @@ ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies} 2017;
 1: 1--36.}
 
 \bibitem[\citeproctext]{ref-baeLeveragingMobilePhone2023}
-\CSLLeftMargin{20. }%
+\CSLLeftMargin{22. }%
 \CSLRightInline{Bae SW, Suffoletto B, Zhang T, et al. Leveraging {Mobile
 Phone Sensors}, {Machine Learning} and {Explainable Artificial
 Intelligence} to {Predict Imminent Same-Day Binge Drinking Events} to
