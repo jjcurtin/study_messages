@@ -1,0 +1,178 @@
+---
+title: "Fits best model with 6 x 5 kfold to get predicted probabilities"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+params:
+  study: "messages"
+  version: "v17"
+  cv: "kfold"
+  model: "full" # full, baseline, meta, or passive
+editor_options: 
+  chunk_output_type: console
+---
+
+
+### Notes
+This script fits the final model selected from simple kfold using 6 x 5-fold CV to return predicted probabilities for all held out folds. These probabilities are needed to calculate auROC for fairness analyses and to create calibration plots.
+
+
+### Set Up Environment
+
+```{r}
+study <- params$study
+version <- params$version
+cv <- params$cv
+model <- params$model
+```
+
+
+Packages and functions
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(tidymodels)
+library(probably)
+library(betacal)
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+devtools::source_url("https://github.com/jjcurtin/lab_support/blob/main/chtc/static_files/fun_chtc.R?raw=true")
+```
+
+
+Absolute paths
+```{r}
+path_processed <- format_path(str_c("risk/data_processed/", study))
+path_input <- format_path(str_c("risk/chtc/", study))
+path_models <- format_path(str_c("risk/models/", study))
+```
+
+
+
+### Script Functions
+
+Function to fit and predict
+```{r}
+get_coef <- function(split_num, splits, config_best, rec){
+
+
+  d_in <- training(splits$splits[[split_num]])
+  
+  d_out <- testing(splits$splits[[split_num]])
+
+  rec_prepped <- rec |> 
+    prep(training = d_in)
+
+  feat_in <- rec_prepped |> 
+    bake(new_data = NULL)
+
+  model_best <- fit_best_model(config_best, feat = feat_in, "classification")
+
+  model_best |> 
+    tidy() |> 
+    mutate(estimate = -1 * estimate) |> 
+    filter(abs(estimate) > 0) |> 
+    filter(term != "(Intercept)") |> 
+    select(-penalty) |> 
+    mutate(split_num = split_num)
+}
+```
+
+### Read in test metrics from best model
+```{r}
+metrics_raw <- 
+  read_csv(here::here(path_models, str_c("best_config_", version, "_", cv, 
+                                         "_", model, ".csv")),
+           show_col_types = FALSE) |> 
+  glimpse()
+```
+
+
+Pull out single row for best configuration
+```{r }
+config_best <- metrics_raw |> 
+  slice_head(n = 1) 
+```
+
+### Fit best model using 6 x 5 kfold and get/save preds
+Read in training controls and data
+```{r}
+batch_names <- list.dirs(path_input, full.names = FALSE, recursive = FALSE)
+batch_names <- batch_names[str_detect(batch_names, "train") & 
+                           str_detect(batch_names, cv) &
+                           str_detect(batch_names, version) &
+                           str_detect(batch_names, config_best$algorithm) &
+                           str_detect(batch_names, model)]
+  
+batch_name <- batch_names[1] # can source any batch given assumptions above
+path_batch <- here::here(path_input, batch_name)
+source(here::here(path_batch, "input", "training_controls.R"))
+# NOTE: training controls overwrites path_batch but it matches   
+  
+chunks <- str_split_fixed(data_trn, "\\.", n = Inf) # parse name from extensions
+if (length(chunks) == 2) {
+  fn <- str_c("data_trn.", chunks[[2]])
+} else {
+  fn <- str_c("data_trn.", chunks[[2]], ".", chunks[[3]])
+}
+
+
+# open based on file type
+if (str_detect(fn, "csv")) {
+  d <- read_csv(here::here(path_batch, "input", fn), show_col_types = FALSE) 
+} else {
+  d <- read_rds(here::here(path_batch, "input", fn))
+}
+  
+
+# if(model == "baseline") {
+#   d <- d |> 
+#     select(label_num:dttm_label, lapse:abstinence_confidence)
+# }
+# 
+# if(model == "meta") {
+#   d <- d |> 
+#     select(-c(dsm5_total:abstinence_confidence), -starts_with("demo_"))
+# }
+# 
+# if(model == "passive") {
+#   d <- d |> 
+#     select(-c(`p6.l0.rratecount.contact_drank_past.Almost Always/Always`:`p168.l0.dratecount.cont_type_abr.friend`),
+#          -c(dsm5_total:abstinence_confidence), -starts_with("demo_"))
+# }
+
+d <- format_data(d) |> 
+  arrange(label_num) 
+```
+
+Make recipe and splits
+```{r}
+rec <- build_recipe(d = d, config = config_best)
+
+splits <- d |> 
+    make_splits(cv_resample_type = "kfold", cv_resample = "6_x_5", 
+                cv_outer_resample = NULL, cv_inner_resample = NULL, 
+                cv_group, cv_strat = cv_strat, the_seed = seed_splits)
+```
+
+
+```{r}
+all <- 1:length(splits$splits) |> 
+  map(\(split_num) get_coef(split_num, splits, config_best, rec)) |> 
+  list_rbind()
+
+all |> 
+  write_rds(here::here(path_models, str_c("coefs_", cv, "_6_x_5",
+                                           "_", version, "_", model, ".csv")))
+```
+
+

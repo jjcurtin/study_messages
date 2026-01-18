@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
     <meta name="author" content="Kendra Wyant">
-    <meta name="dcterms.date" content="2026-01-12">
+    <meta name="dcterms.date" content="2026-01-16">
 
     <title>Make All Tables for Main Manuscript</title>
     <style>
@@ -1351,7 +1351,7 @@ border: 0;
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">January 12, 2026</p>
+              <p class="date">January 16, 2026</p>
             </div>
           </div>
           
@@ -1409,7 +1409,8 @@ Attaching package: &#39;kableExtra&#39;</code></pre>
 <p>Table 1</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>feats <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(path_messages, <span class="st">&quot;feature_engineering_table.csv&quot;</span>),</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Feature Scoring Epochs</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Scoring Epochs</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <p>Table 2</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
@@ -1543,7 +1544,7 @@ Attaching package: &#39;kableExtra&#39;</code></pre>
 <h3 class="anchored" data-anchor-id="table-1-features">Table 1: Features</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>footnote_table_feat <span class="ot">&lt;-</span> <span class="st">&quot;Cellular communication features were scored over six scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the prediction window). Within each scoring epoch we calculated two types of features: raw and difference features. Raw features represent the raw feature value calculated within a scoring epoch (e.g., the rate count of text messages during the 48 hours immediately preceding the start of the prediction window). Difference features capture participant-level changes from their baseline scores (e.g., the participant’s average rate count of text messages across all time on study subtracted from the rate count in the preceding 48 hours).&quot;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>footnote_table_feat <span class="ot">&lt;-</span> <span class="st">&quot;Cellular communication features were scored over six feature scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the prediction window). Within each feature scoring epoch we calculated two types of features: raw and difference features. Raw features represent the raw feature value calculated within a scoring epoch (e.g., the rate count of text messages during the 48 hours immediately preceding the start of the prediction window). Difference features capture participant-level changes from their baseline scores (e.g., the participant’s average rate count of text messages across all time on study subtracted from the rate count in the preceding 48 hours).&quot;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>feats <span class="sc">|&gt;</span> </span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> </span>
@@ -1570,7 +1571,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Scoring Epochs, T
    <th style="text-align:left;"> Raw Predictor </th>
    <th style="text-align:left;"> Response Options </th>
    <th style="text-align:left;"> Feature Engineering </th>
-   <th style="text-align:left;"> Scoring Epochs </th>
+   <th style="text-align:left;"> Feature Scoring Epochs </th>
    <th style="text-align:right;"> Total Features </th>
    <th style="text-align:left;"> Full Model </th>
    <th style="text-align:left;"> Baseline Model </th>
@@ -1878,7 +1879,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Scoring Epochs, T
 <tfoot>
 <tr><td style="padding: 0; " colspan="100%"><span style="font-style: italic;">Note: </span></td></tr>
 <tr><td style="padding: 0; " colspan="100%">
-<sup></sup> Cellular communication features were scored over six scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the prediction window). Within each scoring epoch we calculated two types of features: raw and difference features. Raw features represent the raw feature value calculated within a scoring epoch (e.g., the rate count of text messages during the 48 hours immediately preceding the start of the prediction window). Difference features capture participant-level changes from their baseline scores (e.g., the participant’s average rate count of text messages across all time on study subtracted from the rate count in the preceding 48 hours).</td></tr>
+<sup></sup> Cellular communication features were scored over six feature scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the prediction window). Within each feature scoring epoch we calculated two types of features: raw and difference features. Raw features represent the raw feature value calculated within a scoring epoch (e.g., the rate count of text messages during the 48 hours immediately preceding the start of the prediction window). Difference features capture participant-level changes from their baseline scores (e.g., the participant’s average rate count of text messages across all time on study subtracted from the rate count in the preceding 48 hours).</td></tr>
 </tfoot>
 </table>
 

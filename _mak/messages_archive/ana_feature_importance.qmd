@@ -1,0 +1,110 @@
+---
+title: "Make All Figures for Main Manuscript"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+number-sections: true
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 4
+editor_options: 
+  chunk_output_type: console
+execute:
+  echo: false
+html-table-processing: none
+---
+
+```{r}
+#| message: false
+#| warning: false
+
+
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tidymodels))
+suppressPackageStartupMessages(source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true"))
+
+
+path_models <- format_path("risk/models/messages")
+
+model_full <- read_rds(here::here(path_models, "coefs_kfold_6_x_5_v17_full.csv"))
+```
+
+
+rename and group features
+```{r}
+all <- all |>
+  mutate(term = case_match())
+```
+
+
+Feature importance was assessed based on the stability of feature selection across cross-validation folds. Features retained in a higher proportion of folds were considered more important.
+
+Coefficient magnitudes were summarized across folds, conditional on non-zero selection.
+
+Table?
+- Feature name
+- Selection frequency (out of 30 folds)
+- Median coefficient (conditional on non-zero)
+- Sign consistency (% positive vs negative)
+
+“Feature importance was summarized using selection frequency across 30 cross-validation folds, along with the median coefficient magnitude (conditional on non-zero selection) and sign consistency.”
+
+
+
+
+```{r}
+model_full |> 
+  group_by(term) |> 
+  summarise(n_splits = n(),
+            prop_splits = n_splits/30,
+            median_coef = median(estimate)) |> 
+  arrange(desc(n_splits)) |> 
+  print(n = 14)
+```
+
+
+
+
+
+
+```{r}
+feat_imp <- model_full |> 
+  tidy() |> 
+  mutate(estimate = -1 * estimate) |> 
+  filter(abs(estimate) > 0) |> 
+  filter(term != "(Intercept)") |> 
+  mutate(term = case_match(term,
+                           "abstinence_confidence" ~ "Abstinence confidence (baseline)", 
+                           "abstinence_goal_Yes" ~ "Goal of abstinence (baseline)",
+                           "efficacy_neg_affect" ~ "Negative affect efficacy (baseline)",
+                           "craving_total" ~ "Craving (baseline)",
+                           "demo_income" ~ "Income (baseline)",
+                           "demo_sex_Male" ~ "Male (baseline)",
+                           "indiv_doa" ~ "Individual alcohol counseling (baseline)",
+                           .default = term)) |> 
+  mutate(term = if_else(str_detect(term, "cont_type_abr.friend"), "Friends (communications)", term),
+         term = if_else(str_detect(term, ".NonDrinker"), "Non-drinkers (communications)", term),
+         term = if_else(str_detect(term, ".support_status.Dont"), "Doesn't know about recovery (communications)", term),
+         term = if_else(str_detect(term, ".Drinker"), "Drinkers (communications)", term),
+         term = if_else(str_detect(term, ".phone_number"), "Number of unique contacts (communications)", term),
+         term = if_else(str_detect(term, "experience.Unpleasant"), "Unpleasant interactions (communications)", term))|> 
+  group_by(term) |> 
+  summarise(estimate = mean(estimate)) |> 
+  arrange(desc(abs(estimate))) |> 
+  mutate(term = reorder(term, abs(estimate)))  |> 
+  ggplot(aes(x = estimate, y = term, fill = estimate > 0)) +
+  geom_col() +
+  scale_fill_manual(values = c("TRUE" = "tomato", "FALSE" = "steelblue")) +
+  labs(
+    x = "Coefficient",
+    y = NULL,
+    title = "Feature Importance"
+  ) +
+  theme(legend.position = "none")
+```
+

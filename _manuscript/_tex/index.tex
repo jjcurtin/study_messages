@@ -177,8 +177,8 @@
 \hypersetup{
   pdftitle={Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder},
   pdfauthor={Kendra Wyant; Coco Yu; John J. Curtin},
-  pdfkeywords={Substance use disorders, Machine learning, Cellular
-Sensing},
+  pdfkeywords={Substance use disorders, Precision Medicine, Machine
+learning, Digital Phenotyping, Relapse Prevention},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -190,7 +190,7 @@ Sensing},
 \title{Evaluating Cellular Communication Sensing for Lapse Risk
 Prediction During Early Recovery from Alcohol Use Disorder}
 \author{Kendra Wyant \and Coco Yu \and John J. Curtin}
-\date{2026-01-16}
+\date{2026-01-17}
 
 \begin{document}
 \maketitle
@@ -209,18 +209,17 @@ goal of abstinence provided cellular communication data and alcohol use
 reports via a 4x daily EMA for up to three months. Models were trained
 and evaluated using repeated k-fold cross-validation. Results: The
 best-performing model used an elastic net algorithm and retained 13
-features (median posterior auROC = 0.68, 95\% Bayesian credible interval
+features (median posterior auROC=0.68, 95\% Bayesian credible interval
 (CI; {[}0.64, 0.71{]}). A baseline comparison model including only
-demographic and self-report measures retained five features and
-demonstrated nearly identical performance (median auROC = 0.68, 95\% CI
-{[}0.64, 0.71{]}). Conclusions: Cellular communication data capture some
-risk-relevant signal for alcohol lapse but do not provide incremental
-predictive value beyond baseline measures. Several communication
-features were retained in the final model with moderately sized
-coefficients, suggesting that aspects of social communication may be
-important for understanding lapse risk. Although, limitations inherent
-to cellular communication as a sensing method may outweigh their added
-value.
+baseline features retained five features and demonstrated nearly
+identical performance (median auROC=0.68, 95\% CI {[}0.64, 0.71{]}).
+Conclusions: Cellular communication data capture some risk-relevant
+signal for alcohol lapse but do not provide incremental predictive value
+beyond baseline measures. Several communication features were retained
+in the final model with moderately sized coefficients, suggesting that
+aspects of social communication may be important for understanding lapse
+risk. Although, limitations inherent to cellular communication as a
+sensing method may outweigh their added value.
 \end{abstract}
 
 
@@ -266,11 +265,15 @@ lifestyle that cannot be easily pinpointed in self-report.
 Cellular communication sensing may be a promising alternative to EMA.
 Whereas EMA is limited to, at most, several assessments per day,
 communication sensing is mostly passive and can be monitored
-moment-by-moment. Cellular communication patterns also appear to capture
+moment-by-moment. Cellular communication patterns appear to capture
 clear, risk-relevant constructs. Late-night phone calls could indicate
 an emergency, ``drunk dialing,'' or interpersonal conflict. A decrease
 in the number of contacts an individual communicates with could reflect
-a shrinking social circle, isolation, or disengagement.
+a shrinking social circle, isolation, or disengagement. Furthermore,
+cellular communication sensing enables data-driven feature engineering,
+whereby features are systematically derived from raw communication logs
+and retained based on their predictive utility rather than a priori
+theoretical assumptions.
 
 These data may become even more powerful when communication patterns are
 contextualized with participant-specific meaning. For instance, knowing
@@ -301,21 +304,22 @@ through print and digital advertisements and partnerships with treatment
 centers. Eligibility criteria required that participants were age 18 or
 older, able to read and write in English, had moderate to severe AUD
 \footnote{(≥4 self-reported DSM-5 symptoms)}, had a goal of abstinence
-from alcohol, had been abstinent for 1--8 weeks, were willing to use a
-single smartphone, and were not exhibiting severe psychosis or
-paranoia.\footnote{Defined as scores \textgreater2.2 or 2.8,
-  respectively, on the psychosis or paranoia scales of the Symptom
-  Checklist--90\textsuperscript{14}.}
+from alcohol at the time of the screening visit, had been abstinent for
+1--8 weeks, were willing to use a single smartphone, and were not
+exhibiting severe psychosis or paranoia.\footnote{Defined as scores
+  \textgreater2.2 or 2.8, respectively, on the psychosis or paranoia
+  scales of the Symptom Checklist--90\textsuperscript{14}.}
 
 Participants completed up to 5 study visits over approximately 3 months:
 a screening visit, intake visit, and 3 monthly follow-up visits. At
-screening we collected demographic information (age, sex at birth, race,
-ethnicity, education, marital status, employment, and income) and
-clinical characteristics (DSM-5 AUD symptom count, alcohol
-problems\textsuperscript{15}, and presence of psychological
-symptoms\textsuperscript{14}). At intake we collected additional
-self-report data on abstinence self-efficacy\textsuperscript{16},
-craving\textsuperscript{17}, and recent recovery efforts.
+screening we determined eligibility and collected demographic
+information (age, sex at birth, race, ethnicity, education, marital
+status, employment, and income) and clinical characteristics (DSM-5 AUD
+symptom count, alcohol problems\textsuperscript{15}, and presence of
+psychological symptoms\textsuperscript{14}). At the intake visit,
+roughly two weeks after screening, we collected additional self-report
+data on abstinence self-efficacy\textsuperscript{16},
+craving\textsuperscript{17}, and recent recovery efforts and goals.
 
 At each monthly follow-up, we downloaded backups of participants'
 cellular communication metadata directly from their smartphones.
@@ -334,13 +338,17 @@ affective experiences with the contact.
 
 While enrolled, participants completed 4 brief daily ecological
 momentary assessments (7-10 questions). The first item assessed alcohol
-use (date and time of any unreported drinking episodes). Lapse reports
-were verified at follow-up visits using a timeline follow-back
-interview. Additional sensing data streams and self-report measures were
-collected for the parent grant. The full study protocol is available on
-our Open Science Framework page (\url{https://osf.io/wgpz9/}).
+use (date and time of any unreported drinking episodes). The remaining
+EMA questions were used as features in other
+studies\textsuperscript{10,11}, but were outside the scope of this
+cellular communication sensing study. Additional sensing data streams
+and self-report measures were collected for the parent grant. The full
+study protocol is available on our Open Science Framework page
+(\url{https://osf.io/wgpz9/}).
 
 \subsection{Data Analysis Plan}\label{data-analysis-plan}
+
+\subsubsection{Labels}\label{labels}
 
 Our models predicted the probability of an alcohol lapse within a
 24-hour window. Predictions were generated daily at 4 a.m., beginning on
@@ -352,81 +360,61 @@ In total, there were 11,507 labeled prediction windows across all
 participants. Positive lapse labels were underrepresented (7.5\%;
 861/11,507).
 
-We filtered the data to include only communications with known context
-(i.e., people with whom they communicated with at least twice in a month
-and whom they provided self-report context about). Cellular
-communication features were engineered from all available data up to the
-start of each window. We used six scoring epochs (6, 12, 24, 48, 72, and
-168 hours before the start of the prediction window) to create features.
-Within each scoring epoch we calculated two types of features: raw and
-difference features. Raw features represent the raw feature value
-calculated within a scoring epoch (e.g., the rate count of text messages
-during the 48 hours immediately preceding the start of the prediction
-window). Difference features capture participant-level changes from
-their baseline scores. Specifically, we subtracted each participant's
-mean score for each feature (using all available data prior to the
-prediction window) from the associated raw feature (e.g., the
-participant's average rate count of text messages across all time on
-study subtracted from the rate count in the preceding 48 hours).
+\subsubsection{Feature Engineering}\label{feature-engineering}
+
+We filtered the raw comunication data to include only communications
+with known context (i.e., people with whom they communicated with at
+least twice in a month and whom they provided self-report context
+about). Cellular communication features were engineered from all
+available data up to the start of each window. We used six feature
+scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the
+prediction window) to create features.
+
+Within each feature scoring epoch, we calculated two types of features:
+raw and difference features. Raw features represent the feature value
+calculated within a given feature scoring epoch. For example, the raw
+rate of incoming text messages in a 48-hour feature scoring epoch was
+calculated as the total number of incoming text messages in the 48 hours
+immediately preceding the start of the prediction window, divided by 48.
+Difference features capture participant-level changes from baseline.
+Specifically, for each feature we subtracted the participant's mean
+value (using all available data prior to the prediction window) from the
+associated raw feature value. For example, the difference feature for
+incoming text messages was calculated as the raw incoming text message
+rate minus the participant's average incoming text message rate across
+all time on study.
 
 The full model included 406 features from cellular communication data
 plus 24 numeric or dummy-coded features from baseline self-report
-measures. We also evaluated a comparison model that used only the
-baseline features. Table~\ref{tbl-1} details the raw predictors, feature
-engineering procedures, and features included in the full vs.~baseline
-models. Other feature engineering steps performed during
-cross-validation included imputing missing values (median imputation for
-numeric features and mode imputation for nominal features) and removing
-zero and near-zero variance features as determined from held-in data.
-
-Candidate model configurations differed by algorithm (elastic net,
-random forest, XGBoost), outcome resampling method, and hyperparameter
-values. The best configuration for each model was selected using 6
-repeats of participant-grouped 5-fold cross-validation. Our performance
-metric was area under the receiver operating curve (auROC). Folds were
-stratified so that all folds contained comparable proportions of
-individuals who lapsed frequently (i.e., 10+ times).
-
-We evaluated model performance with a Bayesian hierarchical generalized
-linear model. Posterior distributions with 95\% credible intervals (CI)
-were estimated from the 30 held-out test sets using weakly informative,
-data-dependent priors to regularize and reduce overfitting.\footnote{Residual
-  SD \textasciitilde{} normal(0, exp(2)); intercept (centered
-  predictors) \textasciitilde{} normal(2.3, 1.3); window-width contrasts
-  \textasciitilde{} normal(0, 2.69); covariance \textasciitilde{}
-  decov(1,1,1,1).} Random intercepts were included for repeat and fold
-(nested within repeat). auROCs were logit-transformed and regressed on
-model type to estimate the probability that model performances differed
-systematically.
-
-Our best performing models used an elastic net algorithm. We quantified
-feature importance by examining the retained features (i.e., coefficient
-value \textgreater{} 0) in the full model and ordering them by absolute
-coefficient value. These values provide an estimate of the direction and
-magnitude of association between each predictor and the outcome,
-conditional on the other features retained. All our annotated analysis
-scripts are publicly available on our study website
-(\url{https://jjcurtin.github.io/study_messages/}).
+measures collected at screening and intake visits. We also evaluated a
+comparison model that used only the baseline features. Table~\ref{tbl-1}
+details the raw predictors, feature engineering procedures, and features
+included in the full vs.~baseline models. Other feature engineering
+steps performed during cross-validation included imputing missing values
+(median imputation for numeric features and mode imputation for nominal
+features), standardizing all features, and removing zero and near-zero
+variance features as determined from held-in data.
 
 \begin{longtable}[]{@{}llllrll@{}}
 
 \toprule\noalign{}
-Raw Predictor & Response Options & Feature Engineering & Scoring Epochs
-& Total Features & Full Model & Baseline Model \\
+Raw Predictor & Response Options & Feature Engineering & Feature Scoring
+Epochs & Total Features & Full Model & Baseline Model \\
 \midrule\noalign{}
 \endhead
 \midrule\noalign{}
 {Note: } & & & & & & \\
 \textsuperscript{} Cellular communication features were scored over six
-scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the
-prediction window). Within each scoring epoch we calculated two types of
-features: raw and difference features. Raw features represent the raw
-feature value calculated within a scoring epoch (e.g., the rate count of
-text messages during the 48 hours immediately preceding the start of the
-prediction window). Difference features capture participant-level
-changes from their baseline scores (e.g., the participant's average rate
-count of text messages across all time on study subtracted from the rate
-count in the preceding 48 hours). & & & & & & \\
+feature scoring epochs (6, 12, 24, 48, 72, and 168 hours before the
+start of the prediction window). Within each feature scoring epoch we
+calculated two types of features: raw and difference features. Raw
+features represent the raw feature value calculated within a scoring
+epoch (e.g., the rate count of text messages during the 48 hours
+immediately preceding the start of the prediction window). Difference
+features capture participant-level changes from their baseline scores
+(e.g., the participant's average rate count of text messages across all
+time on study subtracted from the rate count in the preceding 48 hours).
+& & & & & & \\
 \bottomrule\noalign{}
 \endlastfoot
 Originated & Incoming, outgoing & Difference and raw rate counts for
@@ -516,22 +504,58 @@ Indication of Inclusion in Full and Baseline Models}
 \href{https://jjcurtin.github.io/study_messages/notebooks/mak_tables-preview.html\#cell-tbl-1}{Make
 All Tables for Main Manuscript}}
 
+\subsubsection{Model Selection and
+Evaluation}\label{model-selection-and-evaluation}
+
+Candidate model configurations differed by algorithm (elastic net,
+random forest, XGBoost), outcome resampling method (i.e., up-sampling
+and down-sampling of the outcome at ratios ranging from 5:1 to 1:1), and
+hyperparameter values. The best configuration for each model was
+selected using 6 repeats of 5-fold cross-validation. Participants were
+grouped so that all of their data were always in the held-in or held-out
+fold for a split, but never in both. Our performance metric was area
+under the receiver operating curve (auROC). Folds were stratified so
+that all folds contained comparable proportions of individuals who
+lapsed frequently (i.e., 10+ times).
+
+We evaluated model performance with a Bayesian hierarchical generalized
+linear model. Posterior distributions with 95\% credible intervals (CI)
+were estimated from the 30 held-out folds using weakly informative,
+data-dependent priors to regularize and reduce overfitting.\footnote{Residual
+  SD \textasciitilde{} normal(0, exp(2)); intercept (centered
+  predictors) \textasciitilde{} normal(2.3, 1.3); window-width contrasts
+  \textasciitilde{} normal(0, 2.69); covariance \textasciitilde{}
+  decov(1,1,1,1).} Random intercepts were included for repeat and fold
+(nested within repeat). auROCs were logit-transformed and regressed on
+model type to estimate the probability that model performances differed
+systematically.
+
+Our best performing models used an elastic net algorithm. We quantified
+feature importance by examining the retained features (i.e., coefficient
+value \textgreater{} 0) in the full model and ordering them by absolute
+coefficient value. These values provide an estimate of the direction and
+magnitude of association between each predictor and the outcome,
+conditional on the other features retained. All our annotated analysis
+scripts are publicly available on our study website
+(\url{https://jjcurtin.github.io/study_messages/}).
+
 \section{Results}\label{results}
 
 \subsection{Participants}\label{participants}
 
-We screened 192 participants. Of these, 169 enrolled and 154 completed
-the first follow-up visit. Data from 1 participant was excluded due to
-not reporting a goal of abstinence and lapsing multiple times a day
-every day on study. Data from 1 participant was excluded due to evidence
-of careless responding. Data from 1 participant was excluded due to poor
-compliance with EMA resulting in questionable lapse labels. Data from 7
-participants were excluded due to poor compliance providing
-communication data (i.e., deleting logs prior to download and/or not
-providing context information about important contacts). The final
-analytic sample included 144 participants. Table~\ref{tbl-2} provides
-the demographic characterization of our sample. 56\% of participants
-reported at least one lapse while on study.
+We screened 192 participants. Of these, 169 enrolled during the intake
+visit and 154 completed the first follow-up visit. Data from 1
+participant was excluded due to drinking multiple times a day every day
+on study, suggesting they did not have a goal of abstinence. Data from 1
+participant was excluded due to evidence of careless responding. Data
+from 1 participant was excluded due to poor compliance with EMA
+resulting in questionable lapse labels. Data from 7 participants were
+excluded due to poor compliance providing communication data (i.e.,
+deleting logs prior to download and/or not providing context information
+about important contacts). The final analytic sample included 144
+participants. Table~\ref{tbl-2} provides the demographic
+characterization of our sample. 56\% of participants reported at least
+one lapse while on study.
 
 \begin{longtable}[]{@{}lrrlll@{}}
 
@@ -684,12 +708,15 @@ private messaging apps (e.g., WhatsApp, Signal) or social media
 platforms (e.g., Facebook Messenger, Instagram) as their primary
 communication method\textsuperscript{18}. Therefore, our dataset likely
 missed a substantial portion of participants' communications. Notably,
-the communication features that were retained in the final model were
-scored over the longest scoring epochs (72 and 168 hours), suggesting
-that when more data are available (i.e., more communications) these
-features may be become more important. Future studies could explore
-whether increasing communication data from these alternative platforms
-yield stronger predictive signals.
+the communication features retained in the final model were scored over
+the longest feature scoring epochs (72 and 168 hours), suggesting that
+when more data are available (i.e., more communications), these features
+may be become more important. Future studies could explore whether
+incorporating communication data from additional platforms yields
+stronger predictive signal. However, even with improved data collection
+methods, sparsity may remain a challenge, as some people just don't
+communicate frequently with others and others use services (e.g.,
+Snapchat) that automaticlaly delete messages.
 
 We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
@@ -716,12 +743,14 @@ Other practical challenges in collecting call and text message data
 further limit the feasibility of this sensing method. For example, we
 obtained participants' cellular communication data by downloading
 backups of their communication logs in person during their monthly
-follow-up visits. However, Apple heavily restricts apps in its app store
-from accessing call and text message data, making real-time sensing of
-communications challenging (if not impossible) for IOS users. We
-conclude that other forms of social interaction characterization (e.g.,
-engineering time spent with supportive contacts from geolocation data)
-are more worthwhile to pursue in future research.
+follow-up visits. It is possible to collect cellular communication data
+in real time using apps installed on Android devices. However, Apple
+heavily restricts apps in its app store from accessing call and text
+message data, making real-time sensing of communications challenging (if
+not impossible) for IOS users. We conclude that other forms of social
+interaction characterization (e.g., engineering time spent with
+supportive contacts from geolocation data) are more worthwhile to pursue
+in future research.
 
 \section{Author Contributions}\label{author-contributions}
 
