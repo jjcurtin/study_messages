@@ -190,7 +190,7 @@ learning, Digital Phenotyping, Relapse Prevention},
 \title{Evaluating Cellular Communication Sensing for Lapse Risk
 Prediction During Early Recovery from Alcohol Use Disorder}
 \author{Kendra Wyant \and Coco Yu \and John J. Curtin}
-\date{2026-01-17}
+\date{2026-01-18}
 
 \begin{document}
 \maketitle
@@ -530,13 +530,14 @@ data-dependent priors to regularize and reduce overfitting.\footnote{Residual
 model type to estimate the probability that model performances differed
 systematically.
 
-Our best performing models used an elastic net algorithm. We quantified
-feature importance by examining the retained features (i.e., coefficient
-value \textgreater{} 0) in the full model and ordering them by absolute
-coefficient value. These values provide an estimate of the direction and
-magnitude of association between each predictor and the outcome,
-conditional on the other features retained. All our annotated analysis
-scripts are publicly available on our study website
+The best performing model used an elastic net algorithm. This model was
+refit on the entire data set to identify the most important features. We
+quantified feature importance by examining the retained features (i.e.,
+coefficient value \textgreater{} 0) in the full model and ordering them
+by absolute coefficient value. These values provide an estimate of the
+direction and magnitude of association between each predictor and the
+outcome, conditional on the other features retained. All our annotated
+analysis scripts are publicly available on our study website
 (\url{https://jjcurtin.github.io/study_messages/}).
 
 \section{Results}\label{results}
