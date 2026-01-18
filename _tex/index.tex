@@ -209,18 +209,17 @@ goal of abstinence provided cellular communication data and alcohol use
 reports via a 4x daily EMA for up to three months. Models were trained
 and evaluated using repeated k-fold cross-validation. Results: The
 best-performing model used an elastic net algorithm and retained 13
-features (median posterior auROC = 0.68, 95\% Bayesian credible interval
+features (median posterior auROC=0.68, 95\% Bayesian credible interval
 (CI; {[}0.64, 0.71{]}). A baseline comparison model including only
-demographic and self-report measures retained five features and
-demonstrated nearly identical performance (median auROC = 0.68, 95\% CI
-{[}0.64, 0.71{]}). Conclusions: Cellular communication data capture some
-risk-relevant signal for alcohol lapse but do not provide incremental
-predictive value beyond baseline measures. Several communication
-features were retained in the final model with moderately sized
-coefficients, suggesting that aspects of social communication may be
-important for understanding lapse risk. Although, limitations inherent
-to cellular communication as a sensing method may outweigh their added
-value.
+baseline features retained five features and demonstrated nearly
+identical performance (median auROC=0.68, 95\% CI {[}0.64, 0.71{]}).
+Conclusions: Cellular communication data capture some risk-relevant
+signal for alcohol lapse but do not provide incremental predictive value
+beyond baseline measures. Several communication features were retained
+in the final model with moderately sized coefficients, suggesting that
+aspects of social communication may be important for understanding lapse
+risk. Although, limitations inherent to cellular communication as a
+sensing method may outweigh their added value.
 \end{abstract}
 
 
@@ -512,10 +511,12 @@ Candidate model configurations differed by algorithm (elastic net,
 random forest, XGBoost), outcome resampling method (i.e., up-sampling
 and down-sampling of the outcome at ratios ranging from 5:1 to 1:1), and
 hyperparameter values. The best configuration for each model was
-selected using 6 repeats of participant-grouped 5-fold cross-validation.
-Our performance metric was area under the receiver operating curve
-(auROC). Folds were stratified so that all folds contained comparable
-proportions of individuals who lapsed frequently (i.e., 10+ times).
+selected using 6 repeats of 5-fold cross-validation. Participants were
+grouped so that all of their data were always in the held-in or held-out
+fold for a split, but never in both. Our performance metric was area
+under the receiver operating curve (auROC). Folds were stratified so
+that all folds contained comparable proportions of individuals who
+lapsed frequently (i.e., 10+ times).
 
 We evaluated model performance with a Bayesian hierarchical generalized
 linear model. Posterior distributions with 95\% credible intervals (CI)
