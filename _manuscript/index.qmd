@@ -8,7 +8,7 @@ author:
     #roles: []
     affiliations:
     - Department of Psychology, University of Wisconsin-Madison
-  - name: Coco Yu
+  - name: Jiachen Yu
     email: jyu274@wisc.edu
     orcid: 0000-0002-7731-0563
     corresponding: false
@@ -97,14 +97,18 @@ In this study, we assessed whether contextualized cellular communication feature
 
 # Methods
 
+## Transparency and Openness
+We adhere to research transparency principles that are crucial for robust and replicable science. First, we reported how we determined the sample size, all data exclusions, all manipulations, and all study measures. We provide a Transparency Report [@aczelConsensusbasedTransparencyChecklist2019] in the supplement. Second, our features, labels, questionnaires, and other study materials are publicly available on our Open Science Framework (OSF) page ([https://osf.io/wgpz9/](https://osf.io/wgpz9/)). Finally, the annotated analysis scripts are publicly available on our study website ([https://jjcurtin.github.io/study_messages/](https://jjcurtin.github.io/study_messages/)).
+
+
 ## Participants and Procedure
-We recruited adults in early recovery from AUD in Madison, Wisconsin, through print and digital advertisements and partnerships with treatment centers. Eligibility criteria required that participants were age 18 or older, able to read and write in English, had moderate to severe AUD ^[(≥4 self-reported DSM-5 symptoms)], had a goal of abstinence from alcohol at the time of the screening visit, had been abstinent for 1–8 weeks, were willing to use a single smartphone, and were not exhibiting severe psychosis or paranoia.^[Defined as scores >2.2 or 2.8, respectively, on the psychosis or paranoia scales of the Symptom Checklist–90 [@derogatislBriefSymptomInventory].]
+We recruited 192 adults in early recovery from AUD in Madison, Wisconsin, through print and digital advertisements and partnerships with treatment centers. This sample size was determined based on traditional power analysis methods for logistic regression [@hsiehSampleSizeTables1989] because comparable approaches for machine learning models have not yet been validated. Eligibility criteria required that participants were age 18 or older, able to read and write in English, had moderate to severe AUD ^[(≥4 self-reported DSM-5 symptoms)], had a goal of abstinence from alcohol at the time of the screening visit, had been abstinent for 1–8 weeks, were willing to use a single smartphone, and were not exhibiting severe psychosis or paranoia.^[Defined as scores >2.2 or 2.8, respectively, on the psychosis or paranoia scales of the Symptom Checklist–90 [@derogatislBriefSymptomInventory].]
 
 Participants completed up to 5 study visits over approximately 3 months: a screening visit, intake visit, and 3 monthly follow-up visits. At screening we determined eligibility and collected demographic information (age, sex at birth, race, ethnicity, education, marital status, employment, and income) and clinical characteristics (DSM-5 AUD symptom count, alcohol problems [@hurlbutAssessingAlcoholProblems1992], and presence of psychological symptoms [@derogatislBriefSymptomInventory]). At the intake visit, roughly two weeks after screening, we collected additional self-report data on abstinence self-efficacy [@mckiernanDevelopmentBriefAbstinence2011], craving [@flanneryPsychometricPropertiesPenn1999], and recent recovery efforts and goals.
 
 At each monthly follow-up, we downloaded backups of participants' cellular communication metadata directly from their smartphones. Metadata included the phone number of the other party, the date and time of the communication, the origin of call or message (i.e., incoming or outgoing), whether the call was answered (voice calls only), and the duration of the call (voice calls only). During each follow-up visit, study staff identified important contacts. Contacts that participants communicated with at least twice by call or text in the past month were deemed important. For each important contact, participants answered 7 contextual questions about their type of relationship, whether they ever drank alcohol with this person, the drinking status of the contact, expectations about whether the contact would drink in their presence, recovery status of contact, level of supportiveness of contact, and affective experiences with the contact. 
 
-While enrolled, participants completed 4 brief daily ecological momentary assessments (7-10 questions). The first item assessed alcohol use (date and time of any unreported drinking episodes). The remaining EMA questions were used as features in other studies [@wyantMachineLearningModels2024; @wyantForecastingRiskAlcoholunderreview], but were outside the scope of this cellular communication sensing study. Additional sensing data streams and self-report measures were collected for the parent grant. The full study protocol is available on our Open Science Framework page ([https://osf.io/wgpz9/](https://osf.io/wgpz9/)). 
+While enrolled, participants completed 4 brief daily ecological momentary assessments (7-10 questions). The first item assessed alcohol use (date and time of any unreported drinking episodes). The remaining EMA questions were used as features in other studies [@wyantMachineLearningModels2024; @wyantForecastingRiskAlcoholunderreview], but were outside the scope of this cellular communication sensing study. Additional sensing data streams and self-report measures were collected for the parent grant. Participants were compensated up to \$115 per month for completing study tasks (i.e., EMAs, monthly follow-up visits and sharing sensing data) and were paid \$66 per month to offset the cost of maintaining a cellphone plan. The full study protocol is available on our OSF page ([https://osf.io/wgpz9/](https://osf.io/wgpz9/)). 
 
 ## Data Analysis Plan
 
@@ -127,7 +131,7 @@ Candidate model configurations differed by algorithm (elastic net, random forest
 
 We evaluated model performance with a Bayesian hierarchical generalized linear model. Posterior distributions with 95% credible intervals (CI) were estimated from the 30 held-out folds using weakly informative, data-dependent priors to regularize and reduce overfitting.^[Residual SD ~ normal(0, exp(2)); intercept (centered predictors) ~ normal(2.3, 1.3); window-width contrasts ~ normal(0, 2.69); covariance ~ decov(1,1,1,1).] Random intercepts were included for repeat and fold (nested within repeat). auROCs were logit-transformed and regressed on model type to estimate the probability that model performances differed systematically. 
 
-The best performing model used an elastic net algorithm. This model was refit on the entire data set to identify the most important features. We quantified feature importance by examining the retained features (i.e., coefficient value > 0) in the full model and ordering them by absolute coefficient value. These values provide an estimate of the direction and magnitude of association between each predictor and the outcome, conditional on the other features retained. All our annotated analysis scripts are publicly available on our study website ([https://jjcurtin.github.io/study_messages/](https://jjcurtin.github.io/study_messages/)).
+The best performing model used an elastic net algorithm. This model was refit on the entire data set to identify the most important features. We quantified feature importance by examining the retained features (i.e., coefficient value > 0) in the full model and ordering them by absolute coefficient value. These values provide an estimate of the direction and magnitude of association between each predictor and the outcome, conditional on the other features retained. 
 
 
 
@@ -188,6 +192,9 @@ All participants provided written informed consent.
 
 ## Consent for Publication
 Not applicable.
+
+## Guarantor
+JJC
 
 ## Declaration of Conflicting Interest
 The authors declared no potential conflicts of interest with respect to the research, authorship, and publication of this article.

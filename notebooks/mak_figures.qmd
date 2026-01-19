@@ -99,7 +99,7 @@ feat_imp <- model_full |>
 
 ```{r}
 #| label: fig-1
-#| fig-cap: "Global feature importance (elastic net coefficient) for the full model. Features are ordered by absolute coefficient value. Blue bars indicate higher feature values, on average, lower lapse risk. Red bars indicate higher feature values, on average, increase risk. Baseline features were collected from self-report measures at the start of the study. Communication features were engineered from the contexualized cellular communications."
+#| fig-cap: "Global feature importance (elastic net coefficient) for the full model. Features are ordered by absolute coefficient value. Bars with positive coefficient values represent features that, on average, lower lapse risk. Bars with negative coefficient values represent features that, on average, increase risk. Baseline features were collected via self-report measures at the screening and intake visits. Communication features were engineered from the contextualized cellular communications."
 #| fig-width: 7
 #| fig-height: 5
 
