@@ -260,16 +260,16 @@ are chosen using domain expertise from decades of research on the
 self-report factors that predict lapse. It is possible, however, that
 there are several alternative precipitators of lapse not yet discovered
 due to small subtle changes in one's environment, social circle, or
-lifestyle that cannot be easily pinpointed in self-report.
+lifestyle that cannot be easily identified via self-report.
 
 Cellular communication sensing may be a promising alternative to EMA.
 Whereas EMA is limited to, at most, several assessments per day,
 communication sensing is mostly passive and can be monitored
-moment-by-moment. Cellular communication patterns appear to capture
-clear, risk-relevant constructs. Late-night phone calls could indicate
-an emergency, ``drunk dialing,'' or interpersonal conflict. A decrease
-in the number of contacts an individual communicates with could reflect
-a shrinking social circle, isolation, or disengagement. Furthermore,
+moment-by-moment. Cellular communication patterns capture clear,
+risk-relevant constructs. Late-night phone calls could indicate an
+emergency, ``drunk dialing,'' or interpersonal conflict. A decrease in
+the number of contacts an individual communicates with could reflect a
+shrinking social circle, isolation, or disengagement. Furthermore,
 cellular communication sensing enables data-driven feature engineering,
 whereby features are systematically derived from raw communication logs
 and retained based on their predictive utility rather than a priori
@@ -278,10 +278,10 @@ theoretical assumptions.
 These data may become even more powerful when communication patterns are
 contextualized with participant-specific meaning. For instance, knowing
 a participant's relationship to their contacts, whether they have
-previously drank alcohol with a given contact, or whether that contact
-supports their recovery goals could substantially alter interpretation.
-In the examples above, contextualized communication data might reveal
-that late-night calls are made to a sponsor, or that a shrinking social
+previously drunk alcohol with a given contact, or whether that contact
+supports their recovery goals could alter interpretation. In the
+examples above, contextualized communication data might reveal that the
+late-night calls are made to a sponsor, or that a shrinking social
 circle reflects reduced contact with individuals unsupportive of their
 recovery. In this way, the same communication patterns may reflect
 protective processes rather than increased lapse risk.
@@ -301,7 +301,7 @@ risk.
 We adhere to research transparency principles that are crucial for
 robust and replicable science. First, we reported how we determined the
 sample size, all data exclusions, all manipulations, and all study
-measures. We provide a Transparency Report\textsuperscript{14} in the
+measures. We provide a transparency checklist\textsuperscript{14} in the
 supplement. Second, our features, labels, questionnaires, and other
 study materials are publicly available on our Open Science Framework
 (OSF) page (\url{https://osf.io/wgpz9/}). Finally, the annotated
@@ -333,8 +333,8 @@ information (age, sex at birth, race, ethnicity, education, marital
 status, employment, and income) and clinical characteristics (DSM-5 AUD
 symptom count, alcohol problems\textsuperscript{17}, and presence of
 psychological symptoms\textsuperscript{16}). At the intake visit,
-roughly two weeks after screening, we collected additional self-report
-data on abstinence self-efficacy\textsuperscript{18},
+approximately two weeks after screening, we collected additional
+self-report data on abstinence self-efficacy\textsuperscript{18},
 craving\textsuperscript{19}, and recent recovery efforts and goals.
 
 At each monthly follow-up, we downloaded backups of participants'
@@ -345,24 +345,24 @@ outgoing), whether the call was answered (voice calls only), and the
 duration of the call (voice calls only). During each follow-up visit,
 study staff identified important contacts. Contacts that participants
 communicated with at least twice by call or text in the past month were
-deemed important. For each important contact, participants answered 7
-contextual questions about their type of relationship, whether they ever
-drank alcohol with this person, the drinking status of the contact,
-expectations about whether the contact would drink in their presence,
-recovery status of contact, level of supportiveness of contact, and
-affective experiences with the contact.
+considered important. For each important contact, participants answered
+seven contextual questions about their type of relationship, whether
+they ever drank alcohol with this person, the drinking status of the
+contact, expectations about whether the contact would drink in their
+presence, recovery status of contact, level of supportiveness of
+contact, and affective experiences with the contact.
 
-While enrolled, participants completed 4 brief daily ecological
+While enrolled, participants completed four brief daily ecological
 momentary assessments (7-10 questions). The first item assessed alcohol
 use (date and time of any unreported drinking episodes). The remaining
 EMA questions were used as features in other
 studies\textsuperscript{10,11}, but were outside the scope of this
 cellular communication sensing study. Additional sensing data streams
-and self-report measures were collected for the parent grant.
-Participants were compensated up to \$115 per month for completing study
+and self-report measures were collected for the parent grant. We
+compensated participants up to \$115 per month for completing study
 tasks (i.e., EMAs, monthly follow-up visits and sharing sensing data)
-and were paid \$66 per month to offset the cost of maintaining a
-cellphone plan. The full study protocol is available on our OSF page
+and \$66 per month to offset the cost of their cellphone plan. The full
+study protocol is available on our OSF page
 (\url{https://osf.io/wgpz9/}).
 
 \subsection{Data Analysis Plan}\label{data-analysis-plan}
@@ -513,8 +513,8 @@ Yes \\
 
 
 \caption{\label{tbl-1}Raw Predictors, Response Options, Feature
-Engineering Methods, Scoring Epochs, Total Number of Features, and
-Indication of Inclusion in Full and Baseline Models}
+Engineering Methods, Feature Scoring Epochs, Total Number of Features,
+and Indication of Inclusion in Full and Baseline Models}
 
 \tabularnewline
 \end{longtable}
@@ -562,15 +562,15 @@ outcome, conditional on the other features retained.
 \subsection{Participants}\label{participants}
 
 We screened 192 participants. Of these, 169 enrolled during the intake
-visit and 154 completed the first follow-up visit. Data from 1
-participant was excluded due to drinking multiple times a day every day
-on study, suggesting they did not have a goal of abstinence. Data from 1
-participant was excluded due to evidence of careless responding. Data
-from 1 participant was excluded due to poor compliance with EMA
-resulting in questionable lapse labels. Data from 7 participants were
-excluded due to poor compliance providing communication data (i.e.,
-deleting logs prior to download and/or not providing context information
-about important contacts). The final analytic sample included 144
+visit and 154 completed the first follow-up visit. We excluded data from
+one participant due to drinking multiple times a day every day on study,
+suggesting they did not have a goal of abstinence. We excluded data from
+one participant due to evidence of careless responding. We excluded data
+from one participant due to poor compliance with EMA resulting in
+questionable lapse labels. We excluded data from seven participants due
+to poor compliance providing communication data (i.e., deleting logs
+prior to the download or not providing context information about
+important contacts). The final analytic sample included 144
 participants. Table~\ref{tbl-2} provides the demographic
 characterization of our sample. 56\% of participants reported at least
 one lapse while on study.
@@ -668,11 +668,11 @@ lapse risk.
 
 We evaluated a comparison model to assess the incremental predictive
 value of cellular communication features beyond baseline measures. The
-baseline model retained 5 features and achieved performance nearly
-identical to the full model (median auROC = 0.68, 95\% CI {[}0.64,
-0.71{]}). The median difference in auROC between the full and baseline
-models was less than .01, providing no evidence (52\% probability) that
-the full model performed better than the baseline model.
+baseline model achieved comparative performance to the full model
+(median auROC = 0.68, 95\% CI {[}0.64, 0.71{]}). The median difference
+in auROC between the full and baseline models was less than .01,
+providing no evidence (52\% probability) that the full model performed
+better than the baseline model.
 
 \begin{figure}[H]
 
@@ -687,7 +687,7 @@ coefficient) for the full model. Features are ordered by absolute
 coefficient value. Bars with positive coefficient values represent
 features that, on average, lower lapse risk. Bars with negative
 coefficient values represent features that, on average, increase risk.
-Baseline features were collected from self-report measures at the
+Baseline features were collected via self-report measures at the
 screening and intake visits. Communication features were engineered from
 the contextualized cellular communications.}
 
@@ -726,16 +726,12 @@ through the native smartphone app. In recent years, many individuals use
 private messaging apps (e.g., WhatsApp, Signal) or social media
 platforms (e.g., Facebook Messenger, Instagram) as their primary
 communication method\textsuperscript{20}. Therefore, our dataset likely
-missed a substantial portion of participants' communications. Notably,
-the communication features retained in the final model were scored over
-the longest feature scoring epochs (72 and 168 hours), suggesting that
-when more data are available (i.e., more communications), these features
-may be become more important. Future studies could explore whether
-incorporating communication data from additional platforms yields
-stronger predictive signal. However, even with improved data collection
-methods, sparsity may remain a challenge, as some people just don't
-communicate frequently with others and others use services (e.g.,
-Snapchat) that automaticlaly delete messages.
+missed a substantial portion of participants' communications. Future
+studies could explore whether incorporating communication data from
+additional platforms yields stronger predictive signal. However, even
+with improved data collection methods, sparsity may remain a challenge,
+as some people may simply not communicate frequently with others and
+others use services (e.g., Snapchat) that automatically delete messages.
 
 We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
@@ -743,20 +739,19 @@ incorporated communication data into models with other sensing data
 (e.g., accelerometer, geolocation, and device usage) to detect
 current\textsuperscript{21} and predict future\textsuperscript{22} heavy
 drinking episondes in non-treatment seeking young adult populations. It
-is possible, that in certain populations cellular communications may
-hold more signal. Young adults may have more frequent communications
-reducing sparsity concerns. Additionally, non-treatment seeking
-populations may be less likely to sensor their data (i.e., deleting
-communications) when the drinking behavior is not at odds with their
-goals and/or values. However, even in these instances, the unique
-contribution of cellular communications above and beyond other sensing
-methods is unclear. Some communication features, such as outgoing call
-duration and the number of outgoing calls emerged in the top 20
-important features for detecting current drinking episodes. Conversely,
-when predicting future drinking episodes, no communication features
-appeared in the top 20. Other sensing methods, like geolocation and
-accelerometer data, appeared to be more robustly important for both
-detection and prediction.
+is possible that in certain populations cellular communications may hold
+more signal. Young adults may have more frequent communication reducing
+sparsity concerns. Additionally, non-treatment seeking populations may
+be less likely to sensor their data (i.e., deleting communications) when
+the drinking behavior is not at odds with their goals and/or values.
+However, even in these instances, the unique contribution of cellular
+communications beyond other sensing methods is unclear. Some
+communication features, such as outgoing call duration and the number of
+outgoing calls emerged in the top 20 important features for detecting
+current drinking episodes. Conversely, when predicting future drinking
+episodes, no communication features appeared in the top 20. Other
+sensing methods, like geolocation and accelerometer data, appeared to be
+more robustly important for both detection and prediction.
 
 Other practical challenges in collecting call and text message data
 further limit the feasibility of this sensing method. For example, we
