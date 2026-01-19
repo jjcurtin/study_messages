@@ -1,0 +1,28 @@
+---
+format: pdf
+margin-left: 60pt
+margin-right: 60pt
+margin-bottom: 60pt
+margin-top: 60pt
+---
+
+Dear Dr. Theodoros N. Arvanitis,   
+
+We are pleased to submit our manuscript entitled **"Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder: A Longitudinal Observation Study"** for consideration as a **Brief Communication** in *Digital Health*. 
+
+In this study, we evaluated cellular communication data as a personal sensing method for predicting next-day lapses back to alcohol use among individuals in early recovery from Alcohol Use Disorder. Using a 3 month longitudinal observational design and rigorous machine learning methods, we found that while several communication features appeared to capture risk-relevant social constructs, these features did not provide incremental predictive value beyond static baseline measures of demographics and alcohol use history.
+
+We believe these findings warrant dissemination as a Brief Communication, as null results are critical for guiding the responsible development of personal sensing technologies. Substantial resources are being invested in passive sensing approaches to dynamically capture mental health and substance use risk; our results highlight potential limitations of cellular communication sensing that may inform prioritization of sensing methods with the greatest likelihood of clinical utility.
+
+In the Discussion, we describe limitations inherent to cellular communication sensing, including data sparsity and platform constraints, and outline alternative directions for future research in personal sensing and relapse prediction.
+
+We believe this manuscript is well suited to *Digital Health* given the journal’s focus on digital phenotyping, data-driven health technologies, and transparent reporting of empirical findings that inform both methodological development and real-world application. The open-access nature of Digital Health will also facilitate broad dissemination of these findings to researchers, clinicians, and developers working in digital mental health and addiction science.
+
+This manuscript has not been published and is not under consideration elsewhere. All authors have approved the submitted version and agree to its submission to *Digital Health*.
+
+Thank you for your consideration. Please do not hesitate to contact us if any additional information would be helpful. We look forward to hearing from you regarding this manuscript.
+
+
+Sincerely,    
+Kendra Wyant, Jiachen Yu & John J. Curtin
+
