@@ -190,36 +190,36 @@ learning, Digital Phenotyping, Relapse Prevention},
 \title{Evaluating Cellular Communication Sensing for Lapse Risk
 Prediction During Early Recovery from Alcohol Use Disorder}
 \author{Kendra Wyant \and Jiachen Yu \and John J. Curtin}
-\date{2026-01-18}
+\date{2026-01-23}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-Background: Alcohol Use Disorder (AUD) is a chronic, relapsing disease.
-An automated recovery support system using personal sensing and machine
-learning may help identify when individuals are at elevated lapse risk.
-Cellular communication sensing may detect dynamic changes in lapse risk
-and can be contextualized with self-reported, risk-relevant information
-about contacts. Objective: We evaluated a machine learning model
-predicting next-day alcohol lapse among individuals in early recovery
-from AUD using contextualized cellular communication data and baseline
-demographic and AUD characteristics. Methods: A total of 144
-participants (49\% male; mean age=40; 87\% non-Hispanic White) with a
-goal of abstinence provided cellular communication data and alcohol use
-reports via a 4x daily EMA for up to three months. Models were trained
-and evaluated using repeated k-fold cross-validation. Results: The
-best-performing model used an elastic net algorithm and retained 13
-features (median posterior auROC=0.68, 95\% Bayesian credible interval
-(CI; {[}0.64, 0.71{]}). A baseline comparison model including only
-baseline features retained five features and demonstrated nearly
-identical performance (median auROC=0.68, 95\% CI {[}0.64, 0.71{]}).
-Conclusions: Cellular communication data capture some risk-relevant
-signal for alcohol lapse but do not provide incremental predictive value
-beyond baseline measures. Several communication features were retained
-in the final model with moderately sized coefficients, suggesting that
-aspects of social communication may be important for understanding lapse
-risk. Although, limitations inherent to cellular communication as a
-sensing method may outweigh their added value.
+Alcohol Use Disorder (AUD) is a chronic, relapsing disease. An automated
+recovery support system using personal sensing and machine learning may
+help identify when individuals are at elevated lapse risk. Cellular
+communication sensing may detect dynamic changes in lapse risk and can
+be contextualized with self-reported, risk-relevant information about
+contacts. We evaluated a machine learning model predicting next-day
+alcohol lapse among individuals in early recovery from AUD using
+contextualized cellular communication data and baseline demographic and
+AUD characteristics. A total of 144 participants (49\% male; mean
+age=40; 87\% non-Hispanic White) with a goal of abstinence provided
+cellular communication data and alcohol use reports via a 4x daily EMA
+for up to three months. Models were trained and evaluated using repeated
+k-fold cross-validation. The best-performing model used an elastic net
+algorithm and retained 13 features (median posterior auROC=0.68, 95\%
+Bayesian credible interval (CI; {[}0.64, 0.71{]}). A baseline comparison
+model including only baseline features retained five features and
+demonstrated nearly identical performance (median auROC=0.68, 95\% CI
+{[}0.64, 0.71{]}). Cellular communication data capture some
+risk-relevant signal for alcohol lapse but do not provide incremental
+predictive value beyond baseline measures. Several communication
+features were retained in the final model with moderately sized
+coefficients, suggesting that aspects of social communication may be
+important for understanding lapse risk. Although, limitations inherent
+to cellular communication as a sensing method may outweigh their added
+value.
 \end{abstract}
 
 
@@ -229,34 +229,33 @@ Notebook}}
 
 \section{Introduction}\label{introduction}
 
-Alcohol Use Disorder (AUD) is a chronic, relapsing
-disease\textsuperscript{1--3}. Lapses, single episodes of alcohol use,
-are among the strongest predictors (and a necessary precursor) for
-relapse, a full return to harmful drinking\textsuperscript{4,5}. While
-lapses can occur at any point in recovery, they are particularly risky
-during early recovery\textsuperscript{6}. Protective coping mechanisms
-and socio-environmental resources that support recovery are dynamic and
-accumulate over time\textsuperscript{7}. As a result, early recovery
-represents a critical window of vulnerability during which a lapse is
-more likely to escalate into relapse.
+Alcohol Use Disorder (AUD) is a chronic, relapsing disease {[}1--3{]}.
+Lapses, single episodes of alcohol use, are among the strongest
+predictors (and a necessary precursor) for relapse, a full return to
+harmful drinking {[}4,5{]}. While lapses can occur at any point in
+recovery, they are particularly risky during early recovery {[}6{]}.
+Protective coping mechanisms and socio-environmental resources that
+support recovery are dynamic and accumulate over time {[}7{]}. As a
+result, early recovery represents a critical window of vulnerability
+during which a lapse is more likely to escalate into relapse.
 
 An automated recovery support system powered by personal sensing and
 machine learning may assist with the inherently difficult task of
 identifying when and why someone is at increased risk for lapse.
 Personal sensing of densely sampled data from individuals' day-to-day
 lives can provide the inputs necessary for temporally dynamic lapse
-predictions\textsuperscript{8}. Early machine learning models using
-ecological momentary assessment (EMA) data have achieved excellent
-accuracy in predicting future lapses back to alcohol use in treatment
-seeking populations\textsuperscript{9--11}.
+predictions {[}8{]}. Early machine learning models using ecological
+momentary assessment (EMA) data have achieved excellent accuracy in
+predicting future lapses back to alcohol use in treatment seeking
+populations {[}9--11{]}.
 
 Despite the high predictive success of EMA, questions remain about the
 long-term feasibility of a self-report sensing method. EMA has been
 shown to be well-tolerated among substance use populations over
-relatively short periods of time\textsuperscript{12,13}. It is unclear
-whether individuals would be willing and able to adhere to an extensive
-EMA protocol (e.g., 4 prompts per day) indefinitely. Moreover, EMA items
-are chosen using domain expertise from decades of research on the
+relatively short periods of time {[}12,13{]}. It is unclear whether
+individuals would be willing and able to adhere to an extensive EMA
+protocol (e.g., 4 prompts per day) indefinitely. Moreover, EMA items are
+chosen using domain expertise from decades of research on the
 self-report factors that predict lapse. It is possible, however, that
 there are several alternative precipitators of lapse not yet discovered
 due to small subtle changes in one's environment, social circle, or
@@ -301,7 +300,7 @@ risk.
 We adhere to research transparency principles that are crucial for
 robust and replicable science. First, we reported how we determined the
 sample size, all data exclusions, all manipulations, and all study
-measures. We provide a transparency checklist\textsuperscript{14} in the
+measures. We provide a transparency checklist {[}14{]} in the
 supplement. Second, our features, labels, questionnaires, and other
 study materials are publicly available on our Open Science Framework
 (OSF) page (\url{https://osf.io/wgpz9/}). Finally, the annotated
@@ -312,30 +311,30 @@ analysis scripts are publicly available on our study website
 Procedure}\label{participants-and-procedure}
 
 We recruited 192 adults in early recovery from AUD in Madison,
-Wisconsin, through print and digital advertisements and partnerships
-with treatment centers. This sample size was determined based on
-traditional power analysis methods for logistic
-regression\textsuperscript{15} because comparable approaches for machine
-learning models have not yet been validated. Eligibility criteria
-required that participants were age 18 or older, able to read and write
-in English, had moderate to severe AUD \footnote{(≥4 self-reported DSM-5
-  symptoms)}, had a goal of abstinence from alcohol at the time of the
-screening visit, had been abstinent for 1--8 weeks, were willing to use
-a single smartphone, and were not exhibiting severe psychosis or
-paranoia.\footnote{Defined as scores \textgreater2.2 or 2.8,
-  respectively, on the psychosis or paranoia scales of the Symptom
-  Checklist--90\textsuperscript{16}.}
+Wisconsin, USA through print and digital advertisements and partnerships
+with treatment centers from February 15, 2017 through September 19,
+2019. This sample size was determined based on traditional power
+analysis methods for logistic regression {[}15{]} because comparable
+approaches for machine learning models have not yet been validated.
+Eligibility criteria required that participants were age 18 or older,
+able to read and write in English, had moderate to severe AUD (≥4
+self-reported DSM-5 symptoms), had a goal of abstinence from alcohol at
+the time of the screening visit, had been abstinent for 1--8 weeks, were
+willing to use a single smartphone, and were not exhibiting severe
+psychosis or paranoia (defined as scores \textgreater2.2 or 2.8,
+respectively, on the psychosis or paranoia scales of the Symptom
+Checklist--90 {[}16{]}.)
 
 Participants completed up to 5 study visits over approximately 3 months:
 a screening visit, intake visit, and 3 monthly follow-up visits. At
 screening we determined eligibility and collected demographic
 information (age, sex at birth, race, ethnicity, education, marital
 status, employment, and income) and clinical characteristics (DSM-5 AUD
-symptom count, alcohol problems\textsuperscript{17}, and presence of
-psychological symptoms\textsuperscript{16}). At the intake visit,
-approximately two weeks after screening, we collected additional
-self-report data on abstinence self-efficacy\textsuperscript{18},
-craving\textsuperscript{19}, and recent recovery efforts and goals.
+symptom count, alcohol problems {[}17{]}, and presence of psychological
+symptoms {[}16{]}). At the intake visit, approximately two weeks after
+screening, we collected additional self-report data on abstinence
+self-efficacy {[}18{]}, craving {[}19{]}, and recent recovery efforts
+and goals.
 
 At each monthly follow-up, we downloaded backups of participants'
 cellular communication metadata directly from their smartphones.
@@ -355,15 +354,22 @@ contact, and affective experiences with the contact.
 While enrolled, participants completed four brief daily ecological
 momentary assessments (7-10 questions). The first item assessed alcohol
 use (date and time of any unreported drinking episodes). The remaining
-EMA questions were used as features in other
-studies\textsuperscript{10,11}, but were outside the scope of this
-cellular communication sensing study. Additional sensing data streams
-and self-report measures were collected for the parent grant. We
-compensated participants up to \$115 per month for completing study
-tasks (i.e., EMAs, monthly follow-up visits and sharing sensing data)
-and \$66 per month to offset the cost of their cellphone plan. The full
-study protocol is available on our OSF page
+EMA questions were used as features in other studies {[}10,11{]}, but
+were outside the scope of this cellular communication sensing study.
+Additional sensing data streams and self-report measures were collected
+for the parent grant. We compensated participants up to \$115 per month
+for completing study tasks (i.e., EMAs, monthly follow-up visits and
+sharing sensing data) and \$66 per month to offset the cost of their
+cellphone plan. The full study protocol is available on our OSF page
 (\url{https://osf.io/wgpz9/}).
+
+\subsection{Ethics}\label{ethics}
+
+All procedures were approved by the University of Wisconsin-Madison
+Institutional Review Board (Study \#2015-0780) and carried out in
+accordance with the principles of the Declaration of Helsinki. All
+participants provided written informed consent observed by a research
+assistant.
 
 \subsection{Data Analysis Plan}\label{data-analysis-plan}
 
@@ -540,11 +546,11 @@ lapsed frequently (i.e., 10+ times).
 We evaluated model performance with a Bayesian hierarchical generalized
 linear model. Posterior distributions with 95\% credible intervals (CI)
 were estimated from the 30 held-out folds using weakly informative,
-data-dependent priors to regularize and reduce overfitting.\footnote{Residual
-  SD \textasciitilde{} normal(0, exp(2)); intercept (centered
-  predictors) \textasciitilde{} normal(2.3, 1.3); window-width contrasts
-  \textasciitilde{} normal(0, 2.69); covariance \textasciitilde{}
-  decov(1,1,1,1).} Random intercepts were included for repeat and fold
+data-dependent priors to regularize and reduce overfitting. (Residual SD
+\textasciitilde{} normal(0, exp(2)); intercept (centered predictors)
+\textasciitilde{} normal(2.3, 1.3); window-width contrasts
+\textasciitilde{} normal(0, 2.69); covariance \textasciitilde{}
+decov(1,1,1,1)). Random intercepts were included for repeat and fold
 (nested within repeat). auROCs were logit-transformed and regressed on
 model type to estimate the probability that model performances differed
 systematically.
@@ -725,33 +731,33 @@ this limitation. We collected only phone and SMS text communications
 through the native smartphone app. In recent years, many individuals use
 private messaging apps (e.g., WhatsApp, Signal) or social media
 platforms (e.g., Facebook Messenger, Instagram) as their primary
-communication method\textsuperscript{20}. Therefore, our dataset likely
-missed a substantial portion of participants' communications. Future
-studies could explore whether incorporating communication data from
-additional platforms yields stronger predictive signal. However, even
-with improved data collection methods, sparsity may remain a challenge,
-as some people may simply not communicate frequently with others and
-others use services (e.g., Snapchat) that automatically delete messages.
+communication method {[}20{]}. Therefore, our dataset likely missed a
+substantial portion of participants' communications. Future studies
+could explore whether incorporating communication data from additional
+platforms yields stronger predictive signal. However, even with improved
+data collection methods, sparsity may remain a challenge, as some people
+may simply not communicate frequently with others and others use
+services (e.g., Snapchat) that automatically delete messages.
 
 We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
 incorporated communication data into models with other sensing data
-(e.g., accelerometer, geolocation, and device usage) to detect
-current\textsuperscript{21} and predict future\textsuperscript{22} heavy
-drinking episondes in non-treatment seeking young adult populations. It
-is possible that in certain populations cellular communications may hold
-more signal. Young adults may have more frequent communication reducing
-sparsity concerns. Additionally, non-treatment seeking populations may
-be less likely to sensor their data (i.e., deleting communications) when
-the drinking behavior is not at odds with their goals and/or values.
-However, even in these instances, the unique contribution of cellular
-communications beyond other sensing methods is unclear. Some
-communication features, such as outgoing call duration and the number of
-outgoing calls emerged in the top 20 important features for detecting
-current drinking episodes. Conversely, when predicting future drinking
-episodes, no communication features appeared in the top 20. Other
-sensing methods, like geolocation and accelerometer data, appeared to be
-more robustly important for both detection and prediction.
+(e.g., accelerometer, geolocation, and device usage) to detect current
+{[}21{]} and predict future {[}22{]} heavy drinking episondes in
+non-treatment seeking young adult populations. It is possible that in
+certain populations cellular communications may hold more signal. Young
+adults may have more frequent communication reducing sparsity concerns.
+Additionally, non-treatment seeking populations may be less likely to
+sensor their data (i.e., deleting communications) when the drinking
+behavior is not at odds with their goals and/or values. However, even in
+these instances, the unique contribution of cellular communications
+beyond other sensing methods is unclear. Some communication features,
+such as outgoing call duration and the number of outgoing calls emerged
+in the top 20 important features for detecting current drinking
+episodes. Conversely, when predicting future drinking episodes, no
+communication features appeared in the top 20. Other sensing methods,
+like geolocation and accelerometer data, appeared to be more robustly
+important for both detection and prediction.
 
 Other practical challenges in collecting call and text message data
 further limit the feasibility of this sensing method. For example, we
@@ -766,6 +772,11 @@ interaction characterization (e.g., engineering time spent with
 supportive contacts from geolocation data) are more worthwhile to pursue
 in future research.
 
+\section{Acknowledgments}\label{acknowledgments}
+
+The authors wish to thank Susan E. Wanta for her role as the project
+administrator.
+
 \section{Author Contributions}\label{author-contributions}
 
 KW contributed to conceptualization, data curation, formal analysis,
@@ -775,37 +786,13 @@ methodology, writing - original draft. JJC contributed to
 conceptualization, data curation, methadology, writing -- review and
 editing, supervision of analysis, funding acquisition.
 
-\section{Acknowledgments}\label{acknowledgments}
-
-The authors wish to thank Susan E. Wanta for her role as the project
-administrator.
-
-\section{Statements and Declarations}\label{statements-and-declarations}
-
-\subsection{Ethical Considerations}\label{ethical-considerations}
-
-All procedures were approved by the University of Wisconsin-Madison
-Institutional Review Board (Study \#2015-0780).
-
-\subsection{Consent to Participate}\label{consent-to-participate}
-
-All participants provided written informed consent.
-
-\subsection{Consent for Publication}\label{consent-for-publication}
-
-Not applicable.
-
-\subsection{Guarantor}\label{guarantor}
-
-JJC
-
-\subsection{Declaration of Conflicting
+\section{Declaration of Conflicting
 Interest}\label{declaration-of-conflicting-interest}
 
 The authors declared no potential conflicts of interest with respect to
 the research, authorship, and publication of this article.
 
-\subsection{Funding}\label{funding}
+\section{Funding}\label{funding}
 
 The authors disclosed receipt of the following financial support for the
 research, authorship, and publication of this article: This work was
@@ -814,7 +801,7 @@ supported by the National Institute on Alcohol Abuse and Alcoholism
 Institute on Drug Abuse (NIDA; grant number R01 DA047315 to John J.
 Curtin).
 
-\subsection{Data Availability}\label{data-availability}
+\section{Data Availability}\label{data-availability}
 
 Our de-identified data, questionnaires, and other study materials are
 publicly available on our OSF page (\url{https://osf.io/wgpz9/}).
@@ -828,158 +815,159 @@ publicly available on our OSF page (\url{https://osf.io/wgpz9/}).
 \begin{CSLReferences}{0}{1}
 \bibitem[\citeproctext]{ref-mclellanDrugDependenceChronic2000}
 \CSLLeftMargin{1. }%
-\CSLRightInline{McLellan AT, Lewis DC, O'Brien CP, et al.
-\href{https://doi.org/10.1001/jama.284.13.1689}{Drug dependence, a
-chronic medical illness: Implications for treatment, insurance, and
-outcomes evaluation}. \emph{JAMA} 2000; 284: 1689--1695.}
+\CSLRightInline{McLellan AT, Lewis DC, O'Brien CP, Kleber HD. Drug
+dependence, a chronic medical illness: Implications for treatment,
+insurance, and outcomes evaluation. JAMA. 2000;284: 1689--1695.
+doi:\href{https://doi.org/10.1001/jama.284.13.1689}{10.1001/jama.284.13.1689}}
 
 \bibitem[\citeproctext]{ref-dennisManagingAddictionChronic2007}
 \CSLLeftMargin{2. }%
 \CSLRightInline{Dennis M, Scott CK.
 \href{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2797101}{Managing
-{Addiction} as a {Chronic Condition}}. \emph{Addiction Science \&
-Clinical Practice} 2007; 4: 45--55.}
+{Addiction} as a {Chronic Condition}}. Addiction Science \& Clinical
+Practice. 2007;4: 45--55. }
 
 \bibitem[\citeproctext]{ref-rounsavilleLapseRelapseChasing2010}
 \CSLLeftMargin{3. }%
-\CSLRightInline{Rounsaville DB. \emph{Lapse, {Relapse}, and {Chasing}
-the {Wagon}: {Post-Treatment Drinking} and {Recovery}}. PhD Thesis,
-University of Maryland, Baltimore County, 2010.}
+\CSLRightInline{Rounsaville DB. Lapse, {Relapse}, and {Chasing} the
+{Wagon}: {Post-Treatment Drinking} and {Recovery}. PhD thesis,
+University of Maryland, Baltimore County. 2010. }
 
 \bibitem[\citeproctext]{ref-marlattRelapsePreventionMaintenance1985}
 \CSLLeftMargin{4. }%
-\CSLRightInline{Marlatt GA, Gordon JR (eds). \emph{Relapse {Prevention}:
-{Maintenance Strategies} in the {Treatment} of {Addictive Behaviors}}.
-First edition. New York: The Guilford Press, 1985.}
+\CSLRightInline{Marlatt GA, Gordon JR, editors. Relapse {Prevention}:
+{Maintenance Strategies} in the {Treatment} of {Addictive Behaviors}.
+First edition. New York: The Guilford Press; 1985. }
 
 \bibitem[\citeproctext]{ref-marlattRelapsePreventionSecond2007}
 \CSLLeftMargin{5. }%
-\CSLRightInline{Marlatt GA, Donovan DM (eds). \emph{Relapse
-{Prevention}, {Second Edition}: {Maintenance Strategies} in the
-{Treatment} of {Addictive Behaviors}}. 2nd edition. New York London: The
-Guilford Press, 2007.}
+\CSLRightInline{Marlatt GA, Donovan DM, editors. Relapse {Prevention},
+{Second Edition}: {Maintenance Strategies} in the {Treatment} of
+{Addictive Behaviors}. 2nd edition. New York London: The Guilford Press;
+2007. }
 
 \bibitem[\citeproctext]{ref-daleyReducingRiskRelapse2019}
 \CSLLeftMargin{6. }%
-\CSLRightInline{Daley DC, Douaihy A.
-\href{https://doi.org/10.1093/med-psych/9780190926717.003.0018}{Reducing
-the {Risk} of {Relapse}}. In: Daley DC, Douaihy AB, Daley DC, et al.
-(eds) \emph{Managing {Substance Use Disorder}: {Practitioner Guide}}.
-Oxford University Press, 2019, p. 0.}
+\CSLRightInline{Daley DC, Douaihy A. Reducing the {Risk} of {Relapse}.
+In: Daley DC, Douaihy AB, Daley DC, Douaihy A, editors. Managing
+{Substance Use Disorder}: {Practitioner Guide}. Oxford University Press;
+2019. p. 0.
+doi:\href{https://doi.org/10.1093/med-psych/9780190926717.003.0018}{10.1093/med-psych/9780190926717.003.0018}}
 
 \bibitem[\citeproctext]{ref-clevelandRecoveryRecoveryCapital2021}
 \CSLLeftMargin{7. }%
-\CSLRightInline{Cleveland HH, Brick TR, Knapp KS, et al.
-\href{https://doi.org/10.1007/978-3-030-56958-7_6}{Recovery and
-{Recovery Capital}: {Aligning Measurement} with {Theory} and
-{Practice}}. In: Croff JM, Beaman J (eds) \emph{Family {Resilience} and
-{Recovery} from {Opioids} and {Other Addictions}}. Cham: Springer
-International Publishing, 2021, pp. 109--128.}
+\CSLRightInline{Cleveland HH, Brick TR, Knapp KS, Croff JM. Recovery and
+{Recovery Capital}: {Aligning Measurement} with {Theory} and {Practice}.
+In: Croff JM, Beaman J, editors. Family {Resilience} and {Recovery} from
+{Opioids} and {Other Addictions}. Cham: Springer International
+Publishing; 2021. pp. 109--128.
+doi:\href{https://doi.org/10.1007/978-3-030-56958-7_6}{10.1007/978-3-030-56958-7\_6}}
 
 \bibitem[\citeproctext]{ref-mohrPersonalSensingUnderstanding2017}
 \CSLLeftMargin{8. }%
-\CSLRightInline{Mohr DC, Zhang M, Schueller SM.
-\href{https://doi.org/10.1146/annurev-clinpsy-032816-044949}{Personal
-{Sensing}: {Understanding Mental Health Using Ubiquitous Sensors} and
-{Machine Learning}}. \emph{Annual Review of Clinical Psychology} 2017;
-13: 23--47.}
+\CSLRightInline{Mohr DC, Zhang M, Schueller SM. Personal {Sensing}:
+{Understanding Mental Health Using Ubiquitous Sensors} and {Machine
+Learning}. Annual Review of Clinical Psychology. 2017;13: 23--47.
+doi:\href{https://doi.org/10.1146/annurev-clinpsy-032816-044949}{10.1146/annurev-clinpsy-032816-044949}}
 
 \bibitem[\citeproctext]{ref-chihPredictiveModelingAddiction2014}
 \CSLLeftMargin{9. }%
-\CSLRightInline{Chih M-Y, Patton T, McTavish FM, et al.
-\href{https://doi.org/10.1016/j.jsat.2013.08.004}{Predictive modeling of
-addiction lapses in a mobile health application}. \emph{Journal of
-Substance Abuse Treatment} 2014; 46: 29--35.}
+\CSLRightInline{Chih M-Y, Patton T, McTavish FM, Isham AJ,
+Judkins-Fisher CL, Atwood AK, et al. Predictive modeling of addiction
+lapses in a mobile health application. Journal of Substance Abuse
+Treatment. 2014;46: 29--35.
+doi:\href{https://doi.org/10.1016/j.jsat.2013.08.004}{10.1016/j.jsat.2013.08.004}}
 
 \bibitem[\citeproctext]{ref-wyantMachineLearningModels2024}
 \CSLLeftMargin{10. }%
-\CSLRightInline{Wyant K, Sant'Ana SJ, Fronk GE, et al.
-\href{https://doi.org/10.1037/abn0000901}{Machine learning models for
-temporally precise lapse prediction in alcohol use disorder}.
-\emph{Journal of Psychopathology and Clinical Science} 2024; 133:
-527--540.}
+\CSLRightInline{Wyant K, Sant'Ana SJ, Fronk GE, Curtin JJ. Machine
+learning models for temporally precise lapse prediction in alcohol use
+disorder. Journal of Psychopathology and Clinical Science. 2024;133:
+527--540.
+doi:\href{https://doi.org/10.1037/abn0000901}{10.1037/abn0000901}}
 
 \bibitem[\citeproctext]{ref-wyantForecastingRiskAlcoholunderreview}
 \CSLLeftMargin{11. }%
-\CSLRightInline{Wyant K, Fronk GE, Yu C, et al. Forecasting {Risk} of
-{Alcohol Lapse} up to {Two Weeks} in {Advance} using {Time-lagged
-Machine Learning Models}.}
+\CSLRightInline{Wyant K, Fronk GE, Yu C, Punturieri CE, Curtin JJ.
+Forecasting {Risk} of {Alcohol Lapse} up to {Two Weeks} in {Advance}
+using {Time-lagged Machine Learning Models}. under review. }
 
 \bibitem[\citeproctext]{ref-jonesComplianceEcologicalMomentary2019}
 \CSLLeftMargin{12. }%
-\CSLRightInline{Jones A, Remmerswaal D, Verveer I, et al.
-\href{https://doi.org/10/gfsjzg}{Compliance with ecological momentary
-assessment protocols in substance users: A meta-analysis}.
-\emph{Addiction (Abingdon, England)} 2019; 114: 609--619.}
+\CSLRightInline{Jones A, Remmerswaal D, Verveer I, Robinson E, Franken
+IHA, Wen CKF, et al. Compliance with ecological momentary assessment
+protocols in substance users: A meta-analysis. Addiction (Abingdon,
+England). 2019;114: 609--619.
+doi:\href{https://doi.org/10/gfsjzg}{10/gfsjzg}}
 
 \bibitem[\citeproctext]{ref-wyantAcceptabilityPersonalSensing2023}
 \CSLLeftMargin{13. }%
-\CSLRightInline{Wyant K, Moshontz H, Ward SB, et al.
-\href{https://doi.org/10.2196/41833}{Acceptability of {Personal Sensing
-Among People With Alcohol Use Disorder}: {Observational Study}}.
-\emph{JMIR mHealth and uHealth} 2023; 11: e41833.}
+\CSLRightInline{Wyant K, Moshontz H, Ward SB, Fronk GE, Curtin JJ.
+Acceptability of {Personal Sensing Among People With Alcohol Use
+Disorder}: {Observational Study}. JMIR mHealth and uHealth. 2023;11:
+e41833. doi:\href{https://doi.org/10.2196/41833}{10.2196/41833}}
 
 \bibitem[\citeproctext]{ref-aczelConsensusbasedTransparencyChecklist2019}
 \CSLLeftMargin{14. }%
-\CSLRightInline{Aczel B, Szaszi B, Sarafoglou A, et al.
-\href{https://doi.org/10.1038/s41562-019-0772-6}{A consensus-based
-transparency checklist}. \emph{Nature Human Behaviour} 2019; 1--3.}
+\CSLRightInline{Aczel B, Szaszi B, Sarafoglou A, Kekecs Z, Kucharský Š,
+Benjamin D, et al. A consensus-based transparency checklist. Nature
+Human Behaviour. 2019; 1--3.
+doi:\href{https://doi.org/10.1038/s41562-019-0772-6}{10.1038/s41562-019-0772-6}}
 
 \bibitem[\citeproctext]{ref-hsiehSampleSizeTables1989}
 \CSLLeftMargin{15. }%
 \CSLRightInline{Hsieh F. Sample size tables for logistic regression.
-\emph{Statistics in Medicine} 1989; 8: 795--802.}
+Statistics in Medicine. 1989;8: 795--802. }
 
 \bibitem[\citeproctext]{ref-derogatislBriefSymptomInventory}
 \CSLLeftMargin{16. }%
-\CSLRightInline{Derogatis, L.R. \emph{Brief {Symptom Inventory} 18 -
-{Administration}, scoring, and procedures manual}. Minneapolis: NCS
-Pearson, 2000.}
+\CSLRightInline{Derogatis, L.R. Brief {Symptom Inventory} 18 -
+{Administration}, scoring, and procedures manual. Minneapolis: NCS
+Pearson; 2000. }
 
 \bibitem[\citeproctext]{ref-hurlbutAssessingAlcoholProblems1992}
 \CSLLeftMargin{17. }%
 \CSLRightInline{Hurlbut SC, Sher KJ. Assessing alcohol problems in
-college students. \emph{Journal of American College Health} 1992; 41:
-49--58.}
+college students. Journal of American College Health. 1992;41: 49--58. }
 
 \bibitem[\citeproctext]{ref-mckiernanDevelopmentBriefAbstinence2011}
 \CSLLeftMargin{18. }%
-\CSLRightInline{McKiernan P, Cloud R, Patterson DA, et al.
-\href{https://doi.org/10.1080/1533256X.2011.593445}{Development of a
-{Brief Abstinence Self-Efficacy Measure}}. \emph{Journal of social work
-practice in the addictions} 2011; 11: 245--253.}
+\CSLRightInline{McKiernan P, Cloud R, Patterson DA, Wolf S, Golder S,
+Besel K. Development of a {Brief Abstinence Self-Efficacy Measure}.
+Journal of social work practice in the addictions. 2011;11: 245--253.
+doi:\href{https://doi.org/10.1080/1533256X.2011.593445}{10.1080/1533256X.2011.593445}}
 
 \bibitem[\citeproctext]{ref-flanneryPsychometricPropertiesPenn1999}
 \CSLLeftMargin{19. }%
 \CSLRightInline{Flannery BA, Volpicelli JR, Pettinati HM.
 \href{https://www.ncbi.nlm.nih.gov/pubmed/10470970}{Psychometric
-properties of the {Penn Alcohol Craving Scale}}. \emph{Alcoholism,
-clinical and experimental research} 1999; 23: 1289--1295.}
+properties of the {Penn Alcohol Craving Scale}}. Alcoholism, clinical
+and experimental research. 1999;23: 1289--1295. }
 
 \bibitem[\citeproctext]{ref-mcdowellPreferencesAttitudesDigital2025}
 \CSLLeftMargin{20. }%
-\CSLRightInline{McDowell B, Dumais KM, Gary ST, et al.
-\href{https://doi.org/10.2147/PPA.S474535}{Preferences and {Attitudes
-Towards Digital Communication} and {Symptom Reporting Methods} in
-{Clinical Trials}}. \emph{Patient preference and adherence} 2025; 19:
-255--263.}
+\CSLRightInline{McDowell B, Dumais KM, Gary ST, de Gooijer I, Ward T.
+Preferences and {Attitudes Towards Digital Communication} and {Symptom
+Reporting Methods} in {Clinical Trials}. Patient preference and
+adherence. 2025;19: 255--263.
+doi:\href{https://doi.org/10.2147/PPA.S474535}{10.2147/PPA.S474535}}
 
 \bibitem[\citeproctext]{ref-baeDetectingDrinkingEpisodes2017}
 \CSLLeftMargin{21. }%
-\CSLRightInline{Bae S, Ferreira D, Suffoletto B, et al.
-\href{https://doi.org/10.1145/3090051}{Detecting {Drinking Episodes} in
-{Young Adults Using Smartphone-based Sensors}}. \emph{Proceedings of the
-ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies} 2017;
-1: 1--36.}
+\CSLRightInline{Bae S, Ferreira D, Suffoletto B, Puyana JC, Kurtz R,
+Chung T, et al. Detecting {Drinking Episodes} in {Young Adults Using
+Smartphone-based Sensors}. Proceedings of the ACM on Interactive,
+Mobile, Wearable and Ubiquitous Technologies. 2017;1: 1--36.
+doi:\href{https://doi.org/10.1145/3090051}{10.1145/3090051}}
 
 \bibitem[\citeproctext]{ref-baeLeveragingMobilePhone2023}
 \CSLLeftMargin{22. }%
-\CSLRightInline{Bae SW, Suffoletto B, Zhang T, et al. Leveraging {Mobile
-Phone Sensors}, {Machine Learning} and {Explainable Artificial
-Intelligence} to {Predict Imminent Same-Day Binge Drinking Events} to
-{Support Just-In-Time Adaptive Interventions}: {A Feasibility Study}.
-\emph{JMIR formative research}. Epub ahead of print February 2023. DOI:
-\href{https://doi.org/10.2196/39862}{10.2196/39862}.}
+\CSLRightInline{Bae SW, Suffoletto B, Zhang T, Chung T, Ozolcer M, Islam
+MR, et al. Leveraging {Mobile Phone Sensors}, {Machine Learning} and
+{Explainable Artificial Intelligence} to {Predict Imminent Same-Day
+Binge Drinking Events} to {Support Just-In-Time Adaptive Interventions}:
+{A Feasibility Study}. JMIR formative research. 2023.
+doi:\href{https://doi.org/10.2196/39862}{10.2196/39862}}
 
 \end{CSLReferences}
 
