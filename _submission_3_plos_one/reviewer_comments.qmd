@@ -1,0 +1,79 @@
+---
+format: pdf
+margin-left: 60pt
+margin-right: 60pt
+margin-bottom: 60pt
+margin-top: 60pt
+---
+
+Dear Dr. Mitra,
+
+We are pleased to submit a revised version of our manuscript "Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder." We thank the reviewers for their thoughtful commentary. We have included detailed responses to each of the editor's and reviewers' concerns beginning on the following page.
+
+If we can provide any additional information that can be of assistance, please do not hesitate to ask. Thank you in advance for your consideration.
+
+Sincerely,    
+
+Kendra Wyant, Jiachen Yu, & John J. Curtin
+
+
+---
+
+
+Below, we delineate the reviewers’ and editor’s questions, concerns, and requests regarding our original submission, and we detail the ways in which we have addressed each item. All comments have been copied verbatim to avoid misinterpretation.
+
+
+## Editor
+
+### 1. Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming.
+
+<!-- Table title at top, recheck against https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf and  https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf-->
+
+
+### 2. Please note that PLOS One has specific guidelines on code sharing for submissions in which author-generated code underpins the findings in the manuscript. In these cases, we expect all author-generated code to be made available without restrictions upon publication of the work. Please review our guidelines at https://journals.plos.org/plosone/s/materials-and-software-sharing#loc-sharing-code and ensure that your code is shared in a way that follows best practice and facilitates reproducibility and reuse.
+
+
+### 3. PLOS requires an ORCID iD for the corresponding author in Editorial Manager on papers submitted after December 6th, 2016. Please ensure that you have an ORCID iD and that it is validated in Editorial Manager. To do this, go to ‘Update my Information’ (in the upper left-hand corner of the main menu), and click on the Fetch/Validate link next to the ORCID field. This will take you to the ORCID site and allow you to create a new iD or authenticate a pre-existing iD in Editorial Manager.
+
+
+### 4. Please include a copy of Table 1 which you refer to in your text on page 9
+
+<!--table 1 is in the paper but missing Title starting with Table 1.-->
+
+### 5. If the reviewer comments include a recommendation to cite specific previously published works, please review and evaluate these publications to determine whether they are relevant and should be cited. There is no requirement to cite these works unless the editor has indicated otherwise. 
+
+<!--NA-->
+
+
+## Reviewer 1
+
+### 1. Overall, the paper lacks clear hypotheses on how authors expected, for instance individual number of social contacts, or a preference for certain types of social contacts (with people who drink, know about abstinence goals etc.), or change in types of contacts to affect individual capability of keeping abstinence goals. Exploring communication patterns based on what is known about the role of social contacts or lack thereof in addiction and comorbid psychiatric disorders would better explain the rationale for the study.
+
+### 2. Continued, compulsive intake of alcohol is a feature of addiction. Drinking every day does not necessarily mean that the person does not have abstinence as a goal. It may just as well reflect severity of the condition. Therefore, excluding an individual based on an assumption (not defined in the exclusion criteria) is methodologically problematic. It could both affect results and limit generalizability.
+
+### 3. Handling of missing data is insufficiently explained. In the addiction field data is seldom missing at random. To the contrary, missing data is often associated with relapse. Is is also more common in those with more severe addictive disorders. Author describe that missing data was imputed. Please specify how data was imputed. Describe which variables were imputed and what methods were used. Was there any association between missing variables and problem severity (ex symptom count of reported alcohol use).
+
+### 4. The size of the explored cohort is limited (<150 individuals). Use of cellular communication varies widely across sex, age, possibly on whether one is employed or not (i.e. busy during the day) or not etc. The social function of different types of cellular communication is also expected to vary widely. This is mentioned in the discussion, but authors are also encouraged to reflect on whether lack of a significant association could be due to type 2 error?
+
+### 5. Individual characteristics, including personality traits, potential comorbid psychiatric conditions/ symptoms such as anxiety or depression (if available) would be informative to add to the baseline and follow up measures and potentially inform changes in communication patterns.
+
+### 6. Isolating oneself, to a degree that is discernable in social behavior as part of increased anxiety and depression, craving may take longer than two weeks. Could authors explain how the different time windows performed and were interpreted? Could changes be associated with traits such as impulsivity, low mood, anxiety? Are data on these aspects available. Have interactions and potential mediation been explored?
+
+### 7. Goal of abstinence, abstinence confidence tend to increase with abstinence time - the longer the abstinence the higher the continued goal of abstinence and the confidence. Was data on abstinence time available? Could these predictors be considered as time varying or maybe consider interaction terms?
+
+### 8. Results reflect what is already known about craving and negative affect being positively associated with relapse risk. However, communication with someone who doesn’t know about recovery is a novel finding and needs to be better explained. This association would be interesting to explore further.
+
+### 9. Social isolation and lack of significant social support are important factors associated with recovery. Number of contacts varied widely (between 2 and >100!) in the population. I would expect increased social isolation (less communication, changes in communication pattern) in a the more social individuals (who have many contacts) to be a sign of increased depression or anxiety – which in turn could be associated with relapse. Could authors describe patterns of social contacts and change over time more clearly? Was number of contacts considered? Was change in communication, depending on number of contacts of any relevance?
+
+
+## Reviewer 2
+
+### 1. Please include number of participants excluded after recruitment, the missing data rates, data preprocessing steps for the study.
+
+### 2. Some of the methodological concerns include - all the recruitment occurring from one Geographical location (Madison, WI) only, which limits generalizability, self reported DSM-5 symptoms for Alcohol use disorder rather than a structured clinical interview- patients don't have the clinical knowledge to detect symptom's accurately and reliably, Smartphone requirement introduces a selection bias.
+
+### 3. Ecological Momentary assessment compliance was not reported- which could introduce label misclassification. Alcohol use reporting may suffer from recall bias and social desirability bias.
+
+
+### 4. The method could have been strengthened by explaining how 192 participants is sufficient for power of study- in the setting of machine learning.
+
