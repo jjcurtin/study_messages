@@ -1,0 +1,447 @@
+---
+title: "Make baseline features"
+author: "Kendra Wyant"
+format: html
+editor_options: 
+  chunk_output_type: console
+---
+
+This script creates scale scores of measures collected at screening and baseline to be used as baseline features.  
+
+Several baseline features are calculated in this script, however only a select few are saved out in final csv file. At this time, this script selectively picks out scaled scores and individual items John and Kendra determined would be most likely related to alcohol use.    
+
+These include:  
+
+- `dsm5_total`: Total DSM 5 symptom count
+- `craving_total`: Penn Alcohol Craving Scale
+- `efficacy_neg_affect`, `efficacy_social`, `efficacy_physical`, `efficacy_craving`: four scales from Alcohol Abstinence Self-Efficacy Scale
+- `mam_progress_satisfaction`, `mam_abstinence_goal`, `mam_abstinence_confidence`: select items from Monthly Addiction Monitor
+
+We also added the following personality and psychiatric measures in response to a reviewer:
+- `mpq_pos`: positive emotionality scale from the Multidimensional Personality Questionnaire
+- `mpq_neg`: negative emotionality scale from the Multidimensional Personality Questionnaire
+- `mpq_con`: constraint scale from the Multidimensional Personality Questionnaire
+- `dass_anxiety`: anxiety subscale from the Depression Anxiety Stress Scale
+- `dass_depression`: depression subscale from the Depression Anxiety Stress Scale
+- `dass_stress`: stress subscale from the Depression Anxiety Stress Scale
+
+
+## Setup
+```{r}
+library(tidyverse)
+library(lubridate)
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+source("https://github.com/jjcurtin/lab_support/blob/main/var_score.R?raw=true")
+
+
+path_shared <- format_path("risk/data_processed/shared")
+```
+
+
+Read in screening and intake data
+```{r}
+intake <- read_csv(here::here(path_shared, "intake.csv"), show_col_types = FALSE)
+screen <- read_csv(here::here(path_shared, "screen.csv"), 
+                   show_col_types = FALSE) |> 
+  filter(subid %in% intake$subid)
+```
+
+```{r}
+baseline <- intake |> 
+  select(subid)
+```
+
+
+## Screening scales 
+
+### Days abstinent
+```{r}
+quit_dates <- screen |> 
+  mutate(quit_date = mdy(str_c(auh_8_month," ", auh_8_day, ", ", auh_8_year))) |> 
+  select(subid, quit_date)
+
+intake_dates <- intake |> 
+  mutate(start_date = as_date(start_date, tz = "America/Chicago")) |> 
+  select(subid, start_date)
+
+days_abstinent <- quit_dates |> 
+  left_join(intake_dates, by = "subid") |> 
+  mutate(days_abstinent = as.numeric(start_date - quit_date)) |> 
+  select(subid, days_abstinent)
+
+# baseline <- baseline |> 
+#   left_join(days_abstinent, by = "subid")
+```
+
+### AUH milestones
+
+Number of drinks per drinking episode and number of days drinking per week 6 months prior to quit attempt, Age drinking regularly (at least one time per week), number of quit attempts    
+```{r}
+# baseline <- baseline |> 
+#   left_join(screen |> 
+#               select(subid, 
+#                      age_drink_regularly = auh_2,
+#                      n_quit_attempts = auh_5,
+#                      n_drinks = auh_11,
+#                      n_drinking_days = auh_10), by = "subid")
+```
+
+
+### DSM-5 count 
+```{r}
+screen <- screen |> 
+  mutate(across(dsm5_1:dsm5_11, ~if_else(.x == "Yes", 1, 0))) 
+
+baseline <- baseline |> 
+  mutate(dsm5_total = var_score(screen, 
+                                forward_items = c("dsm5_1", "dsm5_2", "dsm5_3", 
+                                                  "dsm5_4", "dsm5_5", "dsm5_6", 
+                                                  "dsm5_7", "dsm5_8", "dsm5_9", 
+                                                  "dsm5_10", "dsm5_11")))
+```
+
+
+### Lifetime and Past year young adult problems (YAP) and past year severity
+```{r}
+screen <- screen |> 
+  mutate(across(yap_1:yap_8, ~case_match(.x,
+                                         "No, never" ~ 0,
+                                         "Yes, but not in the past year" ~ 1,
+                                         "1 time in the past year" ~ 2,
+                                         "2 times in the past year" ~ 3,
+                                         "3 times in the past year" ~ 4,
+                                         "4-6 times in the past year" ~ 5,
+                                         "7-11 times in the past year" ~ 6,
+                                         "12-20 times in the past year" ~ 7,
+                                         "21-39 times in the past year" ~ 8,
+                                         "40 or more times in the past year" ~ 9)),
+         across(yap_9:yap_20, ~case_match(.x,
+                                         "No, never" ~ 0,
+                                         "Yes, but not in the past year" ~ 1,
+                                         "1 time in the past year" ~ 2,
+                                         "2 times in the past year" ~ 3,
+                                         "3 or more times in the past year" ~ 4)),
+         across(yap_21:yap_27, ~case_match(.x,
+                                         "No, never" ~ 0,
+                                         "Yes, but not in the past year" ~ 1,
+                                         "Yes, in the past year" ~ 2)))
+yap_names <- screen |> 
+  select(starts_with("yap_")) |> 
+  names()
+
+yap_lifetime <- screen |> 
+  mutate(across(yap_1:yap_27, ~if_else(.x > 0, 1, 0))) |> 
+  rowwise() |> 
+  mutate(yap_lifetime = sum(c_across(all_of(yap_names)))) |> 
+  ungroup() |> 
+  select(subid, yap_lifetime)
+
+yap_past_year <- screen |> 
+  mutate(across(yap_1:yap_27, ~if_else(.x > 1, 1, 0))) |> 
+  rowwise() |> 
+  mutate(yap_past_year = sum(c_across(all_of(yap_names)))) |> 
+  ungroup() |> 
+  select(subid, yap_past_year)
+
+# baseline$yap_lifetime <- yap_lifetime$yap_lifetime
+# baseline$yap_past_year <- yap_past_year$yap_past_year
+```
+
+
+
+### WHO-ASSIST 
+
+- could usw recent (past 3 month) illicit substance use, not using currently
+
+
+### Symptom Checklist - 90
+```{r}
+
+```
+
+
+### Intolerance of Uncertainty
+```{r}
+
+```
+
+
+### Anxiety Sensitivity Index
+```{r}
+
+```
+
+### Distress Tolerance Scale
+```{r}
+
+```
+
+### McMaster Family Assessment Device
+- skipping for now, seemed less directly relevant to our sample
+
+
+### Multidimensional Personality Questionnaire Brief Form
+
+Using code from - https://github.com/jjcurtin/arc_measures/blob/main/MPS/MPS.R 
+```{r}
+# Score MPS Primary Trait Scales ------------------------------------------
+mps <- screen |> 
+  select(subid, starts_with("mps_")) |> 
+  relocate(mps_17, mps_34, mps_57, mps_69, mps_70, mps_81, mps_93, mps_105, mps_129, mps_141, .after = mps_155) |>
+  mutate(across(mps_1:mps_155, ~case_match(.x,
+                             TRUE ~ 2,
+                             FALSE ~ 1))) |> 
+  mutate(mps_17 = if_else(mps_17 == "I tend to seek the company of a friend.", 1, 2),
+         mps_34 = if_else(mps_34 == "Having a pilot announce that the plane has engine trouble and it may be necessary to make an emergency landing.", 1, 2),
+         mps_57 = if_else(mps_57 == "Having to walk around all day on a blistered foot,", 1, 2),
+         mps_69 = if_else(mps_69 == "Being out on a sailboat during a great storm at sea", 1, 2),
+         mps_70 = if_else(mps_70 == "Stricter observance of major religious holidays", 1, 2),
+         mps_81 = if_else(mps_81 == "Being at the circus when two lions suddenly get loose down in the ring,", 1, 2),
+         mps_93 = if_else(mps_93 == "Riding a long stretch of rapids in a canoe,", 1, 2),
+         mps_105 = if_else(mps_105 == "Being chosen as the \"target\" for a knife-throwing act,", 1, 2),
+         mps_129 = if_else(mps_129 == "Being in a flood", 1, 2),
+         mps_141 = if_else(mps_141 == "Being seasick every day for a week while on an ocean voyage", 1, 2))
+
+
+# Well-being
+mps$mps_wb = var_score(mps, forward_items = c('mps_1', 'mps_26', 'mps_38', 'mps_50', 'mps_62',  'mps_74', 'mps_85', 'mps_97', 'mps_109','mps_121', 'mps_133','mps_144'), item_range = c(1,2) ) - 12
+
+# Social Potency
+mps$mps_sp = var_score(mps, forward_items = c('mps_2', 'mps_15', 'mps_39', 'mps_51', 'mps_75',  'mps_87', 'mps_110'), reverse_items = c('mps_63', 'mps_98', 'mps_122', 'mps_134','mps_145'), item_range = c(1,2) ) - 12
+
+# Achievement
+mps$mps_ac = var_score(mps, forward_items = c('mps_3', 'mps_16', 'mps_27', 'mps_52', 'mps_76',  'mps_88', 'mps_111', 'mps_123','mps_135','mps_146'), reverse_items = c('mps_64', 'mps_99'), item_range = c(1,2) ) - 12
+
+# Social Closeness
+mps$mps_sc = var_score(mps, forward_items = c('mps_5', 'mps_40', 'mps_77', 'mps_112'), reverse_items = c('mps_17', 'mps_28', 'mps_65', 'mps_89', 'mps_100','mps_124', 'mps_136','mps_148' ), item_range = c(1,2) ) - 12
+
+# Stress Reaction
+mps$mps_sr = var_score(mps, forward_items = c('mps_6', 'mps_18', 'mps_29', 'mps_41', 'mps_53',  'mps_78', 'mps_90', 'mps_101', 'mps_113','mps_125', 'mps_137','mps_149'), item_range = c(1,2) ) - 12
+
+# Alienation
+mps$mps_al = var_score(mps, forward_items = c('mps_7', 'mps_19', 'mps_30', 'mps_42', 'mps_54', 'mps_66', 'mps_91', 'mps_102','mps_114', 'mps_126', 'mps_138','mps_150'), item_range = c(1,2) ) - 12
+
+# Aggression
+mps$mps_ag = var_score(mps, forward_items = c('mps_8', 'mps_20', 'mps_31', 'mps_43', 'mps_55',  'mps_67', 'mps_103', 'mps_115','mps_127','mps_139', 'mps_151'), reverse_items = c('mps_79'), item_range = c(1,2) ) - 12
+
+# Control
+mps$mps_ct = var_score(mps, forward_items = c('mps_9', 'mps_44', 'mps_56', 'mps_68', 'mps_92',  'mps_116','mps_128', 'mps_140'), reverse_items = c('mps_21', 'mps_33', 'mps_80', 'mps_152' ), item_range = c(1,2) ) - 12
+
+# Harm Avoidance
+mps$mps_ha = var_score(mps, forward_items = c('mps_57', 'mps_141'), reverse_items = c('mps_11', 'mps_22', 'mps_34', 'mps_46', 'mps_69', 'mps_81', 'mps_93', 'mps_105', 'mps_129',  'mps_153'), item_range = c(1,2) ) - 12
+
+# Traditionalism
+mps$mps_td = var_score(mps, forward_items = c('mps_12', 'mps_23', 'mps_35', 'mps_58', 'mps_82', 'mps_94', 'mps_106','mps_142','mps_154'), reverse_items = c('mps_47', 'mps_70', 'mps_118'), item_range = c(1,2) ) - 12
+
+# Absorption
+mps$mps_ab = var_score(mps, forward_items = c('mps_13', 'mps_24', 'mps_36', 'mps_48', 'mps_59',  'mps_71', 'mps_83', 'mps_95', 'mps_107','mps_119',  'mps_130','mps_155'), item_range = c(1,2) ) - 12
+
+# Unlikely Virtues
+mps$mps_uv = var_score(mps, forward_items = c('mps_25', 'mps_49', 'mps_72', 'mps_96', 'mps_120', 'mps_143', 'mps_147'), reverse_items= c( 'mps_4', 'mps_14', 'mps_37', 'mps_61', 'mps_84',  'mps_108','mps_131'), item_range = c(1,2) ) - 12
+
+# Score MPS Broad Trait Scales --------------------------------------------
+
+# Agentic Positive Emotionality
+# dS$mps_PAG = round((dS$mps_WB * 1.529) + (dS$mps_SP * 1.294) + (dS$mps_AC * 3.211) + (dS$mps_SC * -0.317) + (dS$mps_SR * -0.112) + (dS$mps_AL * -0.085) + (dS$mps_AG * 0.063) + (dS$mps_CT * 0.154) + (dS$mps_HA * -0.186) + (dS$mps_TD * 0.02) + 18.448)
+# 
+# # Communal Positive Emotionality
+# dS$mps_PCO = round((dS$mps_WB * 1.582) + (dS$mps_SP * 1.387) + (dS$mps_AC * -0.51) + (dS$mps_SC * 3.411) + (dS$mps_SR * 0.048) + (dS$mps_AL * 0.017) + (dS$mps_AG * 0.059) + (dS$mps_CT * -0.068) + (dS$mps_HA * 0.205) + (dS$mps_TD * 0.097) + 16.804)
+# 
+# # Agentic Negative Emotionality
+# dS$mps_NAG = round((dS$mps_WB * 0.042) + (dS$mps_SP * 0.111) + (dS$mps_AC * -0.036) + (dS$mps_SC * -0.07) + (dS$mps_SR * 1.721) + (dS$mps_AL * -0.885) + (dS$mps_AG * 5.26) + (dS$mps_CT * 0.106) + (dS$mps_HA * 0.13) + (dS$mps_TD * 0.057) + 22.739)
+# 
+# # Alienated Negative Emotionality
+# dS$mps_NAL = round((dS$mps_WB * -0.043) + (dS$mps_SP * -0.072) + (dS$mps_AC * 0.059) + (dS$mps_SC * 0.206) + (dS$mps_SR * 1.389) + (dS$mps_AL * 5.398) + (dS$mps_AG * -0.695) + (dS$mps_CT * -0.114) + (dS$mps_HA * -0.025) + (dS$mps_TD * 0.089) + 20.341)
+
+
+
+
+
+# Positive Emotionality
+mps$mps_pos = round((mps$mps_wb * 1.933) + (mps$mps_sp * 1.669) + (mps$mps_ac * 1.671) + (mps$mps_sc * 1.950) + (mps$mps_sr * 0.085) + (mps$mps_al * 0.292) + (mps$mps_ag * 0.130) + (mps$mps_ct * 0.048) + (mps$mps_ha * 0.015) + (mps$mps_td * 0.070) + 13.712 )
+
+# Negative Emotionality
+mps$mps_neg = round((mps$mps_wb * 0.127) + (mps$mps_sp * 0.150) + (mps$mps_ac * 0.038) + (mps$mps_sc * 0.279) + (mps$mps_sr * 1.904) + (mps$mps_al * 3.061) + (mps$mps_ag * 2.551) + (mps$mps_ct * 0.045) + (mps$mps_ha * 0.126) + (mps$mps_td * 0.147) + 6.270 )
+
+# Constraint
+mps$mps_con = round((mps$mps_wb * -0.085) + (mps$mps_sp * -0.052) + (mps$mps_ac * 0.241) + (mps$mps_sc * -0.068) + (mps$mps_sr * 0.046) + (mps$mps_al * -0.302) + (mps$mps_ag* 0.296) + (mps$mps_ct * 2.717) + (mps$mps_ha * 2.579) + (mps$mps_td * 2.199) + 20.742 )
+
+
+baseline <- baseline |> 
+  left_join(mps |> select(subid, mps_pos, mps_neg, mps_con), by = "subid")
+```
+
+
+## Intake Survey
+
+### Penn Alcohol Craving Scale
+```{r}
+intake <- intake |> 
+  mutate(pacs_1 = case_match(pacs_1,
+                    "Never - 0 times during this period of time" ~ 0,
+                    "Rarely - 1 to 2 times during this period of time" ~ 1,
+                    "Occasionally - 3 to 4 times during this period of time" ~ 2,
+                    "Sometimes - 5 to 10 times during this period of time" ~ 3,
+                    "Often - 11 to 20 times during this period of time" ~ 4,
+                    "Most of the time - 20 to 40 times during this period of time" ~ 5, 
+                    "Nearly all of the time - more than 40 times or more than 6 times 
+                    per day" ~ 6),
+         pacs_2 = case_match(pacs_2,
+                    "None at all" ~ 0,
+                    "Slight, that is a very mild urge" ~ 1,
+                    "Mild urge" ~ 2,
+                    "Moderate urge" ~ 3,
+                    "Strong urge, but easily controlled" ~ 4,
+                    "Strong urge and difficult to control" ~ 5,
+                    "Strong urge and would have drunk alcohol if it were available" ~ 6),
+         pacs_3 = case_match(pacs_3,
+                             "None at all" ~ 0,
+                             "Less than 20 minutes" ~ 1,
+                             "21-45 minutes" ~ 2,
+                             "46-90 minutes" ~ 3,
+                             "90 minutes-3 hours" ~ 4,
+                             "Between 3 and 6 hours" ~ 5,
+                             "More than 6 hours" ~ 6),
+         pacs_4 = case_match(pacs_4,
+                             "Not difficult at all" ~ 0,
+                             "Very mildly difficult" ~ 1,
+                             "Mildly difficult" ~ 2,
+                             "Moderately difficult" ~ 3,
+                             "Very difficult" ~ 4,
+                             "Extremely difficult" ~ 5,
+                             "Would not be able to resist" ~ 6),
+         pacs_5 = case_match(pacs_5,
+                      "Never thought about drinking and never had the urge to drink" ~ 0,
+                      "Rarely thought about drinking and rarely had the urge to drink" ~ 1,
+                      "Occasionally thought about drinking and occasionally had the urge to drink" ~ 2,
+                      "Sometimes thought about drinking and sometimes had the urge to drink" ~ 3,
+                      "Often thought about drinking and often had the urge to drink" ~ 4,
+                      "Thought about drinking most of the time and had the urge to drink most of the time" ~ 5,
+                      "Thought about drinking nearly all of the time and had the urge to drink nearly all of the time" ~ 6))
+
+baseline$craving_total = var_score(intake, 
+                                   forward_items = c("pacs_1", "pacs_2", 
+                                                     "pacs_3", "pacs_4", "pacs_5")) 
+```
+
+### Alcohol Abstinence Self-Efficacy Scale - modified
+```{r}
+intake <- intake |> 
+  mutate(across(aase_1:aase_20, ~ case_match(.x,
+                                             "Not at all" ~ 0,
+                                             "Not very" ~ 1,
+                                             "Moderately" ~ 2,
+                                             "Very" ~ 3,
+                                             "Extremely" ~ 4)))
+
+baseline$efficacy_neg_affect <- var_score(intake, forward_items = c("aase_18", "aase_16", "aase_3", "aase_14", "aase_6"))
+
+baseline$efficacy_social <- var_score(intake, forward_items = c("aase_15", "aase_20", "aase_4", "aase_17", "aase_8"))
+
+baseline$efficacy_physical <- var_score(intake, forward_items = c("aase_2", "aase_12", "aase_5", "aase_13", "aase_9"))
+
+baseline$efficacy_craving <- var_score(intake, forward_items = c("aase_1", "aase_7", "aase_11", "aase_10", "aase_19"))
+```
+
+
+### Monthly Addiction Monitor
+- Including relevant questions (selected with John)
+```{r}
+mam <- intake |> 
+  mutate(indiv_doa = if_else(mam_7 == "No", 0, mam_8),
+         group_doa = if_else(mam_7 == "No", 0, mam_9),
+         self_help = mam_10,
+         mh_counseling = if_else(mam_11 == "No", 0, mam_12),
+         supportive_people = mam_13,
+         unsupportive_people = mam_14,
+         rx_alcohol = mam_17,
+         rx_mh = mam_19,
+         progress_satisfaction = case_match(mam_21,
+                                      "Not at all" ~ 1,
+                                      "Slightly" ~ 2,
+                                      "Moderately" ~ 3,
+                                      "Extremely" ~ 4,
+                                      "Considerably" ~ 5),
+         abstinence_goal = mam_22,
+         abstinence_confidence = case_match(mam_23,
+                                      "Not at all" ~ 1,
+                                      "Slightly" ~ 2,
+                                      "Moderately" ~ 3,
+                                      "Extremely" ~ 4,
+                                      "Considerably" ~ 5)) |> 
+  select(subid, indiv_doa:abstinence_confidence)
+
+baseline <- baseline |> 
+  left_join(mam, by = "subid")
+```
+
+
+### Depression Anxiety Stress Scale
+```{r}
+dass <- intake |> 
+  select(subid, dass21_1:dass21_21) |>
+  mutate(across(dass21_1:dass21_21, ~ case_match(.x,
+                                                  "Never" ~ 0,
+                                                  "Sometimes" ~ 1,
+                                                  "Often" ~ 2,
+                                                  "Almost Always" ~ 3))) |> 
+  mutate(dass_depression = dass21_3 + dass21_5 + dass21_10 + dass21_13 + dass21_16 +
+           dass21_17 + dass21_21,
+         dass_anxiety = dass21_2 + dass21_4 + dass21_7 + dass21_9 + dass21_15 + dass21_19 + dass21_20,
+         dass_stress = dass21_1 + dass21_6 + dass21_8 + dass21_11 + dass21_12 + dass21_14 + dass21_18)
+
+baseline <- baseline |>
+  left_join(dass |> 
+              select(subid, dass_depression, dass_anxiety, dass_stress), by = "subid")
+```
+
+
+### Perceived Stress Scale
+```{r}
+intake <- intake |> 
+  mutate(across(pss_1:pss_10, ~case_match(.x,
+                                          "Never" ~ 0,
+                                          "Almost Never" ~ 1,
+                                          "Sometimes" ~ 2,
+                                          "Fairly Often" ~ 3,
+                                          "Very Often" ~ 4)))
+
+# baseline$stress_total <- var_score(intake, forward_items = c("pss_1", "pss_2", "pss_3", "pss_6", "pss_9", "pss_10"), reverse_items = c("pss_4", "pss_5", "pss_7", "pss_8"), item_range = c(0,4))
+```
+
+### Quality of Life Scale
+- not including for now
+
+### Dyadic Adjustment Scale
+- skipping for now since wont apply to everyone
+
+### Multidimensional Scale of Perceived Social Support
+```{r}
+intake <- intake |> 
+  mutate(across(mspss_1:mspss_12, ~ case_match(.x,
+                                               "Very Strongly Disagree" ~ 1,
+                                               "Strongly Disagree" ~ 2,
+                                               "Mildly Disagree" ~ 3,
+                                               "Neutral" ~ 4,
+                                               "Mildly Agree" ~ 5,
+                                               "Strongly Agree" ~ 6,
+                                               "Very Strongly Agree" ~ 7)))
+
+# 
+# baseline$social_support_family <- var_score(intake, forward_items = c("mspss_3", "mspss_4", "mspss_8", "mspss_11"))
+# 
+# baseline$social_support_friends <- var_score(intake, forward_items = c("mspss_6", "mspss_7", "mspss_9", "mspss_12"))
+# 
+# baseline$social_support_so <- var_score(intake, forward_items = c("mspss_1", "mspss_2", "mspss_5", "mspss_10"))
+```
+
+
+
+
+
+## Save out baseline features
+```{r}
+baseline |> 
+  write_csv(here::here(path_shared, "features_meta_baseline.csv"))
+```
+

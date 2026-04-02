@@ -49,21 +49,76 @@ Below, we delineate the reviewers’ and editor’s questions, concerns, and req
 
 ### 1. Overall, the paper lacks clear hypotheses on how authors expected, for instance individual number of social contacts, or a preference for certain types of social contacts (with people who drink, know about abstinence goals etc.), or change in types of contacts to affect individual capability of keeping abstinence goals. Exploring communication patterns based on what is known about the role of social contacts or lack thereof in addiction and comorbid psychiatric disorders would better explain the rationale for the study.
 
+Paragraph about why measuring constructs and lapse relevant 
+In response mention one of the benefits of machine learning approach - blend of explor and...explore large number of constructs and confirm in held out data. Tone down or not put in (feat include and model evaluated in same validation set)
+
 ### 2. Continued, compulsive intake of alcohol is a feature of addiction. Drinking every day does not necessarily mean that the person does not have abstinence as a goal. It may just as well reflect severity of the condition. Therefore, excluding an individual based on an assumption (not defined in the exclusion criteria) is methodologically problematic. It could both affect results and limit generalizability.
+
+51 made it to follow-up one and provided cell phone data
+
+7  exclusions due to poor compliance providing communication data (i.e., deleting logs prior to the download or not providing context information about important contacts). 
+    - 2 had no important contacts
+    - 5 had fewer than 100 important communications while on study
+
+Final N = 144
+
+
+
+Old exclusions need to be updated as they were actually dropped for no data:
+- We excluded data from one participant due to drinking multiple times a day every day on study, suggesting they did not have a goal of abstinence. 
+		- They had lapses every day on study except one day.    
+ 	   	- Only had 75 surveys where a lapse was not reported.   
+  		- Viewing their lapse times it appears they were drinking constantly (morning and night).   
+  		- They consistently report being uncertain that their goal is to be abstinent (uncertain on 125 of 137 lapses. They also report they are uncertain in this goal at followup 1 and 2.    
+  		- They are ultimately discontinued since they were struggling to gain sobriety.   
+
+- We excluded data from one participant due to evidence of careless responding. 
+
+- We excluded data from one participant due to poor compliance with EMA resulting in questionable lapse labels.
+
+
 
 ### 3. Handling of missing data is insufficiently explained. In the addiction field data is seldom missing at random. To the contrary, missing data is often associated with relapse. Is is also more common in those with more severe addictive disorders. Author describe that missing data was imputed. Please specify how data was imputed. Describe which variables were imputed and what methods were used. Was there any association between missing variables and problem severity (ex symptom count of reported alcohol use).
 
+- be more clear
+- look at % missing data - confirm that it should be there and then look at if related to lapse frequency (add as feature?)
+
+
+Only one feature with missing data:
+  variable                                  n_miss pct_miss
+   <chr>                                      <int>    <num>
+ 1 voice.p0.l0.rrecent_call_duration            863     7.50
+ 2 voice.p0.l0.drecent_call_duration            863     7.50
+
 ### 4. The size of the explored cohort is limited (<150 individuals). Use of cellular communication varies widely across sex, age, possibly on whether one is employed or not (i.e. busy during the day) or not etc. The social function of different types of cellular communication is also expected to vary widely. This is mentioned in the discussion, but authors are also encouraged to reflect on whether lack of a significant association could be due to type 2 error?
+
+Discussion - glmnet predicted better than algorithms that allow for interactions. Acknowledge as limitations
 
 ### 5. Individual characteristics, including personality traits, potential comorbid psychiatric conditions/ symptoms such as anxiety or depression (if available) would be informative to add to the baseline and follow up measures and potentially inform changes in communication patterns.
 
+- add to baseline (conversation) - fit all algorithms
+- be more clear featuring glmnet (additive) but xgboost and rf natively handle interactions
+- would expect them to predict better if true interactions - other wise additive more closely resembles data generating process
+
 ### 6. Isolating oneself, to a degree that is discernable in social behavior as part of increased anxiety and depression, craving may take longer than two weeks. Could authors explain how the different time windows performed and were interpreted? Could changes be associated with traits such as impulsivity, low mood, anxiety? Are data on these aspects available. Have interactions and potential mediation been explored?
 
+- check that 2 weeks isnt mentioned
+- limitation 
+- 24, hour, 1 week, 2 weeks - update text to week not hours
+
+- add metadata only model - with feature importance
+- baseline to full (incremental - model contrast - no incremntal value), meta only not controolling for anything else (compared to .5)
+- Feature importance in meta model and then show in full model without baseline in plot
+
 ### 7. Goal of abstinence, abstinence confidence tend to increase with abstinence time - the longer the abstinence the higher the continued goal of abstinence and the confidence. Was data on abstinence time available? Could these predictors be considered as time varying or maybe consider interaction terms?
+
+May go away with changes described in 6
 
 ### 8. Results reflect what is already known about craving and negative affect being positively associated with relapse risk. However, communication with someone who doesn’t know about recovery is a novel finding and needs to be better explained. This association would be interesting to explore further.
 
 ### 9. Social isolation and lack of significant social support are important factors associated with recovery. Number of contacts varied widely (between 2 and >100!) in the population. I would expect increased social isolation (less communication, changes in communication pattern) in a the more social individuals (who have many contacts) to be a sign of increased depression or anxiety – which in turn could be associated with relapse. Could authors describe patterns of social contacts and change over time more clearly? Was number of contacts considered? Was change in communication, depending on number of contacts of any relevance?
+
+wait till changes in 6 
 
 
 ## Reviewer 2

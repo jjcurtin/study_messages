@@ -11,9 +11,9 @@ format:
     embed-resources: true
 params:
   study: "messages"
-  version: "v17"
+  version: "v21"
   cv: "kfold"
-  model: "baseline" # full, baseline, meta, or passive
+  model: "meta" # full, baseline, meta, or passive
 editor_options: 
   chunk_output_type: console
 ---
@@ -105,16 +105,17 @@ if (str_detect(fn, "csv")) {
   d <- read_rds(here::here(path_batch, "input", fn))
 }
   
+if (batch == "baseline") {
+  d <- d |>
+    select(-c(sms.p24.l0.rratecount.originated.incoming:voice.p168.l0.dratecount_datetime.dttm_obs.fri_sat)) |> 
+    select(-starts_with("mps_"), -starts_with("dass_"))
+}
 
-# if(model == "baseline") {
-#   d <- d |> 
-#     select(label_num:dttm_label, lapse:abstinence_confidence)
-# }
 
-# if(model == "meta") {
-#   d <- d |> 
-#     select(-c(dsm5_total:abstinence_confidence), -starts_with("demo_"))
-# }
+if(model == "meta") {
+  d <- d |>
+    select(!matches("p336"))
+}
 # 
 # if(model == "passive") {
 #   d <- d |> 

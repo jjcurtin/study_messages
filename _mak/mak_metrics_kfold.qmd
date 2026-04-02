@@ -11,10 +11,10 @@ format:
     embed-resources: true
 params:
   study: "messages"
-  version: "v17"
+  version: "v21"
   cv: "kfold"
-  algorithms: "glmnet"   # "all" or name of specific algorithm
-  model: "baseline" # full, baseline, meta, or passive
+  algorithms: "all"   # "all" or name of specific algorithm
+  model: "meta" # full, baseline, meta
 editor_options: 
   chunk_output_type: console
 ---

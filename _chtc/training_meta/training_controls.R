@@ -9,9 +9,9 @@ source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true
 study <- "messages"
 window <- "day"
 lead <- 0
-version <- "v17"
+version <- "v21"
 algorithm <- "glmnet"
-batch <- "baseline"
+batch <- "all"
 
 
 configs_per_job <- 10  # number of model configurations that will be fit/evaluated within each CHTC
@@ -25,7 +25,9 @@ resample <- c("up_1", "up_2", "up_3", "up_4", "up_5",
 
 
 # DATA, SPLITS AND OUTCOME------
-feature_set <- c("all") 
+feature_set <- c("meta_aud_pers_dem", "meta_aud_pers", "meta_aud_dem", "meta_pers_dem",
+                 "aud_pers_dem", "meta_aud", "meta_pers", "meta_dem", 
+                 "aud_pers", "aud_dem", "pers_dem", "meta", "aud", "pers", "dem") 
 data_trn <- str_c("features_meta_", window, "_24h_", version, ".csv") 
 seed_splits <- 123
 
@@ -90,7 +92,7 @@ username <- "kpaquette2"
 stage_data = FALSE
 max_idle <- 1000
 request_cpus <- 1 
-request_memory <- "90000MB"
+request_memory <- "20000MB"
 request_disk <- "3000MB"
 want_campus_pools <- TRUE # previously flock
 want_ospool <- TRUE # previously glide
@@ -138,10 +140,31 @@ build_recipe <- function(d, config) {
       step_rm(strat) # remove strat variable
   }
   
+  
+  if(!str_detect(feature_set, "dem")) {
+    rec <- rec |> 
+      step_rm(starts_with("demo_")) 
+  }
+  
+  if(!str_detect(feature_set, "meta")) {
+    rec <- rec |> 
+      step_rm(starts_with("meta_")) 
+  }
+  
+  if(!str_detect(feature_set, "aud")) {
+    rec <- rec |> 
+      step_rm(starts_with("aud_")) 
+  }
+  
+  if(!str_detect(feature_set, "pers")) {
+    rec <- rec |> 
+      step_rm(starts_with("pers_")) 
+  }
+  
   rec <- rec |>
     step_zv(all_predictors()) |> 
-    step_impute_median(all_numeric_predictors()) |> 
-    step_impute_mode(all_nominal_predictors()) 
+    step_dummy(all_nominal_predictors(), one_hot = TRUE) |>
+    step_nzv(all_predictors())
   
   
   # resampling options for unbalanced outcome variable
@@ -166,24 +189,9 @@ build_recipe <- function(d, config) {
   # algorithm specific steps
   if (algorithm == "glmnet") {
     rec <- rec  |>
-      step_dummy(all_nominal_predictors()) |>
       step_normalize(all_predictors())
   } 
   
-  if (algorithm == "random_forest") {
-    # no algorithm specific steps
-  } 
-  
-  if (algorithm == "xgboost") {
-    rec <- rec  |> 
-      step_dummy(all_nominal_predictors())
-  } 
-  
-  # final steps for all algorithms
-  rec <- rec |>
-    # drop columns with NA values after imputation (100% NA)
-    step_select(where(~ !any(is.na(.)))) |>
-    step_nzv()
   
   return(rec)
 }
