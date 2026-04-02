@@ -10,7 +10,7 @@ study <- "messages"
 window <- "day"
 lead <- 0
 version <- "v21"
-algorithm <- "glmnet"
+algorithm <- "random_forest"
 batch <- "all"
 
 
@@ -92,7 +92,7 @@ username <- "kpaquette2"
 stage_data = FALSE
 max_idle <- 1000
 request_cpus <- 1 
-request_memory <- "20000MB"
+request_memory <- "1000MB"
 request_disk <- "3000MB"
 want_campus_pools <- TRUE # previously flock
 want_ospool <- TRUE # previously glide

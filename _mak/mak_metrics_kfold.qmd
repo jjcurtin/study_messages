@@ -14,7 +14,7 @@ params:
   version: "v21"
   cv: "kfold"
   algorithms: "all"   # "all" or name of specific algorithm
-  model: "meta" # full, baseline, meta
+  model: "full" # full, baseline, meta
 editor_options: 
   chunk_output_type: console
 ---
@@ -95,17 +95,12 @@ if (algorithms == "all") {
   batch_names <- batch_names[str_detect(batch_names, "train") & 
                                str_detect(batch_names, cv) &
                                str_detect(batch_names, version)]
-  if (model != "main") {
-    batch_names <- batch_names[str_detect(batch_names, model)]
-  }
+
 } else {
     batch_names <- batch_names[str_detect(batch_names, "train") & 
                                str_detect(batch_names, cv) &
                                str_detect(batch_names, version) &
                                str_detect(batch_names, algorithms)]
-  if (model != "main") {
-    batch_names <- batch_names[str_detect(batch_names, model)]
-  }
 }  
  
 batch_names
@@ -209,12 +204,29 @@ metrics_avg |>
   print_kbl()
 
 metrics_avg |> 
-  slice(1:50) |> 
-  print_kbl()
-
-best_config <- metrics_avg |> 
   slice(1) |> 
   print()
+
+if (model == "full") {
+  best_config <- metrics_avg |> 
+    filter(str_detect(feature_set, "meta")) |> 
+    slice_head(n = 1) |> 
+    print()
+}
+
+if (model == "meta") {
+  best_config <- metrics_avg |> 
+    filter(feature_set == "meta") |> 
+    slice_head(n = 1) |> 
+    print()
+}
+
+if (model == "baseline") {
+  best_config <- metrics_avg |> 
+    filter(!str_detect(feature_set, "meta")) |> 
+    slice_head(n = 1) |> 
+    print()
+}
 ```
 
 Save best config test metrics 
