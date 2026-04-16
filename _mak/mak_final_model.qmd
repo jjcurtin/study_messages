@@ -13,7 +13,7 @@ params:
   study: "messages"
   version: "v21"
   cv: "kfold"
-  model: "meta" # full, baseline, meta, or passive
+  model: "baseline" # full, baseline, meta, or passive
 editor_options: 
   chunk_output_type: console
 ---
@@ -82,8 +82,7 @@ batch_names <- list.dirs(path_input, full.names = FALSE, recursive = FALSE)
 batch_names <- batch_names[str_detect(batch_names, "train") & 
                            str_detect(batch_names, cv) &
                            str_detect(batch_names, version) &
-                           str_detect(batch_names, config_best$algorithm) &
-                           str_detect(batch_names, model)]
+                           str_detect(batch_names, config_best$algorithm)]
   
 batch_name <- batch_names[1] # can source any batch given assumptions above
 path_batch <- here::here(path_input, batch_name)
@@ -105,23 +104,6 @@ if (str_detect(fn, "csv")) {
   d <- read_rds(here::here(path_batch, "input", fn))
 }
   
-if (batch == "baseline") {
-  d <- d |>
-    select(-c(sms.p24.l0.rratecount.originated.incoming:voice.p168.l0.dratecount_datetime.dttm_obs.fri_sat)) |> 
-    select(-starts_with("mps_"), -starts_with("dass_"))
-}
-
-
-if(model == "meta") {
-  d <- d |>
-    select(!matches("p336"))
-}
-# 
-# if(model == "passive") {
-#   d <- d |> 
-#     select(-c(`p6.l0.rratecount.contact_drank_past.Almost Always/Always`:`p168.l0.dratecount.cont_type_abr.friend`),
-#          -c(dsm5_total:abstinence_confidence), -starts_with("demo_"))
-# }
 
 d <- format_data(d) |> 
   arrange(label_num) 

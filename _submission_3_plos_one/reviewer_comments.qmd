@@ -54,7 +54,7 @@ In response mention one of the benefits of machine learning approach - blend of 
 
 ### 2. Continued, compulsive intake of alcohol is a feature of addiction. Drinking every day does not necessarily mean that the person does not have abstinence as a goal. It may just as well reflect severity of the condition. Therefore, excluding an individual based on an assumption (not defined in the exclusion criteria) is methodologically problematic. It could both affect results and limit generalizability.
 
-51 made it to follow-up one and provided cell phone data
+151 made it to follow-up one and provided cell phone data
 
 7  exclusions due to poor compliance providing communication data (i.e., deleting logs prior to the download or not providing context information about important contacts). 
     - 2 had no important contacts
@@ -126,6 +126,8 @@ wait till changes in 6
 ### 1. Please include number of participants excluded after recruitment, the missing data rates, data preprocessing steps for the study.
 
 ### 2. Some of the methodological concerns include - all the recruitment occurring from one Geographical location (Madison, WI) only, which limits generalizability, self reported DSM-5 symptoms for Alcohol use disorder rather than a structured clinical interview- patients don't have the clinical knowledge to detect symptom's accurately and reliably, Smartphone requirement introduces a selection bias.
+
+add to discussion
 
 ### 3. Ecological Momentary assessment compliance was not reported- which could introduce label misclassification. Alcohol use reporting may suffer from recall bias and social desirability bias.
 
