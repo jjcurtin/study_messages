@@ -1,4 +1,5 @@
 % Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
@@ -7,21 +8,22 @@
   letterpaper,
   DIV=11,
   numbers=noendperiod]{scrartcl}
-
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else  
-    % xetex/luatex font selection
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -39,9 +41,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 % Make \paragraph and \subparagraph free-standing
 \makeatletter
 \ifx\paragraph\undefined\else
@@ -67,8 +66,8 @@
 \makeatother
 
 
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -93,6 +92,8 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
+
+
 % definitions for citeproc citations
 \NewDocumentCommand\citeproctext{}{}
 \NewDocumentCommand\citeproc{mm}{%
@@ -126,6 +127,18 @@
 \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
 
 \KOMAoption{captions}{tablesignature}
 \makeatletter
@@ -169,11 +182,9 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-
 \usepackage{bookmark}
-
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
+\urlstyle{same}
 \hypersetup{
   pdftitle={Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder},
   pdfauthor={Kendra Wyant; Jiachen Yu; John J. Curtin},
@@ -190,8 +201,7 @@ learning, Digital Phenotyping, Relapse Prevention},
 \title{Evaluating Cellular Communication Sensing for Lapse Risk
 Prediction During Early Recovery from Alcohol Use Disorder}
 \author{Kendra Wyant \and Jiachen Yu \and John J. Curtin}
-\date{2026-01-23}
-
+\date{2026-04-17}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -232,30 +242,35 @@ Notebook}}
 Alcohol Use Disorder (AUD) is a chronic, relapsing disease {[}1--3{]}.
 Lapses, single episodes of alcohol use, are among the strongest
 predictors (and a necessary precursor) for relapse, a full return to
-harmful drinking {[}4,5{]}. While lapses can occur at any point in
-recovery, they are particularly risky during early recovery {[}6{]}.
-Protective coping mechanisms and socio-environmental resources that
-support recovery are dynamic and accumulate over time {[}7{]}. As a
-result, early recovery represents a critical window of vulnerability
-during which a lapse is more likely to escalate into relapse.
+harmful drinking
+{[}\textbf{marlattRelapsePreventionMaintenance1985?},\textbf{marlattRelapsePreventionSecond2007?}{]}.
+While lapses can occur at any point in recovery, they are particularly
+risky during early recovery
+{[}\textbf{daleyReducingRiskRelapse2019?}{]}. Protective coping
+mechanisms and socio-environmental resources that support recovery are
+dynamic and accumulate over time
+{[}\textbf{clevelandRecoveryRecoveryCapital2021?}{]}. As a result, early
+recovery represents a critical window of vulnerability during which a
+lapse is more likely to escalate into relapse.
 
 An automated recovery support system powered by personal sensing and
 machine learning may assist with the inherently difficult task of
 identifying when and why someone is at increased risk for lapse.
 Personal sensing of densely sampled data from individuals' day-to-day
 lives can provide the inputs necessary for temporally dynamic lapse
-predictions {[}8{]}. Early machine learning models using ecological
+predictions {[}4{]}. Early machine learning models using ecological
 momentary assessment (EMA) data have achieved excellent accuracy in
 predicting future lapses back to alcohol use in treatment seeking
-populations {[}9--11{]}.
+populations {[}5--7{]}.
 
 Despite the high predictive success of EMA, questions remain about the
 long-term feasibility of a self-report sensing method. EMA has been
 shown to be well-tolerated among substance use populations over
-relatively short periods of time {[}12,13{]}. It is unclear whether
-individuals would be willing and able to adhere to an extensive EMA
-protocol (e.g., 4 prompts per day) indefinitely. Moreover, EMA items are
-chosen using domain expertise from decades of research on the
+relatively short periods of time
+{[}8,\textbf{jonesComplianceEcologicalMomentary2019?}{]}. It is unclear
+whether individuals would be willing and able to adhere to an extensive
+EMA protocol (e.g., 4 prompts per day) indefinitely. Moreover, EMA items
+are chosen using domain expertise from decades of research on the
 self-report factors that predict lapse. It is possible, however, that
 there are several alternative precipitators of lapse not yet discovered
 due to small subtle changes in one's environment, social circle, or
@@ -300,11 +315,11 @@ risk.
 We adhere to research transparency principles that are crucial for
 robust and replicable science. First, we reported how we determined the
 sample size, all data exclusions, all manipulations, and all study
-measures. We provide a transparency checklist {[}14{]} in the
-supplement. Second, our features, labels, questionnaires, and other
-study materials are publicly available on our Open Science Framework
-(OSF) page (\url{https://osf.io/wgpz9/}). Finally, the annotated
-analysis scripts are publicly available on our study website
+measures. We provide a transparency checklist {[}9{]} in the supplement.
+Second, our features, labels, questionnaires, and other study materials
+are publicly available on our Open Science Framework (OSF) page
+(\url{https://osf.io/wgpz9/}). Finally, the annotated analysis scripts
+are publicly available on our study website
 (\url{https://jjcurtin.github.io/study_messages/}).
 
 \subsection{Participants and
@@ -314,7 +329,7 @@ We recruited 192 adults in early recovery from AUD in Madison,
 Wisconsin, USA through print and digital advertisements and partnerships
 with treatment centers from February 15, 2017 through September 19,
 2019. This sample size was determined based on traditional power
-analysis methods for logistic regression {[}15{]} because comparable
+analysis methods for logistic regression {[}10{]} because comparable
 approaches for machine learning models have not yet been validated.
 Eligibility criteria required that participants were age 18 or older,
 able to read and write in English, had moderate to severe AUD (≥4
@@ -323,18 +338,17 @@ the time of the screening visit, had been abstinent for 1--8 weeks, were
 willing to use a single smartphone, and were not exhibiting severe
 psychosis or paranoia (defined as scores \textgreater2.2 or 2.8,
 respectively, on the psychosis or paranoia scales of the Symptom
-Checklist--90 {[}16{]}.)
+Checklist--90 {[}11{]}.)
 
 Participants completed up to 5 study visits over approximately 3 months:
 a screening visit, intake visit, and 3 monthly follow-up visits. At
 screening we determined eligibility and collected demographic
 information (age, sex at birth, race, ethnicity, education, marital
-status, employment, and income) and clinical characteristics (DSM-5 AUD
-symptom count, alcohol problems {[}17{]}, and presence of psychological
-symptoms {[}16{]}). At the intake visit, approximately two weeks after
-screening, we collected additional self-report data on abstinence
-self-efficacy {[}18{]}, craving {[}19{]}, and recent recovery efforts
-and goals.
+status, and income) and clinical characteristics (DSM-5 AUD symptom
+count, personality {[}12{]}, and psychiatric symptoms {[}11,13{]}). At
+the intake visit, approximately two weeks after screening, we collected
+additional self-report data on abstinence self-efficacy {[}14{]},
+craving {[}15{]}, and recent recovery efforts and goals.
 
 At each monthly follow-up, we downloaded backups of participants'
 cellular communication metadata directly from their smartphones.
@@ -354,8 +368,8 @@ contact, and affective experiences with the contact.
 While enrolled, participants completed four brief daily ecological
 momentary assessments (7-10 questions). The first item assessed alcohol
 use (date and time of any unreported drinking episodes). The remaining
-EMA questions were used as features in other studies {[}10,11{]}, but
-were outside the scope of this cellular communication sensing study.
+EMA questions were used as features in other studies {[}6,7{]}, but were
+outside the scope of this cellular communication sensing study.
 Additional sensing data streams and self-report measures were collected
 for the parent grant. We compensated participants up to \$115 per month
 for completing study tasks (i.e., EMAs, monthly follow-up visits and
@@ -379,7 +393,9 @@ Our models predicted the probability of an alcohol lapse within a
 24-hour window. Predictions were generated daily at 4 a.m., beginning on
 participants' second study day and continuing for up to 3 months.
 Participants reported the date and hour of the start and end time of any
-alcohol use on the first item of the EMA. Prediction windows were
+alcohol use on the first item of the EMA. Participants demonstrated good
+adherence to our 4X daily EMA protocol (mean adherence = 78\%) and
+provided at least one EMA on 95\% of study days. Prediction windows were
 labeled as lapse if any alcohol use was reported in the 24-hour window.
 In total, there were 11,507 labeled prediction windows across all
 participants. Positive lapse labels were underrepresented (7.5\%;
@@ -387,38 +403,73 @@ participants. Positive lapse labels were underrepresented (7.5\%;
 
 \subsubsection{Feature Engineering}\label{feature-engineering}
 
-We filtered the raw comunication data to include only communications
-with known context (i.e., people with whom they communicated with at
-least twice in a month and whom they provided self-report context
-about). Cellular communication features were engineered from all
-available data up to the start of each window. We used six feature
-scoring epochs (6, 12, 24, 48, 72, and 168 hours before the start of the
-prediction window) to create features.
+Features were calculated using only data collected before the start of
+each prediction window to ensure our models were making true future
+predictions. We calculated a total of 181 features from four feature
+sets:
 
-Within each feature scoring epoch, we calculated two types of features:
-raw and difference features. Raw features represent the feature value
-calculated within a given feature scoring epoch. For example, the raw
-rate of incoming text messages in a 48-hour feature scoring epoch was
-calculated as the total number of incoming text messages in the 48 hours
-immediately preceding the start of the prediction window, divided by 48.
-Difference features capture participant-level changes from baseline.
-Specifically, for each feature we subtracted the participant's mean
-value (using all available data prior to the prediction window) from the
-associated raw feature value. For example, the difference feature for
-incoming text messages was calculated as the raw incoming text message
-rate minus the participant's average incoming text message rate across
-all time on study.
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \emph{Cellular Communication Data.} We filtered the raw communication
+  data to include only communications with known context (i.e., people
+  with whom they communicated with at least twice in a month and whom
+  they provided self-report context about). Cellular communication
+  features were engineered from all available data up to the start of
+  each window. We used two feature scoring epochs (24 hours and 1 week
+  before the start of the prediction window) to create a total of 142
+  features.
 
-The full model included 406 features from cellular communication data
-plus 24 numeric or dummy-coded features from baseline self-report
-measures collected at screening and intake visits. We also evaluated a
-comparison model that used only the baseline features. Table~\ref{tbl-1}
-details the raw predictors, feature engineering procedures, and features
-included in the full vs.~baseline models. Other feature engineering
-steps performed during cross-validation included imputing missing values
-(median imputation for numeric features and mode imputation for nominal
-features), standardizing all features, and removing zero and near-zero
-variance features as determined from held-in data.
+  Within each feature scoring epoch, we calculated two types of
+  features: raw and difference features. Raw features represent the
+  feature value calculated within a given feature scoring epoch. For
+  example, the raw rate of incoming text messages in a 24-hour feature
+  scoring epoch was calculated as the total number of incoming text
+  messages in the 24 hours immediately preceding the start of the
+  prediction window, divided by 24. Difference features capture
+  participant-level changes from baseline. Specifically, for each
+  feature we subtracted the participant's mean value (using all
+  available data prior to the prediction window) from the associated raw
+  feature value. For example, the difference feature for incoming text
+  messages was calculated as the raw incoming text message rate minus
+  the participant's average incoming text message rate across all time
+  on study.
+\item
+  \emph{Demographics.} We created 2 numeric features for age and income,
+  and 10 one-hot coded features for sex at birth (male, female), race
+  and ethnicity (non-Hispanic White, Hispanic and/or not White),
+  education (high school or less, some college, college degree), and
+  marital status (married, not married, other).
+\item
+  \emph{Alcohol Use Characteristics.} We created 21 features from
+  baseline measures of alcohol use characteristics, including numeric
+  features of DSM-5 AUD symptom count, craving, four abstinence
+  self-efficacy subscales (negative affect, social, physical, and
+  craving), number of individual alcohol counseling sessions, group
+  alcohol counseling sessions, self-help meetings, and other mental
+  health counseling sessions in the past 30 days, number of days in
+  contact with supportive and unsupportive people in the past 30 days,
+  and satisfaction with and confidence in recovery over the past 30
+  days. We also created one-hot coded features for whether they have
+  taken prescription medication for alcohol use disorder or mental
+  health in the past 30 days and whether they had a goal of abstinence.
+\item
+  \emph{Psychiatric and Personality Characteristics} We created 6
+  numeric features from baseline measures from broad psychiatric and
+  personality traits, including higher order personality dimensions of
+  positive emotionality, negative emotionality, and constraint and
+  psychiatric comorbidities of depression, anxiety, and stress.
+\end{enumerate}
+
+Table~\ref{tbl-1} details the raw predictors, feature sets, feature
+engineering procedures, scoring epochs, and number of features. If no
+data was observed during a feature scoring epoch that feature was scored
+0, thus there was no missing data across features. Other feature
+engineering steps performed during cross-validation included
+standardizing all features and removing zero and near-zero variance
+features as determined from held-in data.
+
+{
 
 \begin{longtable}[]{@{}llllrll@{}}
 
@@ -525,32 +576,60 @@ and Indication of Inclusion in Full and Baseline Models}
 \tabularnewline
 \end{longtable}
 
+}
+
 \textsubscript{Source:
 \href{https://jjcurtin.github.io/study_messages/notebooks/mak_tables-preview.html\#cell-tbl-1}{Make
 All Tables for Main Manuscript}}
 
-\subsubsection{Model Selection and
-Evaluation}\label{model-selection-and-evaluation}
+\subsubsection{Model Selection}\label{model-selection}
 
-Candidate model configurations differed by algorithm (elastic net,
-random forest, XGBoost), outcome resampling method (i.e., up-sampling
-and down-sampling of the outcome at ratios ranging from 5:1 to 1:1), and
-hyperparameter values. The best configuration for each model was
-selected using 6 repeats of 5-fold cross-validation. Participants were
-grouped so that all of their data were always in the held-in or held-out
-fold for a split, but never in both. Our performance metric was area
-under the receiver operating curve (auROC). Folds were stratified so
-that all folds contained comparable proportions of individuals who
-lapsed frequently (i.e., 10+ times).
+We included three candidate statistical algorithms in our model
+configurations: elastic net, random forest, and XGBoost. These
+algorithms differ in key ways related to flexibility, complexity, and
+their ability to accommodate non-linear and interactive relationships
+between features and lapse probability. Random forest and XGBoost
+algorithms can natively handle interactions, whereas elastic net assumes
+an additive data generating process. Thus, if true interactions exist
+between features, we would expect one of these tree-based methods to
+yield the best performance. However, if relationships are primarily
+additive, elastic net may perform better. Model configurations also
+differed on outcome resampling method (i.e., up-sampling and
+down-sampling of the outcome at ratios ranging from 5:1 to 1:1),
+hyperparameter values, and feature set.
+
+We selected three final models. We selected the best performing full
+model that included all four feature sets (cellular communications,
+demographics, alcohol use characteristics, and psychiatric/personality
+characteristics). Because our feature set of interest was cellular
+communications we only selected configurations that retained this
+feature set. We selected the best performing baseline model that
+included our three baseline feature sets (demographics, alcohol use
+characteristics, and psychiatric/personality characteristics) to assess
+the incremental predictive value of cellular communication beyond these
+baseline measures. Finally, we selected the best performing cellular
+communication model that included only the cellular communication
+feature set to evaluate the predictive signal captured in these
+features.
+
+The best configuration for each of these models was selected using 6
+repeats of 5-fold cross-validation. Participants were grouped so that
+all of their data were always in the held-in or held-out fold for a
+split, but never in both. Our performance metric was area under the
+receiver operating curve (auROC). Folds were stratified so that all
+folds contained comparable proportions of individuals who lapsed
+frequently (i.e., 10+ times).
+
+\subsubsection{Model Evaluation}\label{model-evaluation}
 
 We evaluated model performance with a Bayesian hierarchical generalized
 linear model. Posterior distributions with 95\% credible intervals (CI)
 were estimated from the 30 held-out folds using weakly informative,
-data-dependent priors to regularize and reduce overfitting. (Residual SD
+data-dependent priors to regularize and reduce overfitting: Residual SD
 \textasciitilde{} normal(0, exp(2)); intercept (centered predictors)
 \textasciitilde{} normal(2.3, 1.3); window-width contrasts
 \textasciitilde{} normal(0, 2.69); covariance \textasciitilde{}
-decov(1,1,1,1)). Random intercepts were included for repeat and fold
+decov(1,1,1,1). Random intercepts were included for repeat and fold
 (nested within repeat). auROCs were logit-transformed and regressed on
 model type to estimate the probability that model performances differed
 systematically.
@@ -567,19 +646,16 @@ outcome, conditional on the other features retained.
 
 \subsection{Participants}\label{participants}
 
-We screened 192 participants. Of these, 169 enrolled during the intake
-visit and 154 completed the first follow-up visit. We excluded data from
-one participant due to drinking multiple times a day every day on study,
-suggesting they did not have a goal of abstinence. We excluded data from
-one participant due to evidence of careless responding. We excluded data
-from one participant due to poor compliance with EMA resulting in
-questionable lapse labels. We excluded data from seven participants due
-to poor compliance providing communication data (i.e., deleting logs
-prior to the download or not providing context information about
-important contacts). The final analytic sample included 144
-participants. Table~\ref{tbl-2} provides the demographic
-characterization of our sample. 56\% of participants reported at least
-one lapse while on study.
+We enrolled 169 participants. Of these, 151 completed the first
+follow-up visit where the first cellular communication log download
+occurred. We excluded data from seven participants due to poor
+compliance providing communication data (i.e., deleting logs prior to
+the download or not providing context information about important
+contacts). The final analytic sample included 144 participants.
+Table~\ref{tbl-2} provides the demographic characterization of our
+sample. 56\% of participants reported at least one lapse while on study.
+
+{
 
 \begin{longtable}[]{@{}lrrlll@{}}
 
@@ -648,6 +724,8 @@ Widowed & 2 & 1.4 & & & \\
 \tabularnewline
 \end{longtable}
 
+}
+
 \textsubscript{Source:
 \href{https://jjcurtin.github.io/study_messages/notebooks/mak_tables-preview.html\#cell-tbl-2}{Make
 All Tables for Main Manuscript}}
@@ -660,25 +738,44 @@ were contextualized with self-report information. We obtained a total of
 had, on average, 2,610 contextualized communications (range =
 109-14,225) averaging to about 33 communications per day (range 3-278).
 
-\subsection{Model Evaluation}\label{model-evaluation}
+\subsection{Model Evaluation}\label{model-evaluation-1}
 
-The median posterior auROC for the full model was 0.68, with relatively
-narrow 95\% CI ({[}0.64, 0.71{]}) that did not contain .5. This provides
-strong evidence that the model is capturing signal in the data. The
-final model retained 13 features (Figure~\ref{fig-1}). The top four were
-baseline measures of abstinence confidence, having a goal of abstinence,
-abstinence self-efficacy when experiencing negative affect, and craving.
-Communication frequency with people unaware of the individual's recovery
-goals also emerged as an important feature associated with increased
-lapse risk.
+The median posterior auROC for the best performing full model was 0.67,
+95\% CI {[}0.64, 0.71{]}. The final model fit on the full data set
+retained 10 features (left panel of Figure~\ref{fig-1}). The top four
+were baseline alcohol use characteristics. Two of these (abstinence
+confidence and having a goal of abstinence) emerged as important
+protective factors. Abstinence self-efficacy when experiencing negative
+affect and craving emerged as important risk factors. Communication
+features were also retained in the final model. Specifically, frequency
+of communications with drinkers, friends, and people unaware of the
+individual's recovery goals emerged as important risk factors. Frequency
+of communications with non-drinkers, conversely, was an important
+protective factor.
 
-We evaluated a comparison model to assess the incremental predictive
-value of cellular communication features beyond baseline measures. The
-baseline model achieved comparative performance to the full model
-(median auROC = 0.68, 95\% CI {[}0.64, 0.71{]}). The median difference
-in auROC between the full and baseline models was less than .01,
-providing no evidence (52\% probability) that the full model performed
-better than the baseline model.
+We conducted a model comparison between the full model and a model that
+only considered baseline measures (alcohol use characteristics,
+demographics, and psychiatric and personality characteristics) to assess
+the incremental predictive value of cellular communication features
+beyond these baseline measures. The baseline model achieved slightly
+higher performance compared to the full model (median auROC = 0.69, 95\%
+CI {[}0.65, 0.72{]}). However, this median difference in auROC was only
+.01 and the bayesian model comparison showed weak evidence (73\%
+probability) that the baseline model performed better than the full
+model.
+
+Finally, our best performing model that included only cellular
+communication features achieved a median auROC of 0.59. The 95\% CI
+({[}0.55, 0.62{]}) did not contain .5, providing evidence that the model
+is capturing some signal in the data. To better understand which
+features are capturing this signal, we examined the retained features in
+the best cellular communication model fit on the full data set. This
+model retained four features: frequency of communications with friends,
+people unaware of the individual's recovery goals, drinkers, and
+non-drinkers. These four features were also retained in the full model.
+In the right panel of Figure~\ref{fig-1} we display the magnitude of the
+coefficients for these features when the model does not control for
+other retained baseline measures.
 
 \begin{figure}[H]
 
@@ -689,13 +786,13 @@ better than the baseline model.
 }
 
 \caption{\label{fig-1}Global feature importance (elastic net
-coefficient) for the full model. Features are ordered by absolute
-coefficient value. Bars with positive coefficient values represent
-features that, on average, lower lapse risk. Bars with negative
-coefficient values represent features that, on average, increase risk.
-Baseline features were collected via self-report measures at the
-screening and intake visits. Communication features were engineered from
-the contextualized cellular communications.}
+coefficient) for the full and cellular communicatioin models. Features
+are ordered by absolute coefficient value. Bars with positive
+coefficient values (in blue) represent features that, on average, lower
+lapse risk. Bars with negative coefficient values (in salmon) represent
+features that, on average, increase risk. Alcohol use features were
+collected via self-report measures at baseline. Communication features
+were engineered from the contextualized cellular communications.}
 
 \end{figure}%
 
@@ -705,10 +802,10 @@ All Figures for Main Manuscript}}
 
 \section{Discussion}\label{discussion}
 
-Our model achieved fair performance, with an auROC of 0.68, indicating
+Our model achieved fair performance, with an auROC of 0.67, indicating
 that some predictive signal was present. However, it did not offer
-incremental value beyond a baseline model that included only demographic
-and self-report measures. Consistent with this, the four most important
+incremental value beyond a baseline model that included only baseline
+self-report measures. Consistent with this, the four most important
 predictors in our model were all self-report variables: abstinence
 confidence, abstinence goal, negative affect efficacy, and craving.
 
@@ -731,7 +828,7 @@ this limitation. We collected only phone and SMS text communications
 through the native smartphone app. In recent years, many individuals use
 private messaging apps (e.g., WhatsApp, Signal) or social media
 platforms (e.g., Facebook Messenger, Instagram) as their primary
-communication method {[}20{]}. Therefore, our dataset likely missed a
+communication method {[}16{]}. Therefore, our dataset likely missed a
 substantial portion of participants' communications. Future studies
 could explore whether incorporating communication data from additional
 platforms yields stronger predictive signal. However, even with improved
@@ -743,7 +840,7 @@ We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
 incorporated communication data into models with other sensing data
 (e.g., accelerometer, geolocation, and device usage) to detect current
-{[}21{]} and predict future {[}22{]} heavy drinking episondes in
+{[}17{]} and predict future {[}18{]} heavy drinking episondes in
 non-treatment seeking young adult populations. It is possible that in
 certain populations cellular communications may hold more signal. Young
 adults may have more frequent communication reducing sparsity concerns.
@@ -811,7 +908,7 @@ publicly available on our OSF page (\url{https://osf.io/wgpz9/}).
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
 
-\phantomsection\label{refs}
+\protect\phantomsection\label{refs}
 \begin{CSLReferences}{0}{1}
 \bibitem[\citeproctext]{ref-mclellanDrugDependenceChronic2000}
 \CSLLeftMargin{1. }%
@@ -833,45 +930,15 @@ Practice. 2007;4: 45--55. }
 {Wagon}: {Post-Treatment Drinking} and {Recovery}. PhD thesis,
 University of Maryland, Baltimore County. 2010. }
 
-\bibitem[\citeproctext]{ref-marlattRelapsePreventionMaintenance1985}
-\CSLLeftMargin{4. }%
-\CSLRightInline{Marlatt GA, Gordon JR, editors. Relapse {Prevention}:
-{Maintenance Strategies} in the {Treatment} of {Addictive Behaviors}.
-First edition. New York: The Guilford Press; 1985. }
-
-\bibitem[\citeproctext]{ref-marlattRelapsePreventionSecond2007}
-\CSLLeftMargin{5. }%
-\CSLRightInline{Marlatt GA, Donovan DM, editors. Relapse {Prevention},
-{Second Edition}: {Maintenance Strategies} in the {Treatment} of
-{Addictive Behaviors}. 2nd edition. New York London: The Guilford Press;
-2007. }
-
-\bibitem[\citeproctext]{ref-daleyReducingRiskRelapse2019}
-\CSLLeftMargin{6. }%
-\CSLRightInline{Daley DC, Douaihy A. Reducing the {Risk} of {Relapse}.
-In: Daley DC, Douaihy AB, Daley DC, Douaihy A, editors. Managing
-{Substance Use Disorder}: {Practitioner Guide}. Oxford University Press;
-2019. p. 0.
-doi:\href{https://doi.org/10.1093/med-psych/9780190926717.003.0018}{10.1093/med-psych/9780190926717.003.0018}}
-
-\bibitem[\citeproctext]{ref-clevelandRecoveryRecoveryCapital2021}
-\CSLLeftMargin{7. }%
-\CSLRightInline{Cleveland HH, Brick TR, Knapp KS, Croff JM. Recovery and
-{Recovery Capital}: {Aligning Measurement} with {Theory} and {Practice}.
-In: Croff JM, Beaman J, editors. Family {Resilience} and {Recovery} from
-{Opioids} and {Other Addictions}. Cham: Springer International
-Publishing; 2021. pp. 109--128.
-doi:\href{https://doi.org/10.1007/978-3-030-56958-7_6}{10.1007/978-3-030-56958-7\_6}}
-
 \bibitem[\citeproctext]{ref-mohrPersonalSensingUnderstanding2017}
-\CSLLeftMargin{8. }%
+\CSLLeftMargin{4. }%
 \CSLRightInline{Mohr DC, Zhang M, Schueller SM. Personal {Sensing}:
 {Understanding Mental Health Using Ubiquitous Sensors} and {Machine
 Learning}. Annual Review of Clinical Psychology. 2017;13: 23--47.
 doi:\href{https://doi.org/10.1146/annurev-clinpsy-032816-044949}{10.1146/annurev-clinpsy-032816-044949}}
 
 \bibitem[\citeproctext]{ref-chihPredictiveModelingAddiction2014}
-\CSLLeftMargin{9. }%
+\CSLLeftMargin{5. }%
 \CSLRightInline{Chih M-Y, Patton T, McTavish FM, Isham AJ,
 Judkins-Fisher CL, Atwood AK, et al. Predictive modeling of addiction
 lapses in a mobile health application. Journal of Substance Abuse
@@ -879,7 +946,7 @@ Treatment. 2014;46: 29--35.
 doi:\href{https://doi.org/10.1016/j.jsat.2013.08.004}{10.1016/j.jsat.2013.08.004}}
 
 \bibitem[\citeproctext]{ref-wyantMachineLearningModels2024}
-\CSLLeftMargin{10. }%
+\CSLLeftMargin{6. }%
 \CSLRightInline{Wyant K, Sant'Ana SJ, Fronk GE, Curtin JJ. Machine
 learning models for temporally precise lapse prediction in alcohol use
 disorder. Journal of Psychopathology and Clinical Science. 2024;133:
@@ -887,73 +954,75 @@ disorder. Journal of Psychopathology and Clinical Science. 2024;133:
 doi:\href{https://doi.org/10.1037/abn0000901}{10.1037/abn0000901}}
 
 \bibitem[\citeproctext]{ref-wyantForecastingRiskAlcoholunderreview}
-\CSLLeftMargin{11. }%
+\CSLLeftMargin{7. }%
 \CSLRightInline{Wyant K, Fronk GE, Yu C, Punturieri CE, Curtin JJ.
 Forecasting {Risk} of {Alcohol Lapse} up to {Two Weeks} in {Advance}
 using {Time-lagged Machine Learning Models}. under review. }
 
-\bibitem[\citeproctext]{ref-jonesComplianceEcologicalMomentary2019}
-\CSLLeftMargin{12. }%
-\CSLRightInline{Jones A, Remmerswaal D, Verveer I, Robinson E, Franken
-IHA, Wen CKF, et al. Compliance with ecological momentary assessment
-protocols in substance users: A meta-analysis. Addiction (Abingdon,
-England). 2019;114: 609--619.
-doi:\href{https://doi.org/10/gfsjzg}{10/gfsjzg}}
-
 \bibitem[\citeproctext]{ref-wyantAcceptabilityPersonalSensing2023}
-\CSLLeftMargin{13. }%
+\CSLLeftMargin{8. }%
 \CSLRightInline{Wyant K, Moshontz H, Ward SB, Fronk GE, Curtin JJ.
 Acceptability of {Personal Sensing Among People With Alcohol Use
 Disorder}: {Observational Study}. JMIR mHealth and uHealth. 2023;11:
 e41833. doi:\href{https://doi.org/10.2196/41833}{10.2196/41833}}
 
 \bibitem[\citeproctext]{ref-aczelConsensusbasedTransparencyChecklist2019}
-\CSLLeftMargin{14. }%
-\CSLRightInline{Aczel B, Szaszi B, Sarafoglou A, Kekecs Z, Kucharský Š,
-Benjamin D, et al. A consensus-based transparency checklist. Nature
+\CSLLeftMargin{9. }%
+\CSLRightInline{{Aczel B, Szaszi B, Sarafoglou A, Kekecs Z, Kucharský Š,
+Benjamin D, et al.} A consensus-based transparency checklist. Nature
 Human Behaviour. 2019; 1--3.
 doi:\href{https://doi.org/10.1038/s41562-019-0772-6}{10.1038/s41562-019-0772-6}}
 
 \bibitem[\citeproctext]{ref-hsiehSampleSizeTables1989}
-\CSLLeftMargin{15. }%
+\CSLLeftMargin{10. }%
 \CSLRightInline{Hsieh F. Sample size tables for logistic regression.
 Statistics in Medicine. 1989;8: 795--802. }
 
 \bibitem[\citeproctext]{ref-derogatislBriefSymptomInventory}
-\CSLLeftMargin{16. }%
+\CSLLeftMargin{11. }%
 \CSLRightInline{Derogatis, L.R. Brief {Symptom Inventory} 18 -
 {Administration}, scoring, and procedures manual. Minneapolis: NCS
 Pearson; 2000. }
 
-\bibitem[\citeproctext]{ref-hurlbutAssessingAlcoholProblems1992}
-\CSLLeftMargin{17. }%
-\CSLRightInline{Hurlbut SC, Sher KJ. Assessing alcohol problems in
-college students. Journal of American College Health. 1992;41: 49--58. }
+\bibitem[\citeproctext]{ref-patrickDevelopmentValidationBrief2002}
+\CSLLeftMargin{12. }%
+\CSLRightInline{Patrick CJ, Curtin JJ, Tellegen A.
+\href{https://www.ncbi.nlm.nih.gov/pubmed/12056077}{Development and
+validation of a brief form of the {Multidimensional Personality
+Questionnaire}}. Psychological Assessment. 2002;14: 150--163. }
+
+\bibitem[\citeproctext]{ref-lovibondStructureNegativeEmotional1995}
+\CSLLeftMargin{13. }%
+\CSLRightInline{Lovibond PF, Lovibond SH.
+\href{https://www.ncbi.nlm.nih.gov/pubmed/7726811}{The structure of
+negative emotional states: Comparison of the {Depression Anxiety Stress
+Scales} ({DASS}) with the {Beck Depression} and {Anxiety Inventories}}.
+Behaviour Research and Therapy. 1995;33: 335--343. }
 
 \bibitem[\citeproctext]{ref-mckiernanDevelopmentBriefAbstinence2011}
-\CSLLeftMargin{18. }%
+\CSLLeftMargin{14. }%
 \CSLRightInline{McKiernan P, Cloud R, Patterson DA, Wolf S, Golder S,
 Besel K. Development of a {Brief Abstinence Self-Efficacy Measure}.
 Journal of social work practice in the addictions. 2011;11: 245--253.
 doi:\href{https://doi.org/10.1080/1533256X.2011.593445}{10.1080/1533256X.2011.593445}}
 
 \bibitem[\citeproctext]{ref-flanneryPsychometricPropertiesPenn1999}
-\CSLLeftMargin{19. }%
+\CSLLeftMargin{15. }%
 \CSLRightInline{Flannery BA, Volpicelli JR, Pettinati HM.
 \href{https://www.ncbi.nlm.nih.gov/pubmed/10470970}{Psychometric
 properties of the {Penn Alcohol Craving Scale}}. Alcoholism, clinical
 and experimental research. 1999;23: 1289--1295. }
 
 \bibitem[\citeproctext]{ref-mcdowellPreferencesAttitudesDigital2025}
-\CSLLeftMargin{20. }%
-\CSLRightInline{McDowell B, Dumais KM, Gary ST, de Gooijer I, Ward T.
+\CSLLeftMargin{16. }%
+\CSLRightInline{{McDowell B, Dumais KM, Gary ST, de Gooijer I, Ward T}.
 Preferences and {Attitudes Towards Digital Communication} and {Symptom
 Reporting Methods} in {Clinical Trials}. Patient preference and
 adherence. 2025;19: 255--263.
 doi:\href{https://doi.org/10.2147/PPA.S474535}{10.2147/PPA.S474535}}
 
 \bibitem[\citeproctext]{ref-baeDetectingDrinkingEpisodes2017}
-\CSLLeftMargin{21. }%
+\CSLLeftMargin{17. }%
 \CSLRightInline{Bae S, Ferreira D, Suffoletto B, Puyana JC, Kurtz R,
 Chung T, et al. Detecting {Drinking Episodes} in {Young Adults Using
 Smartphone-based Sensors}. Proceedings of the ACM on Interactive,
@@ -961,7 +1030,7 @@ Mobile, Wearable and Ubiquitous Technologies. 2017;1: 1--36.
 doi:\href{https://doi.org/10.1145/3090051}{10.1145/3090051}}
 
 \bibitem[\citeproctext]{ref-baeLeveragingMobilePhone2023}
-\CSLLeftMargin{22. }%
+\CSLLeftMargin{18. }%
 \CSLRightInline{Bae SW, Suffoletto B, Zhang T, Chung T, Ozolcer M, Islam
 MR, et al. Leveraging {Mobile Phone Sensors}, {Machine Learning} and
 {Explainable Artificial Intelligence} to {Predict Imminent Same-Day
