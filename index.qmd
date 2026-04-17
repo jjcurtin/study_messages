@@ -154,22 +154,18 @@ We enrolled 169 participants. Of these, 151 completed the first follow-up visit 
 Participants had an average of 26 important contacts (range 2-113) that were contextualized with self-report information. We obtained a total of 375,912 contextualized communications across participants. Participants had, on average, 2,610 contextualized communications (range = 109-14,225) averaging to about 33 communications per day (range 3-278). 
 
 ## Model Evaluation
+The median posterior auROC for the best performing full model was `r round(subset(pp_perf, model == "full model")$pp_median, 2)`, 95% CI [`r round(subset(pp_perf, model == "full model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "full model")$pp_upper, 2)`]. The final model fit on the full data set retained 10 features (left panel of @fig-1). The top four were baseline alcohol use characteristics. Two of these (abstinence confidence and having a goal of abstinence) emerged as important protective factors. Abstinence self-efficacy when experiencing negative affect and craving emerged as important risk factors. Communication features were also retained in the final model. Specifically, frequency of communications with drinkers, friends, and people unaware of the individual's recovery goals emerged as important risk factors. Frequency of communications with non-drinkers, conversely, was an important protective factor. 
 
-<!--full model-->
-The median posterior auROC for the full model was `r round(subset(pp_perf, model == "full model")$pp_median, 2)`, with relatively narrow 95% CI ([`r round(subset(pp_perf, model == "full model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "full model")$pp_upper, 2)`]) that did not contain .5. This provides strong evidence that the model is capturing signal in the data. The final model retained 13 features (@fig-1). The top four were baseline measures of abstinence confidence, having a goal of abstinence, abstinence self-efficacy when experiencing negative affect, and craving. Communication frequency with people unaware of the individual's recovery goals also emerged as an important feature associated with increased lapse risk.
+We conducted a model comparison between the full model and a model that only considered baseline measures (alcohol use characteristics, demographics, and psychiatric and personality characteristics) to assess the incremental predictive value of cellular communication features beyond these baseline measures. The baseline model achieved slightly higher performance compared to the full model (median auROC = `r round(subset(pp_perf, model == "baseline model")$pp_median, 2)`, 95% CI [`r round(subset(pp_perf, model == "baseline model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "baseline model")$pp_upper, 2)`]). However, this median difference in auROC was only .01 and the bayesian model comparison showed weak evidence (73% probability) that the baseline model performed better than the full model.
 
-<!--baseline model and compare to full-->
-We evaluated a comparison model to assess the incremental predictive value of cellular communication features beyond baseline measures. The baseline model achieved comparative performance to the full model (median auROC = `r round(subset(pp_perf, model == "baseline model")$pp_median, 2)`, 95% CI [`r round(subset(pp_perf, model == "baseline model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "baseline model")$pp_upper, 2)`]). The median difference in auROC between the full and baseline models was less than .01, providing no evidence (52% probability) that the full model performed better than the baseline model.
-
-<!--meta only performance and compare to .5-->
+Finally, our best performing model that included only cellular communication features achieved a median auROC of `r round(subset(pp_perf, model == "metadata model")$pp_median, 2)`. The 95% CI ([`r round(subset(pp_perf, model == "metadata model")$pp_lower, 2)`, `r round(subset(pp_perf, model == "metadata model")$pp_upper, 2)`]) did not contain .5, providing evidence that the model is capturing some signal in the data.<!--add probability that model is better than .5--> To better understand which features are capturing this signal, we examined the retained features in the best cellular communication model fit on the full data set. This model retained four features: frequency of communications with friends, people unaware of the individual's recovery goals, drinkers, and non-drinkers. These four features were also retained in the full model. In the right panel of @fig-1 we display the magnitude of the coefficients for these features when the model does not control for other retained baseline measures. 
 
 <!-- 
 Retained communication features:
-p168.l0.dratecount.phone_number,
-p72.l0.rratecount.drink_status.NonDrinker,
+p24.l0.rratecount.drink_status.NonDrinker,
+p168.l0.rratecount.drink_status.NonDrinker,
 p168.l0.rratecount.drink_status.Drinker,
 p168.l0.rratecount.support_status.Dont Know,
-p168.l0.rratecount.contact_experience.Unpleasant,
 p168.l0.rratecount.cont_type.friend   
 -->
 
@@ -180,8 +176,11 @@ p168.l0.rratecount.cont_type.friend
 
 # Discussion
 
-Our model achieved fair performance, with an auROC of `r round(subset(pp_perf, model == "full model")$pp_median, 2)`, indicating that some predictive signal was present. However, it did not offer incremental value beyond a baseline model that included only demographic and self-report measures. Consistent with this, the four most important predictors in our model were all self-report variables: abstinence confidence, abstinence goal, negative affect efficacy, and craving. 
+<!--add paragraph about best model being glmnet suggesting their are not important interactions between baseline features and communications-->
 
+Our model achieved fair performance, with an auROC of `r round(subset(pp_perf, model == "full model")$pp_median, 2)`, indicating that some predictive signal was present. However, it did not offer incremental value beyond a baseline model that included only baseline self-report measures. Consistent with this, the four most important predictors in our model were all self-report variables: abstinence confidence, abstinence goal, negative affect efficacy, and craving. 
+
+<!--mention some signal in metadata only model-->
 Nonetheless, several communication features were retained in the final model with moderately sized coefficients. These included communications with people unaware of the participant's recovery status, non-drinkers, friends, and individuals who were unpleasant to interact with. In contrast, raw counts of calls and text messages and call durations were not retained in the final model. This implies that the quantity of communication may be less informative than the quality and social significance. Future research may benefit from collecting richer contextual data about communication contacts to better understand the social dynamics contributing to lapse risk. 
 
 Even with highly contextualized communication data, however, prediction may be limited by data sparsity. Many participants had few daily communications, and some had extended periods with no recorded interactions at all. Our study design may have further contributed to this limitation. We collected only phone and SMS text communications through the native smartphone app. In recent years, many individuals use private messaging apps (e.g., WhatsApp, Signal) or social media platforms (e.g., Facebook Messenger, Instagram) as their primary communication method [@mcdowellPreferencesAttitudesDigital2025]. Therefore, our dataset likely missed a substantial portion of participants' communications. Future studies could explore whether incorporating communication data from additional platforms yields stronger predictive signal. However, even with improved data collection methods, sparsity may remain a challenge, as some people may simply not communicate frequently with others and others use services (e.g., Snapchat) that automatically delete messages.
