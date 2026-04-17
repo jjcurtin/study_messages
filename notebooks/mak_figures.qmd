@@ -225,7 +225,7 @@ p_meta <- ggplot(feat_imp_meta,
 ```{r}
 #| label: fig-1
 #| fig-cap: "Global feature importance (elastic net coefficient) for the full and cellular communicatioin models. Features are ordered by absolute coefficient value. Bars with positive coefficient values (in blue) represent features that, on average, lower lapse risk. Bars with negative coefficient values (in salmon) represent features that, on average, increase risk. Alcohol use features were collected via self-report measures at baseline. Communication features were engineered from the contextualized cellular communications."
-#| fig-width: 10
+#| fig-width: 8
 #| fig-height: 5
 
 p_full + p_meta 
