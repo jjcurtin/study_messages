@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
     <meta name="author" content="Kendra Wyant">
-    <meta name="dcterms.date" content="2026-01-18">
+    <meta name="dcterms.date" content="2026-04-17">
 
     <title>Make All Tables for Main Manuscript</title>
     <style>
@@ -2544,7 +2544,7 @@ border: 0;
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">January 18, 2026</p>
+              <p class="date">April 17, 2026</p>
             </div>
           </div>
           
@@ -2743,14 +2743,6 @@ Attaching package: &#39;kableExtra&#39;</code></pre>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>()  <span class="sc">|&gt;</span> </span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">footnote</span>(<span class="at">general =</span> <span class="fu">c</span>(footnote_table_feat), <span class="at">escape=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
-Use &#39;xfun::attr2()&#39; instead.
-See help(&quot;Deprecated&quot;)
-Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
-Use &#39;xfun::attr2()&#39; instead.
-See help(&quot;Deprecated&quot;)</code></pre>
-</div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="tbl-1" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -2762,311 +2754,285 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
  <thead>
   <tr>
    <th style="text-align:left;"> Raw Predictor </th>
+   <th style="text-align:left;"> Feature Set </th>
    <th style="text-align:left;"> Response Options </th>
    <th style="text-align:left;"> Feature Engineering </th>
    <th style="text-align:left;"> Feature Scoring Epochs </th>
    <th style="text-align:right;"> Total Features </th>
-   <th style="text-align:left;"> Full Model </th>
-   <th style="text-align:left;"> Baseline Model </th>
   </tr>
  </thead>
 <tbody>
   <tr>
    <td style="text-align:left;"> Originated </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Incoming, outgoing </td>
    <td style="text-align:left;"> Difference and raw rate counts for text messages and voice calls </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 48 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 16 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Call duration </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Duration (in minutes) </td>
    <td style="text-align:left;"> Difference and raw rate sums of duration, difference and raw most recent duration </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 14 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 6 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Call answered </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Yes, no </td>
-   <td style="text-align:left;"> Difference and raw rate counts for unanswered incoming voice calls </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Difference and raw rate counts for unanswered incoming voice calls (i.e., response option = no) </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 4 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Date/time of communication </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Date and time </td>
-   <td style="text-align:left;"> Difference and raw rate counts for text messages and voice calls at night (10 pm – 6am) and on weekends </td>
-   <td style="text-align:left;"> 24, 48, 72, and 168 hours (night), 168 hours (weekend) </td>
-   <td style="text-align:right;"> 20 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Difference and raw rate counts for text messages and voice calls at night (10 pm-6am) and on weekends (Friday-Saturday) </td>
+   <td style="text-align:left;"> 24 hours and 1 week (only 1 week used for weekend features) </td>
+   <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Phone number </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Phone number </td>
    <td style="text-align:left;"> Difference and raw rate counts of unique phone numbers </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 12 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 4 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Type of Relationship </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Family, friend, counselor or social worker, co-worker </td>
    <td style="text-align:left;"> Difference and raw rate counts of unique phone numbers </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 48 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 16 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Have you drank alcohol with this person? </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Never/almost never, occasionally, almost always/always </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 36 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> What is their drinking status? </td>
-   <td style="text-align:left;"> Drinker, non-drinker, don’t know </td>
+   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Drinker, non-drinker, don&#39;t know </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 36 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Would you expect them to drink in your presence? </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Yes, no, uncertain </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 36 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Are they currently in recovery from drugs or alcohol? </td>
-   <td style="text-align:left;"> Yes, no, don’t know </td>
+   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Yes, no, don&#39;t know </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 36 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 12 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Are they supportive about your recovery goals? </td>
-   <td style="text-align:left;"> Supportive, unsupportive, mixed, neutral, don’t know </td>
+   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Supportive, unsupportive, mixed, neutral, don&#39;t know </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 60 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 20 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> How are your typical experiences with this person? </td>
+   <td style="text-align:left;"> cellular communication </td>
    <td style="text-align:left;"> Pleasant, unpleasant, mixed, neutral </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
-   <td style="text-align:left;"> 6, 12, 24, 48, 72, and 168 hours </td>
-   <td style="text-align:right;"> 48 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> No </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> DSM-5 symptom count </td>
-   <td style="text-align:left;"> Numeric (4-11) </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Past year alcohol problems </td>
-   <td style="text-align:left;"> Numeric (0-27) </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Craving </td>
-   <td style="text-align:left;"> Numeric (0-30) </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Abstinence self-efficacy: Negative affect, social, physical, and craving subscales </td>
-   <td style="text-align:left;"> Numeric (0-20) </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 4 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Number of individual alcohol counseling sessions attended (past 30 days) </td>
-   <td style="text-align:left;"> Numeric </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Number of group alcohol counseling sessions attended (past 30 days) </td>
-   <td style="text-align:left;"> Numeric </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Number of self-help group meetings attended (past 30 days) </td>
-   <td style="text-align:left;"> Numeric </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Number of other mental health counseling sessions attended (past 30 days) </td>
-   <td style="text-align:left;"> Numeric </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Number of days in contact with supportive people (past 30 days) </td>
-   <td style="text-align:left;"> Numeric </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Number of days in contact with unsupportive people (past 30 days) </td>
-   <td style="text-align:left;"> Numeric </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Taken prescribed medication for alcohol use disorder (past 30 days) </td>
-   <td style="text-align:left;"> Yes, no </td>
-   <td style="text-align:left;"> Dummy coded </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Taken prescribed medication for other mental health disorder (past 30 days) </td>
-   <td style="text-align:left;"> Yes, no </td>
-   <td style="text-align:left;"> Dummy coded </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Satisfaction with progress toward recovery goals (past 30 days) </td>
-   <td style="text-align:left;"> Numeric (0-4) </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Confidence in abstinence ability (next 30 days) </td>
-   <td style="text-align:left;"> Numeric (0-4) </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Has a goal of abstinence </td>
-   <td style="text-align:left;"> Yes, no, uncertain </td>
-   <td style="text-align:left;"> Dummy coded </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:left;"> 24 and 1 week </td>
+   <td style="text-align:right;"> 16 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Age </td>
+   <td style="text-align:left;"> demographics </td>
    <td style="text-align:left;"> Numeric (years) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Sex at birth </td>
+   <td style="text-align:left;"> demographics </td>
    <td style="text-align:left;"> Male, female </td>
-   <td style="text-align:left;"> Dummy coded </td>
+   <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 2 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Race </td>
+   <td style="text-align:left;"> demographics </td>
    <td style="text-align:left;"> Non-Hispanic White, non-White and/or Hispanic </td>
-   <td style="text-align:left;"> Dummy coded </td>
+   <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 2 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Education </td>
+   <td style="text-align:left;"> demographics </td>
    <td style="text-align:left;"> High school or less, some college, college degree </td>
-   <td style="text-align:left;"> Dummy coded </td>
+   <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
-   <td style="text-align:right;"> 2 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 3 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Income </td>
+   <td style="text-align:left;"> demographics </td>
    <td style="text-align:left;"> Numeric (dollars) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:right;"> 1 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Marital Status </td>
+   <td style="text-align:left;"> demographics </td>
    <td style="text-align:left;"> Married, not married, other </td>
-   <td style="text-align:left;"> Dummy coded </td>
+   <td style="text-align:left;"> One-hot coded </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DSM-5 symptom count </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric (4-11) </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Craving </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric (0-30) </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Abstinence self-efficacy: Negative affect, social, physical, and craving subscales </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric (0-20) </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Number of individual alcohol counseling sessions attended (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Number of group alcohol counseling sessions attended (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Number of self-help group meetings attended (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Number of other mental health counseling sessions attended (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Number of days in contact with supportive people (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Number of days in contact with unsupportive people (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Taken prescribed medication for alcohol use disorder (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Yes, no </td>
+   <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:right;"> 2 </td>
-   <td style="text-align:left;"> Yes </td>
-   <td style="text-align:left;"> Yes </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Taken prescribed medication for other mental health disorder (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Yes, no </td>
+   <td style="text-align:left;"> One-hot coded </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Satisfaction with progress toward recovery goals (past 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric (0-4) </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Confidence in abstinence ability (next 30 days) </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Numeric (0-4) </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Has a goal of abstinence </td>
+   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Yes, no, uncertain </td>
+   <td style="text-align:left;"> One-hot coded </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Personality dimensions (positive emotionality, negative emotionality, and constraint) </td>
+   <td style="text-align:left;"> personality and psychiatric </td>
+   <td style="text-align:left;"> Numeric </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Psychiatric conditions (depression, anxiety, and stress) </td>
+   <td style="text-align:left;"> personality and psychiatric </td>
+   <td style="text-align:left;"> Numeric </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 3 </td>
   </tr>
 </tbody>
 <tfoot>
@@ -3085,28 +3051,20 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
 <section id="table-2-demographics" class="level3">
 <h3 class="anchored" data-anchor-id="table-2-demographics">Table 2: Demographics</h3>
 <div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>footnote_table_dem_a <span class="ot">&lt;-</span> <span class="st">&quot;N = 144&quot;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>table_dem <span class="sc">|&gt;</span> </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">3</span>, <span class="at">end_row =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">6</span>, <span class="at">end_row =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">12</span>, <span class="at">end_row =</span> <span class="dv">13</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">15</span>, <span class="at">end_row =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">22</span>, <span class="at">end_row =</span> <span class="dv">30</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">33</span>, <span class="at">end_row =</span> <span class="dv">37</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">footnote</span>(<span class="at">general =</span> <span class="fu">c</span>(footnote_table_dem_a), <span class="at">escape=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
-Use &#39;xfun::attr2()&#39; instead.
-See help(&quot;Deprecated&quot;)
-Warning in attr(x, &quot;align&quot;): &#39;xfun::attr()&#39; is deprecated.
-Use &#39;xfun::attr2()&#39; instead.
-See help(&quot;Deprecated&quot;)</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>footnote_table_dem_a <span class="ot">&lt;-</span> <span class="st">&quot;N = 144&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>table_dem <span class="sc">|&gt;</span> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_classic</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">3</span>, <span class="at">end_row =</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">6</span>, <span class="at">end_row =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">12</span>, <span class="at">end_row =</span> <span class="dv">13</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">15</span>, <span class="at">end_row =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">22</span>, <span class="at">end_row =</span> <span class="dv">30</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">group_rows</span>(<span class="at">start_row =</span> <span class="dv">33</span>, <span class="at">end_row =</span> <span class="dv">37</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">footnote</span>(<span class="at">general =</span> <span class="fu">c</span>(footnote_table_dem_a), <span class="at">escape=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="tbl-2" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
