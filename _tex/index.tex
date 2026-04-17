@@ -466,15 +466,15 @@ features as determined from held-in data.
 
 {
 
-\begin{longtable}[]{@{}llllrll@{}}
+\begin{longtable}[]{@{}lllllr@{}}
 
 \toprule\noalign{}
-Raw Predictor & Response Options & Feature Engineering & Feature Scoring
-Epochs & Total Features & Full Model & Baseline Model \\
+Raw Predictor & Feature Set & Response Options & Feature Engineering &
+Feature Scoring Epochs & Total Features \\
 \midrule\noalign{}
 \endhead
 \midrule\noalign{}
-{Note: } & & & & & & \\
+{Note: } & & & & & \\
 \textsuperscript{} Cellular communication features were scored over six
 feature scoring epochs (6, 12, 24, 48, 72, and 168 hours before the
 start of the prediction window). Within each feature scoring epoch we
@@ -485,83 +485,85 @@ immediately preceding the start of the prediction window). Difference
 features capture participant-level changes from their baseline scores
 (e.g., the participant's average rate count of text messages across all
 time on study subtracted from the rate count in the preceding 48 hours).
-& & & & & & \\
+& & & & & \\
 \bottomrule\noalign{}
 \endlastfoot
-Originated & Incoming, outgoing & Difference and raw rate counts for
-text messages and voice calls & 6, 12, 24, 48, 72, and 168 hours & 48 &
-Yes & No \\
-Call duration & Duration (in minutes) & Difference and raw rate sums of
-duration, difference and raw most recent duration & 6, 12, 24, 48, 72,
-and 168 hours & 14 & Yes & No \\
-Call answered & Yes, no & Difference and raw rate counts for unanswered
-incoming voice calls & 6, 12, 24, 48, 72, and 168 hours & 12 & Yes &
-No \\
-Date/time of communication & Date and time & Difference and raw rate
-counts for text messages and voice calls at night (10 pm -- 6am) and on
-weekends & 24, 48, 72, and 168 hours (night), 168 hours (weekend) & 20 &
-Yes & No \\
-Phone number & Phone number & Difference and raw rate counts of unique
-phone numbers & 6, 12, 24, 48, 72, and 168 hours & 12 & Yes & No \\
-Type of Relationship & Family, friend, counselor or social worker,
-co-worker & Difference and raw rate counts of unique phone numbers & 6,
-12, 24, 48, 72, and 168 hours & 48 & Yes & No \\
-Have you drank alcohol with this person? & Never/almost never,
-occasionally, almost always/always & Difference and raw rate counts of
-each response option & 6, 12, 24, 48, 72, and 168 hours & 36 & Yes &
-No \\
-What is their drinking status? & Drinker, non-drinker, don't know &
-Difference and raw rate counts of each response option & 6, 12, 24, 48,
-72, and 168 hours & 36 & Yes & No \\
-Would you expect them to drink in your presence? & Yes, no, uncertain &
-Difference and raw rate counts of each response option & 6, 12, 24, 48,
-72, and 168 hours & 36 & Yes & No \\
-Are they currently in recovery from drugs or alcohol? & Yes, no, don't
-know & Difference and raw rate counts of each response option & 6, 12,
-24, 48, 72, and 168 hours & 36 & Yes & No \\
-Are they supportive about your recovery goals? & Supportive,
-unsupportive, mixed, neutral, don't know & Difference and raw rate
-counts of each response option & 6, 12, 24, 48, 72, and 168 hours & 60 &
-Yes & No \\
-How are your typical experiences with this person? & Pleasant,
-unpleasant, mixed, neutral & Difference and raw rate counts of each
-response option & 6, 12, 24, 48, 72, and 168 hours & 48 & Yes & No \\
-DSM-5 symptom count & Numeric (4-11) & & & 1 & Yes & Yes \\
-Past year alcohol problems & Numeric (0-27) & & & 1 & Yes & Yes \\
-Craving & Numeric (0-30) & & & 1 & Yes & Yes \\
+Originated & cellular communication & Incoming, outgoing & Difference
+and raw rate counts for text messages and voice calls & 24 and 1 week &
+16 \\
+Call duration & cellular communication & Duration (in minutes) &
+Difference and raw rate sums of duration, difference and raw most recent
+duration & 24 and 1 week & 6 \\
+Call answered & cellular communication & Yes, no & Difference and raw
+rate counts for unanswered incoming voice calls (i.e., response option =
+no) & 24 and 1 week & 4 \\
+Date/time of communication & cellular communication & Date and time &
+Difference and raw rate counts for text messages and voice calls at
+night (10 pm-6am) and on weekends (Friday-Saturday) & 24 hours and 1
+week (only 1 week used for weekend features) & 12 \\
+Phone number & cellular communication & Phone number & Difference and
+raw rate counts of unique phone numbers & 24 and 1 week & 4 \\
+Type of Relationship & cellular communication & Family, friend,
+counselor or social worker, co-worker & Difference and raw rate counts
+of unique phone numbers & 24 and 1 week & 16 \\
+Have you drank alcohol with this person? & cellular communication &
+Never/almost never, occasionally, almost always/always & Difference and
+raw rate counts of each response option & 24 and 1 week & 12 \\
+What is their drinking status? & cellular communication & Drinker,
+non-drinker, don\textquotesingle t know & Difference and raw rate counts
+of each response option & 24 and 1 week & 12 \\
+Would you expect them to drink in your presence? & cellular
+communication & Yes, no, uncertain & Difference and raw rate counts of
+each response option & 24 and 1 week & 12 \\
+Are they currently in recovery from drugs or alcohol? & cellular
+communication & Yes, no, don\textquotesingle t know & Difference and raw
+rate counts of each response option & 24 and 1 week & 12 \\
+Are they supportive about your recovery goals? & cellular communication
+& Supportive, unsupportive, mixed, neutral, don\textquotesingle t know &
+Difference and raw rate counts of each response option & 24 and 1 week &
+20 \\
+How are your typical experiences with this person? & cellular
+communication & Pleasant, unpleasant, mixed, neutral & Difference and
+raw rate counts of each response option & 24 and 1 week & 16 \\
+Age & demographics & Numeric (years) & & & 1 \\
+Sex at birth & demographics & Male, female & One-hot coded & & 2 \\
+Race & demographics & Non-Hispanic White, non-White and/or Hispanic &
+One-hot coded & & 2 \\
+Education & demographics & High school or less, some college, college
+degree & One-hot coded & & 3 \\
+Income & demographics & Numeric (dollars) & & & 1 \\
+Marital Status & demographics & Married, not married, other & One-hot
+coded & & 3 \\
+DSM-5 symptom count & alcohol use & Numeric (4-11) & & & 1 \\
+Craving & alcohol use & Numeric (0-30) & & & 1 \\
 Abstinence self-efficacy: Negative affect, social, physical, and craving
-subscales & Numeric (0-20) & & & 4 & Yes & Yes \\
+subscales & alcohol use & Numeric (0-20) & & & 4 \\
 Number of individual alcohol counseling sessions attended (past 30 days)
-& Numeric & & & 1 & Yes & Yes \\
+& alcohol use & Numeric & & & 1 \\
 Number of group alcohol counseling sessions attended (past 30 days) &
-Numeric & & & 1 & Yes & Yes \\
-Number of self-help group meetings attended (past 30 days) & Numeric & &
-& 1 & Yes & Yes \\
+alcohol use & Numeric & & & 1 \\
+Number of self-help group meetings attended (past 30 days) & alcohol use
+& Numeric & & & 1 \\
 Number of other mental health counseling sessions attended (past 30
-days) & Numeric & & & 1 & Yes & Yes \\
+days) & alcohol use & Numeric & & & 1 \\
 Number of days in contact with supportive people (past 30 days) &
-Numeric & & & 1 & Yes & Yes \\
+alcohol use & Numeric & & & 1 \\
 Number of days in contact with unsupportive people (past 30 days) &
-Numeric & & & 1 & Yes & Yes \\
+alcohol use & Numeric & & & 1 \\
 Taken prescribed medication for alcohol use disorder (past 30 days) &
-Yes, no & Dummy coded & & 1 & Yes & Yes \\
+alcohol use & Yes, no & One-hot coded & & 2 \\
 Taken prescribed medication for other mental health disorder (past 30
-days) & Yes, no & Dummy coded & & 1 & Yes & Yes \\
+days) & alcohol use & Yes, no & One-hot coded & & 2 \\
 Satisfaction with progress toward recovery goals (past 30 days) &
-Numeric (0-4) & & & 1 & Yes & Yes \\
-Confidence in abstinence ability (next 30 days) & Numeric (0-4) & & & 1
-& Yes & Yes \\
-Has a goal of abstinence & Yes, no, uncertain & Dummy coded & & 2 & Yes
-& Yes \\
-Age & Numeric (years) & & & 1 & Yes & Yes \\
-Sex at birth & Male, female & Dummy coded & & 1 & Yes & Yes \\
-Race & Non-Hispanic White, non-White and/or Hispanic & Dummy coded & & 1
-& Yes & Yes \\
-Education & High school or less, some college, college degree & Dummy
-coded & & 2 & Yes & Yes \\
-Income & Numeric (dollars) & & & 1 & Yes & Yes \\
-Marital Status & Married, not married, other & Dummy coded & & 2 & Yes &
-Yes \\
+alcohol use & Numeric (0-4) & & & 1 \\
+Confidence in abstinence ability (next 30 days) & alcohol use & Numeric
+(0-4) & & & 1 \\
+Has a goal of abstinence & alcohol use & Yes, no, uncertain & One-hot
+coded & & 3 \\
+Personality dimensions (positive emotionality, negative emotionality,
+and constraint) & personality and psychiatric & Numeric & & & 3 \\
+Psychiatric conditions (depression, anxiety, and stress) & personality
+and psychiatric & Numeric & & & 3 \\
 
 
 \caption{\label{tbl-1}Raw Predictors, Response Options, Feature
