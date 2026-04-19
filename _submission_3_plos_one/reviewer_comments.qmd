@@ -26,8 +26,8 @@ Below, we delineate the reviewers’ and editor’s questions, concerns, and req
 ## Editor
 
 ### 1. Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming.
-
-<!-- https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf and  https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf-->
+We have reviewed the PLOS One's style requirements and updated our manuscript accordingly. We have also ensured that our file names meet the requirements.
+<!--Still need to review: https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf and  https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf-->
 
 
 ### 2. Please note that PLOS One has specific guidelines on code sharing for submissions in which author-generated code underpins the findings in the manuscript. In these cases, we expect all author-generated code to be made available without restrictions upon publication of the work. Please review our guidelines at https://journals.plos.org/plosone/s/materials-and-software-sharing#loc-sharing-code and ensure that your code is shared in a way that follows best practice and facilitates reproducibility and reuse.
@@ -62,25 +62,26 @@ We previously included an imputation step in our data pre-processing pipeline. H
 <!-- Discussion edit - glmnet predicted better than algorithms that allow for interactions. Acknowledge as limitations -->
 
 ### 5. Individual characteristics, including personality traits, potential comorbid psychiatric conditions/ symptoms such as anxiety or depression (if available) would be informative to add to the baseline and follow up measures and potentially inform changes in communication patterns.
+We appreciate the suggestion and have added psychiatric and personality features to our model. Specifically, we <!--add measures-->
 
-- add to baseline (conversation) - fit all algorithms
-- be more clear featuring glmnet (additive) but xgboost and rf natively handle interactions
-- would expect them to predict better if true interactions - other wise additive more closely resembles data generating process
 
 ### 6. Isolating oneself, to a degree that is discernable in social behavior as part of increased anxiety and depression, craving may take longer than two weeks. Could authors explain how the different time windows performed and were interpreted? Could changes be associated with traits such as impulsivity, low mood, anxiety? Are data on these aspects available. Have interactions and potential mediation been explored?
 
-- check that 2 weeks isnt mentioned
-- limitation 
-- 24, hour, 1 week, 2 weeks - update text to week not hours
+<!-- - could not include 2 weeks - limitation  -->
+<!-- - 24, hour, 1 week - update text to week not hours -->
 
-- add metadata only model - with feature importance
-- baseline to full (incremental - model contrast - no incremntal value), meta only not controolling for anything else (compared to .5)
-- Feature importance in meta model and then show in full model without baseline in plot
+<!-- - add metadata only model - with feature importance -->
+<!-- - baseline to full (incremental - model contrast - no incremntal value), meta only not controolling for anything else (compared to .5) -->
+<!-- - Feature importance in meta model and then show in full model without baseline in plot -->
+
+<!-- - be more clear featuring glmnet (additive) but xgboost and rf natively handle interactions -->
+<!-- - would expect them to predict better if true interactions - other wise additive more closely resembles data generating process -->
 
 ### 7. Goal of abstinence, abstinence confidence tend to increase with abstinence time - the longer the abstinence the higher the continued goal of abstinence and the confidence. Was data on abstinence time available? Could these predictors be considered as time varying or maybe consider interaction terms?
 
 
 ### 8. Results reflect what is already known about craving and negative affect being positively associated with relapse risk. However, communication with someone who doesn’t know about recovery is a novel finding and needs to be better explained. This association would be interesting to explore further.
+
 
 ### 9. Social isolation and lack of significant social support are important factors associated with recovery. Number of contacts varied widely (between 2 and >100!) in the population. I would expect increased social isolation (less communication, changes in communication pattern) in a the more social individuals (who have many contacts) to be a sign of increased depression or anxiety – which in turn could be associated with relapse. Could authors describe patterns of social contacts and change over time more clearly? Was number of contacts considered? Was change in communication, depending on number of contacts of any relevance?
 

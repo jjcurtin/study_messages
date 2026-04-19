@@ -55,6 +55,9 @@ test_metrics_all <- test_metrics_full |>
                         rep(4, 5), rep(5, 5), rep(6, 5))) |> 
   select(-split_num) |> 
   glimpse()
+
+test_metrics_all <- test_metrics_all |> 
+  bind_cols(tibble(`chance model` = rep(0.5, 30))) 
 ```
 
 
@@ -86,7 +89,7 @@ pp_perf_tibble <- pp_tidy |>
   summarize(pp_median = quantile(posterior, probs = q[2]),
             pp_lower = quantile(posterior, probs = q[1]), 
             pp_upper = quantile(posterior, probs = q[3])) |> 
-  mutate(model = factor(model, levels = c("full model", "baseline model", "metadata model"))) |> 
+  mutate(model = factor(model, levels = c("full model", "baseline model", "metadata model", "chance model"))) |> 
   arrange(model)
 
 pp_perf_tibble |> 
@@ -102,6 +105,7 @@ pp_perf_tibble
 
 ### Model Comparison
 
+full vs. baseline
 ```{r}
 
 ci_baseline <- pp |>
@@ -129,7 +133,30 @@ ci_baseline
 ```
 
 
+meta vs. chance
+```{r}
+
+ci_meta <- pp |>
+  contrast_models(list("metadata model"),
+                  list("chance model")) |>
+  summary(size = 0) |> 
+  mutate(contrast = "metadata model vs. chance model")
+
+ci_median_meta <- pp |>
+  contrast_models(list("metadata model"),
+                  list("chance model")) |>
+  group_by(contrast) |>
+  summarize(median = quantile(difference, .5)) 
 
 
+ci_meta <- ci_meta |>
+  left_join(ci_median_meta, by = c("contrast"))
+
+ci_meta |>
+  write_csv(here::here(path_models, "contrast_meta.csv"))
+
+ci_meta
+
+```
 
 
