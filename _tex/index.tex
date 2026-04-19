@@ -201,7 +201,7 @@ learning, Digital Phenotyping, Relapse Prevention},
 \title{Evaluating Cellular Communication Sensing for Lapse Risk
 Prediction During Early Recovery from Alcohol Use Disorder}
 \author{Kendra Wyant \and Jiachen Yu \and John J. Curtin}
-\date{2026-04-17}
+\date{2026-04-19}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -313,11 +313,9 @@ We adhere to research transparency principles that are crucial for
 robust and replicable science. First, we reported how we determined the
 sample size, all data exclusions, all manipulations, and all study
 measures. We provide a transparency checklist {[}14{]} in the
-supplement. Second, our features, labels, questionnaires, and other
-study materials are publicly available on our Open Science Framework
-(OSF) page (\url{https://osf.io/wgpz9/}). Finally, the annotated
-analysis scripts are publicly available on our study website
-(\url{https://jjcurtin.github.io/study_messages/}).
+supplement. Second, our features, labels, questionnaires, code, and
+other study materials are publicly available on our Open Science
+Framework (OSF) page (\url{https://osf.io/wgpz9/}).
 
 \subsection{Participants and
 Procedure}\label{participants-and-procedure}
@@ -464,7 +462,9 @@ data was observed during a feature scoring epoch that feature was scored
 0, thus there was no missing data across features. Other feature
 engineering steps performed during cross-validation included
 standardizing all features and removing zero and near-zero variance
-features as determined from held-in data.
+features as determined from held-in data (code for our full data
+pre-processing pipeline is available on our OSF page
+{[}(\url{https://osf.io/wgpz9/}{]}).
 
 {
 
@@ -478,7 +478,7 @@ Feature Scoring Epochs & Total Features \\
 \midrule\noalign{}
 {Note: } & & & & & \\
 \textsuperscript{} Cellular communication features were scored over two
-feature scoring epochs (24 and 168 hours before the start of the
+feature scoring epochs (24 hours and 1 week before the start of the
 prediction window). Within each feature scoring epoch we calculated two
 types of features: raw and difference features. Raw features represent
 the raw feature value calculated within a scoring epoch (e.g., the rate
@@ -632,9 +632,13 @@ contrasts \textasciitilde{} normal(0, 2.69); covariance
 \textasciitilde{} decov(1,1,1,1). Random intercepts were included for
 repeat and fold (nested within repeat). auROCs were logit-transformed
 and regressed on model type to estimate the probability that model
-performances differed systematically.
+performances differed systematically. We reported the median posterior
+auROC and 95\% CI for each model. We also specified two sets of
+contrasts for model comparisons: full model vs.~baseline model and
+cellular communication model vs.~a hypothetical model performing at
+chance (i.e., where auROC's are 0.5 in all 30 test sets).
 
-We refit our full and cellular communication model on the entire data
+We refit our full and cellular communication models on the entire data
 set to identify the most important features. We quantified feature
 importance by examining the retained features (i.e., coefficient value
 \textgreater{} 0) in our final elastic net model and ordering them by
@@ -745,7 +749,7 @@ had, on average, 2,610 contextualized communications (range =
 \subsection{Model Evaluation}\label{model-evaluation-1}
 
 The median posterior auROC for the best performing full model was 0.67,
-95\% CI {[}0.64, 0.71{]}. The final model fit on the full data set
+95\% CI {[}0.64, 0.7{]}. The final model fit on the full data set
 retained 10 features (left panel of Figure~\ref{fig-1}). The top four
 were baseline alcohol use characteristics. Two of these (abstinence
 confidence and having a goal of abstinence) emerged as important
@@ -763,15 +767,16 @@ demographics, and psychiatric and personality characteristics) to assess
 the incremental predictive value of cellular communication features
 beyond these baseline measures. The baseline model achieved slightly
 higher performance compared to the full model (median auROC = 0.69, 95\%
-CI {[}0.65, 0.72{]}). However, this median difference in auROC was only
+CI {[}0.66, 0.71{]}). However, this median difference in auROC was only
 .01 and the bayesian model comparison showed weak evidence (73\%
 probability) that the baseline model performed better than the full
 model.
 
 Finally, our best performing model that included only cellular
 communication features achieved a median auROC of 0.59. The 95\% CI
-({[}0.55, 0.62{]}) did not contain .5, providing evidence that the model
-is capturing some signal in the data. To better understand which
+({[}0.55, 0.62{]}) did not contain .5. There was strong evidence that
+this model is performing above chance performance (100\% probability)
+and thus capturing some signal in the data. To better understand which
 features are capturing this signal, we examined the retained features in
 the best cellular communication model fit on the full data set. This
 model retained four features: frequency of communications with friends,
