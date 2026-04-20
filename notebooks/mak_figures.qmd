@@ -77,156 +77,54 @@ feat_imp_full <- model_full |>
     title = "Feature Importance"
   ) +
   theme(legend.position = "none")
-
-
-
-
-
-feat_imp_meta <- model_meta |> 
-  tidy() |> 
-  mutate(estimate = -1 * estimate) |> 
-  filter(abs(estimate) > 0) |> 
-  filter(term != "(Intercept)") |> 
-  mutate(term = case_match(term,
-                           "abstinence_confidence" ~ "Abstinence confidence (baseline)", 
-                           "abstinence_goal_Yes" ~ "Goal of abstinence (baseline)",
-                           "efficacy_neg_affect" ~ "Negative affect efficacy (baseline)",
-                           "craving_total" ~ "Craving (baseline)",
-                           "demo_income" ~ "Income (baseline)",
-                           "demo_sex_Male" ~ "Male (baseline)",
-                           "indiv_doa" ~ "Individual alcohol counseling (baseline)",
-                           .default = term)) |> 
-  mutate(term = if_else(str_detect(term, "cont_type_abr.friend"), "Friends (communications)", term),
-         term = if_else(str_detect(term, ".NonDrinker"), "Non-drinkers (communications)", term),
-         term = if_else(str_detect(term, ".support_status.Dont"), "Doesn't know about recovery (communications)", term),
-         term = if_else(str_detect(term, ".Drinker"), "Drinkers (communications)", term),
-         term = if_else(str_detect(term, ".phone_number"), "Number of unique contacts (communications)", term),
-         term = if_else(str_detect(term, "experience.Unpleasant"), "Unpleasant interactions (communications)", term))|> 
-  group_by(term) |> 
-  summarise(estimate = mean(estimate)) |> 
-  arrange(desc(abs(estimate))) |> 
-  mutate(term = reorder(term, abs(estimate)))  |> 
-  ggplot(aes(x = estimate, y = term, fill = estimate > 0)) +
-  geom_col() +
-  scale_fill_manual(values = c("TRUE" = "tomato", "FALSE" = "steelblue")) +
-  labs(
-    x = "Coefficient",
-    y = NULL,
-    title = "Feature Importance"
-  ) +
-  theme(legend.position = "none")
+# 
+# 
+# 
+# 
+# 
+# feat_imp_meta <- model_meta |> 
+#   tidy() |> 
+#   mutate(estimate = -1 * estimate) |> 
+#   filter(abs(estimate) > 0) |> 
+#   filter(term != "(Intercept)") |> 
+#   mutate(term = case_match(term,
+#                            "abstinence_confidence" ~ "Abstinence confidence (baseline)", 
+#                            "abstinence_goal_Yes" ~ "Goal of abstinence (baseline)",
+#                            "efficacy_neg_affect" ~ "Negative affect efficacy (baseline)",
+#                            "craving_total" ~ "Craving (baseline)",
+#                            "demo_income" ~ "Income (baseline)",
+#                            "demo_sex_Male" ~ "Male (baseline)",
+#                            "indiv_doa" ~ "Individual alcohol counseling (baseline)",
+#                            .default = term)) |> 
+#   mutate(term = if_else(str_detect(term, "cont_type_abr.friend"), "Friends (communications)", term),
+#          term = if_else(str_detect(term, ".NonDrinker"), "Non-drinkers (communications)", term),
+#          term = if_else(str_detect(term, ".support_status.Dont"), "Doesn't know about recovery (communications)", term),
+#          term = if_else(str_detect(term, ".Drinker"), "Drinkers (communications)", term),
+#          term = if_else(str_detect(term, ".phone_number"), "Number of unique contacts (communications)", term),
+#          term = if_else(str_detect(term, "experience.Unpleasant"), "Unpleasant interactions (communications)", term))|> 
+#   group_by(term) |> 
+#   summarise(estimate = mean(estimate)) |> 
+#   arrange(desc(abs(estimate))) |> 
+#   mutate(term = reorder(term, abs(estimate)))  |> 
+#   ggplot(aes(x = estimate, y = term, fill = estimate > 0)) +
+#   geom_col() +
+#   scale_fill_manual(values = c("TRUE" = "tomato", "FALSE" = "steelblue")) +
+#   labs(
+#     x = "Coefficient",
+#     y = NULL,
+#     title = "Feature Importance"
+#   ) +
+#   theme(legend.position = "none")
 ```
 
-```{r}
-feat_imp_full <- model_full |> 
-  tidy() |> 
-  mutate(estimate = -1 * estimate) |> 
-  filter(abs(estimate) > 0) |> 
-  filter(term != "(Intercept)") |> 
-  mutate(term = case_match(term,
-                           "aud_abstinence_confidence" ~ "Abstinence confidence (alcohol use)", 
-                           "aud_abstinence_goal_Yes" ~ "Goal of abstinence (alcohol use)",
-                           "aud_efficacy_neg_affect" ~ "Negative affect efficacy (alcohol use)",
-                           "aud_craving_total" ~ "Craving (alcohol use)",
-                           "aud_indiv_doa" ~ "Individual alcohol counseling (alcohol use)",
-                           .default = term)) |> 
-  mutate(term = if_else(str_detect(term, "cont_type_abr.friend"), "Friends (communications)", term),
-         term = if_else(str_detect(term, ".NonDrinker"), "Non-drinkers (communications)", term),
-         term = if_else(str_detect(term, ".support_status.Dont"), "Doesn't know about recovery (communications)", term),
-         term = if_else(str_detect(term, ".Drinker"), "Drinkers (communications)", term),
-         term = if_else(str_detect(term, ".phone_number"), "Number of unique contacts (communications)", term),
-         term = if_else(str_detect(term, "experience.Unpleasant"), "Unpleasant interactions (communications)", term))|> 
-  group_by(term) |> 
-  summarise(estimate = mean(estimate)) |> 
-  arrange(desc(abs(estimate))) |> 
-  mutate(term = reorder(term, abs(estimate))) 
 
-feat_imp_meta <- model_meta |> 
-  tidy() |> 
-  mutate(estimate = -1 * estimate) |> 
-  filter(abs(estimate) > 0) |> 
-  filter(term != "(Intercept)") |> 
-  mutate(term = case_match(term,
-                           "abstinence_confidence" ~ "Abstinence confidence (baseline)", 
-                           "abstinence_goal_Yes" ~ "Goal of abstinence (baseline)",
-                           "efficacy_neg_affect" ~ "Negative affect efficacy (baseline)",
-                           "craving_total" ~ "Craving (baseline)",
-                           "demo_income" ~ "Income (baseline)",
-                           "demo_sex_Male" ~ "Male (baseline)",
-                           "indiv_doa" ~ "Individual alcohol counseling (baseline)",
-                           .default = term)) |> 
-  mutate(term = if_else(str_detect(term, "cont_type_abr.friend"), "Friends (communications)", term),
-         term = if_else(str_detect(term, ".NonDrinker"), "Non-drinkers (communications)", term),
-         term = if_else(str_detect(term, ".support_status.Dont"), "Doesn't know about recovery (communications)", term),
-         term = if_else(str_detect(term, ".Drinker"), "Drinkers (communications)", term),
-         term = if_else(str_detect(term, ".phone_number"), "Number of unique contacts (communications)", term),
-         term = if_else(str_detect(term, "experience.Unpleasant"), "Unpleasant interactions (communications)", term))|> 
-  group_by(term) |> 
-  summarise(estimate = mean(estimate)) |> 
-  arrange(desc(abs(estimate))) |> 
-  mutate(term = reorder(term, abs(estimate))) 
-
-
-term_levels <- feat_imp_full |>
-  arrange(abs(estimate)) |>
-  pull(term)
-
-
-feat_imp_full <- feat_imp_full|>
-  mutate(term = factor(term, levels = term_levels))
-
-feat_imp_meta <- feat_imp_meta |>
-  mutate(term = factor(term, levels = term_levels)) |>
-  tidyr::complete(term, fill = list(estimate = NA_real_))
-
-
-p_full <- ggplot(feat_imp_full,
-                 aes(x = estimate, y = term, fill = estimate > 0)) +
-  geom_col(width = 0.7) +
-  scale_fill_manual(values = c("TRUE" = "tomato", "FALSE" = "steelblue")) +
-  labs(x = "Coefficient", y = NULL, title = "Full Model") +
-  theme(legend.position = "none")
-
-
-
-p_meta <- ggplot(feat_imp_meta,
-                 aes(x = estimate, y = term, fill = estimate > 0)) +
-  geom_col(width = 0.7, na.rm = TRUE) +
-  scale_fill_manual(values = c("TRUE" = "tomato", "FALSE" = "steelblue")) +
-  labs(x = "Coefficient", y = NULL, title = "Cellular Communication Model") +
-  theme(legend.position = "none",
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()) +
-  scale_x_continuous(limits = c(-0.3, 0.15), 
-                     breaks = c(-.3, -.2, -.1, 0, .1))
-
-
-```
-
-```{r}
-# pp |> 
-#   mutate(model = factor(model, levels = c("full model", "baseline model"),
-#                         labels = c("Full model", "Baseline model"))) |> 
-#   ggplot(aes(x = posterior)) +
-#   geom_histogram(bins = 50, color = "black", fill = "light grey") +
-#   facet_wrap(~model, ncol = 1)+
-#   geom_vline(xintercept = .5, linetype = "dashed") +
-#   geom_vline(xintercept = median(pp$posterior))
-
-# post <- pp |> 
-#   filter(model == "full model") |> 
-#   ggplot(aes(x = posterior)) +
-#   geom_histogram(bins = 30, color = "black", fill = "light grey") +
-#   geom_vline(xintercept = .5, linetype = "dashed") +
-#   geom_vline(xintercept = median(pp$posterior), linewidth = .6)
-```
 
 
 ```{r}
 #| label: fig-1
-#| fig-cap: "Global feature importance (elastic net coefficient) for the full and cellular communicatioin models. Features are ordered by absolute coefficient value. Bars with positive coefficient values (in blue) represent features that, on average, lower lapse risk. Bars with negative coefficient values (in salmon) represent features that, on average, increase risk. Alcohol use features were collected via self-report measures at baseline. Communication features were engineered from the contextualized cellular communications."
+#| fig-cap: "Global feature importance (elastic net coefficient) for the full model. Features are ordered by absolute coefficient value. Bars with positive coefficient values (in blue) represent features that, on average, lower lapse risk. Bars with negative coefficient values (in salmon) represent features that, on average, increase risk. Alcohol use features were collected via self-report measures at baseline. Communication features were engineered from the contextualized cellular communications."
 #| fig-width: 8
 #| fig-height: 5
 
-p_full + p_meta 
+p_full  
 ```

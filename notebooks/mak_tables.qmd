@@ -39,8 +39,12 @@ Table 1
 ```{r}
 feats <- read_csv(here::here(path_messages, "feature_engineering_table.csv"),
                         show_col_types = FALSE) |> 
-  rename(`Feature Scoring Epochs` = `Scoring Epochs`)
-
+  rename(`Feature Scoring Epochs` = `Scoring Epochs`) |> 
+  # make feature set  sentence case |> 
+  mutate(`Feature Set` = case_when(`Feature Set` == "cellular communication" ~ "Cellular communication",
+                                 `Feature Set` == "demographics" ~ "Demographics",
+                                 `Feature Set` == "alcohol use" ~ "Alcohol use",
+                                 `Feature Set` == "personality and psychiatric" ~ "Personality/psychiatric"))
 ```
 
 Table 2

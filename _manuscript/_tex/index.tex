@@ -205,38 +205,45 @@ Prediction During Early Recovery from Alcohol Use Disorder}
 \begin{document}
 \maketitle
 \begin{abstract}
-Alcohol Use Disorder (AUD) is a chronic, relapsing disease. An automated
-recovery support system using personal sensing and machine learning may
-help identify when individuals are at elevated lapse risk. Cellular
-communication sensing may detect dynamic changes in lapse risk and can
-be contextualized with self-reported, risk-relevant information about
-contacts. We evaluated a machine learning model predicting next-day
-alcohol lapse among individuals in early recovery from AUD using
-contextualized cellular communication data and baseline alcohol use,
-demographic, and psychiatric and personality characteristics. A total of
-144 participants (49\% male; mean age=40; 87\% non-Hispanic White) with
-a goal of abstinence provided cellular communication data and alcohol
-use reports via a 4x daily EMA for up to three months. Models were
-trained and evaluated using repeated k-fold cross-validation. The
-best-performing full model used an elastic net algorithm and retained 10
-features (median posterior auROC=0.67, 95\% Bayesian credible interval
-(CI; {[}0.64, 0.71{]}). A comparison model including only baseline
-features demonstrated comparable performance (median auROC=0.69, 95\% CI
-{[}0.65, 0.72{]}). Cellular communication features on their own
-performed poorly, but still above chance performance (median auROC=0.59,
-95\% CI {[}0.55, 0.62{]}). These findings demonstrate that cellular
-communication data capture some risk-relevant signal for alcohol lapse
-but do not provide incremental predictive value beyond baseline
-measures. Several communication features were retained in the final
-model with moderately sized coefficients, suggesting that aspects of
-social communication may be important for understanding lapse risk.
-Although, limitations inherent to cellular communication as a sensing
-method may outweigh their added value.
+Alcohol Use Disorder (AUD) is a chronic, relapsing condition, and
+identifying periods of elevated lapse risk remains a major challenge in
+supporting recovery. An automated recovery monitoring and support system
+using personal sensing and machine learning may help detect when
+individuals are at heightened risk. Cellular communication sensing may
+be a promising approach for passively capturing risk-relevant
+information about social interactions, particularly when these data are
+contextualized with participant-specific meaning.
+
+We evaluated a machine learning model predicting next-day alcohol lapse
+among individuals in early recovery from AUD using contextualized
+cellular communication data and baseline alcohol use, demographic, and
+psychiatric and personality characteristics. A total of 144 participants
+(49\% male; mean age=40; 87\% non-Hispanic White) with a goal of
+abstinence provided cellular communication data and alcohol use reports
+via a 4x daily EMA for up to three months. Models were trained and
+evaluated using repeated k-fold cross-validation.
+
+The best-performing full model used an elastic net algorithm and
+retained 10 features (median posterior auROC=0.67, 95\% Bayesian
+credible interval (CI; {[}0.64, 0.71{]}). A comparison model including
+only baseline features demonstrated comparable performance (median
+auROC=0.69, 95\% CI {[}0.65, 0.72{]}). Cellular communication features
+on their own performed poorly, but still above chance performance
+(median auROC=0.59, 95\% CI {[}0.55, 0.62{]}).
+
+These findings demonstrate that cellular communication data capture some
+risk-relevant signal for alcohol lapse but do not provide incremental
+predictive value beyond baseline measures. Nevertheless, several
+communication features were retained in the full model with moderately
+sized coefficients, suggesting that aspects of social communication may
+still be clinically relevant for understanding lapse risk. However,
+limitations inherent to cellular communication sensing may outweigh its
+added predictive utility in automated lapse prediction models.
 \end{abstract}
 
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/index-preview.html}{Article
+\href{https://jjcurtin.github.io/study_messages/index.qmd.html}{Article
 Notebook}}
 
 \section{Introduction}\label{introduction}
@@ -254,14 +261,14 @@ relapse.
 
 Given the dynamic and context-dependent nature of lapse risk, there is a
 clear need for methods capable of identifying when and why an individual
-is at increased risk in real time. An automated recovery support system
-powered by personal sensing and machine learning may assist with this
-inherently difficult task. Personal sensing of densely sampled data from
-individuals' day-to-day lives can provide the inputs necessary for
-temporally dynamic lapse prediction {[}8{]}. Early machine learning
-models using ecological momentary assessment (EMA) data have achieved
-excellent accuracy in predicting future lapses back to alcohol use in
-treatment seeking populations {[}9--11{]}.
+is at increased risk in real time. An automated recovery monitoring and
+support system powered by personal sensing and machine learning may
+assist with this inherently difficult task. Personal sensing of densely
+sampled data from individuals' day-to-day lives can provide the inputs
+necessary for temporally dynamic lapse prediction {[}8{]}. Early machine
+learning models using ecological momentary assessment (EMA) data have
+achieved excellent accuracy in predicting future lapses back to alcohol
+use in treatment seeking populations {[}9--11{]}.
 
 Despite the high predictive success of EMA-based approaches, questions
 remain about the long-term feasibility of a self-report sensing method.
@@ -300,36 +307,33 @@ their recovery. In this way, the same communication patterns may reflect
 protective processes rather than increased lapse risk.
 
 This focus on contextualized communication is especially important
-because lapse is fundamentally social. A large body of literature
-highlights the importance of social support and social network
-influences on drinking behavior and recovery outcomes {[}14--16{]}.
-Positive social relationships have consistently been associated with
-better alcohol treatment outcomes {[}17--20{]}. Conversely, maintaining
+because lapse occurs within one's social context. A substantial body of
+literature demonstrates that social support and social network
+influences play a central role in drinking behavior and recovery
+outcomes {[}14--16{]}. Positive social relationships have consistently
+been associated with better alcohol treatment outcomes {[}17--20{]}. For
+example, the supportive and pro‑abstinent social environment of
+self‑help groups, like Alcoholics Anonymous, is thought to play a major
+role in their efficacy {[}18,21--23{]}. Conversely, maintaining
 relationships with heavy drinkers or individuals unsupportive of
-recovery is associated with poorer outcomes {[}21--23{]}. The supportive
-pro-abstinence social component of self-help groups such as Alcoholics
-Anonymous is thought to play a major role in their efficacy
-{[}18,24--26{]}. The buffering hypothesis further suggests that positive
-social relationships mitigate the negative effects of stress by
-providing resources that promote adaptive responses {[}27,28{]}, a
-mechanism that likely extends to lapse risk given stress's role as a
-common precipitant of alcohol use {[}29{]}. Critically, these influences
-unfold over time through everyday social interactions.
+recovery is associated with poorer outcomes {[}24--26{]}. The buffering
+hypothesis further suggests that positive social relationships mitigate
+stress by providing resources that promote adaptive responses
+{[}27,28{]}, a mechanism that likely extends to lapse risk given
+stress's complex relationship with substance use {[}29{]}.
 
-Because many social interactions occur via phone, cellular communication
-logs provide a natural and ecologically valid window into patterns of
+Importantly, these influences unfold over time through everyday social
+interactions. Because many social interactions occur over the phone,
+cellular communication logs provide a natural window into patterns of
 social engagement. Social relationships are inherently dynamic
 {[}30--33{]}, and time-stamped communication data allow for the tracking
-of how these interactions fluctuate over time. For example, shifts in
-one's most frequently contacted individuals, or systematic changes such
-as repeatedly ignoring calls from a normally frequent contact, may
-signal meaningful changes in social dynamics relevant to lapse risk.
+of how these interactions fluctuate over time.
 
 In this study, we evaluated whether contextualized cellular
 communication features contain clinically meaningful signals for
 predicting next-day alcohol lapse risk among individuals in early
 recovery from AUD. Using a machine learning approach, we examined the
-predictive utility of these features and identified the most informative
+predictive utility of these features and identified the most important
 communication-based features, with the goal of uncovering novel,
 clinically relevant predictors of lapse risk.
 
@@ -1087,8 +1091,29 @@ alcohol treatment outcome}. Journal of Studies on Alcohol. 2002;63:
 JOURNAL OF STUDIES ON ALCOHOL AND DRUGS. 2010; 10.
 doi:\href{https://doi.org/10/ghqvc7}{10/ghqvc7}}
 
-\bibitem[\citeproctext]{ref-alvarezSocialNetworkHeavy2021}
+\bibitem[\citeproctext]{ref-grohSocialNetworkVariables2008}
 \CSLLeftMargin{21. }%
+\CSLRightInline{Groh D, Jason L, Keys C. Social network variables in
+alcoholics anonymous: {A} literature review. Clinical Psychology Review.
+2008;28: 430--450. doi:\href{https://doi.org/10/b86245}{10/b86245}}
+
+\bibitem[\citeproctext]{ref-woffServiceProvidersPerceptions1996}
+\CSLLeftMargin{22. }%
+\CSLRightInline{Woff I, Toumbourou J, Herlihy E, Hamilton M, Wales S.
+Service providers' perceptions of substance use self-help groups.
+Substance Use \& Misuse. 1996;31: 1241--1258.
+doi:\href{https://doi.org/10.3109/10826089609063976}{10.3109/10826089609063976}}
+
+\bibitem[\citeproctext]{ref-humphreysEnhancedFriendshipNetworks1999}
+\CSLLeftMargin{23. }%
+\CSLRightInline{Humphreys K, Mankowski ES, Moos RH, Finney JW. Do
+enhanced friendship networks and active coping mediate the effect of
+self-help groups on substance abuse? Annals of Behavioral Medicine: A
+Publication of the Society of Behavioral Medicine. 1999;21: 54--60.
+doi:\href{https://doi.org/10/cjrpbz}{10/cjrpbz}}
+
+\bibitem[\citeproctext]{ref-alvarezSocialNetworkHeavy2021}
+\CSLLeftMargin{24. }%
 \CSLRightInline{Alvarez MJ, Richards DK, Oviedo Ramirez S, Field CA.
 Social network heavy drinking moderates the effects of a brief
 motivational intervention for alcohol use among injured patients.
@@ -1096,38 +1121,17 @@ Addictive Behaviors. 2021;112: 106594.
 doi:\href{https://doi.org/10/ghqvdc}{10/ghqvdc}}
 
 \bibitem[\citeproctext]{ref-gordonSocialNetworksRecovery1991}
-\CSLLeftMargin{22. }%
+\CSLLeftMargin{25. }%
 \CSLRightInline{Gordon AJ, Zrull M. Social networks and recovery: {One}
 year after inpatient treatment. Journal of Substance Abuse Treatment.
 1991;8: 143--152. doi:\href{https://doi.org/10/dg32sj}{10/dg32sj}}
 
 \bibitem[\citeproctext]{ref-mohrGettingGettingHigh2001}
-\CSLLeftMargin{23. }%
+\CSLLeftMargin{26. }%
 \CSLRightInline{Mohr CD, Averna S, Kenny DA, Del Boca FK. "{Getting} by
 (or getting high) with a little help from my friends": An examination of
 adult alcoholics' friendships. Journal of Studies on Alcohol. 2001;62:
 637--645. doi:\href{https://doi.org/10/ghqvc3}{10/ghqvc3}}
-
-\bibitem[\citeproctext]{ref-grohSocialNetworkVariables2008}
-\CSLLeftMargin{24. }%
-\CSLRightInline{Groh D, Jason L, Keys C. Social network variables in
-alcoholics anonymous: {A} literature review. Clinical Psychology Review.
-2008;28: 430--450. doi:\href{https://doi.org/10/b86245}{10/b86245}}
-
-\bibitem[\citeproctext]{ref-woffServiceProvidersPerceptions1996}
-\CSLLeftMargin{25. }%
-\CSLRightInline{Woff I, Toumbourou J, Herlihy E, Hamilton M, Wales S.
-Service providers' perceptions of substance use self-help groups.
-Substance Use \& Misuse. 1996;31: 1241--1258.
-doi:\href{https://doi.org/10.3109/10826089609063976}{10.3109/10826089609063976}}
-
-\bibitem[\citeproctext]{ref-humphreysEnhancedFriendshipNetworks1999}
-\CSLLeftMargin{26. }%
-\CSLRightInline{Humphreys K, Mankowski ES, Moos RH, Finney JW. Do
-enhanced friendship networks and active coping mediate the effect of
-self-help groups on substance abuse? Annals of Behavioral Medicine: A
-Publication of the Society of Behavioral Medicine. 1999;21: 54--60.
-doi:\href{https://doi.org/10/cjrpbz}{10/cjrpbz}}
 
 \bibitem[\citeproctext]{ref-cohenStressSocialSupport}
 \CSLLeftMargin{27. }%
