@@ -687,11 +687,12 @@ other features retained.
 We enrolled 169 participants. Of these, 151 completed the first
 follow-up visit where the first cellular communication log download
 occurred. We excluded data from seven participants due to poor
-compliance providing communication data (i.e., deleting logs prior to
-the download or not providing context information about important
-contacts). The final analytic sample included 144 participants.
-Table~\ref{tbl-2} provides the demographic characterization of our
-sample. 56\% of participants reported at least one lapse while on study.
+compliance providing communication data (i.e., deleting all text
+messages and voice calls prior to the download or not providing context
+information about important contacts). The final analytic sample
+included 144 participants. Table~\ref{tbl-2} provides the demographic
+characterization of our final sample. 56\% of participants reported at
+least one lapse while on study.
 
 {
 
@@ -778,8 +779,8 @@ had, on average, 2,610 contextualized communications (range =
 
 \subsection{Model Evaluation}\label{model-evaluation-1}
 
-The median posterior auROC for the best performing full model was 0.67,
-95\% CI {[}0.64, 0.71{]}. The final model fit on the full data set
+The median posterior auROC for the best performing full model was 0.674,
+95\% CI {[}0.639, 0.707{]}. The final model fit on the full data set
 retained 10 features (Figure~\ref{fig-1}). The top four features were
 baseline alcohol use characteristics. Two of these (abstinence
 confidence and having a goal of abstinence) emerged as important
@@ -796,23 +797,23 @@ only considered baseline measures (alcohol use characteristics,
 demographics, and psychiatric and personality characteristics) to assess
 the incremental predictive value of cellular communication features
 beyond these baseline measures. The baseline model achieved slightly
-higher performance compared to the full model (median auROC = 0.69, 95\%
-CI {[}0.65, 0.72{]}). However, this median difference in auROC was only
-.01 and the Bayesian model comparison showed weak evidence (73\%
-probability) that the baseline model performed better than the full
-model.
+higher performance compared to the full model (median auROC = 0.687,
+95\% CI {[}0.653, 0.718{]}). However, this median difference in auROC
+was only 0.013 and the Bayesian model comparison showed weak evidence
+(73\% probability) that the baseline model performed better than the
+full model.
 
 Finally, our best performing model that included only cellular
-communication features achieved a median auROC of 0.59, 95\% CI {[}0.55,
-0.62{]}. 100\% of the posteriors were above 0.5 indicating strong
-evidence that this model is performing above chance performance (i.e.,
-it is capturing some risk-relevant signal in the data). Four of the five
-cellular communication features retained in the full model were also
-retained in the cellular communication model. Number of unique contacts
-did not get retained in the cellular communication model, although it
-was retained in the full model with a very small coefficient. No new
-important features beyond those retained in the full model emerged in
-the cellular communication model.
+communication features achieved a median auROC of 0.588, 95\% CI
+{[}0.55, 0.624{]}. 100\% of the sampled posteriors were above 0.5
+indicating strong evidence that this model is performing above chance
+performance (i.e., it is capturing some risk-relevant signal in the
+data). Four of the five cellular communication features retained in the
+full model were also retained in the cellular communication model.
+Number of unique contacts did not get retained in the cellular
+communication model, although it was retained in the full model with a
+very small coefficient. No new important features beyond those retained
+in the full model emerged in the cellular communication model.
 
 \begin{figure}[H]
 
