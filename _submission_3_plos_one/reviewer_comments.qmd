@@ -87,7 +87,7 @@ We appreciate the suggestion and have added psychiatric and personality features
 
 ### 9. Social isolation and lack of significant social support are important factors associated with recovery. Number of contacts varied widely (between 2 and >100!) in the population. I would expect increased social isolation (less communication, changes in communication pattern) in a the more social individuals (who have many contacts) to be a sign of increased depression or anxiety – which in turn could be associated with relapse. Could authors describe patterns of social contacts and change over time more clearly? Was number of contacts considered? Was change in communication, depending on number of contacts of any relevance?
 
-<!--used difference features which compares number of contacts to an individuals baseline. Difference feature was retained for this feature as opposed to raw counts for other features-->
+<!--used difference features which compares number of contacts to an individuals baseline. Difference feature was retained for this feature as opposed to raw counts for other features. However, remaining cell feats were raw scores-->
 
 ## Reviewer 2
 

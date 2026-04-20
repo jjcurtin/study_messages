@@ -126,5 +126,5 @@ feat_imp_full <- model_full |>
 #| fig-width: 8
 #| fig-height: 5
 
-p_full  
+feat_imp_full  
 ```
