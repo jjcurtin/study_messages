@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
     <meta name="author" content="Kendra Wyant">
-    <meta name="dcterms.date" content="2026-04-19">
+    <meta name="dcterms.date" content="2026-04-20">
 
     <title>Make All Tables for Main Manuscript</title>
     <style>
@@ -2544,7 +2544,7 @@ border: 0;
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">April 19, 2026</p>
+              <p class="date">April 20, 2026</p>
             </div>
           </div>
           
@@ -2603,7 +2603,12 @@ Attaching package: &#39;kableExtra&#39;</code></pre>
 <div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>feats <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(path_messages, <span class="st">&quot;feature_engineering_table.csv&quot;</span>),</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Feature Scoring Epochs</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Scoring Epochs</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Feature Scoring Epochs</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Scoring Epochs</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># make feature set  sentence case |&gt; </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Feature Set</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">case_when</span>(<span class="st">`</span><span class="at">Feature Set</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;cellular communication&quot;</span> <span class="sc">~</span> <span class="st">&quot;Cellular communication&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">`</span><span class="at">Feature Set</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;demographics&quot;</span> <span class="sc">~</span> <span class="st">&quot;Demographics&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">`</span><span class="at">Feature Set</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;alcohol use&quot;</span> <span class="sc">~</span> <span class="st">&quot;Alcohol use&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">`</span><span class="at">Feature Set</span><span class="st">`</span> <span class="sc">==</span> <span class="st">&quot;personality and psychiatric&quot;</span> <span class="sc">~</span> <span class="st">&quot;Personality/psychiatric&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <p>Table 2</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell">
@@ -2764,7 +2769,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
 <tbody>
   <tr>
    <td style="text-align:left;"> Originated </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Incoming, outgoing </td>
    <td style="text-align:left;"> Difference and raw rate counts for text messages and voice calls </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2772,7 +2777,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Call duration </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Duration (in minutes) </td>
    <td style="text-align:left;"> Difference and raw rate sums of duration, difference and raw most recent duration </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2780,7 +2785,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Call answered </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Yes, no </td>
    <td style="text-align:left;"> Difference and raw rate counts for unanswered incoming voice calls (i.e., response option = no) </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2788,7 +2793,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Date/time of communication </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Date and time </td>
    <td style="text-align:left;"> Difference and raw rate counts for text messages and voice calls at night (10 pm-6am) and on weekends (Friday-Saturday) </td>
    <td style="text-align:left;"> 24 hours and 1 week (only 1 week used for weekend features) </td>
@@ -2796,7 +2801,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Phone number </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Phone number </td>
    <td style="text-align:left;"> Difference and raw rate counts of unique phone numbers </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2804,7 +2809,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Type of Relationship </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Family, friend, counselor or social worker, co-worker </td>
    <td style="text-align:left;"> Difference and raw rate counts of unique phone numbers </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2812,7 +2817,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Have you drank alcohol with this person? </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Never/almost never, occasionally, almost always/always </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2820,7 +2825,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> What is their drinking status? </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Drinker, non-drinker, don&#39;t know </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2828,7 +2833,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Would you expect them to drink in your presence? </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Yes, no, uncertain </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2836,7 +2841,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Are they currently in recovery from drugs or alcohol? </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Yes, no, don&#39;t know </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2844,7 +2849,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Are they supportive about your recovery goals? </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Supportive, unsupportive, mixed, neutral, don&#39;t know </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2852,7 +2857,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> How are your typical experiences with this person? </td>
-   <td style="text-align:left;"> cellular communication </td>
+   <td style="text-align:left;"> Cellular communication </td>
    <td style="text-align:left;"> Pleasant, unpleasant, mixed, neutral </td>
    <td style="text-align:left;"> Difference and raw rate counts of each response option </td>
    <td style="text-align:left;"> 24 and 1 week </td>
@@ -2860,7 +2865,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Age </td>
-   <td style="text-align:left;"> demographics </td>
+   <td style="text-align:left;"> Demographics </td>
    <td style="text-align:left;"> Numeric (years) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2868,7 +2873,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Sex at birth </td>
-   <td style="text-align:left;"> demographics </td>
+   <td style="text-align:left;"> Demographics </td>
    <td style="text-align:left;"> Male, female </td>
    <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
@@ -2876,7 +2881,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Race </td>
-   <td style="text-align:left;"> demographics </td>
+   <td style="text-align:left;"> Demographics </td>
    <td style="text-align:left;"> Non-Hispanic White, non-White and/or Hispanic </td>
    <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
@@ -2884,7 +2889,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Education </td>
-   <td style="text-align:left;"> demographics </td>
+   <td style="text-align:left;"> Demographics </td>
    <td style="text-align:left;"> High school or less, some college, college degree </td>
    <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
@@ -2892,7 +2897,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Income </td>
-   <td style="text-align:left;"> demographics </td>
+   <td style="text-align:left;"> Demographics </td>
    <td style="text-align:left;"> Numeric (dollars) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2900,7 +2905,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Marital Status </td>
-   <td style="text-align:left;"> demographics </td>
+   <td style="text-align:left;"> Demographics </td>
    <td style="text-align:left;"> Married, not married, other </td>
    <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
@@ -2908,7 +2913,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> DSM-5 symptom count </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric (4-11) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2916,7 +2921,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Craving </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric (0-30) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2924,7 +2929,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Abstinence self-efficacy: Negative affect, social, physical, and craving subscales </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric (0-20) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2932,7 +2937,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Number of individual alcohol counseling sessions attended (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2940,7 +2945,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Number of group alcohol counseling sessions attended (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2948,7 +2953,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Number of self-help group meetings attended (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2956,7 +2961,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Number of other mental health counseling sessions attended (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2964,7 +2969,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Number of days in contact with supportive people (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2972,7 +2977,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Number of days in contact with unsupportive people (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -2980,7 +2985,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Taken prescribed medication for alcohol use disorder (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Yes, no </td>
    <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
@@ -2988,7 +2993,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Taken prescribed medication for other mental health disorder (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Yes, no </td>
    <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
@@ -2996,7 +3001,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Satisfaction with progress toward recovery goals (past 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric (0-4) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -3004,7 +3009,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Confidence in abstinence ability (next 30 days) </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Numeric (0-4) </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -3012,7 +3017,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Has a goal of abstinence </td>
-   <td style="text-align:left;"> alcohol use </td>
+   <td style="text-align:left;"> Alcohol use </td>
    <td style="text-align:left;"> Yes, no, uncertain </td>
    <td style="text-align:left;"> One-hot coded </td>
    <td style="text-align:left;">  </td>
@@ -3020,7 +3025,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Personality dimensions (positive emotionality, negative emotionality, and constraint) </td>
-   <td style="text-align:left;"> personality and psychiatric </td>
+   <td style="text-align:left;"> Personality/psychiatric </td>
    <td style="text-align:left;"> Numeric </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>
@@ -3028,7 +3033,7 @@ Raw Predictors, Response Options, Feature Engineering Methods, Feature Scoring E
   </tr>
   <tr>
    <td style="text-align:left;"> Psychiatric conditions (depression, anxiety, and stress) </td>
-   <td style="text-align:left;"> personality and psychiatric </td>
+   <td style="text-align:left;"> Personality/psychiatric </td>
    <td style="text-align:left;"> Numeric </td>
    <td style="text-align:left;">  </td>
    <td style="text-align:left;">  </td>

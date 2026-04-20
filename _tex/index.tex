@@ -238,7 +238,7 @@ communication features were retained in the full model with moderately
 sized coefficients, suggesting that aspects of social communication may
 still be clinically relevant for understanding lapse risk. However,
 limitations inherent to cellular communication sensing may outweigh its
-added predictive utility in automated lapse prediction models.
+added utility in lapse prediction models.
 \end{abstract}
 
 
@@ -476,27 +476,31 @@ sets:
   alcohol counseling sessions, self-help meetings, and other mental
   health counseling sessions in the past 30 days, number of days in
   contact with supportive and unsupportive people in the past 30 days,
-  and satisfaction with and confidence in recovery over the past 30
-  days. We also created one-hot coded features for whether they have
+  and satisfaction with and confidence in their recovery over the past
+  30 days. We also created one-hot coded features for whether they have
   taken prescription medication for alcohol use disorder or mental
   health in the past 30 days and whether they had a goal of abstinence.
 \item
   \emph{Psychiatric and Personality Characteristics} We created 6
-  numeric features from baseline measures from broad psychiatric and
+  numeric features from baseline measures of broad psychiatric and
   personality traits, including higher order personality dimensions of
   positive emotionality, negative emotionality, and constraint and
   psychiatric comorbidities of depression, anxiety, and stress.
 \end{enumerate}
 
-Table~\ref{tbl-1} details the raw predictors, feature sets, feature
-engineering procedures, scoring epochs, and number of features. If no
-data was observed during a feature scoring epoch that feature was scored
-0, thus there was no missing data across features. Other feature
-engineering steps performed during cross-validation included
-standardizing all features and removing zero and near-zero variance
-features as determined from held-in data (code for our full data
-pre-processing pipeline is available on our OSF page
-{[}(\url{https://osf.io/wgpz9/}{]}).
+Table~\ref{tbl-1} details the raw predictors, the feature set each
+predictor belongs to, feature engineering procedures used, scoring
+epochs (for cellular communication features only), and the total number
+of features derived from the raw predictor. We had no missing data
+across baseline measures of demographics, alcohol use characteristics,
+and psychiatric and personality characteristics. If no cellular
+communication data were observed during a feature scoring epoch that
+feature was scored 0, thus there were also no missing data among
+cellular communication features. Other feature engineering steps
+performed during cross-validation included standardizing all features
+and removing zero and near-zero variance features as determined from
+held-in data (code for our full data pre-processing pipeline is
+available on our OSF page {[}(\url{https://osf.io/wgpz9/}{]}).
 
 {
 
@@ -522,82 +526,82 @@ study subtracted from the rate count in the preceding 24 hours). & & & &
 & \\
 \bottomrule\noalign{}
 \endlastfoot
-Originated & cellular communication & Incoming, outgoing & Difference
+Originated & Cellular communication & Incoming, outgoing & Difference
 and raw rate counts for text messages and voice calls & 24 and 1 week &
 16 \\
-Call duration & cellular communication & Duration (in minutes) &
+Call duration & Cellular communication & Duration (in minutes) &
 Difference and raw rate sums of duration, difference and raw most recent
 duration & 24 and 1 week & 6 \\
-Call answered & cellular communication & Yes, no & Difference and raw
+Call answered & Cellular communication & Yes, no & Difference and raw
 rate counts for unanswered incoming voice calls (i.e., response option =
 no) & 24 and 1 week & 4 \\
-Date/time of communication & cellular communication & Date and time &
+Date/time of communication & Cellular communication & Date and time &
 Difference and raw rate counts for text messages and voice calls at
 night (10 pm-6am) and on weekends (Friday-Saturday) & 24 hours and 1
 week (only 1 week used for weekend features) & 12 \\
-Phone number & cellular communication & Phone number & Difference and
+Phone number & Cellular communication & Phone number & Difference and
 raw rate counts of unique phone numbers & 24 and 1 week & 4 \\
-Type of Relationship & cellular communication & Family, friend,
+Type of Relationship & Cellular communication & Family, friend,
 counselor or social worker, co-worker & Difference and raw rate counts
 of unique phone numbers & 24 and 1 week & 16 \\
-Have you drank alcohol with this person? & cellular communication &
+Have you drank alcohol with this person? & Cellular communication &
 Never/almost never, occasionally, almost always/always & Difference and
 raw rate counts of each response option & 24 and 1 week & 12 \\
-What is their drinking status? & cellular communication & Drinker,
+What is their drinking status? & Cellular communication & Drinker,
 non-drinker, don\textquotesingle t know & Difference and raw rate counts
 of each response option & 24 and 1 week & 12 \\
-Would you expect them to drink in your presence? & cellular
+Would you expect them to drink in your presence? & Cellular
 communication & Yes, no, uncertain & Difference and raw rate counts of
 each response option & 24 and 1 week & 12 \\
-Are they currently in recovery from drugs or alcohol? & cellular
+Are they currently in recovery from drugs or alcohol? & Cellular
 communication & Yes, no, don\textquotesingle t know & Difference and raw
 rate counts of each response option & 24 and 1 week & 12 \\
-Are they supportive about your recovery goals? & cellular communication
+Are they supportive about your recovery goals? & Cellular communication
 & Supportive, unsupportive, mixed, neutral, don\textquotesingle t know &
 Difference and raw rate counts of each response option & 24 and 1 week &
 20 \\
-How are your typical experiences with this person? & cellular
+How are your typical experiences with this person? & Cellular
 communication & Pleasant, unpleasant, mixed, neutral & Difference and
 raw rate counts of each response option & 24 and 1 week & 16 \\
-Age & demographics & Numeric (years) & & & 1 \\
-Sex at birth & demographics & Male, female & One-hot coded & & 2 \\
-Race & demographics & Non-Hispanic White, non-White and/or Hispanic &
+Age & Demographics & Numeric (years) & & & 1 \\
+Sex at birth & Demographics & Male, female & One-hot coded & & 2 \\
+Race & Demographics & Non-Hispanic White, non-White and/or Hispanic &
 One-hot coded & & 2 \\
-Education & demographics & High school or less, some college, college
+Education & Demographics & High school or less, some college, college
 degree & One-hot coded & & 3 \\
-Income & demographics & Numeric (dollars) & & & 1 \\
-Marital Status & demographics & Married, not married, other & One-hot
+Income & Demographics & Numeric (dollars) & & & 1 \\
+Marital Status & Demographics & Married, not married, other & One-hot
 coded & & 3 \\
-DSM-5 symptom count & alcohol use & Numeric (4-11) & & & 1 \\
-Craving & alcohol use & Numeric (0-30) & & & 1 \\
+DSM-5 symptom count & Alcohol use & Numeric (4-11) & & & 1 \\
+Craving & Alcohol use & Numeric (0-30) & & & 1 \\
 Abstinence self-efficacy: Negative affect, social, physical, and craving
-subscales & alcohol use & Numeric (0-20) & & & 4 \\
+subscales & Alcohol use & Numeric (0-20) & & & 4 \\
 Number of individual alcohol counseling sessions attended (past 30 days)
-& alcohol use & Numeric & & & 1 \\
+& Alcohol use & Numeric & & & 1 \\
 Number of group alcohol counseling sessions attended (past 30 days) &
-alcohol use & Numeric & & & 1 \\
-Number of self-help group meetings attended (past 30 days) & alcohol use
+Alcohol use & Numeric & & & 1 \\
+Number of self-help group meetings attended (past 30 days) & Alcohol use
 & Numeric & & & 1 \\
 Number of other mental health counseling sessions attended (past 30
-days) & alcohol use & Numeric & & & 1 \\
+days) & Alcohol use & Numeric & & & 1 \\
 Number of days in contact with supportive people (past 30 days) &
-alcohol use & Numeric & & & 1 \\
+Alcohol use & Numeric & & & 1 \\
 Number of days in contact with unsupportive people (past 30 days) &
-alcohol use & Numeric & & & 1 \\
+Alcohol use & Numeric & & & 1 \\
 Taken prescribed medication for alcohol use disorder (past 30 days) &
-alcohol use & Yes, no & One-hot coded & & 2 \\
+Alcohol use & Yes, no & One-hot coded & & 2 \\
 Taken prescribed medication for other mental health disorder (past 30
-days) & alcohol use & Yes, no & One-hot coded & & 2 \\
+days) & Alcohol use & Yes, no & One-hot coded & & 2 \\
 Satisfaction with progress toward recovery goals (past 30 days) &
-alcohol use & Numeric (0-4) & & & 1 \\
-Confidence in abstinence ability (next 30 days) & alcohol use & Numeric
+Alcohol use & Numeric (0-4) & & & 1 \\
+Confidence in abstinence ability (next 30 days) & Alcohol use & Numeric
 (0-4) & & & 1 \\
-Has a goal of abstinence & alcohol use & Yes, no, uncertain & One-hot
+Has a goal of abstinence & Alcohol use & Yes, no, uncertain & One-hot
 coded & & 3 \\
 Personality dimensions (positive emotionality, negative emotionality,
-and constraint) & personality and psychiatric & Numeric & & & 3 \\
-Psychiatric conditions (depression, anxiety, and stress) & personality
-and psychiatric & Numeric & & & 3 \\
+and constraint) & Personality/psychiatric & Numeric & & & 3 \\
+Psychiatric conditions (depression, anxiety, and stress) &
+Personality/psychiatric & Numeric & & & 3 \\
 
 
 \caption{\label{tbl-1}Raw Predictors, Response Options, Feature
@@ -633,7 +637,7 @@ We selected three final models. We selected the best performing full
 model that included all four feature sets (cellular communications,
 demographics, alcohol use characteristics, and psychiatric/personality
 characteristics). Because our feature set of interest was cellular
-communications we only selected configurations that retained this
+communications we only selected from configurations that retained this
 feature set. We selected the best performing baseline model that
 included our three baseline feature sets (demographics, alcohol use
 characteristics, and psychiatric/personality characteristics) to assess
@@ -658,29 +662,23 @@ baseline model, cellular communication model) using a Bayesian
 hierarchical generalized linear model. Posterior distributions with 95\%
 credible intervals (CI) were estimated from the 30 held-out folds using
 weakly informative, data-dependent priors to regularize and reduce
-overfitting: Residual SD \textasciitilde{} normal(0, exp(2)); intercept
-(centered predictors) \textasciitilde{} normal(2.3, 1.3); window-width
-contrasts \textasciitilde{} normal(0, 2.69); covariance
-\textasciitilde{} decov(1,1,1,1). Random intercepts were included for
-repeat and fold (nested within repeat). auROCs were logit-transformed
-and regressed on model type to estimate the probability that model
-performances differed systematically. We reported the median posterior
-auROC and 95\% CI for each model. We also specified two sets of
-contrasts for model comparisons: full model vs.~baseline model and
-cellular communication model vs.~a hypothetical model performing at
-chance (i.e., where auROC's are 0.5 in all 30 test sets).
+overfitting: Residual SD \textasciitilde{} exponential(2.3); intercept
+(centered predictors) \textasciitilde{} normal(0.62, 1.1); fixed effects
+\textasciitilde{} normal(0, 2.27); covariance \textasciitilde{} decov(1,
+1, 1, 1). Random intercepts were included for repeat and fold (nested
+within repeat). We reported the median posterior auROC and 95\% CI for
+each model. We also specified specified a single model contrast: full
+model vs.~baseline model. auROCs were logit-transformed and regressed on
+model contrast to estimate the probability that model performances
+differed systematically.
 
-We refit our full and cellular communication models on the entire data
-set to identify the most important features. We quantified feature
-importance by examining the retained features (i.e., coefficient value
-\textgreater{} 0) in our final elastic net model and ordering them by
-absolute coefficient value. These values provide an estimate of the
-direction and magnitude of association between each predictor and the
-outcome, conditional on the other features retained. We plotted
-coefficients for both models to visualize whether descriptive
-differences in retained cellular communication features existed when
-controlling for other baseline features compared to not controlling for
-baseline features.
+We refit our full model on the entire data set to identify the most
+important features. We quantified feature importance by examining the
+retained features (i.e., coefficient value \textgreater{} 0) in our
+final elastic net model and ordering them by absolute coefficient value.
+These values provide an estimate of the direction and magnitude of
+association between each predictor and the outcome, conditional on the
+other features retained.
 
 \section{Results}\label{results}
 
@@ -781,17 +779,17 @@ had, on average, 2,610 contextualized communications (range =
 \subsection{Model Evaluation}\label{model-evaluation-1}
 
 The median posterior auROC for the best performing full model was 0.67,
-95\% CI {[}0.64, 0.7{]}. The final model fit on the full data set
-retained 10 features (left panel of Figure~\ref{fig-1}). The top four
-were baseline alcohol use characteristics. Two of these (abstinence
+95\% CI {[}0.64, 0.71{]}. The final model fit on the full data set
+retained 10 features (Figure~\ref{fig-1}). The top four features were
+baseline alcohol use characteristics. Two of these (abstinence
 confidence and having a goal of abstinence) emerged as important
 protective factors. Abstinence self-efficacy when experiencing negative
 affect and craving emerged as important risk factors. Communication
-features were also retained in the final model. Specifically, frequency
-of communications with drinkers, friends, and people unaware of the
-individual's recovery goals emerged as important risk factors. Frequency
-of communications with non-drinkers, conversely, was an important
-protective factor.
+features were also retained in the final model. Frequency of
+communications with drinkers, friends, and people unaware of the
+individual's recovery goals, and number of unique contacts emerged as
+important risk factors. Frequency of communications with non-drinkers,
+conversely, was an important protective factor.
 
 We conducted a model comparison between the full model and a model that
 only considered baseline measures (alcohol use characteristics,
@@ -799,24 +797,22 @@ demographics, and psychiatric and personality characteristics) to assess
 the incremental predictive value of cellular communication features
 beyond these baseline measures. The baseline model achieved slightly
 higher performance compared to the full model (median auROC = 0.69, 95\%
-CI {[}0.66, 0.71{]}). However, this median difference in auROC was only
-.01 and the bayesian model comparison showed weak evidence (73\%
+CI {[}0.65, 0.72{]}). However, this median difference in auROC was only
+.01 and the Bayesian model comparison showed weak evidence (73\%
 probability) that the baseline model performed better than the full
 model.
 
 Finally, our best performing model that included only cellular
-communication features achieved a median auROC of 0.59. The 95\% CI
-({[}0.55, 0.62{]}) did not contain .5. There was strong evidence that
-this model is performing above chance performance (100\% probability)
-and thus capturing some signal in the data. To better understand which
-features are capturing this signal, we examined the retained features in
-the best cellular communication model fit on the full data set. This
-model retained four features: frequency of communications with friends,
-people unaware of the individual's recovery goals, drinkers, and
-non-drinkers. These four features were also retained in the full model.
-In the right panel of Figure~\ref{fig-1} we display the magnitude of the
-coefficients for these features when the model does not control for
-other retained baseline measures.
+communication features achieved a median auROC of 0.59, 95\% CI {[}0.55,
+0.62{]}. 100\% of the posteriors were above 0.5 indicating strong
+evidence that this model is performing above chance performance (i.e.,
+it is capturing some risk-relevant signal in the data). Four of the five
+cellular communication features retained in the full model were also
+retained in the cellular communication model. Number of unique contacts
+did not get retained in the cellular communication model, although it
+was retained in the full model with a very small coefficient. No new
+important features beyond those retained in the full model emerged in
+the cellular communication model.
 
 \begin{figure}[H]
 
@@ -827,13 +823,13 @@ other retained baseline measures.
 }
 
 \caption{\label{fig-1}Global feature importance (elastic net
-coefficient) for the full and cellular communicatioin models. Features
-are ordered by absolute coefficient value. Bars with positive
-coefficient values (in blue) represent features that, on average, lower
-lapse risk. Bars with negative coefficient values (in salmon) represent
-features that, on average, increase risk. Alcohol use features were
-collected via self-report measures at baseline. Communication features
-were engineered from the contextualized cellular communications.}
+coefficient) for the full model. Features are ordered by absolute
+coefficient value. Bars with positive coefficient values (in blue)
+represent features that, on average, lower lapse risk. Bars with
+negative coefficient values (in salmon) represent features that, on
+average, increase risk. Alcohol use features were collected via
+self-report measures at baseline. Communication features were engineered
+from the contextualized cellular communications.}
 
 \end{figure}%
 
