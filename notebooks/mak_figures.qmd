@@ -123,7 +123,7 @@ feat_imp_full <- model_full |>
 ```{r}
 #| label: fig-1
 #| fig-cap: "Global feature importance (elastic net coefficient) for the full model. Features are ordered by absolute coefficient value. Bars with positive coefficient values (in blue) represent features that, on average, lower lapse risk. Bars with negative coefficient values (in salmon) represent features that, on average, increase risk. Alcohol use features were collected via self-report measures at baseline. Communication features were engineered from the contextualized cellular communications."
-#| fig-width: 8
+#| fig-width: 6
 #| fig-height: 5
 
 feat_imp_full  
