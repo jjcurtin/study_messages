@@ -201,7 +201,7 @@ learning, Digital Phenotyping, Relapse Prevention},
 \title{Evaluating Cellular Communication Sensing for Lapse Risk
 Prediction During Early Recovery from Alcohol Use Disorder}
 \author{Kendra Wyant \and Jiachen Yu \and John J. Curtin}
-\date{2026-04-17}
+\date{2026-04-20}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -236,74 +236,102 @@ method may outweigh their added value.
 
 
 \textsubscript{Source:
-\href{https://jjcurtin.github.io/study_messages/index.qmd.html}{Article
+\href{https://jjcurtin.github.io/study_messages/index-preview.html}{Article
 Notebook}}
 
 \section{Introduction}\label{introduction}
 
 Alcohol Use Disorder (AUD) is a chronic, relapsing disease {[}1--3{]}.
 Lapses, single episodes of alcohol use, are among the strongest
-predictors (and a necessary precursor) for relapse, a full return to
+predictors (and a necessary precursor) of relapse, a full return to
 harmful drinking {[}4,5{]}. While lapses can occur at any point in
 recovery, they are particularly risky during early recovery {[}6{]}.
 Protective coping mechanisms and socio-environmental resources that
-support recovery are dynamic and accumulate over time {[}7{]}. As a
-result, early recovery represents a critical window of vulnerability
-during which a lapse is more likely to escalate into relapse.
+support recovery are dynamic and accumulate over time {[}7{]}.
+Consequently, early recovery represents a critical window of
+vulnerability during which a lapse is more likely to escalate into
+relapse.
 
-An automated recovery support system powered by personal sensing and
-machine learning may assist with the inherently difficult task of
-identifying when and why someone is at increased risk for lapse.
-Personal sensing of densely sampled data from individuals' day-to-day
-lives can provide the inputs necessary for temporally dynamic lapse
-predictions {[}8{]}. Early machine learning models using ecological
-momentary assessment (EMA) data have achieved excellent accuracy in
-predicting future lapses back to alcohol use in treatment seeking
-populations {[}9--11{]}.
+Given the dynamic and context-dependent nature of lapse risk, there is a
+clear need for methods capable of identifying when and why an individual
+is at increased risk in real time. An automated recovery support system
+powered by personal sensing and machine learning may assist with this
+inherently difficult task. Personal sensing of densely sampled data from
+individuals' day-to-day lives can provide the inputs necessary for
+temporally dynamic lapse prediction {[}8{]}. Early machine learning
+models using ecological momentary assessment (EMA) data have achieved
+excellent accuracy in predicting future lapses back to alcohol use in
+treatment seeking populations {[}9--11{]}.
 
-Despite the high predictive success of EMA, questions remain about the
-long-term feasibility of a self-report sensing method. EMA has been
-shown to be well-tolerated among substance use populations over
-relatively short periods of time {[}12,13{]}. It is unclear whether
-individuals would be willing and able to adhere to an extensive EMA
-protocol (e.g., 4 prompts per day) indefinitely. Moreover, EMA items are
-chosen using domain expertise from decades of research on the
-self-report factors that predict lapse. It is possible, however, that
-there are several alternative precipitators of lapse not yet discovered
-due to small subtle changes in one's environment, social circle, or
-lifestyle that cannot be easily identified via self-report.
+Despite the high predictive success of EMA-based approaches, questions
+remain about the long-term feasibility of a self-report sensing method.
+EMA has been shown to be well tolerated among substance-using
+populations over relatively short periods {[}12,13{]}. However, it is
+unclear whether individuals would be willing or able to adhere to
+intensive EMA protocols (e.g., four prompts per day) indefinitely.
+Moreover, EMA items are selected using domain expertise from decades of
+research on the self-report factors associated with lapse. It is
+possible, however, that additional lapse precipitants remain
+undiscovered due to small subtle changes in one's environment, social
+circle, or lifestyle that cannot be easily detected via self-report.
 
-Cellular communication sensing may be a promising alternative to EMA.
-Whereas EMA is limited to, at most, several assessments per day,
-communication sensing is mostly passive and can be monitored
-moment-by-moment. Cellular communication patterns capture clear,
-risk-relevant constructs. Late-night phone calls could indicate an
-emergency, ``drunk dialing,'' or interpersonal conflict. A decrease in
-the number of contacts an individual communicates with could reflect a
-shrinking social circle, isolation, or disengagement. Furthermore,
+Cellular communication sensing may be a promising alternative or
+complement to EMA. Whereas EMA is limited to, at most, several
+assessments per day, communication sensing is mostly passive and can be
+monitored moment-by-moment. Cellular communication patterns capture
+clear, risk-relevant constructs. Late-night phone calls could indicate
+an emergency, ``drunk dialing,'' or interpersonal conflict. A decrease
+in the number of contacts an individual communicates with could reflect
+a shrinking social circle, isolation, or disengagement. Furthermore,
 cellular communication sensing enables data-driven feature engineering,
 whereby features are systematically derived from raw communication logs
 and retained based on their predictive utility rather than a priori
 theoretical assumptions.
 
 These data may become even more powerful when communication patterns are
-contextualized with participant-specific meaning. For instance, knowing
-a participant's relationship to their contacts, whether they have
+contextualized with participant-specific meaning. Knowing a
+participant's relationship to their contacts, whether they have
 previously drunk alcohol with a given contact, or whether that contact
-supports their recovery goals could alter interpretation. In the
-examples above, contextualized communication data might reveal that the
-late-night calls are made to a sponsor, or that a shrinking social
-circle reflects reduced contact with individuals unsupportive of their
-recovery. In this way, the same communication patterns may reflect
+supports their recovery goals could fundamentally alter interpretation.
+In the examples above, contextualized communication data might reveal
+that the late-night calls are made to a sponsor, or that a shrinking
+social circle reflects reduced contact with individuals unsupportive of
+their recovery. In this way, the same communication patterns may reflect
 protective processes rather than increased lapse risk.
 
-In this study, we assessed whether contextualized cellular communication
-features contain clinically meaningful signals for predicting next-day
-alcohol lapse risk among individuals in early recovery from AUD. Using a
-machine learning model, we evaluated the predictive utility of these
-features and identified the most important communication features, with
-the goal of uncovering new, clinically meaningful predictors of lapse
-risk.
+This focus on contextualized communication is especially important
+because lapse is fundamentally social. A large body of literature
+highlights the importance of social support and social network
+influences on drinking behavior and recovery outcomes {[}14--16{]}.
+Positive social relationships have consistently been associated with
+better alcohol treatment outcomes {[}17--20{]}. Conversely, maintaining
+relationships with heavy drinkers or individuals unsupportive of
+recovery is associated with poorer outcomes {[}21--23{]}. The supportive
+pro-abstinence social component of self-help groups such as Alcoholics
+Anonymous is thought to play a major role in their efficacy
+{[}18,24--26{]}. The buffering hypothesis further suggests that positive
+social relationships mitigate the negative effects of stress by
+providing resources that promote adaptive responses {[}27,28{]}, a
+mechanism that likely extends to lapse risk given stress's role as a
+common precipitant of alcohol use {[}29{]}. Critically, these influences
+unfold over time through everyday social interactions.
+
+Because many social interactions occur via phone, cellular communication
+logs provide a natural and ecologically valid window into patterns of
+social engagement. Social relationships are inherently dynamic
+{[}30--33{]}, and time-stamped communication data allow for the tracking
+of how these interactions fluctuate over time. For example, shifts in
+one's most frequently contacted individuals, or systematic changes such
+as repeatedly ignoring calls from a normally frequent contact, may
+signal meaningful changes in social dynamics relevant to lapse risk.
+
+In this study, we evaluated whether contextualized cellular
+communication features contain clinically meaningful signals for
+predicting next-day alcohol lapse risk among individuals in early
+recovery from AUD. Using a machine learning approach, we examined the
+predictive utility of these features and identified the most informative
+communication-based features, with the goal of uncovering novel,
+clinically relevant predictors of lapse risk.
 
 \section{Methods}\label{methods}
 
@@ -312,12 +340,10 @@ risk.
 We adhere to research transparency principles that are crucial for
 robust and replicable science. First, we reported how we determined the
 sample size, all data exclusions, all manipulations, and all study
-measures. We provide a transparency checklist {[}14{]} in the
-supplement. Second, our features, labels, questionnaires, and other
-study materials are publicly available on our Open Science Framework
-(OSF) page (\url{https://osf.io/wgpz9/}). Finally, the annotated
-analysis scripts are publicly available on our study website
-(\url{https://jjcurtin.github.io/study_messages/}).
+measures. We provide a transparency checklist {[}34{]} in the
+supplement. Second, our features, labels, questionnaires, code, and
+other study materials are publicly available on our Open Science
+Framework (OSF) page (\url{https://osf.io/wgpz9/}).
 
 \subsection{Participants and
 Procedure}\label{participants-and-procedure}
@@ -326,7 +352,7 @@ We recruited 192 adults in early recovery from AUD in Madison,
 Wisconsin, USA through print and digital advertisements and partnerships
 with treatment centers from February 15, 2017 through September 19,
 2019. This sample size was determined based on traditional power
-analysis methods for logistic regression {[}15{]} because comparable
+analysis methods for logistic regression {[}35{]} because comparable
 approaches for machine learning models have not yet been validated.
 Eligibility criteria required that participants were age 18 or older,
 able to read and write in English, had moderate to severe AUD (≥4
@@ -335,17 +361,17 @@ the time of the screening visit, had been abstinent for 1--8 weeks, were
 willing to use a single smartphone, and were not exhibiting severe
 psychosis or paranoia (defined as scores \textgreater2.2 or 2.8,
 respectively, on the psychosis or paranoia scales of the Symptom
-Checklist--90 {[}16{]}.)
+Checklist--90 {[}36{]}.)
 
 Participants completed up to 5 study visits over approximately 3 months:
 a screening visit, intake visit, and 3 monthly follow-up visits. At
 screening we determined eligibility and collected demographic
 information (age, sex at birth, race, ethnicity, education, marital
 status, and income) and clinical characteristics (DSM-5 AUD symptom
-count, personality {[}17{]}, and psychiatric symptoms {[}16,18{]}). At
+count, personality {[}37{]}, and psychiatric symptoms {[}36,38{]}). At
 the intake visit, approximately two weeks after screening, we collected
-additional self-report data on abstinence self-efficacy {[}19{]},
-craving {[}20{]}, and recent recovery efforts and goals.
+additional self-report data on abstinence self-efficacy {[}39{]},
+craving {[}40{]}, and recent recovery efforts and goals.
 
 At each monthly follow-up, we downloaded backups of participants'
 cellular communication metadata directly from their smartphones.
@@ -464,7 +490,9 @@ data was observed during a feature scoring epoch that feature was scored
 0, thus there was no missing data across features. Other feature
 engineering steps performed during cross-validation included
 standardizing all features and removing zero and near-zero variance
-features as determined from held-in data.
+features as determined from held-in data (code for our full data
+pre-processing pipeline is available on our OSF page
+{[}(\url{https://osf.io/wgpz9/}{]}).
 
 {
 
@@ -478,7 +506,7 @@ Feature Scoring Epochs & Total Features \\
 \midrule\noalign{}
 {Note: } & & & & & \\
 \textsuperscript{} Cellular communication features were scored over two
-feature scoring epochs (24 and 168 hours before the start of the
+feature scoring epochs (24 hours and 1 week before the start of the
 prediction window). Within each feature scoring epoch we calculated two
 types of features: raw and difference features. Raw features represent
 the raw feature value calculated within a scoring epoch (e.g., the rate
@@ -632,9 +660,13 @@ contrasts \textasciitilde{} normal(0, 2.69); covariance
 \textasciitilde{} decov(1,1,1,1). Random intercepts were included for
 repeat and fold (nested within repeat). auROCs were logit-transformed
 and regressed on model type to estimate the probability that model
-performances differed systematically.
+performances differed systematically. We reported the median posterior
+auROC and 95\% CI for each model. We also specified two sets of
+contrasts for model comparisons: full model vs.~baseline model and
+cellular communication model vs.~a hypothetical model performing at
+chance (i.e., where auROC's are 0.5 in all 30 test sets).
 
-We refit our full and cellular communication model on the entire data
+We refit our full and cellular communication models on the entire data
 set to identify the most important features. We quantified feature
 importance by examining the retained features (i.e., coefficient value
 \textgreater{} 0) in our final elastic net model and ordering them by
@@ -745,7 +777,7 @@ had, on average, 2,610 contextualized communications (range =
 \subsection{Model Evaluation}\label{model-evaluation-1}
 
 The median posterior auROC for the best performing full model was 0.67,
-95\% CI {[}0.64, 0.71{]}. The final model fit on the full data set
+95\% CI {[}0.64, 0.7{]}. The final model fit on the full data set
 retained 10 features (left panel of Figure~\ref{fig-1}). The top four
 were baseline alcohol use characteristics. Two of these (abstinence
 confidence and having a goal of abstinence) emerged as important
@@ -763,15 +795,16 @@ demographics, and psychiatric and personality characteristics) to assess
 the incremental predictive value of cellular communication features
 beyond these baseline measures. The baseline model achieved slightly
 higher performance compared to the full model (median auROC = 0.69, 95\%
-CI {[}0.65, 0.72{]}). However, this median difference in auROC was only
+CI {[}0.66, 0.71{]}). However, this median difference in auROC was only
 .01 and the bayesian model comparison showed weak evidence (73\%
 probability) that the baseline model performed better than the full
 model.
 
 Finally, our best performing model that included only cellular
 communication features achieved a median auROC of 0.59. The 95\% CI
-({[}0.55, 0.62{]}) did not contain .5, providing evidence that the model
-is capturing some signal in the data. To better understand which
+({[}0.55, 0.62{]}) did not contain .5. There was strong evidence that
+this model is performing above chance performance (100\% probability)
+and thus capturing some signal in the data. To better understand which
 features are capturing this signal, we examined the retained features in
 the best cellular communication model fit on the full data set. This
 model retained four features: frequency of communications with friends,
@@ -832,7 +865,7 @@ this limitation. We collected only phone and SMS text communications
 through the native smartphone app. In recent years, many individuals use
 private messaging apps (e.g., WhatsApp, Signal) or social media
 platforms (e.g., Facebook Messenger, Instagram) as their primary
-communication method {[}21{]}. Therefore, our dataset likely missed a
+communication method {[}41{]}. Therefore, our dataset likely missed a
 substantial portion of participants' communications. Future studies
 could explore whether incorporating communication data from additional
 platforms yields stronger predictive signal. However, even with improved
@@ -844,7 +877,7 @@ We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
 incorporated communication data into models with other sensing data
 (e.g., accelerometer, geolocation, and device usage) to detect current
-{[}22{]} and predict future {[}23{]} heavy drinking episondes in
+{[}42{]} and predict future {[}43{]} heavy drinking episondes in
 non-treatment seeking young adult populations. It is possible that in
 certain populations cellular communications may hold more signal. Young
 adults may have more frequent communication reducing sparsity concerns.
@@ -1008,33 +1041,167 @@ Acceptability of {Personal Sensing Among People With Alcohol Use
 Disorder}: {Observational Study}. JMIR mHealth and uHealth. 2023;11:
 e41833. doi:\href{https://doi.org/10.2196/41833}{10.2196/41833}}
 
-\bibitem[\citeproctext]{ref-aczelConsensusbasedTransparencyChecklist2019}
+\bibitem[\citeproctext]{ref-hunter-reelEmphasizingInterpersonalFactors2009}
 \CSLLeftMargin{14. }%
+\CSLRightInline{Hunter-Reel D, McCrady B, Hildebrandt T. Emphasizing
+interpersonal factors: An extension of the {Witkiewitz} and {Marlatt}
+relapse model. Addiction. 2009;104: 1281--1290.
+doi:\href{https://doi.org/10/bqvzsj}{10/bqvzsj}}
+
+\bibitem[\citeproctext]{ref-witkiewitzEmphasisInterpersonalFactors2005}
+\CSLLeftMargin{15. }%
+\CSLRightInline{Witkiewitz K, Marlatt GA. Emphasis on {Interpersonal
+Factors} in a {Dynamic Model} of {Relapse}. American Psychologist.
+2005;60: 341--342. doi:\href{https://doi.org/10/bxvs99}{10/bxvs99}}
+
+\bibitem[\citeproctext]{ref-stantonRelapsePreventionNeeds2005}
+\CSLLeftMargin{16. }%
+\CSLRightInline{Stanton M. Relapse {Prevention Needs More Emphasis} on
+{Interpersonal Factors}. American Psychologist. 2005;60: 340--341.
+doi:\href{https://doi.org/10/frq49s}{10/frq49s}}
+
+\bibitem[\citeproctext]{ref-grohFriendsFamilyAlcohol2010}
+\CSLLeftMargin{17. }%
+\CSLRightInline{Groh DR, Jason LA, Davis MI, Olson BD, Ferrari JR.
+Friends, {Family}, and {Alcohol Abuse}: {An Examination} of {General}
+and {Alcohol-Specific Social Support}. 2010; 11. }
+
+\bibitem[\citeproctext]{ref-kellyRoleAlcoholicsAnonymous2012}
+\CSLLeftMargin{18. }%
+\CSLRightInline{Kelly JF, Stout RL, Magill M, Tonigan JS. The role of
+{Alcoholics Anonymous} in mobilizing adaptive social network changes:
+{A} prospective lagged mediational analysis. 2012; 21. }
+
+\bibitem[\citeproctext]{ref-zywiakDecomposingRelationshipsPretreatment2002}
+\CSLLeftMargin{19. }%
+\CSLRightInline{Zywiak WH, Longabaugh R, Wirtz PW.
+\href{https://www.ncbi.nlm.nih.gov/pubmed/11925053}{Decomposing the
+relationships between pretreatment social network characteristics and
+alcohol treatment outcome}. Journal of Studies on Alcohol. 2002;63:
+114--121. }
+
+\bibitem[\citeproctext]{ref-longabaughNetworkSupportPrognostic2010}
+\CSLLeftMargin{20. }%
+\CSLRightInline{Longabaugh R, O'Malley SS. Network {Support} as a
+{Prognostic Indicator} of {Drinking Outcomes}: {The COMBINE Study}.
+JOURNAL OF STUDIES ON ALCOHOL AND DRUGS. 2010; 10.
+doi:\href{https://doi.org/10/ghqvc7}{10/ghqvc7}}
+
+\bibitem[\citeproctext]{ref-alvarezSocialNetworkHeavy2021}
+\CSLLeftMargin{21. }%
+\CSLRightInline{Alvarez MJ, Richards DK, Oviedo Ramirez S, Field CA.
+Social network heavy drinking moderates the effects of a brief
+motivational intervention for alcohol use among injured patients.
+Addictive Behaviors. 2021;112: 106594.
+doi:\href{https://doi.org/10/ghqvdc}{10/ghqvdc}}
+
+\bibitem[\citeproctext]{ref-gordonSocialNetworksRecovery1991}
+\CSLLeftMargin{22. }%
+\CSLRightInline{Gordon AJ, Zrull M. Social networks and recovery: {One}
+year after inpatient treatment. Journal of Substance Abuse Treatment.
+1991;8: 143--152. doi:\href{https://doi.org/10/dg32sj}{10/dg32sj}}
+
+\bibitem[\citeproctext]{ref-mohrGettingGettingHigh2001}
+\CSLLeftMargin{23. }%
+\CSLRightInline{Mohr CD, Averna S, Kenny DA, Del Boca FK. "{Getting} by
+(or getting high) with a little help from my friends": An examination of
+adult alcoholics' friendships. Journal of Studies on Alcohol. 2001;62:
+637--645. doi:\href{https://doi.org/10/ghqvc3}{10/ghqvc3}}
+
+\bibitem[\citeproctext]{ref-grohSocialNetworkVariables2008}
+\CSLLeftMargin{24. }%
+\CSLRightInline{Groh D, Jason L, Keys C. Social network variables in
+alcoholics anonymous: {A} literature review. Clinical Psychology Review.
+2008;28: 430--450. doi:\href{https://doi.org/10/b86245}{10/b86245}}
+
+\bibitem[\citeproctext]{ref-woffServiceProvidersPerceptions1996}
+\CSLLeftMargin{25. }%
+\CSLRightInline{Woff I, Toumbourou J, Herlihy E, Hamilton M, Wales S.
+Service providers' perceptions of substance use self-help groups.
+Substance Use \& Misuse. 1996;31: 1241--1258.
+doi:\href{https://doi.org/10.3109/10826089609063976}{10.3109/10826089609063976}}
+
+\bibitem[\citeproctext]{ref-humphreysEnhancedFriendshipNetworks1999}
+\CSLLeftMargin{26. }%
+\CSLRightInline{Humphreys K, Mankowski ES, Moos RH, Finney JW. Do
+enhanced friendship networks and active coping mediate the effect of
+self-help groups on substance abuse? Annals of Behavioral Medicine: A
+Publication of the Society of Behavioral Medicine. 1999;21: 54--60.
+doi:\href{https://doi.org/10/cjrpbz}{10/cjrpbz}}
+
+\bibitem[\citeproctext]{ref-cohenStressSocialSupport}
+\CSLLeftMargin{27. }%
+\CSLRightInline{Cohen S, Wills TA. Stress, {Social Support}, and the
+{Buffering Hypothesis}. : 48. doi:\href{https://doi.org/10/b4k}{10/b4k}}
+
+\bibitem[\citeproctext]{ref-holt-lunstadSocialRelationshipsMortality2010}
+\CSLLeftMargin{28. }%
+\CSLRightInline{Holt-Lunstad J, Smith TB, Layton JB. Social
+relationships and mortality risk: A meta-analytic review. PLoS medicine.
+2010;7: e1000316. doi:\href{https://doi.org/10/c3f27d}{10/c3f27d}}
+
+\bibitem[\citeproctext]{ref-fronkStressAllostasisSubstance2020}
+\CSLLeftMargin{29. }%
+\CSLRightInline{Fronk GE, Sant'Ana SJ, Kaye JT, Curtin JJ. Stress
+{Allostasis} in {Substance Use Disorders}: {Promise}, {Progress}, and
+{Emerging Priorities} in {Clinical Research}. Annual Review of Clinical
+Psychology. 2020;16: 401--430.
+doi:\href{https://doi.org/10.1146/annurev-clinpsy-102419-125016}{10.1146/annurev-clinpsy-102419-125016}}
+
+\bibitem[\citeproctext]{ref-hidalgoDynamicsMobilePhone2008}
+\CSLLeftMargin{30. }%
+\CSLRightInline{Hidalgo CA, Rodriguez-Sickert C. The dynamics of a
+mobile phone network. Physica A: Statistical Mechanics and its
+Applications. 2008;387: 3017--3024.
+doi:\href{https://doi.org/10/bwdsbj}{10/bwdsbj}}
+
+\bibitem[\citeproctext]{ref-sekaraFundamentalStructuresDynamic2016}
+\CSLLeftMargin{31. }%
+\CSLRightInline{Sekara V, Stopczynski A, Lehmann S. Fundamental
+structures of dynamic social networks. Proceedings of the National
+Academy of Sciences. 2016;113: 9977--9982.
+doi:\href{https://doi.org/10/f84d8f}{10/f84d8f}}
+
+\bibitem[\citeproctext]{ref-saramakiSecondsMonthsOverview2015}
+\CSLLeftMargin{32. }%
+\CSLRightInline{Saramäki J, Moro E. From seconds to months: An overview
+of multi-scale dynamics of mobile telephone calls. The European Physical
+Journal B. 2015;88: 164.
+doi:\href{https://doi.org/10/ghqvc5}{10/ghqvc5}}
+
+\bibitem[\citeproctext]{ref-kossinetsEmpiricalAnalysisEvolving2006}
+\CSLLeftMargin{33. }%
+\CSLRightInline{Kossinets G. Empirical {Analysis} of an {Evolving Social
+Network}. Science. 2006;311: 88--90.
+doi:\href{https://doi.org/10/bwvwz8}{10/bwvwz8}}
+
+\bibitem[\citeproctext]{ref-aczelConsensusbasedTransparencyChecklist2019}
+\CSLLeftMargin{34. }%
 \CSLRightInline{{Aczel B, Szaszi B, Sarafoglou A, Kekecs Z, Kucharský Š,
 Benjamin D, et al.} A consensus-based transparency checklist. Nature
 Human Behaviour. 2019; 1--3.
 doi:\href{https://doi.org/10.1038/s41562-019-0772-6}{10.1038/s41562-019-0772-6}}
 
 \bibitem[\citeproctext]{ref-hsiehSampleSizeTables1989}
-\CSLLeftMargin{15. }%
+\CSLLeftMargin{35. }%
 \CSLRightInline{Hsieh F. Sample size tables for logistic regression.
 Statistics in Medicine. 1989;8: 795--802. }
 
 \bibitem[\citeproctext]{ref-derogatislBriefSymptomInventory}
-\CSLLeftMargin{16. }%
+\CSLLeftMargin{36. }%
 \CSLRightInline{Derogatis, L.R. Brief {Symptom Inventory} 18 -
 {Administration}, scoring, and procedures manual. Minneapolis: NCS
 Pearson; 2000. }
 
 \bibitem[\citeproctext]{ref-patrickDevelopmentValidationBrief2002}
-\CSLLeftMargin{17. }%
+\CSLLeftMargin{37. }%
 \CSLRightInline{Patrick CJ, Curtin JJ, Tellegen A.
 \href{https://www.ncbi.nlm.nih.gov/pubmed/12056077}{Development and
 validation of a brief form of the {Multidimensional Personality
 Questionnaire}}. Psychological Assessment. 2002;14: 150--163. }
 
 \bibitem[\citeproctext]{ref-lovibondStructureNegativeEmotional1995}
-\CSLLeftMargin{18. }%
+\CSLLeftMargin{38. }%
 \CSLRightInline{Lovibond PF, Lovibond SH.
 \href{https://www.ncbi.nlm.nih.gov/pubmed/7726811}{The structure of
 negative emotional states: Comparison of the {Depression Anxiety Stress
@@ -1042,21 +1209,21 @@ Scales} ({DASS}) with the {Beck Depression} and {Anxiety Inventories}}.
 Behaviour Research and Therapy. 1995;33: 335--343. }
 
 \bibitem[\citeproctext]{ref-mckiernanDevelopmentBriefAbstinence2011}
-\CSLLeftMargin{19. }%
+\CSLLeftMargin{39. }%
 \CSLRightInline{McKiernan P, Cloud R, Patterson DA, Wolf S, Golder S,
 Besel K. Development of a {Brief Abstinence Self-Efficacy Measure}.
 Journal of social work practice in the addictions. 2011;11: 245--253.
 doi:\href{https://doi.org/10.1080/1533256X.2011.593445}{10.1080/1533256X.2011.593445}}
 
 \bibitem[\citeproctext]{ref-flanneryPsychometricPropertiesPenn1999}
-\CSLLeftMargin{20. }%
+\CSLLeftMargin{40. }%
 \CSLRightInline{Flannery BA, Volpicelli JR, Pettinati HM.
 \href{https://www.ncbi.nlm.nih.gov/pubmed/10470970}{Psychometric
 properties of the {Penn Alcohol Craving Scale}}. Alcoholism, clinical
 and experimental research. 1999;23: 1289--1295. }
 
 \bibitem[\citeproctext]{ref-mcdowellPreferencesAttitudesDigital2025}
-\CSLLeftMargin{21. }%
+\CSLLeftMargin{41. }%
 \CSLRightInline{{McDowell B, Dumais KM, Gary ST, de Gooijer I, Ward T}.
 Preferences and {Attitudes Towards Digital Communication} and {Symptom
 Reporting Methods} in {Clinical Trials}. Patient preference and
@@ -1064,7 +1231,7 @@ adherence. 2025;19: 255--263.
 doi:\href{https://doi.org/10.2147/PPA.S474535}{10.2147/PPA.S474535}}
 
 \bibitem[\citeproctext]{ref-baeDetectingDrinkingEpisodes2017}
-\CSLLeftMargin{22. }%
+\CSLLeftMargin{42. }%
 \CSLRightInline{Bae S, Ferreira D, Suffoletto B, Puyana JC, Kurtz R,
 Chung T, et al. Detecting {Drinking Episodes} in {Young Adults Using
 Smartphone-based Sensors}. Proceedings of the ACM on Interactive,
@@ -1072,7 +1239,7 @@ Mobile, Wearable and Ubiquitous Technologies. 2017;1: 1--36.
 doi:\href{https://doi.org/10.1145/3090051}{10.1145/3090051}}
 
 \bibitem[\citeproctext]{ref-baeLeveragingMobilePhone2023}
-\CSLLeftMargin{23. }%
+\CSLLeftMargin{43. }%
 \CSLRightInline{Bae SW, Suffoletto B, Zhang T, Chung T, Ozolcer M, Islam
 MR, et al. Leveraging {Mobile Phone Sensors}, {Machine Learning} and
 {Explainable Artificial Intelligence} to {Predict Imminent Same-Day
