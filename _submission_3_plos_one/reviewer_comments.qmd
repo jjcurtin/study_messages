@@ -68,29 +68,25 @@ We appreciate the suggestion and have added psychiatric and personality features
 
 
 ### 6. Isolating oneself, to a degree that is discernable in social behavior as part of increased anxiety and depression, craving may take longer than two weeks. Could authors explain how the different time windows performed and were interpreted? Could changes be associated with traits such as impulsivity, low mood, anxiety? Are data on these aspects available. Have interactions and potential mediation been explored?
+In our study, the longest scoring epoch was one week. We agree that experiences such as craving and depression may take longer than one week to affect downstream changes in social behavior. However, these constructs were not modeled as time‑varying features in our analyses. Instead, communication features were calculated over scoring epochs that roll forward day by day, independent of craving or depressive symptoms. 
 
-Regarding potential interactions, see reviewer response 4. 
+It is, however, possible that scoring features over longer epochs (e.g., two weeks or one month) could better capture slower‑evolving processes such as social withdrawal; however, because participants contributed, at most, three months of data, longer epochs would substantially reduce the number of usable observations. We therefore felt it would be inappropriate to use scoring epochs of that length given the available data. We acknowledge this as a limitation now in our discussion section.
 
-<!-- - could not include 2 weeks - limitation  -->
-<!-- - 24, hour, 1 week - update text to week not hours -->
-
-<!-- - add metadata only model - with feature importance -->
-<!-- - baseline to full (incremental - model contrast - no incremntal value), meta only not controolling for anything else (compared to .5) -->
-<!-- - Feature importance in meta model and then show in full model without baseline in plot -->
-
-<!-- - be more clear featuring glmnet (additive) but xgboost and rf natively handle interactions -->
-<!-- - would expect them to predict better if true interactions - other wise additive more closely resembles data generating process -->
+In response to the reviewer’s question regarding individual differences, We added baseline psychiatric and personality measures per the reviewer's request. If changes in traits such as depression and anxiety (features added to our model) were associated with changes in communication features we would expect models that natively handle interactions (XGBoost and random forest) to outperform the linear elastic net model. Our full model did not retain any of these additional features and our best performing model used an elastic net suggesting there were not large interactions between these sets of features and an additive model more closely resembled the true data generating process. 
 
 ### 7. Goal of abstinence, abstinence confidence tend to increase with abstinence time - the longer the abstinence the higher the continued goal of abstinence and the confidence. Was data on abstinence time available? Could these predictors be considered as time varying or maybe consider interaction terms?
-<!--interesting but we would need to create features from EMA items to address this. For the goals of this study we restricted our sensing features to those that could be derived from cellular communication data.-->
+We agree that abstinence duration is often associated with increases in both abstinence confidence and commitment to continued abstinence. We did have a baseline measure of abstinence time; however, maintaining an accurate measure over follow‑up would have required updating abstinence duration based on reported lapses collected via daily EMA. Similarly, we collected time‑varying information on abstinence confidence and abstinence goals through EMA assessments.
+
+For the goals of this study, however, we intentionally restricted time‑varying predictors to features derived passively from cellular communication data. EMA data were used exclusively to generate outcome labels (lapse vs. no lapse), rather than as dynamic predictors in the models. Incorporating abstinence duration, confidence, or goals as time‑varying covariates would therefore have expanded the scope of the analysis beyond cellular communication sensing features and was not pursued in the current work.
 
 ### 8. Results reflect what is already known about craving and negative affect being positively associated with relapse risk. However, communication with someone who doesn’t know about recovery is a novel finding and needs to be better explained. This association would be interesting to explore further.
-
-<!--mention in discussion-->
+We agree this is an interesting finding. Unfortunately, with our current models we are not able to speak more about this feature beyond its positive association with lapse risk (i.e., more frequent contacts with people who do not know the individual is in recovery increase lapse risk). We highlight this as an unexpected finding worth exploring more in future research in our discussion section.
 
 ### 9. Social isolation and lack of significant social support are important factors associated with recovery. Number of contacts varied widely (between 2 and >100!) in the population. I would expect increased social isolation (less communication, changes in communication pattern) in a the more social individuals (who have many contacts) to be a sign of increased depression or anxiety – which in turn could be associated with relapse. Could authors describe patterns of social contacts and change over time more clearly? Was number of contacts considered? Was change in communication, depending on number of contacts of any relevance?
+We agree that changes in communication may be more or less risky for individuals depending on the number of contacts that change is coming from. While total number of contacts varied widely across participants, we did not include absolute number of contacts as a predictive feature. Doing so would have required using information not yet observed at the prediction time point (e.g., the total number of unique contacts communicated with over the full study period), which would introduce leakage from future data into the model.
 
-<!--used difference features which compares number of contacts to an individuals baseline. Difference feature was retained for this feature as opposed to raw counts for other features. However, remaining cell feats were raw scores-->
+To address this concern, we included both raw and difference scores of all sensing features. Difference scores allow us to create a feature that essentially compares the number of contacts during a given scoring epoch to that individual's typical number of contacts (across all study days up until the prediction time point). This allowed us to capture changes in communication relative to an individual's typical level of communication without using information from the future. We have updated the feature engineering section of the manuscript to more clearly describe these features. 
+
 
 ## Reviewer 2
 
