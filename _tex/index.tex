@@ -847,41 +847,51 @@ offer incremental value beyond a baseline model that included only
 baseline self-report measures. Consistent with this, the four most
 important predictors in our model were all self-report variables:
 abstinence confidence, abstinence goal, negative affect efficacy, and
-craving.
+craving. Only baseline features related to alcohol use characteristics
+were retained in the full model, reinforcing that self-reported
+alcohol-related and recovery constructs are strong predictors of future
+lapse risk {[}4,5{]}.
 
 Cellular communication data on its own performed poorly for prediction
 (auROC = 0.67) However, it still performed above what we would expect
 from a model performing at chance, suggesting there may be some signal
-in this data. Additionally, several communication features were retained
-in the final model with moderately sized coefficients. These included
-communications with drinkers, non-drinkers, friends, and people unaware
-of the participant's recovery goals. Number of unique contacts was also
-retained in the model, though with a much smaller coefficient.
+in these data. Additionally, several communication features were
+retained in the final model with moderately sized coefficients. These
+included communications with drinkers, non-drinkers, friends, and people
+unaware of the participant's recovery goals. Number of unique contacts
+was also retained in the model, though with a much smaller coefficient.
+Given that cellular communication usage may vary widely across
+demographic characteristics, psychiatric states, personality profiles,
+and alcohol use severity, we were surprised to find that these features
+did not appear to substantially interact with the baseline self-report
+measures. The elastic net algorithm outperformed the tree-based models,
+suggesting the relationship between features are primarily additive as
+opposed to interactive.
 
-The finding that communications with drinkers increase lapse risk and
-communications with non-drinkers decrease lapse risk is consistent with
+The finding that communications with drinkers increased lapse risk and
+communications with non-drinkers decreased lapse risk is consistent with
 prior literature {[}19,20{]}. Individuals who surround themselves with
 people who drink (and who may have even drunk with the individual in the
 past) may be more likely to experience exposure to drinking-related cues
 and opportunities to drink. Conversely, communicating with non-drinkers
 may reflect a more supportive social environment that promotes recovery.
 Additionally, given that alcohol use is often a social activity, it is
-not unexpected that increased communication with friends was associated
-with greater lapse risk.
+not unexpected that increased communication with friends increased lapse
+risk.
 
 We were surprised to find that communications with people who did not
 know about an individual's recovery goals was also a risk factor. We
-might have expected that communication with people supportive of
-recovery goals would be a protective factor, or that communication with
-people unsupportive of those goals would increase risk. One possible
-explanation is that lack of disclosure reflects lower confidence in
-sharing something as personal as recovery with others. It could also
-reflect perceived or anticipated stigma, thereby capturing the other
-person's beliefs or attitudes about substance use. Lastly, it could
-signal reduced access to recovery support, as individuals cannot provide
-support for goals they are unaware of. Future research could explore
-this finding further to better understand the mechanisms underlying this
-association.
+expected it was more likely that communication with people supportive of
+recovery goals would emerge as a protective factor or that communication
+with people unsupportive of those goals would emerge as a risk factor.
+One possible explanation is that a lack of disclosure about being in
+recovery reflects low levels of trust, making it difficult to confide in
+others about something so personal. It could also reflect perceived or
+anticipated stigma, thereby capturing the other person's beliefs or
+attitudes about substance use. Lastly, it could signal reduced access to
+recovery support, as individuals cannot provide support for goals they
+are unaware of. Future research could explore this finding further to
+better understand the mechanisms underlying this association.
 
 In contrast to the contextual features, raw counts of calls and text
 messages and call durations were not retained in the final model. This
@@ -905,7 +915,7 @@ platforms yields stronger predictive signal. It may be also worthwhile
 to use scoring epochs longer than one week. Longer scoring epochs (e.g.,
 two weeks or one month) would contain more data. Additionally, they may
 better capture slow evolving risk-features, such as a gradually
-shrinking social circle leading to improved predictive performance.
+shrinking social circle, leading to improved predictive performance.
 However, even with improved data collection methods, sparsity may remain
 a challenge, as some people may simply not communicate frequently with
 others and others use services (e.g., Snapchat) that automatically
@@ -917,30 +927,31 @@ us to see. This may be especially relevant for text messages (e.g.,
 where drinking plans were made). Although the focus of this study was on
 the metadata and context of cellular communications, text message
 content, nevertheless, was collected during the cellular communication
-log download as party of the larger aims of the parent project. This
-raises the possibility of missed opportunity for risk-relevant signal
-due to non-random patterns of missing data (i.e., data missingness
-increases when participants lapse).
+log download as part of the larger aims of the parent project. This
+raises the possibility of missed opportunity for capturing risk-relevant
+signal due to non-random patterns of missing data (e.g., when data
+missingness systematically increases during periods of lapse).
 
 Our conclusions are limited by sample composition and size. Our
 participants were predominantly non-Hispanic White and all were from the
-Madison, WI area. We had poor representation of older adults (65+ years)
-which may have been due to our requirement that participants owned and
-used a smartphone. Smartphone ownership is generally high. As of 2025,
-roughly 91\% of Americans own a smartphone, with at least 85\% ownership
-across across gender, race/ethnicity, socioeconomic status, and
-geographic location subgroups {[}42{]}. One exception to this pattern is
-with older adults. Ownership rates dip down to 78\% among those ages 65
-and older {[}42{]}. On top of a relatively homogeneous sample
-composition, our sample size was relatively small (\(N\)=144). Our large
-number of observations (i.e., 11,507 prediction windows across
-participants) was sufficient for training machine learning models with
-low bias and variance and evaluating model performance on new
-individuals. However, these estimates represent unbiased estimated of
-how well our model performs on new individuals similar in composition to
-those in our sample. Thus, our findings may not generalize to
-individuals from more diverse populations or in different geographic
-locations.
+Madison, Wisconsin area. We had poor representation of older adults (65+
+years) which may have been due to our requirement that participants
+owned and used a smartphone. Smartphone ownership is generally high. As
+of 2025, roughly 91\% of Americans own a smartphone, with at least 85\%
+ownership across across gender, race/ethnicity, socioeconomic status,
+and geographic location subgroups {[}42{]}. One exception to this
+pattern is with older adults. Ownership rates dip down to 78\% among
+those age 65 years and older {[}42{]}.
+
+In addition to a mostly homogeneous sample composition, our sample size
+was relatively small (\(N\)=144). Although the large number of
+observations (11,507 prediction windows across participants) was
+sufficient for training machine learning models with low bias and
+variance, model evaluation was conducted on a limited subset of new
+individuals. As a result, these estimates reflect expected performance
+on individuals similar in composition to those in our sample. Thus,
+findings may not generalize to more diverse populations or to
+individuals in different geographic contexts.
 
 We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
