@@ -201,7 +201,7 @@ learning, Digital Phenotyping, Relapse Prevention},
 \title{Evaluating Cellular Communication Sensing for Lapse Risk
 Prediction During Early Recovery from Alcohol Use Disorder}
 \author{Kendra Wyant \and Jiachen Yu \and John J. Curtin}
-\date{2026-04-22}
+\date{2026-04-29}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -791,7 +791,9 @@ features were also retained in the final model. Frequency of
 communications with drinkers, friends, and people unaware of the
 individual's recovery goals, and number of unique contacts emerged as
 important risk factors. Frequency of communications with non-drinkers,
-conversely, was an important protective factor.
+conversely, was an important protective factor. All communication
+features retained in the full model were scored over a 1 week feature
+scoring epoch.
 
 We conducted a model comparison between the full model and a model that
 only considered baseline measures (alcohol use characteristics,
@@ -911,26 +913,30 @@ platforms (e.g., Facebook Messenger, Instagram) as their primary
 communication method {[}41{]}. Therefore, our dataset likely missed a
 substantial portion of participants' communications. Future studies
 could explore whether incorporating communication data from additional
-platforms yields stronger predictive signal. It may be also worthwhile
-to use scoring epochs longer than one week. Longer scoring epochs (e.g.,
-two weeks or one month) would contain more data. Additionally, they may
+platforms yields stronger predictive signal. It may also be worthwhile
+to use scoring epochs longer than one week. Our final model retained
+only cellular communication feature scored over the one week feature
+scoring epoch. This is likely due to these longer epochs containing more
+data than the shorter 24 hour scoring epochs. Longer scoring epochs
+(e.g., two weeks or one month) would contain even more data and may
 better capture slow evolving risk-features, such as a gradually
-shrinking social circle, leading to improved predictive performance.
-However, even with improved data collection methods, sparsity may remain
-a challenge, as some people may simply not communicate frequently with
-others and others use services (e.g., Snapchat) that automatically
-delete messages.
+shrinking social circle. Both of these benefits could potentially
+improve model performance.
 
-We also cannot eliminate the possibility that our participants were
-purposefully deleting text messages and call logs that they did not want
-us to see. This may be especially relevant for text messages (e.g.,
-where drinking plans were made). Although the focus of this study was on
-the metadata and context of cellular communications, text message
-content, nevertheless, was collected during the cellular communication
-log download as part of the larger aims of the parent project. This
-raises the possibility of missed opportunity for capturing risk-relevant
-signal due to non-random patterns of missing data (e.g., when data
-missingness systematically increases during periods of lapse).
+However, even with improved data collection methods and longer scoring
+epochs, sparsity may remain a challenge. Some people may simply not
+communicate frequently with others and others use services (e.g.,
+Snapchat) that automatically delete messages. We also cannot eliminate
+the possibility that our participants were purposefully deleting text
+messages and call logs that they did not want us to see. This may be
+especially relevant for text messages (e.g., where drinking plans were
+made). Although the focus of this study was on the metadata and context
+of cellular communications, text message content, nevertheless, was
+collected during the cellular communication log download as part of the
+larger aims of the parent project. This raises the possibility of missed
+opportunity for capturing risk-relevant signal due to non-random
+patterns of missing data (e.g., when data missingness systematically
+increases during periods of lapse).
 
 Our conclusions are limited by sample composition and size. Our
 participants were predominantly non-Hispanic White and all were from the
@@ -952,6 +958,17 @@ individuals. As a result, these estimates reflect expected performance
 on individuals similar in composition to those in our sample. Thus,
 findings may not generalize to more diverse populations or to
 individuals in different geographic contexts.
+
+We determined the presence of AUD using a self-report measure of DSM-5
+symptoms, as opposed to a structured clinical interview. This may have
+had some impact on our threshold for establishing AUD. It is possible
+that some participants over-endorsed experiencing symptoms (e.g.,
+endorsing symptoms that occur infrequently and do not reflect a pattern)
+and have milder forms of AUD than our target sample. However, they still
+likely have AUD given that only two symptoms are needed for an AUD
+diagnosis and we required four for eligibility. Furthermore, all
+participants were required to be pursuing abstinence, suggesting they
+perceive a problem with alcohol use.
 
 We cannot entirely dismiss the potential value of cellular communication
 data for risk prediction. For example, researchers have successfully
