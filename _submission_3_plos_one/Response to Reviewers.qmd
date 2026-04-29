@@ -8,7 +8,7 @@ margin-top: 60pt
 
 Dear Dr. Mitra,
 
-We are pleased to submit a revised version of our manuscript "Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder." We thank the reviewers for their thoughtful commentary. We have included detailed responses to each of the editor's and reviewers' concerns beginning on the following page.
+We are pleased to submit a revised version of our manuscript "Evaluating cellular communication sensing for lapse risk prediction during early recovery from alcohol use disorder: A longitudinal observational study." We thank the reviewers for their thoughtful commentary. We have included detailed responses to each of the editor's and reviewers' concerns beginning on the following page.
 
 If we can provide any additional information that can be of assistance, please do not hesitate to ask. Thank you in advance for your consideration.
 
@@ -27,8 +27,6 @@ Below, we delineate the reviewers’ and editor’s questions, concerns, and req
 
 ### 1. Please ensure that your manuscript meets PLOS ONE's style requirements, including those for file naming.
 We have reviewed the PLOS One's style requirements and updated our manuscript accordingly. We have also ensured that our file names meet the requirements.
-<!--Double check prior to resubmission: https://journals.plos.org/plosone/s/file?id=wjVg/PLOSOne_formatting_sample_main_body.pdf and  https://journals.plos.org/plosone/s/file?id=ba62/PLOSOne_formatting_sample_title_authors_affiliations.pdf-->
-
 
 ### 2. Please note that PLOS One has specific guidelines on code sharing for submissions in which author-generated code underpins the findings in the manuscript. In these cases, we expect all author-generated code to be made available without restrictions upon publication of the work. Please review our guidelines at https://journals.plos.org/plosone/s/materials-and-software-sharing#loc-sharing-code and ensure that your code is shared in a way that follows best practice and facilitates reproducibility and reuse.
 We have uploaded a copy of our code to our OSF page following the recommended guidelines for code sharing. This OSF page is also referenced in our manuscript.

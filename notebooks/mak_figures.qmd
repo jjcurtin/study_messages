@@ -74,7 +74,7 @@ feat_imp_full <- model_full |>
   labs(
     x = "Coefficient",
     y = NULL,
-    title = "Feature Importance"
+    title = NULL
   ) +
   theme(legend.position = "none")
 # 
