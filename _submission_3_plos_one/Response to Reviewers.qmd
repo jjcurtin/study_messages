@@ -6,19 +6,6 @@ margin-bottom: 60pt
 margin-top: 60pt
 ---
 
-Dear Dr. Mitra,
-
-We are pleased to submit a revised version of our manuscript "Evaluating cellular communication sensing for lapse risk prediction during early recovery from alcohol use disorder: A longitudinal observational study." We thank the reviewers for their thoughtful commentary. We have included detailed responses to each of the editor's and reviewers' concerns beginning on the following page.
-
-If we can provide any additional information that can be of assistance, please do not hesitate to ask. Thank you in advance for your consideration.
-
-Sincerely,    
-
-Kendra Wyant, Jiachen Yu, & John J. Curtin
-
-
----
-
 
 Below, we delineate the reviewers’ and editor’s questions, concerns, and requests regarding our original submission, and we detail the ways in which we have addressed each item. All comments have been copied verbatim to avoid misinterpretation.
 

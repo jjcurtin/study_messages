@@ -1,0 +1,137 @@
+---
+title: "Correlations among meta features and lapse"
+author: "Kendra Wyant"
+date: "`r lubridate::today()`"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+format:
+  html:
+    embed-resources: true
+editor_options: 
+  chunk_output_type: console
+---
+
+
+## Set Up
+
+
+```{r}
+#| message: false
+
+library(tidyverse)
+library(tidymodels)
+theme_set(theme_classic()) 
+
+source("https://github.com/jjcurtin/lab_support/blob/main/format_path.R?raw=true")
+
+path_shared <- "/Volumes/studydata/risk/data_processed/shared"
+```
+
+## Read in data
+```{r}
+data <- read_csv(here::here(path_shared, "features_meta_day_24h_v6.csv"),
+                  show_col_types = FALSE) |> 
+  select(-label_num, -c(day_start:day_end), -c(demo_age:demo_race), -c(days_abstinent:stress_total))
+```
+
+
+Remove feats with more than 10% missing data
+```{r}
+feats_missing <- naniar::miss_var_summary(feats) |> 
+  filter(pct_miss > 10) |> 
+  pull(variable)
+
+feats <- feats |> 
+  select(-c(contains(feats_missing)))
+```
+
+
+Convert string variables to factor
+```{r}
+data <- data |> 
+  mutate(across(where(is.character), ~factor(.x))) |> 
+  rename(y = lapse)
+
+glimpse(data)
+```
+
+
+
+## Make features
+
+Recipe
+```{r}
+rec <- recipe(y ~ ., data = data) |> 
+  step_rm(subid, dttm_label, strat) |> 
+  step_zv(all_predictors()) |> 
+  step_impute_median(all_numeric_predictors()) |> 
+  step_impute_mode(all_nominal_predictors()) |> 
+  step_dummy(all_nominal_predictors()) |> 
+  step_nzv(all_predictors()) |> 
+  step_normalize(all_predictors())
+   
+```
+
+
+```{r}
+rec_prepped <- rec |> 
+    prep(training = data)
+
+feat_all <- rec_prepped |> 
+    bake(new_data = data)
+
+glimpse(feat_all)
+```
+
+## Get correlations
+
+```{r}
+cor_feat <- feat_all |> 
+  mutate(y = if_else(y == "no", 0, 1))  |> 
+  cor() |> 
+  as_tibble(rownames = NA) |> 
+  rownames_to_column() |> 
+  filter(rowname != "y") |> 
+  select(feature = rowname, y) |> 
+  mutate(y = round(y, 3))
+
+cor_feat |> 
+  arrange(desc(abs(y))) |> 
+  print(n = Inf) 
+```
+
+
+Cutoff of correlation of .1 or higher would retain only 2 features out of 323 features. 
+
+```{r}
+cor_feat |>
+  arrange(desc(abs(y))) |>
+  filter(round(y, 2) >= .1) |> 
+  print(n = Inf)
+```
+
+Correlation cutoff of .05 would retain about 37 features
+
+Correlation cutoff of .03 would retain 70 features
+
+```{r}
+cor_feat |>
+  arrange(desc(abs(y))) |>
+  filter(round(y, 2) >= .03) |> 
+  print(n = Inf)
+```
+
+
+Histogram of correlations
+```{r}
+cor_feat |> 
+  mutate(y = abs(y)) |> 
+  ggplot(aes(x = y)) + 
+  geom_histogram(binwidth = .01, boundary = 0, fill = "light grey", color = "black")
+```
+
+
+
+

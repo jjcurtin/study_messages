@@ -1,0 +1,22 @@
+---
+format: pdf
+margin-left: 60pt
+margin-right: 60pt
+margin-bottom: 60pt
+margin-top: 60pt
+---
+
+Dear Dr. Mitra,
+
+We are pleased to submit a revised version of our manuscript titled **"Evaluating Cellular Communication Sensing for Lapse Risk Prediction During Early Recovery from Alcohol Use Disorder: A Longitudinal Observational Study"** for consideration as a **Research Article** in *PLOS One*. 
+
+We thank the reviewers for their thoughtful commentary. We have included detailed responses to each of the editor's and reviewers' concerns in our response to reviewers. If we can provide any additional information that can be of assistance, please do not hesitate to ask. Thank you in advance for your consideration.
+
+Sincerely,    
+
+Kendra Wyant, Jiachen Yu, & John J. Curtin
+
+
+
+
+
