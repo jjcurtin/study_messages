@@ -76,7 +76,8 @@ feat_imp_full <- model_full |>
     y = NULL,
     title = NULL
   ) +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  theme(text = element_text(size = 15))
 # 
 # 
 # 
